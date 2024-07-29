@@ -1,0 +1,14 @@
+{
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "email_placeholder": "user@example.com",
+  "password_placeholder": "Password123!",
+  "invalid_email": "Please enter a valid email address.",
+  "email_required": "Email is required.",
+  "password_min_length": "Password must be at least 8 characters long.",
+  "password_uppercase": "Password must contain at least one uppercase letter.",
+  "password_number": "Password must contain at least one number.",
+  "password_special_char": "Password must contain at least one special character.",
+  "password_required": "Password is required."
+}

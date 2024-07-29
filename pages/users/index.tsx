@@ -1,14 +1,24 @@
-import { GetStaticProps } from 'next'
-import Link from 'next/link'
+/**
+* MKL (https://mkl.ba).
+*
+* @link https://github.com/mkl source repository
+*
+* @copyright Copyright (c) 2024. MKL (https://mkl.ba)
+*
+* @license https://www.elastic.co/licensing/elastic-license
+*/
 
-import { User } from '../../interfaces'
-import { sampleUserData } from '../../utils/sample-data'
-import Layout from '../../components/Layout'
-import List from '../../components/List'
+import { GetStaticProps } from 'next';
+import Link from 'next/link';
+
+import { User } from '@interfaces/index';
+
+import Layout from '@components/layout/Layout';
+import List from '@components/layout/List';
 
 type Props = {
-  items: User[]
-}
+  items: User[];
+};
 
 const WithStaticProps = ({ items }: Props) => (
   <Layout title="Users List | Next.js + TypeScript Example">
@@ -16,20 +26,20 @@ const WithStaticProps = ({ items }: Props) => (
     <p>
       Example fetching data from inside <code>getStaticProps()</code>.
     </p>
-    <p>You are currently on: /users</p>
+    <p>You are currently on: /usersssssssss</p>
     <List items={items} />
     <p>
       <Link href="/">Go home</Link>
     </p>
   </Layout>
-)
+);
 
 export const getStaticProps: GetStaticProps = async () => {
   // Example for including static props in a Next.js function component page.
   // Don't forget to include the respective types for any props passed into
   // the component.
-  const items: User[] = sampleUserData
-  return { props: { items } }
-}
+  const items: User[] = [];
+  return { props: { items } };
+};
 
-export default WithStaticProps
+export default WithStaticProps;
