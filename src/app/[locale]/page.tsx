@@ -19,11 +19,7 @@ const Home = (props: Props) => {
 
   unstable_setRequestLocale(params.locale);
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      login
-    </main>
-  );
+  return <div>login</div>;
 };
 
 export default Home;

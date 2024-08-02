@@ -8,13 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
-
-import { useParams } from 'next/navigation';
-
 import React from 'react';
-
-import { usePathname, useRouter } from 'src/navigation';
 
 import { Link, Text } from '@components/index';
 
@@ -23,23 +17,9 @@ import { useColors, useTranslation } from '@hooks/index';
 import HeaderIcons from './HeaderIcons';
 
 const Header = () => {
-  const t = useTranslation();
+  const t = useTranslation({ section: 'NavigationMenu' });
 
   const colors = useColors();
-
-  const pathname = usePathname();
-  const params = useParams();
-  const router = useRouter();
-
-  const switchLanguage = (language: string) => {
-    router.replace(
-      // @ts-expect-error -- TypeScript will validate that only known `params`
-      // are used in combination with a given `pathname`. Since the two will
-      // always match for the current route, we can skip runtime checks.
-      { pathname, params },
-      { locale: language }
-    );
-  };
 
   return (
     <div
@@ -55,13 +35,6 @@ const Header = () => {
             <Link to="/">
               <Text>{t('about_us')}</Text>
             </Link>
-
-            <button onClick={() => switchLanguage('en')}>
-              Change Language To English
-            </button>
-            <button onClick={() => switchLanguage('tr')}>
-              Change Language To Turkish
-            </button>
 
             <Link to="/">
               <Text>{t('privacy')}</Text>
@@ -81,7 +54,7 @@ const Header = () => {
       </div>
 
       <div className="flex justify-between py-4 w-4/5">
-        <span style={{ color: 'red' }}>●</span> Capital Shop
+        Capital Shop
         <div className="flex items-center space-x-10 list-none">
           <Link to="/">
             <Text className="font-bold text-base">{t('home')}</Text>
@@ -99,7 +72,7 @@ const Header = () => {
             <Text className="font-bold text-base">{t('pages')}</Text>
           </Link>
         </div>
-        👤 🛒<sup>1</sup>
+        👤 🛒
       </div>
     </div>
   );

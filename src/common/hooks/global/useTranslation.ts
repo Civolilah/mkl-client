@@ -10,8 +10,12 @@
 
 import { useTranslations as useBaseTranslation } from 'next-intl';
 
-const useTranslation = () => {
-  const t = useBaseTranslation();
+type Params = {
+  section: 'LoginPage' | 'NavigationMenu';
+};
+
+const useTranslation = (params?: Params) => {
+  const t = useBaseTranslation(params?.section);
 
   return t;
 };

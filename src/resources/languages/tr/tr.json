@@ -1,22 +1,27 @@
 {
-  "login": "Giriş",
-  "email": "E-posta",
-  "password": "Şifre",
-  "email_placeholder": "kullanici@ornek.com",
-  "password_placeholder": "Şifre123!",
-  "invalid_email": "Lütfen geçerli bir e-posta adresi girin.",
-  "email_required": "E-posta gereklidir.",
-  "password_min_length": "Şifre en az 8 karakter uzunluğunda olmalıdır.",
-  "password_uppercase": "Şifre en az bir büyük harf içermelidir.",
-  "password_number": "Şifre en az bir rakam içermelidir.",
-  "password_special_char": "Şifre en az bir özel karakter içermelidir.",
-  "password_required": "Şifre gereklidir.",
-  "about_us": "Hakkımızda",
-  "privacy": "Gizlilik",
-  "contact": "İletişim",
-  "my_wishlist": "İstek Listem",
-  "home": "Ana Sayfa",
-  "men": "Erkek",
-  "women": "Kadın",
-  "pages": "Sayfalar"
+  "LoginPage": {
+    "login": "Giriş",
+    "email": "E-posta",
+    "password": "Şifre",
+    "email_placeholder": "kullanici@ornek.com",
+    "password_placeholder": "Şifre123!",
+    "invalid_email": "Lütfen geçerli bir e-posta adresi girin.",
+    "email_required": "E-posta gereklidir.",
+    "password_min_length": "Şifre en az 8 karakter uzunluğunda olmalıdır.",
+    "password_uppercase": "Şifre en az bir büyük harf içermelidir.",
+    "password_number": "Şifre en az bir rakam içermelidir.",
+    "password_special_char": "Şifre en az bir özel karakter içermelidir.",
+    "password_required": "Şifre gereklidir."
+  },
+
+  "NavigationMenu": {
+    "about_us": "Hakkımızda",
+    "privacy": "Gizlilik",
+    "contact": "İletişim",
+    "my_wishlist": "İstek Listem",
+    "home": "Ana Sayfa",
+    "men": "Erkek",
+    "women": "Kadın",
+    "pages": "Sayfalar"
+  }
 }

@@ -19,27 +19,36 @@ import { Button, TextField } from '@components/index';
 import { useTranslation } from '@hooks/index';
 
 import { LoginDetails } from '../../page';
-import useLogin from '../hooks/useLogin';
+import { handleLoginUser, validateLoginDetails } from '../helpers/helpers';
 
 const Form = () => {
-  const t = useTranslation();
+  const t = useTranslation({ section: 'LoginPage' });
 
-  const [isFormBusy, setIsFormBusy] = useState(false);
+  const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [loginDetails, setLoginDetails] = useState<LoginDetails>({
     email: '',
     password: '',
   });
 
-  const handleLogin = useLogin({
-    setIsFormBusy,
-    setErrors,
-    isFormBusy,
-    setLoginDetails,
-  });
+  const handleLogin = async () => {
+    setIsFormBusy(true);
+
+    const result = await validateLoginDetails(loginDetails);
+
+    if (result !== undefined) {
+      setErrors(result);
+    } else {
+      await handleLoginUser(loginDetails);
+    }
+
+    setIsFormBusy(false);
+  };
 
   useEffect(() => {
-    setErrors({});
+    if (Object.keys(errors).length) {
+      setErrors({});
+    }
   }, [loginDetails]);
 
   return (
@@ -52,7 +61,7 @@ const Form = () => {
         onValueChange={(value) =>
           setLoginDetails((current) => ({ ...current, email: value }))
         }
-        errorMessage={errors.email}
+        errorMessage={errors.email && t(errors.email)}
       />
 
       <TextField
@@ -63,11 +72,11 @@ const Form = () => {
         onValueChange={(value) =>
           setLoginDetails((current) => ({ ...current, password: value }))
         }
-        errorMessage={errors.password}
+        errorMessage={errors.password && t(errors.password)}
       />
 
       <Button
-        onClick={() => handleLogin(loginDetails)}
+        onClick={handleLogin}
         disabled={isFormBusy}
         disabledWithLoadingIcon
         style={{ marginTop: 35 }}

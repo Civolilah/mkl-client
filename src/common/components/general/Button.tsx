@@ -16,6 +16,7 @@ import { CSSProperties, ReactNode } from 'react';
 import { useAccentColor } from '@hooks/index';
 
 interface Props {
+  htmlType?: 'submit' | 'button' | 'reset';
   type?: 'primary' | 'default' | 'link' | 'text' | 'dashed';
   className?: string;
   disabled?: boolean;

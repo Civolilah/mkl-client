@@ -14,21 +14,21 @@ import { useColors, useTranslation } from '@hooks/index';
 
 import Form from './common/components/Form';
 
-export interface LoginDetails {
+export type LoginDetails = {
   email: string;
   password: string;
-}
+};
 
-interface Props {
+type Props = {
   params: { locale: string };
-}
+};
 
 const LoginPage = (props: Props) => {
   const { params } = props;
 
   unstable_setRequestLocale(params.locale);
 
-  const t = useTranslation();
+  const t = useTranslation({ section: 'LoginPage' });
 
   const colors = useColors();
 
