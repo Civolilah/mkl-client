@@ -10,7 +10,11 @@
 
 'use client';
 
+import { useParams } from 'next/navigation';
+
 import React from 'react';
+
+import { usePathname, useRouter } from 'src/navigation';
 
 import { Link, Text } from '@components/index';
 
@@ -22,6 +26,20 @@ const Header = () => {
   const t = useTranslation();
 
   const colors = useColors();
+
+  const pathname = usePathname();
+  const params = useParams();
+  const router = useRouter();
+
+  const switchLanguage = (language: string) => {
+    router.replace(
+      // @ts-expect-error -- TypeScript will validate that only known `params`
+      // are used in combination with a given `pathname`. Since the two will
+      // always match for the current route, we can skip runtime checks.
+      { pathname, params },
+      { locale: language }
+    );
+  };
 
   return (
     <div
@@ -37,6 +55,13 @@ const Header = () => {
             <Link to="/">
               <Text>{t('about_us')}</Text>
             </Link>
+
+            <button onClick={() => switchLanguage('en')}>
+              Change Language To English
+            </button>
+            <button onClick={() => switchLanguage('tr')}>
+              Change Language To Turkish
+            </button>
 
             <Link to="/">
               <Text>{t('privacy')}</Text>

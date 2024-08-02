@@ -8,10 +8,12 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-//import { useTranslations as useBaseTranslation } from 'next-intl';
+import { useTranslations as useBaseTranslation } from 'next-intl';
 
 const useTranslation = () => {
-  return (stringg: string) => stringg;
+  const t = useBaseTranslation();
+
+  return t;
 };
 
 export default useTranslation;

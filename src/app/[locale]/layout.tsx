@@ -13,6 +13,8 @@ import { Poppins } from 'next/font/google';
 import '@resources/css/app.css';
 
 import { ConfigProvider } from 'antd';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 import { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 
@@ -38,15 +40,21 @@ const RootLayout = async ({
   children: ReactNode;
   params: { locale: string };
 }>) => {
+  unstable_setRequestLocale(params.locale);
+
   const theme = useTheme();
+
+  const messages = await getMessages();
 
   return (
     <html lang={params.locale}>
       <body className={poppins.className}>
         <ConfigProvider wave={{ disabled: true }} theme={theme}>
-          <Layout>{children}</Layout>
+          <NextIntlClientProvider messages={messages}>
+            <Layout>{children}</Layout>
 
-          <ToastContainer />
+            <ToastContainer />
+          </NextIntlClientProvider>
         </ConfigProvider>
       </body>
     </html>
