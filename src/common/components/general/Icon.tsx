@@ -16,7 +16,9 @@ import {
   CSSProperties,
 } from 'react';
 import { IconType } from 'react-icons';
+import { BiWorld } from 'react-icons/bi';
 import { FaFacebook, FaInstagram } from 'react-icons/fa';
+import { IoMdArrowDropdown } from 'react-icons/io';
 import { IoInformationCircle } from 'react-icons/io5';
 import { MdOutlineShoppingCart, MdPerson } from 'react-icons/md';
 
@@ -24,7 +26,14 @@ interface Props {
   className?: string;
   onClick?: () => void;
   style?: CSSProperties;
-  name: 'facebook' | 'instagram' | 'information' | 'person' | 'shoppingCart';
+  name:
+    | 'facebook'
+    | 'instagram'
+    | 'information'
+    | 'person'
+    | 'shoppingCart'
+    | 'world'
+    | 'arrowDown';
   size?: number;
   enableHoverColor?: boolean;
 }
@@ -69,6 +78,12 @@ const Icon = (props: Props) => {
 
     case 'shoppingCart':
       return generateIconElement(MdOutlineShoppingCart);
+
+    case 'world':
+      return generateIconElement(BiWorld);
+
+    case 'arrowDown':
+      return generateIconElement(IoMdArrowDropdown);
 
     default:
       return <></>;

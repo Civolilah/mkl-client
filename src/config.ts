@@ -12,6 +12,7 @@ import { Pathnames, LocalePrefix } from 'next-intl/routing';
 
 export const defaultLocale = 'en' as const;
 export const locales = ['en', 'tr'] as const;
+export type Languages = (typeof locales)[number];
 
 export const pathnames: Pathnames<typeof locales> = {
   '/': '/',

@@ -8,11 +8,15 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Icon, Link, Text } from '@components/index';
+import {
+  HeaderIcons,
+  Icon,
+  LanguageSwitcher,
+  Link,
+  Text,
+} from '@components/index';
 
 import { useColors, useTranslation } from '@hooks/index';
-
-import HeaderIcons from './HeaderIcons';
 
 const Header = () => {
   const t = useTranslation({ section: 'NavigationMenu' });
@@ -69,7 +73,7 @@ const Header = () => {
       </div>
 
       <div className="flex items-center justify-between py-4 w-4/5">
-        <div className="flex-shrink-0 w-1/4">
+        <div className="flex items-center space-x-4 flex-shrink-0 w-1/4">
           <Link to="/" disableHoverColor>
             <svg width="200" height="45" xmlns="http://www.w3.org/2000/svg">
               <circle cx="22.5" cy="22.5" r="18" fill="#FF0000" />
@@ -84,6 +88,8 @@ const Header = () => {
               </text>
             </svg>
           </Link>
+
+          <LanguageSwitcher />
         </div>
 
         <div className="flex items-center justify-center flex-grow">

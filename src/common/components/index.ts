@@ -15,3 +15,7 @@ export { default as TextField } from '@components/input-fields/TextField';
 export { default as Button } from '@components/general/Button';
 export { default as Icon } from '@components/general/Icon';
 export { default as Link } from '@components/general/Link';
+export { default as LanguageSwitcher } from '@components/layout/LanguageSwitcher';
+export { default as Header } from '@components/layout/Header';
+export { default as HeaderIcons } from '@components/layout/HeaderIcons';
+export { default as Dropdown } from '@components/input-fields/Dropdown';
