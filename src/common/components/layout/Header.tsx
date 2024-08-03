@@ -50,7 +50,7 @@ const Header = () => {
               </span>
 
               <span
-                className="absolute right-0 bg-red-500 text-white font-bold rounded-full flex items-center justify-center"
+                className="absolute right-0 bg-red-500 text-white rounded-full flex items-center justify-center"
                 style={{
                   fontSize: '0.67rem',
                   height: '0.9rem',
@@ -89,16 +89,16 @@ const Header = () => {
         <div className="flex items-center justify-center flex-grow">
           <div className="flex items-center space-x-10 list-none">
             <Link to="/">
-              <Text className="font-medium">{t('home')}</Text>
+              <Text className="font-medium text-lg">{t('home')}</Text>
             </Link>
             <Link to="/login">
-              <Text className="font-medium">{t('men')}</Text>
+              <Text className="font-medium text-lg">{t('men')}</Text>
             </Link>
             <Link to="/">
-              <Text className="font-medium">{t('women')}</Text>
+              <Text className="font-medium text-lg">{t('women')}</Text>
             </Link>
             <Link to="/">
-              <Text className="font-medium">{t('pages')}</Text>
+              <Text className="font-medium text-lg">{t('products')}</Text>
             </Link>
           </div>
         </div>
@@ -106,7 +106,7 @@ const Header = () => {
         <div className="flex-shrink-0 w-1/4 flex items-center justify-end space-x-5">
           <Icon
             name="person"
-            className="cursor-pointer"
+            className="text-black cursor-pointer"
             enableHoverColor
             size={31}
           />
@@ -114,7 +114,7 @@ const Header = () => {
           <div className="relative inline-block">
             <Icon
               name="shoppingCart"
-              className="cursor-pointer"
+              className="text-black cursor-pointer"
               enableHoverColor
               size={28}
             />

@@ -16,7 +16,13 @@ const useTheme = () => {
   return {
     token: {
       colorPrimary: accentColor,
-      colorPrimaryHover: accentColor,
+      colorPrimaryHover: '#2E6CBD',
+    },
+    components: {
+      Button: {
+        colorBgContainerDisabled: accentColor,
+      },
+      Input: { hoverBorderColor: accentColor },
     },
   };
 };

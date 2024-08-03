@@ -22,6 +22,12 @@
     "home": "Home",
     "men": "Men",
     "women": "Women",
-    "pages": "Pages"
+    "products": "Products"
+  },
+
+  "Toaster": {
+    "success": "Success.",
+    "something_went_wrong": "Something went wrong.",
+    "processing": "Processing..."
   }
 }

@@ -8,26 +8,22 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export const hexToRgb = (hex: string): string => {
-  hex = hex.replace(/^#/, '');
+import { toast } from 'react-hot-toast';
 
-  let bigint;
+import { useTranslation } from '@hooks/index';
 
-  if (hex.length === 3) {
-    bigint = parseInt(
-      hex
-        .split('')
-        .map((c) => c + c)
-        .join(''),
-      16
-    );
-  } else {
-    bigint = parseInt(hex, 16);
-  }
+export const useToast = () => {
+  const t = useTranslation({ section: 'Toaster' });
 
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-
-  return `${r}, ${g}, ${b}`;
+  return {
+    success: (message: string) => {
+      toast.success(t(message));
+    },
+    error: (message: string) => {
+      toast.error(t(message));
+    },
+    loading: (message?: string) => {
+      toast.loading(t(message ?? 'processing'));
+    },
+  };
 };

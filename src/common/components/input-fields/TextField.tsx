@@ -11,7 +11,7 @@
 'use client';
 
 import { Input } from 'antd';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, KeyboardEvent } from 'react';
 
 import Icon from '@components/general/Icon';
 
@@ -24,6 +24,7 @@ interface Props {
   onEventChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onValueChange?: (value: string) => void;
   errorMessage?: string;
+  onPressEnter?: (event: KeyboardEvent<HTMLInputElement> | undefined) => void;
 }
 
 const TextField = (props?: Props) => {
@@ -36,6 +37,7 @@ const TextField = (props?: Props) => {
     size = 'large',
     placeHolder,
     errorMessage,
+    onPressEnter,
   } = props || {};
 
   return (
@@ -53,6 +55,7 @@ const TextField = (props?: Props) => {
             onValueChange?.(event.target.value);
           }}
           placeholder={placeHolder}
+          onPressEnter={onPressEnter}
           style={{ boxShadow: 'none' }}
         />
       )}
@@ -68,6 +71,7 @@ const TextField = (props?: Props) => {
             onEventChange?.(event);
             onValueChange?.(event.target.value);
           }}
+          onPressEnter={onPressEnter}
           style={{ boxShadow: 'none' }}
         />
       )}

@@ -22,6 +22,12 @@
     "home": "Ana Sayfa",
     "men": "Erkek",
     "women": "Kadın",
-    "pages": "Sayfalar"
+    "products": "Ürünler"
+  },
+
+  "Toaster": {
+    "success": "Başarılı.",
+    "something_went_wrong": "Bir şeyler yanlış gitti.",
+    "processing": "İşleniyor..."
   }
 }

@@ -9,4 +9,4 @@
  */
 
 export { default as request } from '@helpers/request/request';
-export { hexToRgb, toast } from '@helpers/global/global';
+export { useToast } from '@helpers/global/global';

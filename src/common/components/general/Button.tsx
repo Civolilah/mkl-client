@@ -13,8 +13,6 @@
 import { Button as BaseButton } from 'antd';
 import { CSSProperties, ReactNode } from 'react';
 
-import { useAccentColor } from '@hooks/index';
-
 interface Props {
   htmlType?: 'submit' | 'button' | 'reset';
   type?: 'primary' | 'default' | 'link' | 'text' | 'dashed';
@@ -38,8 +36,6 @@ const Button = (props: Props) => {
     disabledWithLoadingIcon,
   } = props;
 
-  const accentColor = useAccentColor();
-
   return (
     <BaseButton
       className="w-full transition-none shadow-none border-0 rounded-none"
@@ -48,10 +44,10 @@ const Button = (props: Props) => {
       loading={disabled && disabledWithLoadingIcon}
       onClick={onClick}
       style={{
-        backgroundColor: accentColor,
         color: 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.8 : 1,
+        transition: 'background-color 0.3s ease',
         ...style,
       }}
       size={size}

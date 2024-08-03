@@ -11,7 +11,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 
 import { ValidationErrors } from '@interfaces/index';
 
@@ -35,8 +34,6 @@ const Form = () => {
   const handleLogin = async () => {
     if (!Object.keys(errors).length) {
       setIsFormBusy(true);
-
-      toast('message');
 
       const result = await validateLoginDetails(loginDetails);
 
@@ -66,6 +63,7 @@ const Form = () => {
         onValueChange={(value) =>
           setLoginDetails((current) => ({ ...current, email: value }))
         }
+        onPressEnter={() => handleLogin()}
         errorMessage={errors.email && t(errors.email)}
       />
 
@@ -77,6 +75,7 @@ const Form = () => {
         onValueChange={(value) =>
           setLoginDetails((current) => ({ ...current, password: value }))
         }
+        onPressEnter={() => handleLogin()}
         errorMessage={errors.password && t(errors.password)}
       />
 
