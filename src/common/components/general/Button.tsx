@@ -49,7 +49,9 @@ const Button = (props: Props) => {
       onClick={onClick}
       style={{
         backgroundColor: accentColor,
+        color: 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.8 : 1,
         ...style,
       }}
       size={size}

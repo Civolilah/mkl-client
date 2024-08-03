@@ -44,45 +44,41 @@ const TextField = (props?: Props) => {
 
       {type !== 'password' && (
         <Input
+          className="rounded-none"
           type={type}
+          size={size}
           value={value}
           onChange={(event) => {
             onEventChange?.(event);
             onValueChange?.(event.target.value);
           }}
           placeholder={placeHolder}
-          size={size}
-          style={{
-            borderRadius: 0,
-            boxShadow: 'none',
-          }}
+          style={{ boxShadow: 'none' }}
         />
       )}
 
       {type === 'password' && (
         <Input.Password
+          className="rounded-none"
           type={type}
+          size={size}
           value={value}
           placeholder={placeHolder}
           onChange={(event) => {
             onEventChange?.(event);
             onValueChange?.(event.target.value);
           }}
-          size={size}
-          style={{
-            borderRadius: 0,
-            boxShadow: 'none',
-          }}
+          style={{ boxShadow: 'none' }}
         />
       )}
 
       {errorMessage && (
         <div className="mt-1 text-sm text-red-600 flex items-center space-x-1">
           <div>
-            <Icon name="information" size={17} color="#dc2626" />
+            <Icon name="information" size={17} style={{ color: '#dc2626' }} />
           </div>
 
-          <span>{errorMessage}</span>
+          <span className="break-words">{errorMessage}</span>
         </div>
       )}
     </div>

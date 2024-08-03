@@ -8,9 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import React from 'react';
-
-import { Link, Text } from '@components/index';
+import { Icon, Link, Text } from '@components/index';
 
 import { useColors, useTranslation } from '@hooks/index';
 
@@ -30,7 +28,7 @@ const Header = () => {
         className="flex justify-center w-full"
         style={{ borderBottom: '1px solid #eaeaea' }}
       >
-        <div className="flex w-4/5 justify-between items-center text-sm py-2">
+        <div className="flex w-4/5 justify-between items-center text-sm py-2.5">
           <div className="flex items-center space-x-2">
             <Link to="/">
               <Text>{t('about_us')}</Text>
@@ -45,34 +43,86 @@ const Header = () => {
             </Link>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <Text className="border-r pr-3">{t('my_wishlist')}</Text>
+          <div className="flex items-center space-x-4">
+            <div className="relative inline-block">
+              <span className="border-r pr-4 cursor-pointer text-accent hover:text-primary-blue transition-colors duration-200">
+                {t('my_wishlist')}
+              </span>
+
+              <span
+                className="absolute right-0 bg-red-500 text-white font-bold rounded-full flex items-center justify-center"
+                style={{
+                  fontSize: '0.67rem',
+                  height: '0.9rem',
+                  width: '0.9rem',
+                  top: '-0.4rem',
+                  right: '0.2rem',
+                }}
+              >
+                1
+              </span>
+            </div>
 
             <HeaderIcons />
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between py-4 w-4/5">
-        Capital Shop
-        <div className="flex items-center space-x-10 list-none">
-          <Link to="/">
-            <Text className="font-bold text-base">{t('home')}</Text>
-          </Link>
-
-          <Link to="/login">
-            <Text className="font-bold text-base">{t('men')}</Text>
-          </Link>
-
-          <Link to="/">
-            <Text className="font-bold text-base">{t('women')}</Text>
-          </Link>
-
-          <Link to="/">
-            <Text className="font-bold text-base">{t('pages')}</Text>
+      <div className="flex items-center justify-between py-4 w-4/5">
+        <div className="flex-shrink-0 w-1/4">
+          <Link to="/" disableHoverColor>
+            <svg width="200" height="45" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22.5" cy="22.5" r="18" fill="#FF0000" />
+              <text
+                x="50"
+                y="29"
+                font-family="Arial, sans-serif"
+                font-size="22"
+                font-weight="bold"
+              >
+                Star Boutique
+              </text>
+            </svg>
           </Link>
         </div>
-        👤 🛒
+
+        <div className="flex items-center justify-center flex-grow">
+          <div className="flex items-center space-x-10 list-none">
+            <Link to="/">
+              <Text className="font-medium">{t('home')}</Text>
+            </Link>
+            <Link to="/login">
+              <Text className="font-medium">{t('men')}</Text>
+            </Link>
+            <Link to="/">
+              <Text className="font-medium">{t('women')}</Text>
+            </Link>
+            <Link to="/">
+              <Text className="font-medium">{t('pages')}</Text>
+            </Link>
+          </div>
+        </div>
+
+        <div className="flex-shrink-0 w-1/4 flex items-center justify-end space-x-5">
+          <Icon
+            name="person"
+            className="cursor-pointer"
+            enableHoverColor
+            size={31}
+          />
+
+          <div className="relative inline-block">
+            <Icon
+              name="shoppingCart"
+              className="cursor-pointer"
+              enableHoverColor
+              size={28}
+            />
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              1
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

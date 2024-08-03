@@ -16,7 +16,7 @@ import { ConfigProvider } from 'antd';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 import { ReactNode } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'react-hot-toast';
 
 import { Layout } from '@components/index';
 
@@ -53,7 +53,7 @@ const RootLayout = async ({
           <NextIntlClientProvider messages={messages}>
             <Layout>{children}</Layout>
 
-            <ToastContainer />
+            <Toaster position="top-center" />
           </NextIntlClientProvider>
         </ConfigProvider>
       </body>

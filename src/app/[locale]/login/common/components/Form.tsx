@@ -11,6 +11,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { ValidationErrors } from '@interfaces/index';
 
@@ -32,17 +33,21 @@ const Form = () => {
   });
 
   const handleLogin = async () => {
-    setIsFormBusy(true);
+    if (!Object.keys(errors).length) {
+      setIsFormBusy(true);
 
-    const result = await validateLoginDetails(loginDetails);
+      toast('message');
 
-    if (result !== undefined) {
-      setErrors(result);
-    } else {
-      await handleLoginUser(loginDetails);
+      const result = await validateLoginDetails(loginDetails);
+
+      if (result !== undefined) {
+        setErrors(result);
+      } else {
+        await handleLoginUser(loginDetails);
+      }
+
+      setIsFormBusy(false);
     }
-
-    setIsFormBusy(false);
   };
 
   useEffect(() => {
@@ -77,8 +82,8 @@ const Form = () => {
 
       <Button
         onClick={handleLogin}
-        disabled={isFormBusy}
-        disabledWithLoadingIcon
+        disabled={isFormBusy || Boolean(Object.keys(errors).length)}
+        disabledWithLoadingIcon={Boolean(!Object.keys(errors).length)}
         style={{ marginTop: 35 }}
       >
         {t('login')}

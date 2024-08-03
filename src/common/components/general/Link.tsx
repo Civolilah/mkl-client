@@ -10,20 +10,42 @@
 
 import BaseLink from 'next/link';
 
+import classNames from 'classnames';
 import { ReactNode } from 'react';
 
 interface Props {
   to: string;
+  className?: string;
   children: ReactNode;
   target?: '_blank';
   locale?: 'en' | 'tr';
+  disableHoverColor?: boolean;
+  enableUnderline?: boolean;
 }
 
 const Link = (props: Props) => {
-  const { children, to, target } = props;
+  const {
+    children,
+    to,
+    target,
+    disableHoverColor,
+    className,
+    enableUnderline,
+  } = props;
 
   return (
-    <BaseLink href={to} className="hover:underline" target={target}>
+    <BaseLink
+      href={to}
+      className={classNames(
+        'transition-colors duration-200',
+        {
+          'hover:text-primary-blue': !disableHoverColor,
+          'hover:underline': enableUnderline,
+        },
+        className
+      )}
+      target={target}
+    >
       {children}
     </BaseLink>
   );

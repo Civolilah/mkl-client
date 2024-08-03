@@ -8,28 +8,29 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
-
-import React, { isValidElement, cloneElement, createElement } from 'react';
+import classNames from 'classnames';
+import {
+  isValidElement,
+  cloneElement,
+  createElement,
+  CSSProperties,
+} from 'react';
 import { IconType } from 'react-icons';
 import { FaFacebook, FaInstagram } from 'react-icons/fa';
 import { IoInformationCircle } from 'react-icons/io5';
-
-import { useAccentColor } from '@hooks/index';
+import { MdOutlineShoppingCart, MdPerson } from 'react-icons/md';
 
 interface Props {
   className?: string;
   onClick?: () => void;
-  style?: React.CSSProperties;
-  name: 'facebook' | 'instagram' | 'information';
+  style?: CSSProperties;
+  name: 'facebook' | 'instagram' | 'information' | 'person' | 'shoppingCart';
   size?: number;
-  color?: string;
+  enableHoverColor?: boolean;
 }
 
 const Icon = (props: Props) => {
-  const accentColor = useAccentColor();
-
-  const { name } = props;
+  const { name, enableHoverColor } = props;
 
   const generateIconElement = (currentElement: IconType) => {
     const iconElement = createElement(currentElement);
@@ -37,8 +38,14 @@ const Icon = (props: Props) => {
     if (isValidElement(iconElement)) {
       return cloneElement(iconElement, {
         fontSize: props.size || 18,
-        color: props.color || accentColor,
-        className: props.className,
+        className: classNames(
+          'text-accent',
+          {
+            'hover:text-primary-blue transition-colors duration-200':
+              enableHoverColor,
+          },
+          props.className
+        ),
         onClick: props.onClick,
         style: props.style,
       });
@@ -56,6 +63,12 @@ const Icon = (props: Props) => {
 
     case 'information':
       return generateIconElement(IoInformationCircle);
+
+    case 'person':
+      return generateIconElement(MdPerson);
+
+    case 'shoppingCart':
+      return generateIconElement(MdOutlineShoppingCart);
 
     default:
       return <></>;
