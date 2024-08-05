@@ -13,7 +13,7 @@ import BaseLink from 'next/link';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 
-interface Props {
+type Props = {
   to: string;
   className?: string;
   children: ReactNode;

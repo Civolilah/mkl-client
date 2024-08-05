@@ -19,7 +19,20 @@ const Dropdown = (props: Props) => {
   const { children, menu } = props;
 
   return (
-    <DropdownBase menu={menu} trigger={['click']}>
+    <DropdownBase
+      menu={{
+        ...menu,
+        items: menu.items?.map(
+          (item) =>
+            item && {
+              ...item,
+              style: { ...item.style, borderRadius: 0 },
+            }
+        ),
+        style: { borderRadius: 0 },
+      }}
+      trigger={['click']}
+    >
       {children}
     </DropdownBase>
   );

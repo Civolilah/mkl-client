@@ -29,10 +29,10 @@ const Header = () => {
       style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
     >
       <div
-        className="flex justify-center w-full"
-        style={{ borderBottom: '1px solid #eaeaea' }}
+        className="flex items-center justify-between w-full"
+        style={{ borderBottom: '1px solid #eaeaea', paddingLeft: '10.3%' }}
       >
-        <div className="flex w-4/5 justify-between items-center text-sm py-2.5">
+        <div className="flex flex-1 justify-between items-center text-sm py-1.5">
           <div className="flex items-center space-x-2">
             <Link to="/">
               <Text>{t('about_us')}</Text>
@@ -67,33 +67,37 @@ const Header = () => {
               </span>
             </div>
 
-            <HeaderIcons />
+            <div className="flex">
+              <HeaderIcons />
+
+              <div className="pr-2">
+                <LanguageSwitcher />
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="flex items-center justify-between py-4 w-4/5">
-        <div className="flex items-center space-x-4 flex-shrink-0 w-1/4">
+        <div className="flex items-center space-x-4 flex-shrink-0 w-1/3">
           <Link to="/" disableHoverColor>
             <svg width="200" height="45" xmlns="http://www.w3.org/2000/svg">
               <circle cx="22.5" cy="22.5" r="18" fill="#FF0000" />
               <text
                 x="50"
                 y="29"
-                font-family="Arial, sans-serif"
-                font-size="22"
-                font-weight="bold"
+                fontFamily="Arial, sans-serif"
+                fontSize="22"
+                fontWeight="bold"
               >
                 Star Boutique
               </text>
             </svg>
           </Link>
-
-          <LanguageSwitcher />
         </div>
 
         <div className="flex items-center justify-center flex-grow">
-          <div className="flex items-center space-x-10 list-none">
+          <div className="flex items-center space-x-8 list-none">
             <Link to="/">
               <Text className="font-medium text-lg">{t('home')}</Text>
             </Link>
@@ -106,10 +110,13 @@ const Header = () => {
             <Link to="/">
               <Text className="font-medium text-lg">{t('products')}</Text>
             </Link>
+            <Link to="/">
+              <Text className="font-medium text-lg">{t('employees')}</Text>
+            </Link>
           </div>
         </div>
 
-        <div className="flex-shrink-0 w-1/4 flex items-center justify-end space-x-5">
+        <div className="flex-shrink-0 w-1/3 flex items-center justify-end space-x-5">
           <Icon
             name="person"
             className="text-black cursor-pointer"

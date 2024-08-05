@@ -22,7 +22,7 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import { IoInformationCircle } from 'react-icons/io5';
 import { MdOutlineShoppingCart, MdPerson } from 'react-icons/md';
 
-interface Props {
+type Props = {
   className?: string;
   onClick?: () => void;
   style?: CSSProperties;
@@ -36,7 +36,7 @@ interface Props {
     | 'arrowDown';
   size?: number;
   enableHoverColor?: boolean;
-}
+};
 
 const Icon = (props: Props) => {
   const { name, enableHoverColor } = props;

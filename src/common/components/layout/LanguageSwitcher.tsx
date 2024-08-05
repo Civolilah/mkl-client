@@ -21,8 +21,8 @@ import { usePathname, useRouter } from 'src/navigation';
 import { Dropdown, Icon } from '@components/index';
 
 const LANGUAGE_ALIASES = {
-  en: 'English (English)',
-  tr: 'Türkçe (Turkish)',
+  en: 'English',
+  tr: 'Türkçe',
 };
 
 const LanguageSwitcher = () => {
@@ -40,41 +40,45 @@ const LanguageSwitcher = () => {
     {
       label: (
         <div
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-4"
           onClick={() => switchLanguage('en')}
         >
           <US title="United States" className="w-6 h-6" />
 
-          <span>English (English)</span>
+          <span>English</span>
         </div>
       ),
       key: 'en',
       disabled: params.locale === 'en',
+      style: { paddingLeft: 7 },
     },
     {
       label: (
         <div
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-4"
           onClick={() => switchLanguage('tr')}
         >
           <TR title="Turkey" className="w-6 h-6" />
 
-          <span>Türkçe (Turkish)</span>
+          <span>Türkçe</span>
         </div>
       ),
       key: 'tr',
       disabled: params.locale === 'tr',
+      style: { paddingLeft: 7 },
     },
   ];
 
   return (
     <Dropdown menu={{ items: languages }}>
-      <div className="flex items-center space-x-1 bg-white border border-gray-300 rounded-md px-2 py-1 cursor-pointer hover:border-gray-400">
-        <Icon name="world" size={20} className="text-gray-600" />
+      <div className="flex items-center justify-between space-x-1 border border-transparent px-2 py-1 cursor-pointer hover:border-gray-300 whitespace-nowrap w-32">
+        <div className="flex items-center space-x-2">
+          <Icon name="world" size={20} className="text-gray-600" />
 
-        <span className="text-sm font-medium text-gray-700">
-          {LANGUAGE_ALIASES[params.locale as Languages]}
-        </span>
+          <span className="text-sm font-medium text-gray-700">
+            {LANGUAGE_ALIASES[params.locale as Languages]}
+          </span>
+        </div>
 
         <Icon name="arrowDown" size={20} className="text-gray-600" />
       </div>

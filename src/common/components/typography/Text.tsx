@@ -10,10 +10,10 @@
 
 import React, { ReactNode } from 'react';
 
-interface Props {
+type Props = {
   children?: ReactNode;
   className?: string;
-}
+};
 
 const Text = (props: Props) => {
   const { children, className } = props;

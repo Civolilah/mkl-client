@@ -11,10 +11,10 @@
 import Title from 'antd/es/typography/Title';
 import { ReactNode } from 'react';
 
-interface Props {
+type Props = {
   level?: 1 | 2 | 3 | 4 | 5;
   children: ReactNode;
-}
+};
 const Heading = (props: Props) => {
   const { level = 2, children } = props;
 

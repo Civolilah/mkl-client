@@ -10,8 +10,8 @@
 
 import * as Yup from 'yup';
 
-export interface ValidationErrors {
+export type ValidationErrors = {
   [key: string]: string;
-}
+};
 
 export type YupValidationError = Yup.ValidationError;

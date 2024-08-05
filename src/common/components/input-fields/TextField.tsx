@@ -15,7 +15,7 @@ import { ChangeEvent, KeyboardEvent } from 'react';
 
 import Icon from '@components/general/Icon';
 
-interface Props {
+type Props = {
   size?: 'large' | 'small';
   type?: 'text' | 'password' | 'email';
   label?: string;
@@ -25,7 +25,7 @@ interface Props {
   onValueChange?: (value: string) => void;
   errorMessage?: string;
   onPressEnter?: (event: KeyboardEvent<HTMLInputElement> | undefined) => void;
-}
+};
 
 const TextField = (props?: Props) => {
   const {

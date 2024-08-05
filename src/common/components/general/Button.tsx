@@ -13,7 +13,7 @@
 import { Button as BaseButton } from 'antd';
 import { CSSProperties, ReactNode } from 'react';
 
-interface Props {
+type Props = {
   htmlType?: 'submit' | 'button' | 'reset';
   type?: 'primary' | 'default' | 'link' | 'text' | 'dashed';
   className?: string;
@@ -23,7 +23,7 @@ interface Props {
   children: ReactNode;
   size?: 'large' | 'middle' | 'small';
   style?: CSSProperties;
-}
+};
 
 const Button = (props: Props) => {
   const {

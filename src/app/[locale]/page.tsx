@@ -10,9 +10,9 @@
 
 import { unstable_setRequestLocale } from 'next-intl/server';
 
-interface Props {
+type Props = {
   params: { locale: string };
-}
+};
 
 const Home = (props: Props) => {
   const { params } = props;
