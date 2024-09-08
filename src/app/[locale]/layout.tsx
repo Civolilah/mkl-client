@@ -8,17 +8,19 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
 import '@resources/css/app.css';
 
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
+
 import { ConfigProvider } from 'antd';
+import { getServerSession } from 'next-auth';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 import { ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { Layout } from '@components/index';
+import { SessionProvider } from '@components/index';
 
 import { useTheme } from '@hooks/index';
 
@@ -46,13 +48,14 @@ const RootLayout = async ({
 
   const messages = await getMessages();
 
+  const session = await getServerSession();
+
   return (
     <html lang={params.locale}>
       <body className={poppins.className}>
         <ConfigProvider wave={{ disabled: true }} theme={theme}>
           <NextIntlClientProvider messages={messages}>
-            <Layout>{children}</Layout>
-
+            <SessionProvider session={session}>{children}</SessionProvider>
             <Toaster position="top-center" />
           </NextIntlClientProvider>
         </ConfigProvider>

@@ -16,9 +16,10 @@ import { MenuProps } from 'antd';
 import { TR, US } from 'country-flag-icons/react/3x2';
 
 import { Languages } from 'src/config';
-import { usePathname, useRouter } from 'src/navigation';
 
 import { Dropdown, Icon } from '@components/index';
+
+import { useSwitchLanguage } from '@hooks/index';
 
 const LANGUAGE_ALIASES = {
   en: 'English',
@@ -26,15 +27,9 @@ const LANGUAGE_ALIASES = {
 };
 
 const LanguageSwitcher = () => {
-  const router = useRouter();
   const params = useParams();
-  const pathname = usePathname();
 
-  const switchLanguage = (language: string) => {
-    router.replace({ pathname }, { locale: language as Languages });
-
-    router.refresh();
-  };
+  const switchLanguage = useSwitchLanguage();
 
   const languages: MenuProps['items'] = [
     {

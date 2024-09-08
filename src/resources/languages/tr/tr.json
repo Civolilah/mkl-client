@@ -10,8 +10,10 @@
     "password_min_length": "Şifre en az 8 karakter uzunluğunda olmalıdır.",
     "password_uppercase": "Şifre en az bir büyük harf içermelidir.",
     "password_number": "Şifre en az bir rakam içermelidir.",
-    "password_special_char": "Şifre en az bir özel karakter içermelidir.",
-    "password_required": "Şifre gereklidir."
+    "password_special_char": "Şifre en az bir özel karakter içermelidir (!@#$%^&*(),.?\":{}|<>).",
+    "password_required": "Şifre gereklidir.",
+    "continue_with_google": "Google ile devam et",
+    "or": "veya"
   },
 
   "NavigationMenu": {

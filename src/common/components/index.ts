@@ -19,3 +19,7 @@ export { default as LanguageSwitcher } from '@components/layout/LanguageSwitcher
 export { default as Header } from '@components/layout/Header';
 export { default as HeaderIcons } from '@components/layout/HeaderIcons';
 export { default as Dropdown } from '@components/input-fields/Dropdown';
+export { default as GoogleButton } from '@components/general/GoogleButton';
+export { default as SessionProvider } from '@components/general/SessionProvider';
+export { default as Default } from '@components/layout/Default';
+export { default as MainNavBar } from '@components/layout/MainNavBar';

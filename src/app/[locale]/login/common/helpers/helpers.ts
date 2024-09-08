@@ -52,5 +52,7 @@ export const validateLoginDetails = async (loginDetails: LoginDetails) => {
 };
 
 export const handleLoginUser = async (loginDetails: LoginDetails) => {
-  request('POST', '/api/login', loginDetails).then((response) => response);
+  return request('POST', '/api/login', loginDetails).then(
+    (response) => response
+  );
 };

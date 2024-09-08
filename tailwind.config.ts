@@ -11,6 +11,7 @@ const config: Config = {
         'primary-blue': '#2E6CBD',
         accent: '#34495e',
         'instagram-brand': '#E1306C',
+        'soft-gray': '#f0f0f0',
       },
     },
   },

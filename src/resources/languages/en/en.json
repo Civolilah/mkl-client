@@ -10,8 +10,10 @@
     "password_min_length": "Password must be at least 8 characters long.",
     "password_uppercase": "Password must contain at least one uppercase letter.",
     "password_number": "Password must contain at least one number.",
-    "password_special_char": "Password must contain at least one special character.",
-    "password_required": "Password is required."
+    "password_special_char": "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>).",
+    "password_required": "Password is required.",
+    "continue_with_google": "Continue with Google",
+    "or": "or"
   },
 
   "NavigationMenu": {

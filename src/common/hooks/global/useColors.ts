@@ -13,6 +13,7 @@ const COLORS = {
   $2: '#ffffff', // White background color (classic) Border color
   $3: '#fafafa', // App background color
   $4: '#f1f1f1', // Footer background color
+  $5: '#a0a0a0', // Text grayed out color
 };
 
 const useColors = () => {

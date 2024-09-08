@@ -8,12 +8,10 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { redirect } from 'src/navigation';
+import { Default } from '@components/index';
 
-const Home = () => {
-  redirect('products');
-
-  return null;
+export const ProductPage = () => {
+  return <Default>Product Page</Default>;
 };
 
-export default Home;
+export default ProductPage;
