@@ -8,17 +8,22 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import React, { ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 
 type Props = {
   children?: ReactNode;
   className?: string;
+  style?: CSSProperties;
 };
 
 const Text = (props: Props) => {
-  const { children, className } = props;
+  const { children, className, style } = props;
 
-  return <span className={className}>{children}</span>;
+  return (
+    <span className={className} style={style}>
+      {children}
+    </span>
+  );
 };
 
 export default Text;

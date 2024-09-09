@@ -20,12 +20,21 @@
     "about_us": "About Us",
     "privacy": "Privacy",
     "contact": "Contact",
-    "my_wishlist": "My Wishlist",
-    "home": "Home",
-    "men": "Men",
-    "women": "Women",
     "products": "Products",
-    "employees": "Employees"
+    "employees": "Employees",
+    "suppliers": "Suppliers",
+    "categories": "Categories",
+    "labels": "Labels",
+    "statuses": "Statuses",
+    "label_categories": "Label Categories",
+    "profile": "Profile",
+    "new_product": "New Product",
+    "new_supplier": "New Supplier",
+    "new_category": "New Category",
+    "new_label": "New Label",
+    "new_label_category": "New Label Category",
+    "new_employee": "New Employee",
+    "new_status": "New Status"
   },
 
   "Toaster": {

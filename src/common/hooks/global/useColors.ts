@@ -14,6 +14,11 @@ const COLORS = {
   $3: '#fafafa', // App background color
   $4: '#f1f1f1', // Footer background color
   $5: '#a0a0a0', // Text grayed out color
+  $6: '#ffffff', // Navigation bar background color
+  $7: '#d9ecff', // Navigation bar item hover background color
+  $8: '#000000', // Navigation bar item hover color (#1E90FF)
+  $9: '#19b69c', // Navigation bar icon hover color
+  $10: '#505050', // Navigation bar icon color
 };
 
 const useColors = () => {

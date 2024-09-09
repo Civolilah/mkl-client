@@ -8,7 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import classNames from 'classnames';
 import {
   isValidElement,
   cloneElement,
@@ -17,10 +16,23 @@ import {
 } from 'react';
 import { IconType } from 'react-icons';
 import { BiWorld } from 'react-icons/bi';
-import { FaFacebook, FaInstagram } from 'react-icons/fa';
-import { IoMdArrowDropdown } from 'react-icons/io';
+import {
+  FaBox,
+  FaFacebook,
+  FaInstagram,
+  FaTag,
+  FaTags,
+  FaTruck,
+  FaUsers,
+} from 'react-icons/fa';
 import { IoInformationCircle } from 'react-icons/io5';
-import { MdOutlineShoppingCart, MdPerson } from 'react-icons/md';
+import {
+  MdAdd,
+  MdCategory,
+  MdKeyboardArrowDown,
+  MdOutlineShoppingCart,
+  MdPerson,
+} from 'react-icons/md';
 import {
   MdDashboard,
   MdShoppingBasket,
@@ -49,7 +61,14 @@ export type IconName =
   | 'groups'
   | 'assignment'
   | 'barChart'
-  | 'attachMoney';
+  | 'attachMoney'
+  | 'openBox'
+  | 'truck'
+  | 'category'
+  | 'tag'
+  | 'tags'
+  | 'employees'
+  | 'add';
 
 type Props = {
   className?: string;
@@ -57,11 +76,10 @@ type Props = {
   style?: CSSProperties;
   name: IconName;
   size?: number;
-  enableHoverColor?: boolean;
 };
 
 const Icon = (props: Props) => {
-  const { name, enableHoverColor } = props;
+  const { name } = props;
 
   const generateIconElement = (currentElement: IconType) => {
     const iconElement = createElement(currentElement);
@@ -69,14 +87,6 @@ const Icon = (props: Props) => {
     if (isValidElement(iconElement)) {
       return cloneElement(iconElement, {
         fontSize: props.size || 18,
-        className: classNames(
-          'text-accent',
-          {
-            'hover:text-primary-blue transition-colors duration-200':
-              enableHoverColor,
-          },
-          props.className
-        ),
         onClick: props.onClick,
         style: props.style,
       });
@@ -99,7 +109,7 @@ const Icon = (props: Props) => {
     case 'world':
       return generateIconElement(BiWorld);
     case 'arrowDown':
-      return generateIconElement(IoMdArrowDropdown);
+      return generateIconElement(MdKeyboardArrowDown);
     case 'dashboard':
       return generateIconElement(MdDashboard);
     case 'shoppingBasket':
@@ -118,6 +128,20 @@ const Icon = (props: Props) => {
       return generateIconElement(MdBarChart);
     case 'attachMoney':
       return generateIconElement(MdAttachMoney);
+    case 'openBox':
+      return generateIconElement(FaBox);
+    case 'truck':
+      return generateIconElement(FaTruck);
+    case 'category':
+      return generateIconElement(MdCategory);
+    case 'tag':
+      return generateIconElement(FaTag);
+    case 'tags':
+      return generateIconElement(FaTags);
+    case 'employees':
+      return generateIconElement(FaUsers);
+    case 'add':
+      return generateIconElement(MdAdd);
     default:
       return <></>;
   }

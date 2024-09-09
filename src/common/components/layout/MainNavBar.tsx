@@ -8,118 +8,177 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import React from 'react';
-
 import { IconName } from '@components/general/Icon';
-import { Icon, Link } from '@components/index';
+import { Image, NavItem as NavItemElement } from '@components/index';
 
-type NavItem = {
+import { useColors } from '@hooks/index';
+
+import logoSrc from '../../../../public/images/logo.png';
+
+type RightIcon = {
+  name: IconName;
+  href: string;
+  tooltipText: string;
+};
+
+export type NavItem = {
   key: string;
   label: string;
   iconName: IconName;
   href: string;
   enabled: boolean;
+  rightIcon?: RightIcon;
 };
 
 const NavigationBar = () => {
+  const colors = useColors();
+
   const navItems: NavItem[] = [
+    // {
+    //   key: 'dashboard',
+    //   label: 'Dashboard',
+    //   iconName: 'dashboard',
+    //   href: '/dashboard',
+    //   enabled: true,
+    // },
     {
-      key: 'dashboard',
-      label: 'Dashboard',
-      iconName: 'dashboard',
-      href: '/dashboard',
+      key: 'products',
+      label: 'products',
+      iconName: 'openBox',
+      href: '/products',
       enabled: true,
-    },
-    {
-      key: 'sales',
-      label: 'Sales',
-      iconName: 'shoppingCart',
-      href: '/sales',
-      enabled: true,
-    },
-    {
-      key: 'purchase',
-      label: 'Purchase',
-      iconName: 'shoppingBasket',
-      href: '/purchase',
-      enabled: true,
-    },
-    {
-      key: 'inventory',
-      label: 'Inventory',
-      iconName: 'inventory',
-      href: '/inventory',
-      enabled: true,
+      rightIcon: {
+        name: 'add',
+        href: '/products/new',
+        tooltipText: 'new_product',
+      },
     },
     {
       key: 'suppliers',
-      label: 'Suppliers',
-      iconName: 'group',
+      label: 'suppliers',
+      iconName: 'truck',
       href: '/suppliers',
       enabled: true,
+      rightIcon: {
+        name: 'add',
+        href: '/suppliers/new',
+        tooltipText: 'new_supplier',
+      },
     },
     {
-      key: 'clients',
-      label: 'Clients',
-      iconName: 'people',
-      href: '/clients',
+      key: 'categories',
+      label: 'categories',
+      iconName: 'category',
+      href: '/categories',
       enabled: true,
+      rightIcon: {
+        name: 'add',
+        href: '/categories/new',
+        tooltipText: 'new_category',
+      },
     },
     {
-      key: 'teams',
-      label: 'Teams',
-      iconName: 'groups',
-      href: '/teams',
+      key: 'labels',
+      label: 'labels',
+      iconName: 'tag',
+      href: '/labels',
       enabled: true,
+      rightIcon: {
+        name: 'add',
+        href: '/labels/new',
+        tooltipText: 'new_label',
+      },
     },
     {
-      key: 'tasks',
-      label: 'Tasks',
+      key: 'label_categories',
+      label: 'label_categories',
+      iconName: 'tags',
+      href: '/label_categories',
+      enabled: true,
+      rightIcon: {
+        name: 'add',
+        href: '/label_categories/new',
+        tooltipText: 'new_label_category',
+      },
+    },
+    {
+      key: 'employees',
+      label: 'employees',
+      iconName: 'employees',
+      href: '/employees',
+      enabled: true,
+      rightIcon: {
+        name: 'add',
+        href: '/employees/new',
+        tooltipText: 'new_employee',
+      },
+    },
+    {
+      key: 'statuses',
+      label: 'statuses',
       iconName: 'assignment',
-      href: '/tasks',
+      href: '/statuses',
       enabled: true,
+      rightIcon: {
+        name: 'add',
+        href: '/statuses/new',
+        tooltipText: 'new_status',
+      },
     },
     {
-      key: 'reports',
-      label: 'Reports',
-      iconName: 'barChart',
-      href: '/reports',
+      key: 'profile',
+      label: 'profile',
+      iconName: 'person',
+      href: '/profile',
       enabled: true,
     },
-    {
-      key: 'priceList',
-      label: 'Daily Price List',
-      iconName: 'attachMoney',
-      href: '/price-list',
-      enabled: true,
-    },
+    // {
+    //   key: 'reports',
+    //   label: 'Reports',
+    //   iconName: 'barChart',
+    //   href: '/reports',
+    //   enabled: true,
+    // },
+    // {
+    //   key: 'biling',
+    //   label: 'biling',
+    //   iconName: 'attachMoney',
+    //   href: '/biling',
+    //   enabled: true,
+    // },
   ];
 
   return (
-    <nav className="flex flex-col bg-white h-screen w-72 shadow-lg">
-      <div className="p-4">App Logo</div>
-      <div className="flex-1 overflow-y-auto">
-        User component
-        <ul>
-          {navItems
-            .filter((item) => item.enabled)
-            .map((item) => (
-              <li key={item.key} className="mb-2">
-                <Link
-                  to={item.href}
-                  className="flex items-center p-2 mx-2 rounded hover:bg-blue-100"
-                >
-                  <Icon name={item.iconName} />
-
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            ))}
-        </ul>
+    <nav
+      className="flex flex-col space-y-7 h-screen shadow-lg"
+      style={{ backgroundColor: colors.$6 }}
+    >
+      <div className="flex items-center py-4 pl-6">
+        <Image
+          src={logoSrc.src}
+          width={120}
+          height={35}
+          alt="The MKL Logo"
+          preview={false}
+        />
       </div>
-      <div className="p-4 border-t flex items-center">
-        Image
-        <span>Abedin Halilovic</span>
+
+      <div className="flex flex-col space-y-1 flex-1 px-4 overflow-hidden break-all">
+        {navItems
+          .filter((item) => item.enabled)
+          .map((item) => (
+            <NavItemElement key={item.key} item={item} />
+          ))}
+      </div>
+
+      <div
+        className="py-3 border-t flex items-center justify-center"
+        style={{
+          fontFamily: 'Arial, sans-serif',
+          color: '#666',
+        }}
+      >
+        Icons
       </div>
     </nav>
   );

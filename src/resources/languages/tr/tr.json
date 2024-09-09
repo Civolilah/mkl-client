@@ -20,12 +20,21 @@
     "about_us": "Hakkımızda",
     "privacy": "Gizlilik",
     "contact": "İletişim",
-    "my_wishlist": "İstek Listem",
-    "home": "Ana Sayfa",
-    "men": "Erkek",
-    "women": "Kadın",
     "products": "Ürünler",
-    "employees": "Çalışanlar"
+    "employees": "Çalışanlar",
+    "suppliers": "Tedarikçiler",
+    "categories": "Kategoriler",
+    "labels": "Etiketler",
+    "statuses": "Durumlar",
+    "label_categories": "Etiket Kategorileri",
+    "profile": "Profil",
+    "new_product": "Yeni Ürün",
+    "new_supplier": "Yeni Tedarikçi",
+    "new_category": "Yeni Kategori",
+    "new_label": "Yeni Etiket",
+    "new_label_category": "Yeni Etiket Kategorisi",
+    "new_employee": "Yeni Çalışan",
+    "new_status": "Yeni Durum"
   },
 
   "Toaster": {

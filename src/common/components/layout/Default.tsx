@@ -12,9 +12,11 @@ import { Poppins } from 'next/font/google';
 
 import classNames from 'classnames';
 import { getServerSession } from 'next-auth';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { redirect } from 'src/navigation';
+
+import { Header } from '@components/index';
 
 import { useColors } from '@hooks/index';
 
@@ -50,21 +52,12 @@ const Default = async ({ children }: Props) => {
     >
       <MainNavBar />
 
-      <div className="flex flex-1 justify-center items-center">{children}</div>
+      <div className="flex flex-col flex-1 justify-center items-center">
+        <Header />
 
-      <div
-        className="flex justify-center border-t py-3 text-sm"
-        style={{
-          borderColor: colors.$1,
-          backgroundColor: colors.$4,
-          fontFamily: 'Arial, sans-serif',
-          color: '#666',
-        }}
-      >
-        <span style={{ letterSpacing: 0.5 }}>
-          © 2024 <span className="font-bold text-black">Star Boutique</span>.
-          All rights reserved.
-        </span>
+        <div className="flex flex-1 justify-center items-center">
+          {children}
+        </div>
       </div>
     </div>
   );
