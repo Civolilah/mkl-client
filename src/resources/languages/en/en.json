@@ -34,7 +34,10 @@
     "new_label": "New Label",
     "new_label_category": "New Label Category",
     "new_employee": "New Employee",
-    "new_status": "New Status"
+    "new_status": "New Status",
+    "maximize_sidebar": "Expand sidebar",
+    "minimize_sidebar": "Collapse sidebar",
+    "contact_us": "Contact Us"
   },
 
   "Toaster": {

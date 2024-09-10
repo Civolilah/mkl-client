@@ -20,6 +20,14 @@ export const pathnames: Pathnames<typeof locales> = {
     en: '/login',
     tr: '/giris',
   },
+  '/products': {
+    en: '/products',
+    tr: '/urunler',
+  },
+  '/suppliers': {
+    en: '/suppliers',
+    tr: '/tedarikciler',
+  },
 };
 
 export const localePrefix: LocalePrefix<typeof locales> = 'never';

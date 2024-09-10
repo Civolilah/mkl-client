@@ -34,7 +34,10 @@
     "new_label": "Yeni Etiket",
     "new_label_category": "Yeni Etiket Kategorisi",
     "new_employee": "Yeni Çalışan",
-    "new_status": "Yeni Durum"
+    "new_status": "Yeni Durum",
+    "maximize_sidebar": "Kenar çubuğunu genişlet",
+    "minimize_sidebar": "Kenar çubuğunu daralt",
+    "contact_us": "Bize Ulaşın"
   },
 
   "Toaster": {

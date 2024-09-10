@@ -16,14 +16,16 @@ type Props = {
   width?: number;
   height?: number;
   preview?: boolean;
+  className?: string;
 };
 
 const Image = (props: Props) => {
-  const { src, width, alt, preview, height } = props;
+  const { src, width, alt, preview, height, className } = props;
 
   return (
     <ImageBase
       src={src}
+      className={className}
       alt={alt}
       preview={preview}
       width={width}

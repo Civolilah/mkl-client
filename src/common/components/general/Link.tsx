@@ -21,7 +21,7 @@ type Props = {
   locale?: 'en' | 'tr';
   disableHoverColor?: boolean;
   enableUnderline?: boolean;
-}
+};
 
 const Link = (props: Props) => {
   const {

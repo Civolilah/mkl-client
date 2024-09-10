@@ -25,3 +25,6 @@ export { default as Image } from '@components/general/Image';
 export { default as NavItem } from '@components/layout/NavItem';
 export { default as Tooltip } from '@components/general/Tooltip';
 export { default as Header } from '@components/layout/Header';
+export { default as NavBarIconsBox } from '@components/layout/NavBarIconsBox';
+export { default as NavBarLogoSection } from '@components/layout/NavBarLogoSection';
+export { default as MobileNavBar } from '@components/layout/MobileNavBar';

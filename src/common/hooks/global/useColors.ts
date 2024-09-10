@@ -10,7 +10,7 @@
 
 const COLORS = {
   $1: '#e0e0e0', // Border color
-  $2: '#ffffff', // White background color (classic) Border color
+  $2: '#ffffff', // White background color (classic)
   $3: '#fafafa', // App background color
   $4: '#f1f1f1', // Footer background color
   $5: '#a0a0a0', // Text grayed out color

@@ -26,7 +26,7 @@ const Header = () => {
             <Text>Hi, Abedin!</Text>
 
             <div>
-              <Icon name="person" size={28} />
+              <Icon name="person" size={35} />
             </div>
           </div>
         </div>

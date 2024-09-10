@@ -15,9 +15,9 @@ import {
   CSSProperties,
 } from 'react';
 import { IconType } from 'react-icons';
+import { AiOutlineCodeSandbox } from 'react-icons/ai';
 import { BiWorld } from 'react-icons/bi';
 import {
-  FaBox,
   FaFacebook,
   FaInstagram,
   FaTag,
@@ -25,13 +25,16 @@ import {
   FaTruck,
   FaUsers,
 } from 'react-icons/fa';
-import { IoInformationCircle } from 'react-icons/io5';
+import { IoInformationCircleOutline, IoPersonCircle } from 'react-icons/io5';
 import {
   MdAdd,
+  MdArrowBackIosNew,
+  MdArrowForwardIos,
   MdCategory,
   MdKeyboardArrowDown,
+  MdOutlineEmail,
+  MdOutlineMenu,
   MdOutlineShoppingCart,
-  MdPerson,
 } from 'react-icons/md';
 import {
   MdDashboard,
@@ -62,13 +65,18 @@ export type IconName =
   | 'assignment'
   | 'barChart'
   | 'attachMoney'
-  | 'openBox'
+  | 'product'
   | 'truck'
   | 'category'
   | 'tag'
   | 'tags'
   | 'employees'
-  | 'add';
+  | 'add'
+  | 'arrowBack'
+  | 'arrowForward'
+  | 'email'
+  | 'information'
+  | 'menu';
 
 type Props = {
   className?: string;
@@ -101,9 +109,9 @@ const Icon = (props: Props) => {
     case 'instagram':
       return generateIconElement(FaInstagram);
     case 'information':
-      return generateIconElement(IoInformationCircle);
+      return generateIconElement(IoInformationCircleOutline);
     case 'person':
-      return generateIconElement(MdPerson);
+      return generateIconElement(IoPersonCircle);
     case 'shoppingCart':
       return generateIconElement(MdOutlineShoppingCart);
     case 'world':
@@ -128,8 +136,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdBarChart);
     case 'attachMoney':
       return generateIconElement(MdAttachMoney);
-    case 'openBox':
-      return generateIconElement(FaBox);
+    case 'product':
+      return generateIconElement(AiOutlineCodeSandbox);
     case 'truck':
       return generateIconElement(FaTruck);
     case 'category':
@@ -142,6 +150,15 @@ const Icon = (props: Props) => {
       return generateIconElement(FaUsers);
     case 'add':
       return generateIconElement(MdAdd);
+    case 'arrowBack':
+      return generateIconElement(MdArrowBackIosNew);
+    case 'arrowForward':
+      return generateIconElement(MdArrowForwardIos);
+    case 'email':
+      return generateIconElement(MdOutlineEmail);
+    case 'menu':
+      return generateIconElement(MdOutlineMenu);
+
     default:
       return <></>;
   }

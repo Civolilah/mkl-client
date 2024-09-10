@@ -10,22 +10,30 @@
 
 'use client';
 
-import { useMediaQuery } from 'react-responsive';
+import { useParams } from 'next/navigation';
+
+import classNames from 'classnames';
+import { useAtomValue } from 'jotai';
 import styled from 'styled-components';
 
-import { useRouter } from 'src/navigation';
+import { Languages } from 'src/config';
+import { getPathname, usePathname, useRouter } from 'src/navigation';
 
 import { Icon, Text, Tooltip } from '@components/index';
 
 import { useColors, useTranslation } from '@hooks/index';
 
-import { NavItem as NavItemType } from './MainNavBar';
+import { NavItem as NavItemType } from './Default';
+import { isMiniSideBarAtom } from './NavBarIconsBox';
 
 type Props = {
   item: NavItemType;
 };
 
 const Div = styled.div`
+  background-color: ${(props) =>
+    props.theme.isActive ? props.theme.hoverBackgroundColor : 'transparent'};
+
   &:hover {
     background-color: ${(props) => props.theme.hoverBackgroundColor};
     color: ${(props) => props.theme.hoverColor};
@@ -33,7 +41,8 @@ const Div = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  color: ${(props) => props.theme.color};
+  color: ${(props) =>
+    props.theme.isActive ? props.theme.hoverColor : props.theme.color};
 
   ${Div}:hover & {
     color: ${(props) => props.theme.hoverColor};
@@ -60,51 +69,81 @@ const NavItem = (props: Props) => {
 
   const { item } = props;
 
-  const colors = useColors();
   const router = useRouter();
+  const colors = useColors();
+  const params = useParams();
+  const pathName = usePathname();
 
-  const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
+  const isMiniSideBar = useAtomValue(isMiniSideBarAtom);
 
   return (
     <Div
-      className="py-3 px-2 cursor-pointer rounded"
+      className={classNames('py-3 cursor-pointer rounded', {
+        'px-2': !isMiniSideBar,
+        'px-3': isMiniSideBar,
+      })}
       theme={{
         hoverBackgroundColor: colors.$7,
         hoverColor: colors.$8,
+        isActive: pathName === item.href,
       }}
+      onClick={() =>
+        router.push(
+          getPathname({
+            href: item.href,
+            locale: params.locale as Languages,
+          })
+        )
+      }
     >
       <div
-        className="flex items-center justify-between"
-        onClick={() => router.push(item.href)}
+        className={classNames('flex items-center', {
+          'justify-center': isMiniSideBar,
+          'justify-between': !isMiniSideBar,
+        })}
       >
-        <div className="flex items-center space-x-4">
-          <Tooltip text={t(item.label)} disableOpening={isMiddleScreen}>
-            <IconWrapper
-              theme={{ color: colors.$10, hoverColor: colors.$9 }}
-              onClick={() => router.push(item.href)}
-            >
-              <Icon name={item.iconName} size={21} />
-            </IconWrapper>
-          </Tooltip>
+        <div className="flex items-center space-x-2">
+          <div className="flex justify-center items-center min-w-8">
+            {isMiniSideBar && (
+              <Tooltip text={t(item.label)} href={item.href}>
+                <IconWrapper
+                  theme={{
+                    color: colors.$10,
+                    hoverColor: colors.$9,
+                    isActive: pathName === item.href,
+                  }}
+                >
+                  <Icon name={item.iconName} size={item.iconSize} />
+                </IconWrapper>
+              </Tooltip>
+            )}
 
-          <Text
-            className="hidden md:flex"
-            style={{ fontSize: 16.5, letterSpacing: 0.8 }}
-          >
-            {t(item.label)}
-          </Text>
+            {!isMiniSideBar && (
+              <IconWrapper
+                theme={{
+                  color: colors.$10,
+                  hoverColor: colors.$9,
+                  isActive: pathName === item.href,
+                }}
+              >
+                <Icon name={item.iconName} size={item.iconSize} />
+              </IconWrapper>
+            )}
+          </div>
+
+          {!isMiniSideBar && (
+            <Text style={{ fontSize: 16.5, letterSpacing: 0.8 }}>
+              {t(item.label)}
+            </Text>
+          )}
         </div>
 
-        {Boolean(item.rightIcon) && (
+        {Boolean(item.rightIcon && !isMiniSideBar) && (
           <Tooltip
             text={t(item.rightIcon!.tooltipText)}
-            render={isMiddleScreen}
+            href={item.rightIcon!.href}
           >
-            <RightIconWrapper
-              className="ml-4"
-              theme={{ color: colors.$10 }}
-              onClick={() => router.push(item.rightIcon!.href)}
-            >
+            <RightIconWrapper className="ml-6" theme={{ color: colors.$10 }}>
               <Icon name={item.rightIcon!.name} size={27} />
             </RightIconWrapper>
           </Tooltip>

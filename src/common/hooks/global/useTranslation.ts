@@ -11,7 +11,7 @@
 import { useTranslations as useBaseTranslation } from 'next-intl';
 
 type Params = {
-  section: 'LoginPage' | 'NavigationMenu' | 'Toaster';
+  section: 'LoginPage' | 'NavigationMenu' | 'Toaster' | 'Routes';
 };
 
 const useTranslation = (params?: Params) => {
