@@ -13,7 +13,7 @@ import { toast } from 'react-hot-toast';
 import { useTranslation } from '@hooks/index';
 
 export const useToast = () => {
-  const t = useTranslation({ section: 'Toaster' });
+  const t = useTranslation();
 
   return {
     success: (message: string) => {

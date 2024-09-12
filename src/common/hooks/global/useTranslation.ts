@@ -8,14 +8,10 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useTranslations as useBaseTranslation } from 'next-intl';
+import { useTranslation as useBaseTranslation } from 'react-i18next';
 
-type Params = {
-  section: 'LoginPage' | 'NavigationMenu' | 'Toaster' | 'Routes';
-};
-
-const useTranslation = (params?: Params) => {
-  const t = useBaseTranslation(params?.section);
+const useTranslation = () => {
+  const [t] = useBaseTranslation();
 
   return t;
 };

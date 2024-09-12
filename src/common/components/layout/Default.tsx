@@ -8,29 +8,27 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Poppins } from 'next/font/google';
-
-import classNames from 'classnames';
-import { getServerSession } from 'next-auth';
 import { ReactNode } from 'react';
 
-import { redirect } from 'src/navigation';
+import classNames from 'classnames';
+import { useNavigate } from 'react-router-dom';
 
+import Icon, { IconName } from '@components/general/Icon';
 import { Header, MobileNavBar } from '@components/index';
 
 import { useColors } from '@hooks/index';
 
 import MainNavBar from './MainNavBar';
-import { IconName } from '@components/general/Icon';
 
-const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-});
+export type BreadcrumbItem = {
+  title: ReactNode;
+  href?: string;
+};
 
 type Props = {
   children: ReactNode;
+  title?: string;
+  breadcrumbs?: BreadcrumbItem[];
 };
 
 type RightIcon = {
@@ -50,15 +48,12 @@ export type NavItem = {
   iconSize: number;
 };
 
-const Default = async ({ children }: Props) => {
+const Default = (props: Props) => {
+  const { title, children, breadcrumbs } = props;
+
   const colors = useColors();
 
-  const session = await getServerSession();
-
-  if (!session) {
-    redirect('/login');
-    return null;
-  }
+  const navigate = useNavigate();
 
   const navItems: NavItem[] = [
     // {
@@ -83,6 +78,14 @@ const Default = async ({ children }: Props) => {
       },
     },
     {
+      key: 'sold_products',
+      label: 'sold_products',
+      iconName: 'soldProducts',
+      href: '/sold_products',
+      visible: true,
+      iconSize: 22,
+    },
+    {
       key: 'suppliers',
       label: 'suppliers',
       iconName: 'truck',
@@ -93,6 +96,20 @@ const Default = async ({ children }: Props) => {
         name: 'add',
         href: '/suppliers/new',
         tooltipText: 'new_supplier',
+        visible: true,
+      },
+    },
+    {
+      key: 'subsidiaries',
+      label: 'subsidiaries',
+      iconName: 'subsidiary',
+      href: '/subsidiaries',
+      iconSize: 23,
+      visible: true,
+      rightIcon: {
+        name: 'add',
+        href: '/subsidiaries/new',
+        tooltipText: 'new_subsidiary',
         visible: true,
       },
     },
@@ -171,7 +188,7 @@ const Default = async ({ children }: Props) => {
       label: 'profile',
       iconName: 'person',
       href: '/profile',
-      iconSize: 25.5,
+      iconSize: 26,
       visible: true,
     },
     // {
@@ -192,11 +209,8 @@ const Default = async ({ children }: Props) => {
 
   return (
     <div
-      className={classNames(
-        'flex min-w-screen min-h-screen',
-        poppins.className
-      )}
-      style={{ backgroundColor: colors.$3 }}
+      className={classNames('flex min-w-screen min-h-screen')}
+      style={{ backgroundColor: colors.$3, fontFamily: 'Poppins' }}
     >
       <div className="hidden lg:flex">
         <MainNavBar items={navItems} />
@@ -207,10 +221,62 @@ const Default = async ({ children }: Props) => {
       </div>
 
       <div className="flex flex-col flex-1 justify-center items-center">
-        <Header />
+        <Header title={title} />
 
-        <div className="flex flex-1 justify-center items-center">
-          {children}
+        <div className="flex flex-col flex-1 w-full justify-center items-center p-6">
+          {breadcrumbs && (
+            <div className="flex w-full justify-start">
+              <div className="flex items-center space-x-2">
+                <div
+                  className="flex items-center space-x-2 cursor-pointer"
+                  onClick={() => navigate('/')}
+                >
+                  <Icon name="home" size={25} style={{ color: '#6aa3ff' }} />
+
+                  <div>
+                    <Icon
+                      name="arrowForward"
+                      size={13}
+                      style={{ color: colors.$12 }}
+                    />
+                  </div>
+                </div>
+
+                {breadcrumbs.map((item, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <div
+                      className={classNames({
+                        'cursor-pointer hover:underline':
+                          index !== breadcrumbs.length - 1,
+                      })}
+                      style={{
+                        color:
+                          index !== breadcrumbs.length - 1
+                            ? colors.$11
+                            : colors.$13,
+                      }}
+                    >
+                      {item.title}
+                    </div>
+
+                    {index !== breadcrumbs.length - 1 && (
+                      <div>
+                        <Icon
+                          name="arrowForward"
+                          size={13}
+                          style={{ color: colors.$12 }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-1 justify-center items-center">
+            {children}
+          </div>
         </div>
       </div>
     </div>

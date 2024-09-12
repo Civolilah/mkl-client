@@ -1,5 +1,4 @@
 {
-  "LoginPage": {
     "login": "Giriş",
     "email": "E-posta",
     "password": "Şifre",
@@ -13,10 +12,7 @@
     "password_special_char": "Şifre en az bir özel karakter içermelidir (!@#$%^&*(),.?\":{}|<>).",
     "password_required": "Şifre gereklidir.",
     "continue_with_google": "Google ile devam et",
-    "or": "veya"
-  },
-
-  "NavigationMenu": {
+    "or": "veya",
     "about_us": "Hakkımızda",
     "privacy": "Gizlilik",
     "contact": "İletişim",
@@ -37,12 +33,11 @@
     "new_status": "Yeni Durum",
     "maximize_sidebar": "Kenar çubuğunu genişlet",
     "minimize_sidebar": "Kenar çubuğunu daralt",
-    "contact_us": "Bize Ulaşın"
-  },
-
-  "Toaster": {
+    "contact_us": "Bize Ulaşın",
     "success": "Başarılı.",
     "something_went_wrong": "Bir şeyler yanlış gitti.",
-    "processing": "İşleniyor..."
-  }
+    "processing": "İşleniyor...",
+    "sold_products": "Satılan Ürünler",
+    "subsidiaries": "Bağlı Ortaklıklar",
+    "new_subsidiary": "Yeni Bağlı Ortaklık"
 }

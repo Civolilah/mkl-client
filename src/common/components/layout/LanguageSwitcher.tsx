@@ -8,14 +8,9 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
-
-import { useParams } from 'next/navigation';
-
 import { MenuProps } from 'antd';
 import { TR, GB } from 'country-flag-icons/react/3x2';
-
-import { Languages } from 'src/config';
+import { useTranslation } from 'react-i18next';
 
 import { Dropdown, Icon } from '@components/index';
 
@@ -26,9 +21,12 @@ const LANGUAGE_ALIASES = {
   tr: 'Türkçe',
 };
 
+export const AVAILABLE_LANGUAGES = ['en', 'tr'] as const;
+export type Languages = (typeof AVAILABLE_LANGUAGES)[number];
+
 const LanguageSwitcher = () => {
   const colors = useColors();
-  const params = useParams();
+  const { i18n } = useTranslation();
 
   const switchLanguage = useSwitchLanguage();
 
@@ -50,7 +48,7 @@ const LanguageSwitcher = () => {
         </div>
       ),
       key: 'en',
-      disabled: params.locale === 'en',
+      disabled: i18n.language === 'en',
       style: { paddingLeft: 7 },
     },
     {
@@ -65,7 +63,7 @@ const LanguageSwitcher = () => {
         </div>
       ),
       key: 'tr',
-      disabled: params.locale === 'tr',
+      disabled: i18n.language === 'tr',
       style: { paddingLeft: 7 },
     },
   ];
@@ -77,10 +75,10 @@ const LanguageSwitcher = () => {
         style={{ borderColor: colors.$1 }}
       >
         <div className="flex items-center space-x-3">
-          {icon[params.locale as Languages]}
+          {icon[i18n.language as Languages]}
 
           <span className="text-sm font-medium text-gray-700">
-            {LANGUAGE_ALIASES[params.locale as Languages]}
+            {LANGUAGE_ALIASES[i18n.language as Languages]}
           </span>
         </div>
 

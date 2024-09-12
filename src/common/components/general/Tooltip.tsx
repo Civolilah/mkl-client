@@ -8,40 +8,30 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
-
-import { useParams } from 'next/navigation';
-
-import TooltipBase from 'antd/es/tooltip';
 import { ReactNode } from 'react';
 
-import { Languages } from 'src/config';
-import { getPathname, useRouter } from 'src/navigation';
+import TooltipBase from 'antd/es/tooltip';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   href?: string;
   className?: string;
   text?: string;
   children: ReactNode;
+  trigger?: ('hover' | 'click')[];
 };
 
 const Tooltip = (props: Props) => {
-  const { className, children, text, href } = props;
+  const { className, children, text, href, trigger } = props;
 
-  const router = useRouter();
-  const params = useParams();
+  const navigate = useNavigate();
 
   if (href) {
     return (
       <div
         onClick={(event) => {
           event.stopPropagation();
-          router.push(
-            getPathname({
-              href,
-              locale: params.locale as Languages,
-            })
-          );
+          navigate(href);
         }}
       >
         <TooltipBase
@@ -65,13 +55,14 @@ const Tooltip = (props: Props) => {
     <TooltipBase
       className={className}
       title={text}
-      trigger={['hover']}
+      trigger={trigger ?? ['hover']}
       mouseEnterDelay={0}
       overlayClassName="rounded"
       overlayInnerStyle={{
         padding: 6,
         fontSize: 13.2,
       }}
+      mouseLeaveDelay={0}
     >
       {children}
     </TooltipBase>

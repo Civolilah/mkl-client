@@ -8,8 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
-
 import { Button as BaseButton } from 'antd';
 import { CSSProperties, ReactNode } from 'react';
 

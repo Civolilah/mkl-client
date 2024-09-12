@@ -8,10 +8,10 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import BaseLink from 'next/link';
+import { ReactNode } from 'react';
 
 import classNames from 'classnames';
-import { ReactNode } from 'react';
+import { Link as BaseLink } from 'react-router-dom';
 
 type Props = {
   to: string;
@@ -35,7 +35,7 @@ const Link = (props: Props) => {
 
   return (
     <BaseLink
-      href={to}
+      to={to}
       className={classNames(
         'transition-colors duration-200',
         {

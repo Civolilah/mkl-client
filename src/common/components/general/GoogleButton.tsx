@@ -8,8 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { signIn } from 'next-auth/react';
-
 import { useColors, useTranslation } from '@hooks/index';
 
 const GoogleLogo = () => (
@@ -40,7 +38,7 @@ const GoogleLogo = () => (
 );
 
 const GoogleButton = () => {
-  const t = useTranslation({ section: 'LoginPage' });
+  const t = useTranslation();
 
   const colors = useColors();
 
@@ -50,7 +48,7 @@ const GoogleButton = () => {
       onClick={(event) => {
         event.preventDefault();
 
-        signIn('google');
+        //signIn('google');
       }}
       style={{ borderColor: colors.$1 }}
     >

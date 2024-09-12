@@ -12,3 +12,5 @@ export type {
   ValidationErrors,
   YupValidationError,
 } from '@interfaces/global/global';
+
+export type { IUser } from '@interfaces/user/user';

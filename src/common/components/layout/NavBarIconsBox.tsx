@@ -8,8 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
-
 import classNames from 'classnames';
 import { useAtom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
@@ -21,10 +19,16 @@ import { useColors, useTranslation } from '@hooks/index';
 export const isMiniSideBarAtom = atomWithStorage('MKL-MINI-SIDE-BAR', false);
 
 const NavBarIconsBox = () => {
-  const t = useTranslation({ section: 'NavigationMenu' });
+  const t = useTranslation();
   const colors = useColors();
 
   const [isMiniSideBar, setIsMiniSideBar] = useAtom(isMiniSideBarAtom);
+
+  const handleClick = () => {
+    setTimeout(() => {
+      setIsMiniSideBar((current) => !current);
+    }, 50);
+  };
 
   return (
     <div className="flex py-3 border-t items-center justify-center relative">
@@ -54,27 +58,18 @@ const NavBarIconsBox = () => {
             'flex justify-center': isMiniSideBar,
           })}
         >
-          {isMiniSideBar ? (
-            <Tooltip text={t('maximize_sidebar')}>
-              <div className="cursor-pointer">
-                <Icon
-                  name="arrowForward"
-                  size={23}
-                  onClick={() => setIsMiniSideBar(false)}
-                />
-              </div>
-            </Tooltip>
-          ) : (
-            <Tooltip text={t('minimize_sidebar')}>
-              <div className="cursor-pointer">
-                <Icon
-                  name="arrowBack"
-                  size={23}
-                  onClick={() => setIsMiniSideBar(true)}
-                />
-              </div>
-            </Tooltip>
-          )}
+          <Tooltip
+            text={isMiniSideBar ? t('maximize_sidebar') : t('minimize_sidebar')}
+            trigger={['hover', 'click']}
+          >
+            <div className="cursor-pointer">
+              {isMiniSideBar ? (
+                <Icon name="arrowForward" size={23} onClick={handleClick} />
+              ) : (
+                <Icon name="arrowBack" size={23} onClick={handleClick} />
+              )}
+            </div>
+          </Tooltip>
         </div>
       </div>
     </div>

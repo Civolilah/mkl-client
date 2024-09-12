@@ -8,15 +8,13 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
-
 import { useAtomValue } from 'jotai';
 
-import { Icon, Image, Link } from '@components/index';
+import { Image, Link } from '@components/index';
+
+import { useColors } from '@hooks/index';
 
 import { isMiniSideBarAtom } from './NavBarIconsBox';
-import logo from '../../../../public/images/logo.png';
-import { useColors } from '@hooks/index';
 
 type Props = {
   mobileSideBar?: boolean;
@@ -37,7 +35,7 @@ const NavBarLogoSection = (props: Props) => {
         <Link to="/" disableHoverColor>
           <Image
             className="cursor-pointer"
-            src={logo.src}
+            src="/images/logo.png"
             width={120}
             height={35}
             alt="The MKL Store Logo"

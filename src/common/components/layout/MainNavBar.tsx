@@ -8,7 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { IconName } from '@components/general/Icon';
 import {
   NavBarIconsBox,
   NavBarLogoSection,
@@ -16,6 +15,7 @@ import {
 } from '@components/index';
 
 import { useColors } from '@hooks/index';
+
 import { NavItem } from './Default';
 
 type Props = {

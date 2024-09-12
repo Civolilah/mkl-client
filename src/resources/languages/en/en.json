@@ -1,5 +1,4 @@
 {
-  "LoginPage": {
     "login": "Login",
     "email": "Email",
     "password": "Password",
@@ -13,10 +12,7 @@
     "password_special_char": "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>).",
     "password_required": "Password is required.",
     "continue_with_google": "Continue with Google",
-    "or": "or"
-  },
-
-  "NavigationMenu": {
+    "or": "or",
     "about_us": "About Us",
     "privacy": "Privacy",
     "contact": "Contact",
@@ -37,12 +33,11 @@
     "new_status": "New Status",
     "maximize_sidebar": "Expand sidebar",
     "minimize_sidebar": "Collapse sidebar",
-    "contact_us": "Contact Us"
-  },
-
-  "Toaster": {
+    "contact_us": "Contact Us",
     "success": "Success.",
     "something_went_wrong": "Something went wrong.",
-    "processing": "Processing..."
-  }
+    "processing": "Processing...",
+    "sold_products": "Sold Products",
+    "subsidiaries": "Subsidiaries",
+    "new_subsidiary": "New Subsidiary"
 }

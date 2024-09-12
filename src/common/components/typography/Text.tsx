@@ -20,7 +20,7 @@ const Text = (props: Props) => {
   const { children, className, style } = props;
 
   return (
-    <span className={className} style={style}>
+    <span className={className} style={{ letterSpacing: 0.8, ...style }}>
       {children}
     </span>
   );

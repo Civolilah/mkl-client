@@ -8,9 +8,12 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
+import { useState } from 'react';
 
-import Icon, { IconName } from '@components/general/Icon';
+import { Drawer } from 'antd';
+import { useAtomValue } from 'jotai';
+
+import Icon from '@components/general/Icon';
 import {
   NavBarIconsBox,
   NavBarLogoSection,
@@ -18,20 +21,21 @@ import {
 } from '@components/index';
 
 import { useColors } from '@hooks/index';
-import { Button, Drawer, Space } from 'antd';
-import { useState } from 'react';
+
 import { NavItem } from './Default';
+import { isMiniSideBarAtom } from './NavBarIconsBox';
 
 type Props = {
   items: NavItem[];
 };
 
 const MobileNavBar = (props: Props) => {
-  const colors = useColors();
-
   const { items } = props;
 
-  const [open, setOpen] = useState(false);
+  const colors = useColors();
+
+  const [open, setOpen] = useState<boolean>(false);
+  const isMiniSideBar = useAtomValue(isMiniSideBarAtom);
 
   const showDrawer = () => {
     setOpen(true);
@@ -56,29 +60,30 @@ const MobileNavBar = (props: Props) => {
       </div>
 
       <Drawer
-        className="p-0"
         placement="left"
         open={open}
         closable={false}
-        width={290}
-        drawerRender={(node) => (
-          <div className="h-full" style={{ backgroundColor: colors.$6 }}>
-            <nav className="flex flex-col space-y-3 h-full">
-              <NavBarLogoSection mobileSideBar />
+        onClose={onClose}
+        width={isMiniSideBar ? 75 : 290}
+        rootStyle={{ padding: 0 }}
+        styles={{ body: { padding: 0 } }}
+      >
+        <div className="h-full" style={{ backgroundColor: colors.$6 }}>
+          <nav className="flex flex-col space-y-3 h-full">
+            <NavBarLogoSection />
 
-              <div className="flex flex-col space-y-1 flex-1 px-2.5 overflow-hidden break-all">
-                {items
-                  .filter((item) => item.visible)
-                  .map((item) => (
-                    <NavItemElement key={item.key} item={item} />
-                  ))}
-              </div>
+            <div className="flex flex-col space-y-1 flex-1 px-2.5 overflow-hidden break-all">
+              {items
+                .filter((item) => item.visible)
+                .map((item) => (
+                  <NavItemElement key={item.key} item={item} />
+                ))}
+            </div>
 
-              <NavBarIconsBox />
-            </nav>
-          </div>
-        )}
-      />
+            <NavBarIconsBox />
+          </nav>
+        </div>
+      </Drawer>
     </>
   );
 };

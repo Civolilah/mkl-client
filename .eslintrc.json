@@ -1,5 +1,14 @@
 {
-  "extends": ["eslint:recommended", "next/core-web-vitals", "prettier"],
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -8,11 +17,12 @@
   "plugins": [
     "@typescript-eslint",
     "@typescript-eslint/eslint-plugin",
-    "unused-imports",
     "@stylistic/eslint-plugin-ts",
+    "unused-imports",
     "import"
   ],
   "rules": {
+    "react/react-in-jsx-scope": "off",
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
@@ -35,14 +45,9 @@
         ],
         "pathGroups": [
           {
-            "pattern": "{next,next/**,next/*/**}",
+            "pattern": "{react,react/**,react/*/**,react-dom/**}",
             "group": "external",
             "position": "before"
-          },
-          {
-            "pattern": "{next-i18next,next-i18next/**}",
-            "group": "external",
-            "position": "after"
           },
           {
             "pattern": "@pages/**",
@@ -66,7 +71,7 @@
           }
         ],
         "distinctGroup": true,
-        "pathGroupsExcludedImportTypes": ["{next,next/*,next/*/**}"],
+        "pathGroupsExcludedImportTypes": ["{react,react/*,react/*/**}"],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
@@ -74,5 +79,18 @@
         }
       }
     ]
+  },
+  "overrides": [
+    {
+      "files": ["tailwind.config.js"],
+      "rules": {
+        "no-undef": "off"
+      }
+    }
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

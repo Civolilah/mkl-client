@@ -14,12 +14,14 @@ import {
   createElement,
   CSSProperties,
 } from 'react';
+
 import { IconType } from 'react-icons';
 import { AiOutlineCodeSandbox } from 'react-icons/ai';
 import { BiWorld } from 'react-icons/bi';
 import {
   FaFacebook,
   FaInstagram,
+  FaStore,
   FaTag,
   FaTags,
   FaTruck,
@@ -31,6 +33,7 @@ import {
   MdArrowBackIosNew,
   MdArrowForwardIos,
   MdCategory,
+  MdHome,
   MdKeyboardArrowDown,
   MdOutlineEmail,
   MdOutlineMenu,
@@ -47,6 +50,7 @@ import {
   MdBarChart,
   MdAttachMoney,
 } from 'react-icons/md';
+import { SiCashapp } from 'react-icons/si';
 
 export type IconName =
   | 'facebook'
@@ -76,7 +80,10 @@ export type IconName =
   | 'arrowForward'
   | 'email'
   | 'information'
-  | 'menu';
+  | 'menu'
+  | 'soldProducts'
+  | 'subsidiary'
+  | 'home';
 
 type Props = {
   className?: string;
@@ -158,6 +165,12 @@ const Icon = (props: Props) => {
       return generateIconElement(MdOutlineEmail);
     case 'menu':
       return generateIconElement(MdOutlineMenu);
+    case 'soldProducts':
+      return generateIconElement(SiCashapp);
+    case 'subsidiary':
+      return generateIconElement(FaStore);
+    case 'home':
+      return generateIconElement(MdHome);
 
     default:
       return <></>;

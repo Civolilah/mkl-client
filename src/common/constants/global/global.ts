@@ -7,3 +7,5 @@
  *
  * @license https://www.elastic.co/licensing/elastic-license
  */
+
+export const tt = 5;

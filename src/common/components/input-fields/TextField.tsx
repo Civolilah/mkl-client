@@ -8,10 +8,9 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-'use client';
+import { ChangeEvent, KeyboardEvent } from 'react';
 
 import { Input } from 'antd';
-import { ChangeEvent, KeyboardEvent } from 'react';
 
 import Icon from '@components/general/Icon';
 
