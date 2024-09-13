@@ -8,10 +8,12 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Drawer } from 'antd';
+import classNames from 'classnames';
 import { useAtomValue } from 'jotai';
+import { useMediaQuery } from 'react-responsive';
 
 import Icon from '@components/general/Icon';
 import {
@@ -37,6 +39,8 @@ const MobileNavBar = (props: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const isMiniSideBar = useAtomValue(isMiniSideBarAtom);
 
+  const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -45,10 +49,16 @@ const MobileNavBar = (props: Props) => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    if (isMiddleScreen && open) {
+      onClose();
+    }
+  }, [isMiddleScreen]);
+
   return (
     <>
       <div
-        className="flex items-center justify-center py-4 px-4 border-b cursor-pointer"
+        className="flex items-center justify-center py-4 px-4 cursor-pointer border-r"
         style={{
           height: '4.35rem',
           borderColor: colors.$1,
@@ -56,7 +66,9 @@ const MobileNavBar = (props: Props) => {
         }}
         onClick={showDrawer}
       >
-        <Icon name="menu" size={30} />
+        <div className="mt-0.5">
+          <Icon name="menu" size={isMiddleScreen ? 30 : 27} />
+        </div>
       </div>
 
       <Drawer
@@ -64,19 +76,27 @@ const MobileNavBar = (props: Props) => {
         open={open}
         closable={false}
         onClose={onClose}
-        width={isMiniSideBar ? 75 : 290}
+        width={isMiniSideBar ? '4.35rem' : 290}
         rootStyle={{ padding: 0 }}
         styles={{ body: { padding: 0 } }}
       >
         <div className="h-full" style={{ backgroundColor: colors.$6 }}>
           <nav className="flex flex-col space-y-3 h-full">
-            <NavBarLogoSection />
+            <NavBarLogoSection mobileSideBar handleCloseSideBar={onClose} />
 
-            <div className="flex flex-col space-y-1 flex-1 px-2.5 overflow-hidden break-all">
+            <div
+              className={classNames(
+                'flex flex-col space-y-1 flex-1 overflow-hidden break-all',
+                {
+                  'px-1.5': isMiniSideBar,
+                  'px-2.5': !isMiniSideBar,
+                }
+              )}
+            >
               {items
                 .filter((item) => item.visible)
                 .map((item) => (
-                  <NavItemElement key={item.key} item={item} />
+                  <NavItemElement key={item.key} item={item} mobileSideBar />
                 ))}
             </div>
 

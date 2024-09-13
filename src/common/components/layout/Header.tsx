@@ -8,8 +8,16 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { PersonIcon, Text } from '@components/index';
+import {
+  MobileNavBar,
+  NavBarLogoSection,
+  PersonIcon,
+  Text,
+} from '@components/index';
 
+import { useColors } from '@hooks/index';
+
+import { navItems } from './Default';
 import LanguageSwitcher from './LanguageSwitcher';
 
 type Props = {
@@ -19,17 +27,33 @@ type Props = {
 const Header = (props: Props) => {
   const { title } = props;
 
+  const colors = useColors();
+
   return (
     <div
-      className="flex items-center justify-center w-full border-l border-b bg-white py-4 shadow-sm px-6"
-      style={{ height: '4.35rem' }}
+      className="flex items-center justify-center w-full border-b shadow-sm py-4"
+      style={{
+        height: '4.35rem',
+        borderColor: colors.$1,
+        backgroundColor: colors.$6,
+      }}
     >
-      <div className="flex w-full justify-between items-center">
-        <Text style={{ fontSize: '1.15rem' }}>{title}</Text>
+      <div className="hidden lg:flex">
+        <NavBarLogoSection />
+      </div>
+
+      <div className="flex lg:hidden">
+        <MobileNavBar items={navItems} />
+      </div>
+
+      <div className="flex w-full justify-between items-center px-6">
+        <Text className="text-lg md:text-xl">{title}</Text>
 
         <div className="flex w-full justify-end">
           <div className="flex items-center space-x-9">
-            <LanguageSwitcher />
+            <div className="hidden md:flex">
+              <LanguageSwitcher />
+            </div>
 
             <div className="cursor-pointer">
               <PersonIcon />

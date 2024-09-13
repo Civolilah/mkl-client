@@ -8,8 +8,14 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { useNavigate } from 'react-router-dom';
+
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  const navigate = useNavigate();
+
+  navigate('/products');
+
+  return null;
 };
 
 export default Dashboard;

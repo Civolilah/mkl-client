@@ -12,6 +12,7 @@ import { ReactNode } from 'react';
 
 import classNames from 'classnames';
 import { useAtomValue } from 'jotai';
+import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -24,6 +25,7 @@ import { isMiniSideBarAtom } from './NavBarIconsBox';
 
 type Props = {
   item: NavItemType;
+  mobileSideBar?: boolean;
 };
 
 const Div = styled.div`
@@ -54,6 +56,8 @@ const RightIconWrapper = styled.div`
   border-radius: 50%;
   transition: all 0.15s ease;
   color: ${(props) => props.theme.color};
+  border: ${(props) =>
+    props.theme.displayRoundedBorder ? '2px solid' : 'none'};
 
   &:hover {
     border: 2px solid;
@@ -69,7 +73,9 @@ type TooltipProps = {
 const TooltipWrapper = (props: TooltipProps) => {
   const { isMiniSideBar, children, tooltipText } = props;
 
-  if (!isMiniSideBar) {
+  const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
+
+  if (!isMiniSideBar || !isMiddleScreen) {
     return <>{children}</>;
   }
 
@@ -79,7 +85,7 @@ const TooltipWrapper = (props: TooltipProps) => {
 const NavItem = (props: Props) => {
   const t = useTranslation();
 
-  const { item } = props;
+  const { item, mobileSideBar } = props;
 
   const colors = useColors();
 
@@ -127,14 +133,34 @@ const NavItem = (props: Props) => {
           </div>
 
           {Boolean(item.rightIcon && !isMiniSideBar) && (
-            <Tooltip
-              text={t(item.rightIcon!.tooltipText)}
-              href={item.rightIcon!.href}
-            >
-              <RightIconWrapper className="ml-6" theme={{ color: colors.$10 }}>
-                <Icon name={item.rightIcon!.name} size={27} />
-              </RightIconWrapper>
-            </Tooltip>
+            <>
+              {!mobileSideBar ? (
+                <Tooltip
+                  text={t(item.rightIcon!.tooltipText)}
+                  href={item.rightIcon!.href}
+                >
+                  <RightIconWrapper
+                    className="ml-6"
+                    theme={{
+                      color: colors.$10,
+                      displayRoundedBorder: mobileSideBar,
+                    }}
+                  >
+                    <Icon name={item.rightIcon!.name} size={27} />
+                  </RightIconWrapper>
+                </Tooltip>
+              ) : (
+                <RightIconWrapper
+                  className="ml-6"
+                  theme={{
+                    color: colors.$10,
+                    displayRoundedBorder: mobileSideBar,
+                  }}
+                >
+                  <Icon name={item.rightIcon!.name} size={27} />
+                </RightIconWrapper>
+              )}
+            </>
           )}
         </div>
       </Div>

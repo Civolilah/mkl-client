@@ -18,6 +18,7 @@ import { PrivateRoute } from '@components/index';
 
 import authenticationRoutes from './authentication/routes';
 import productRoutes from './product/routes';
+import statusRoutes from './status/routes';
 
 const Dashboard = lazy(() => import('@pages/dashboard/Dashboard'));
 const NotFound = lazy(() => import('@pages/not-found/NotFound'));
@@ -32,6 +33,8 @@ export const routes = (
       <Route path="/dashboard" element={<Dashboard />} />
 
       {productRoutes}
+
+      {statusRoutes}
     </Route>
 
     <Route path="*" element={<NotFound />} />

@@ -31,7 +31,10 @@ const NavBarIconsBox = () => {
   };
 
   return (
-    <div className="flex py-3 border-t items-center justify-center relative">
+    <div
+      className="flex py-3 border-t items-center justify-center relative"
+      style={{ borderColor: colors.$1 }}
+    >
       <div
         className="flex space-x-5 items-center justify-center"
         style={{ color: colors.$10 }}

@@ -9,12 +9,16 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { Suspense } from 'react';
+
 import { atom, useAtomValue } from 'jotai';
 import { Outlet } from 'react-router-dom';
 
 import { IUser } from '@interfaces/index';
 
 import { useAuthenticated } from '@hooks/index';
+
+import LoadingScreen from './LoadingScreen';
 
 export const userAtom = atom<IUser | null>(null);
 
@@ -32,7 +36,11 @@ const PrivateRoute = () => {
   //     <Navigate to="/login" />
   //   );
 
-  return <Outlet />;
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      <Outlet />
+    </Suspense>
+  );
 };
 
 export default PrivateRoute;

@@ -33,6 +33,7 @@ import {
   MdArrowBackIosNew,
   MdArrowForwardIos,
   MdCategory,
+  MdClose,
   MdHome,
   MdKeyboardArrowDown,
   MdOutlineEmail,
@@ -83,7 +84,8 @@ export type IconName =
   | 'menu'
   | 'soldProducts'
   | 'subsidiary'
-  | 'home';
+  | 'home'
+  | 'close';
 
 type Props = {
   className?: string;
@@ -171,6 +173,8 @@ const Icon = (props: Props) => {
       return generateIconElement(FaStore);
     case 'home':
       return generateIconElement(MdHome);
+    case 'close':
+      return generateIconElement(MdClose);
 
     default:
       return <></>;
