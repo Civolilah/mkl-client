@@ -37,7 +37,14 @@
     "success": "Başarılı.",
     "something_went_wrong": "Bir şeyler yanlış gitti.",
     "processing": "İşleniyor...",
-    "sold_products": "Satılan Ürünler",
+    "delivered_products": "Teslim Edilen Ürünler",
     "subsidiaries": "Bağlı Ortaklıklar",
-    "new_subsidiary": "Yeni Bağlı Ortaklık"
+    "new_subsidiary": "Yeni Bağlı Ortaklık",
+    "save": "Kaydet",
+    "name": "İsim",
+    "color": "Renk",
+    "transparent": "Şeffaf",
+    "copy_to_clipboard": "Panoya kopyala",
+    "copied_to_clipboard": "Panoya kopyalandı",
+    "done": "Tamam"
 }

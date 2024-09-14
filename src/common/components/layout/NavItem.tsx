@@ -18,7 +18,7 @@ import styled from 'styled-components';
 
 import { Icon, Text, Tooltip } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 import { NavItem as NavItemType } from './Default';
 import { isMiniSideBarAtom } from './NavBarIconsBox';
@@ -57,10 +57,10 @@ const RightIconWrapper = styled.div`
   transition: all 0.15s ease;
   color: ${(props) => props.theme.color};
   border: ${(props) =>
-    props.theme.displayRoundedBorder ? '2px solid' : 'none'};
+    props.theme.displayRoundedBorder ? '1.5px solid' : 'none'};
 
   &:hover {
-    border: 2px solid;
+    border: 1.5px solid;
   }
 `;
 
@@ -88,6 +88,7 @@ const NavItem = (props: Props) => {
   const { item, mobileSideBar } = props;
 
   const colors = useColors();
+  const accentColor = useAccentColor();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -118,7 +119,7 @@ const NavItem = (props: Props) => {
             <div className="flex justify-center items-center min-w-8">
               <IconWrapper
                 theme={{
-                  color: colors.$10,
+                  color: accentColor,
                   hoverColor: colors.$9,
                   isActive: location.pathname.startsWith(item.href),
                 }}
@@ -142,7 +143,7 @@ const NavItem = (props: Props) => {
                   <RightIconWrapper
                     className="ml-6"
                     theme={{
-                      color: colors.$10,
+                      color: accentColor,
                       displayRoundedBorder: mobileSideBar,
                     }}
                   >

@@ -9,3 +9,5 @@
  */
 
 export { tt } from './global/global';
+
+export { INITIAL_STATUS } from './status/status';

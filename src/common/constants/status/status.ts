@@ -8,11 +8,9 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export type {
-  ValidationErrors,
-  YupValidationError,
-} from '@interfaces/global/global';
+import { Status } from '@interfaces/index';
 
-export type { IUser } from '@interfaces/user/user';
-
-export type { Status } from '@interfaces/status/status';
+export const INITIAL_STATUS: Status = {
+  name: '',
+  color: '',
+};

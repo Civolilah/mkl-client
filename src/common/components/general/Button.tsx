@@ -8,8 +8,10 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Button as BaseButton } from 'antd';
 import { CSSProperties, ReactNode } from 'react';
+
+import { Button as BaseButton } from 'antd';
+import classNames from 'classnames';
 
 type Props = {
   htmlType?: 'submit' | 'button' | 'reset';
@@ -32,11 +34,15 @@ const Button = (props: Props) => {
     type = 'primary',
     style,
     disabledWithLoadingIcon,
+    className,
   } = props;
 
   return (
     <BaseButton
-      className="w-full transition-none shadow-none border-0 rounded-none"
+      className={classNames(
+        'transition-none shadow-none border-0 rounded-md',
+        className
+      )}
       type={type}
       disabled={disabled && !disabledWithLoadingIcon}
       loading={disabled && disabledWithLoadingIcon}

@@ -19,6 +19,7 @@ type Props = {
   type?: 'text' | 'password' | 'email';
   label?: string;
   value: string;
+  required?: boolean;
   placeHolder?: string;
   onEventChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onValueChange?: (value: string) => void;
@@ -26,7 +27,7 @@ type Props = {
   onPressEnter?: (event: KeyboardEvent<HTMLInputElement> | undefined) => void;
 };
 
-const TextField = (props?: Props) => {
+const TextField = (props: Props) => {
   const {
     value,
     onValueChange,
@@ -37,11 +38,16 @@ const TextField = (props?: Props) => {
     placeHolder,
     errorMessage,
     onPressEnter,
-  } = props || {};
+    required = false,
+  } = props;
 
   return (
     <div className="flex flex-col space-y-2 w-full">
-      {label && <span>{label}</span>}
+      {label && (
+        <span style={{ fontSize: '15px' }}>
+          {label} {required && <span className="text-red-600">*</span>}
+        </span>
+      )}
 
       {type !== 'password' && (
         <Input
@@ -55,7 +61,7 @@ const TextField = (props?: Props) => {
           }}
           placeholder={placeHolder}
           onPressEnter={onPressEnter}
-          style={{ boxShadow: 'none' }}
+          style={{ boxShadow: 'none', borderRadius: '4px' }}
         />
       )}
 
@@ -71,7 +77,7 @@ const TextField = (props?: Props) => {
             onValueChange?.(event.target.value);
           }}
           onPressEnter={onPressEnter}
-          style={{ boxShadow: 'none' }}
+          style={{ boxShadow: 'none', borderRadius: '4px' }}
         />
       )}
 

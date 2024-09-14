@@ -47,7 +47,7 @@ const Header = (props: Props) => {
       </div>
 
       <div className="flex w-full justify-between items-center px-6">
-        <Text className="text-lg md:text-xl">{title}</Text>
+        <Text className="text-lg md:text-xl whitespace-nowrap">{title}</Text>
 
         <div className="flex w-full justify-end">
           <div className="flex items-center space-x-9">

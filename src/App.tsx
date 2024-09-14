@@ -14,7 +14,12 @@ import { ConfigProvider } from 'antd';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
-import { useTheme } from '@hooks/index';
+import {
+  AVAILABLE_LANGUAGES,
+  Languages,
+} from '@components/layout/LanguageSwitcher';
+
+import { useSwitchLanguage, useTheme } from '@hooks/index';
 
 import { routes } from './routes';
 
@@ -22,11 +27,19 @@ const App = () => {
   const theme = useTheme();
   const { i18n } = useTranslation();
 
-  useEffect(() => {
-    const currentLanguage = localStorage.getItem('MKL-LOCALE');
+  const switchLanguage = useSwitchLanguage();
 
-    if (currentLanguage) {
-      i18n.changeLanguage(currentLanguage);
+  useEffect(() => {
+    const currentStoredLanguage = localStorage.getItem('MKL-LOCALE');
+    const currentLocale =
+      currentStoredLanguage || navigator.language.split('-')[0];
+
+    if (
+      currentLocale &&
+      AVAILABLE_LANGUAGES.includes(currentLocale as Languages) &&
+      i18n.language !== currentLocale
+    ) {
+      switchLanguage(currentLocale);
     }
   }, []);
 

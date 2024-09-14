@@ -27,6 +27,7 @@ import {
   FaTruck,
   FaUsers,
 } from 'react-icons/fa';
+import { HiOutlineClipboardCheck } from 'react-icons/hi';
 import { IoInformationCircleOutline, IoPersonCircle } from 'react-icons/io5';
 import {
   MdAdd,
@@ -34,6 +35,7 @@ import {
   MdArrowForwardIos,
   MdCategory,
   MdClose,
+  MdContentCopy,
   MdHome,
   MdKeyboardArrowDown,
   MdOutlineEmail,
@@ -85,7 +87,9 @@ export type IconName =
   | 'soldProducts'
   | 'subsidiary'
   | 'home'
-  | 'close';
+  | 'close'
+  | 'copy'
+  | 'deliveredProducts';
 
 type Props = {
   className?: string;
@@ -175,6 +179,10 @@ const Icon = (props: Props) => {
       return generateIconElement(MdHome);
     case 'close':
       return generateIconElement(MdClose);
+    case 'copy':
+      return generateIconElement(MdContentCopy);
+    case 'deliveredProducts':
+      return generateIconElement(HiOutlineClipboardCheck);
 
     default:
       return <></>;

@@ -14,13 +14,14 @@ import { atomWithStorage } from 'jotai/utils';
 
 import { Icon, Tooltip } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 export const isMiniSideBarAtom = atomWithStorage('MKL-MINI-SIDE-BAR', false);
 
 const NavBarIconsBox = () => {
   const t = useTranslation();
   const colors = useColors();
+  const accentColor = useAccentColor();
 
   const [isMiniSideBar, setIsMiniSideBar] = useAtom(isMiniSideBarAtom);
 
@@ -37,7 +38,7 @@ const NavBarIconsBox = () => {
     >
       <div
         className="flex space-x-5 items-center justify-center"
-        style={{ color: colors.$10 }}
+        style={{ color: accentColor }}
       >
         {!isMiniSideBar && (
           <Tooltip text={t('contact_us')}>

@@ -72,12 +72,12 @@ export const navItems: NavItem[] = [
     },
   },
   {
-    key: 'sold_products',
-    label: 'sold_products',
-    iconName: 'soldProducts',
-    href: '/sold_products',
+    key: 'delivered_products',
+    label: 'delivered_products',
+    iconName: 'deliveredProducts',
+    href: '/delivered_products',
     visible: true,
-    iconSize: 22,
+    iconSize: 26.5,
   },
   {
     key: 'suppliers',
@@ -233,7 +233,7 @@ const Default = (props: Props) => {
                     <Icon
                       name="home"
                       size={isMiddleScreen ? 25 : 22}
-                      style={{ color: '#6aa3ff' }}
+                      style={{ color: colors.$15 }}
                     />
 
                     <div>
@@ -256,6 +256,11 @@ const Default = (props: Props) => {
                           'cursor-pointer hover:underline':
                             index !== breadcrumbs.length - 1,
                         })}
+                        onClick={() => {
+                          if (item.href && index !== breadcrumbs.length - 1) {
+                            navigate(item.href);
+                          }
+                        }}
                         style={{
                           color:
                             index !== breadcrumbs.length - 1
@@ -281,7 +286,7 @@ const Default = (props: Props) => {
               </div>
             )}
 
-            <div className="flex flex-1 w-full justify-center items-center pt-2 md:pt-4">
+            <div className="flex flex-1 w-full justify-center items-center pt-4 md:pt-6">
               {children}
             </div>
           </div>

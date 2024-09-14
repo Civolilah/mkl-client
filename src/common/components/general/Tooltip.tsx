@@ -13,6 +13,8 @@ import { ReactNode } from 'react';
 import TooltipBase from 'antd/es/tooltip';
 import { useNavigate } from 'react-router-dom';
 
+import { useAccentColor } from '@hooks/index';
+
 type Props = {
   href?: string;
   className?: string;
@@ -23,6 +25,8 @@ type Props = {
 
 const Tooltip = (props: Props) => {
   const { className, children, text, href, trigger } = props;
+
+  const accentColor = useAccentColor();
 
   const navigate = useNavigate();
 
@@ -44,6 +48,7 @@ const Tooltip = (props: Props) => {
             padding: 6,
             fontSize: 13.2,
           }}
+          color={accentColor}
         >
           {children}
         </TooltipBase>
@@ -63,6 +68,7 @@ const Tooltip = (props: Props) => {
         fontSize: 13.2,
       }}
       mouseLeaveDelay={0}
+      color={accentColor}
     >
       {children}
     </TooltipBase>

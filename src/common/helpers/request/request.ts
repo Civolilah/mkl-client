@@ -12,7 +12,7 @@
 import axios, { AxiosRequestConfig, Method } from 'axios';
 
 const client = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: 'http://localhost:8000/api',
   timeout: 10000,
 });
 
