@@ -71,8 +71,8 @@ const LanguageSwitcher = () => {
   return (
     <Dropdown menu={{ items: languages }}>
       <div
-        className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap rounded select-none"
-        style={{ borderColor: colors.$1 }}
+        className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap rounded w-full"
+        style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
       >
         <div className="flex items-center space-x-3">
           {icon[i18n.language as Languages]}
@@ -82,7 +82,7 @@ const LanguageSwitcher = () => {
           </span>
         </div>
 
-        <Icon name="arrowDown" size={25} className="text-gray-600" />
+        <Icon name="arrowDown" size={25} style={{ color: colors.$10 }} />
       </div>
     </Dropdown>
   );

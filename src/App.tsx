@@ -44,7 +44,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="min-w-full min-h-screen select-none">
+    <div className="min-w-full min-h-screen">
       <ConfigProvider wave={{ disabled: true }} theme={theme}>
         <Toaster position="top-center" />
 

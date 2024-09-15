@@ -48,6 +48,7 @@ const Button = (props: Props) => {
       loading={disabled && disabledWithLoadingIcon}
       onClick={onClick}
       style={{
+        letterSpacing: 0.8,
         color: 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.8 : 1,

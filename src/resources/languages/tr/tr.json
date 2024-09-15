@@ -46,5 +46,7 @@
     "transparent": "Şeffaf",
     "copy_to_clipboard": "Panoya kopyala",
     "copied_to_clipboard": "Panoya kopyalandı",
-    "done": "Tamam"
+    "done": "Tamam",
+    "status_name_placeholder": "Örn. Teslim Edildi, Satıldı, Hasarlı, Rezerve Edildi, İade Edildi, İndirimde, vb.",
+    "register": "Kayıt Ol"
 }

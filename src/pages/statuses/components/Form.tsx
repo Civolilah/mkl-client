@@ -34,6 +34,7 @@ const Form = (props: Props) => {
     <div className="flex flex-col space-y-6">
       <TextField
         required
+        placeHolder={t('status_name_placeholder')}
         label={t('name')}
         value={status.name}
         onValueChange={(value) => handleChange(value, 'name')}

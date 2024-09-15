@@ -12,7 +12,7 @@ import { ChangeEvent, KeyboardEvent } from 'react';
 
 import { Input } from 'antd';
 
-import Icon from '@components/general/Icon';
+import { Icon, Text } from '@components/index';
 
 type Props = {
   size?: 'large' | 'small';
@@ -20,6 +20,7 @@ type Props = {
   label?: string;
   value: string;
   required?: boolean;
+  disabled?: boolean;
   placeHolder?: string;
   onEventChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onValueChange?: (value: string) => void;
@@ -39,14 +40,15 @@ const TextField = (props: Props) => {
     errorMessage,
     onPressEnter,
     required = false,
+    disabled = false,
   } = props;
 
   return (
     <div className="flex flex-col space-y-2 w-full">
       {label && (
-        <span style={{ fontSize: '15px' }}>
+        <Text style={{ fontSize: '15px' }}>
           {label} {required && <span className="text-red-600">*</span>}
-        </span>
+        </Text>
       )}
 
       {type !== 'password' && (
@@ -61,6 +63,7 @@ const TextField = (props: Props) => {
           }}
           placeholder={placeHolder}
           onPressEnter={onPressEnter}
+          disabled={disabled}
           style={{ boxShadow: 'none', borderRadius: '4px' }}
         />
       )}
@@ -76,6 +79,7 @@ const TextField = (props: Props) => {
             onEventChange?.(event);
             onValueChange?.(event.target.value);
           }}
+          disabled={disabled}
           onPressEnter={onPressEnter}
           style={{ boxShadow: 'none', borderRadius: '4px' }}
         />
@@ -83,11 +87,11 @@ const TextField = (props: Props) => {
 
       {errorMessage && (
         <div className="mt-1 text-sm text-red-600 flex items-center space-x-1">
-          <div>
-            <Icon name="information" size={17} style={{ color: '#dc2626' }} />
+          <div className="mt-0.5">
+            <Icon name="error" size={19} style={{ color: '#dc2626' }} />
           </div>
 
-          <span className="break-words">{errorMessage}</span>
+          <Text className="break-words">{errorMessage}</Text>
         </div>
       )}
     </div>

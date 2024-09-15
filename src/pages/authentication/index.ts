@@ -8,6 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export { default as Login } from './login';
+export { default as Login } from './login/Login';
 export { default as Logout } from './logout';
-export { default as Register } from './register';
+export { default as Register } from './register/Register';

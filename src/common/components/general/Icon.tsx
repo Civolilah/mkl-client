@@ -36,6 +36,7 @@ import {
   MdCategory,
   MdClose,
   MdContentCopy,
+  MdErrorOutline,
   MdHome,
   MdKeyboardArrowDown,
   MdOutlineEmail,
@@ -89,7 +90,8 @@ export type IconName =
   | 'home'
   | 'close'
   | 'copy'
-  | 'deliveredProducts';
+  | 'deliveredProducts'
+  | 'error';
 
 type Props = {
   className?: string;
@@ -183,6 +185,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdContentCopy);
     case 'deliveredProducts':
       return generateIconElement(HiOutlineClipboardCheck);
+    case 'error':
+      return generateIconElement(MdErrorOutline);
 
     default:
       return <></>;

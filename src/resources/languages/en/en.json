@@ -1,5 +1,4 @@
 {
-    "login": "Login",
     "email": "Email",
     "password": "Password",
     "email_placeholder": "user@example.com",
@@ -46,5 +45,13 @@
     "transparent": "Transparent",
     "copy_to_clipboard": "Copy to clipboard",
     "copied_to_clipboard": "Copied to clipboard",
-    "done": "Done"
+    "done": "Done",
+    "status_name_placeholder": "E.g., Delivered, Sold, Damaged, Reserved, Returned, On Sale, etc.",
+    "already_have_account": "Already have an account?",
+    "create_your_account": "Create your account",
+    "create_account": "Create account",
+    "dont_have_account": "Don't have an account?",
+    "sign_up": "Sign up",
+    "sign_in": "Sign in",
+    "continue": "Continue"
 }

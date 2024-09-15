@@ -156,7 +156,9 @@ const ColorPicker = (props: Props) => {
           </div>
 
           <div className="flex w-full items-center space-x-2">
-            <Button className="w-full">{t('done')}</Button>
+            <Button className="w-full" onClick={() => setIsModalOpen(false)}>
+              {t('done')}
+            </Button>
           </div>
         </div>
       </Modal>

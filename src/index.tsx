@@ -12,6 +12,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import './resources/css/app.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { en, tr } from '@resources/index';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -49,7 +50,11 @@ createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <App />
+        <GoogleOAuthProvider
+          clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID as string}
+        >
+          <App />
+        </GoogleOAuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </StrictMode>

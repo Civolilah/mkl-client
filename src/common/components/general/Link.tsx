@@ -12,6 +12,7 @@ import { ReactNode } from 'react';
 
 import classNames from 'classnames';
 import { Link as BaseLink } from 'react-router-dom';
+import styled from 'styled-components';
 
 type Props = {
   to: string;
@@ -21,33 +22,42 @@ type Props = {
   locale?: 'en' | 'tr';
   disableHoverColor?: boolean;
   enableUnderline?: boolean;
+  constantUnderline?: boolean;
 };
+
+const StyledLink = styled(BaseLink)`
+  &:hover {
+    color: ${(props) => props.theme.hoverColor};
+  }
+`;
 
 const Link = (props: Props) => {
   const {
     children,
     to,
     target,
-    disableHoverColor,
     className,
     enableUnderline,
+    constantUnderline,
   } = props;
 
   return (
-    <BaseLink
+    <StyledLink
       to={to}
       className={classNames(
         'transition-colors duration-200',
         {
-          'hover:text-primary-blue': !disableHoverColor,
           'hover:underline': enableUnderline,
+          underline: constantUnderline,
         },
         className
       )}
       target={target}
+      style={{ letterSpacing: 0.8 }}
+      theme={{ hoverColor: '#2E6CBD' }}
     >
       {children}
-    </BaseLink>
+    </StyledLink>
   );
 };
 

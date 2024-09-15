@@ -8,7 +8,23 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useGoogleLogin } from '@react-oauth/google';
+import classNames from 'classnames';
+import styled from 'styled-components';
+
+import { AccessType } from '@pages/authentication/register/Register';
+
+import { Text } from '@components/index';
+
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
+
+const Div = styled.div`
+  border: 1px solid ${(props) => props.theme.borderColor};
+
+  &:hover {
+    border: 1px solid ${(props) => props.theme.hoverBorderColor};
+  }
+`;
 
 const GoogleLogo = () => (
   <svg
@@ -37,25 +53,50 @@ const GoogleLogo = () => (
   </svg>
 );
 
-const GoogleButton = () => {
+type Props = {
+  isFormBusy: boolean;
+  handleAccessApp: (type: AccessType, token?: string) => void;
+};
+
+const GoogleButton = (props: Props) => {
   const t = useTranslation();
 
+  const { isFormBusy, handleAccessApp } = props;
+
   const colors = useColors();
+  const accentColor = useAccentColor();
+
+  const login = useGoogleLogin({
+    scope: 'profile email',
+    onSuccess: (tokenResponse) => {
+      handleAccessApp('google', tokenResponse.access_token);
+    },
+  });
 
   return (
-    <div
-      className="flex items-center justify-center w-full space-x-5 px-4 py-3 text-sm font-medium cursor-pointer border hover:bg-soft-gray"
+    <Div
+      className={classNames(
+        'flex items-center justify-center w-full space-x-5 px-4 py-3 text-sm font-medium border',
+        {
+          'cursor-not-allowed opacity-75': isFormBusy,
+          'cursor-pointer': !isFormBusy,
+        }
+      )}
       onClick={(event) => {
         event.preventDefault();
 
-        //signIn('google');
+        login();
       }}
-      style={{ borderColor: colors.$1 }}
+      style={{ borderRadius: '4px' }}
+      theme={{
+        borderColor: colors.$1,
+        hoverBorderColor: accentColor,
+      }}
     >
       <GoogleLogo />
 
-      <span>{t('continue_with_google')}</span>
-    </div>
+      <Text>{t('continue_with_google')}</Text>
+    </Div>
   );
 };
 

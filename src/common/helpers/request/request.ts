@@ -12,7 +12,7 @@
 import axios, { AxiosRequestConfig, Method } from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: 'http://localhost:8080/api',
   timeout: 10000,
 });
 
@@ -32,7 +32,8 @@ client.interceptors.response.use(
 
 const defaultHeaders = () => {
   return {
-    'X-Api-Token': localStorage.getItem('TOKEN') as string,
+    'MKL-Api-Token': localStorage.getItem('MKL-TOKEN') as string,
+    'MKL-Company-Key': localStorage.getItem('MKL-COMPANY') as string,
     'X-Requested-With': 'XMLHttpRequest',
   };
 };
@@ -40,7 +41,7 @@ const defaultHeaders = () => {
 const request = (
   method: Method,
   url: string,
-  data?: any,
+  data?: unknown,
   config?: AxiosRequestConfig
 ) => {
   return client({
