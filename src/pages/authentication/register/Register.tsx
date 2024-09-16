@@ -30,6 +30,7 @@ import { validateUserDetails } from './helpers/helpers';
 export type UserDetails = {
   email: string;
   password: string;
+  password_confirmation?: string;
 };
 
 export type AccessType = 'credentials' | 'google';
@@ -43,6 +44,7 @@ const Register = () => {
   const [userDetails, setUserDetails] = useState<UserDetails>({
     email: '',
     password: '',
+    password_confirmation: '',
   });
 
   const handleRegister = async (type: AccessType, token?: string) => {
@@ -83,6 +85,7 @@ const Register = () => {
       setUserDetails({
         email: '',
         password: '',
+        password_confirmation: '',
       });
 
       setErrors({});
@@ -133,6 +136,8 @@ const Register = () => {
                 onValueChange={(value) =>
                   setUserDetails((current) => ({ ...current, email: value }))
                 }
+                maxLength={100}
+                debounce={0}
                 onPressEnter={() => handleRegister('credentials')}
                 errorMessage={errors.email && t(errors.email)}
               />
@@ -148,12 +153,29 @@ const Register = () => {
                     password: value,
                   }))
                 }
+                maxLength={100}
+                debounce={0}
+                onPressEnter={() => handleRegister('credentials')}
+                errorMessage={errors.password && t(errors.password)}
+              />
+
+              <TextField
+                type="password"
+                label={t('confirm_password')}
+                placeHolder={t('password_placeholder')}
+                value={userDetails.password_confirmation as string}
+                onValueChange={(value) =>
+                  setUserDetails((current) => ({
+                    ...current,
+                    password_confirmation: value,
+                  }))
+                }
+                maxLength={100}
+                debounce={0}
                 onPressEnter={() => handleRegister('credentials')}
                 errorMessage={
-                  errors.password &&
-                  (errors.password === 'password_special_char'
-                    ? t('password_special_char')
-                    : t(errors.password))
+                  errors.password_confirmation &&
+                  t(errors.password_confirmation)
                 }
               />
 

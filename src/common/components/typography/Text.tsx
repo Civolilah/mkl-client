@@ -14,13 +14,18 @@ type Props = {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
+  onClick?: () => void;
 };
 
 const Text = (props: Props) => {
-  const { children, className, style } = props;
+  const { children, className, style, onClick } = props;
 
   return (
-    <span className={className} style={{ letterSpacing: 0.8, ...style }}>
+    <span
+      className={className}
+      style={{ letterSpacing: 0.8, ...style }}
+      onClick={onClick}
+    >
       {children}
     </span>
   );

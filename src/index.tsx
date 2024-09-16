@@ -19,6 +19,8 @@ import { initReactI18next } from 'react-i18next';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 
+import { ScrollToTop } from '@components/index';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -53,7 +55,9 @@ createRoot(document.getElementById('root') as HTMLElement).render(
         <GoogleOAuthProvider
           clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID as string}
         >
-          <App />
+          <ScrollToTop>
+            <App />
+          </ScrollToTop>
         </GoogleOAuthProvider>
       </BrowserRouter>
     </QueryClientProvider>

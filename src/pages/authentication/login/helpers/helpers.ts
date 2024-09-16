@@ -12,7 +12,7 @@ import { set } from 'lodash';
 import isEmail from 'validator/lib/isEmail';
 import * as Yup from 'yup';
 
-import { UserDetails } from '../Register';
+import { UserDetails } from '@pages/authentication/register/Register';
 
 export const validateUserDetails = async (useDetails: UserDetails) => {
   const validationSchema = Yup.object().shape({
@@ -23,14 +23,7 @@ export const validateUserDetails = async (useDetails: UserDetails) => {
       ),
     password: Yup.string()
       .min(8, 'password_min_length')
-      .matches(/[A-Z]/, 'password_uppercase')
-      .matches(/[0-9]/, 'password_number')
-      .matches(/[!@#$%^&*(),.?":{}|<>]/, 'password_special_char')
       .required('password_required'),
-    password_confirmation: Yup.string().oneOf(
-      [Yup.ref('password')],
-      'passwords_not_match'
-    ),
   });
 
   try {

@@ -8,13 +8,15 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ChangeEvent, KeyboardEvent } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 
 import { Input } from 'antd';
+import { useDebounce } from 'react-use';
 
 import { Icon, Text } from '@components/index';
 
 type Props = {
+  maxLength?: number;
   size?: 'large' | 'small';
   type?: 'text' | 'password' | 'email';
   label?: string;
@@ -22,17 +24,16 @@ type Props = {
   required?: boolean;
   disabled?: boolean;
   placeHolder?: string;
-  onEventChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onValueChange?: (value: string) => void;
   errorMessage?: string;
   onPressEnter?: (event: KeyboardEvent<HTMLInputElement> | undefined) => void;
+  debounce?: number;
 };
 
 const TextField = (props: Props) => {
   const {
     value,
     onValueChange,
-    onEventChange,
     label,
     type = 'text',
     size = 'large',
@@ -41,7 +42,23 @@ const TextField = (props: Props) => {
     onPressEnter,
     required = false,
     disabled = false,
+    maxLength,
+    debounce,
   } = props;
+
+  const [currentValue, setCurrentValue] = useState<string>(value);
+
+  useDebounce(
+    () => {
+      onValueChange?.(currentValue);
+    },
+    debounce ?? 300,
+    [currentValue]
+  );
+
+  useEffect(() => {
+    setCurrentValue(value);
+  }, [value]);
 
   return (
     <div className="flex flex-col space-y-2 w-full">
@@ -56,11 +73,9 @@ const TextField = (props: Props) => {
           className="rounded-none"
           type={type}
           size={size}
-          value={value}
-          onChange={(event) => {
-            onEventChange?.(event);
-            onValueChange?.(event.target.value);
-          }}
+          value={currentValue}
+          onChange={(event) => setCurrentValue(event.target.value)}
+          maxLength={maxLength}
           placeholder={placeHolder}
           onPressEnter={onPressEnter}
           disabled={disabled}
@@ -73,12 +88,10 @@ const TextField = (props: Props) => {
           className="rounded-none"
           type={type}
           size={size}
-          value={value}
+          value={currentValue}
           placeholder={placeHolder}
-          onChange={(event) => {
-            onEventChange?.(event);
-            onValueChange?.(event.target.value);
-          }}
+          onChange={(event) => setCurrentValue(event.target.value)}
+          maxLength={maxLength}
           disabled={disabled}
           onPressEnter={onPressEnter}
           style={{ boxShadow: 'none', borderRadius: '4px' }}

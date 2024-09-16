@@ -35,3 +35,4 @@ export { default as Modal } from '@components/general/Modal';
 export { default as TransparentColorBox } from '@components/icons/TransparentColorBox';
 export { default as CopyToClipboard } from '@components/general/CopyToClipboard';
 export { default as CopyToClipboardOnlyIcon } from '@components/general/CopyToClipboardOnlyIcon';
+export { default as ScrollToTop } from '@components/general/ScrollToTop';

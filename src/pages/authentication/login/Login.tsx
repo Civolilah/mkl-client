@@ -25,14 +25,9 @@ import {
 
 import { useColors, useTranslation } from '@hooks/index';
 
-import { validateUserDetails } from '../register/helpers/helpers';
-
-export type UserDetails = {
-  email: string;
-  password: string;
-};
-
-export type AccessType = 'credentials' | 'google';
+import { AccessType, UserDetails } from '../register/Register';
+import ForgotPasswordModal from './components/ForgotPasswordModal';
+import { validateUserDetails } from './helpers/helpers';
 
 const Login = () => {
   const t = useTranslation();
@@ -126,36 +121,41 @@ const Login = () => {
 
             <div className="flex flex-col justify-center items-center space-y-4 w-full">
               <TextField
-                type="email"
                 label={t('email')}
                 placeHolder={t('email_placeholder')}
                 value={userDetails.email}
                 onValueChange={(value) =>
                   setUserDetails((current) => ({ ...current, email: value }))
                 }
+                debounce={0}
                 onPressEnter={() => handleAccessApp('credentials')}
                 errorMessage={errors.email && t(errors.email)}
               />
 
-              <TextField
-                type="password"
-                label={t('password')}
-                placeHolder={t('password_placeholder')}
-                value={userDetails.password}
-                onValueChange={(value) =>
-                  setUserDetails((current) => ({
-                    ...current,
-                    password: value,
-                  }))
-                }
-                onPressEnter={() => handleAccessApp('credentials')}
-                errorMessage={
-                  errors.password &&
-                  (errors.password === 'password_special_char'
-                    ? t('password_special_char')
-                    : t(errors.password))
-                }
-              />
+              <div className="flex flex-col w-full space-y-1">
+                <TextField
+                  type="password"
+                  label={t('password')}
+                  placeHolder={t('password_placeholder')}
+                  value={userDetails.password}
+                  onValueChange={(value) =>
+                    setUserDetails((current) => ({
+                      ...current,
+                      password: value,
+                    }))
+                  }
+                  debounce={0}
+                  onPressEnter={() => handleAccessApp('credentials')}
+                  errorMessage={
+                    errors.password &&
+                    (errors.password === 'password_special_char'
+                      ? t('password_special_char')
+                      : t(errors.password))
+                  }
+                />
+
+                <ForgotPasswordModal email={userDetails.email} />
+              </div>
 
               <div
                 className="flex flex-col items-center justify-center w-full space-y-3"
@@ -167,13 +167,13 @@ const Login = () => {
                   disabled={isFormBusy || Boolean(Object.keys(errors).length)}
                   disabledWithLoadingIcon={Boolean(!Object.keys(errors).length)}
                 >
-                  {t('continue')}
+                  {t('sign_in')}
                 </Button>
 
                 <div className="flex items-center justify-center w-full space-x-3">
                   <Text className="text-sm">{t('dont_have_account')}</Text>
 
-                  <Link className="text-sm" to="/login" constantUnderline>
+                  <Link className="text-sm" to="/register" constantUnderline>
                     {t('sign_up')}
                   </Link>
                 </div>

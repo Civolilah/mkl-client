@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
 import { Modal as ModalBase } from 'antd';
 
@@ -22,7 +22,7 @@ type Props = {
   isLoading?: boolean;
   children: ReactNode;
   onClose?: () => void;
-  size?: 'small' | 'regular' | 'large';
+  size?: 'extraSmall' | 'small' | 'regular' | 'large';
 };
 
 const Modal = (props: Props) => {
@@ -39,14 +39,22 @@ const Modal = (props: Props) => {
 
   const getWidth = () => {
     switch (size) {
+      case 'extraSmall':
+        return 300;
       case 'small':
-        return 350;
+        return 400;
       case 'large':
         return 900;
       default:
         return 520;
     }
   };
+
+  useEffect(() => {
+    if (!visible) {
+      onClose?.();
+    }
+  }, [visible]);
 
   return (
     <ModalBase
@@ -61,6 +69,7 @@ const Modal = (props: Props) => {
         header: { display: 'none' },
         content: { padding: '0px' },
       }}
+      centered
     >
       <div className="flex flex-col items-center justify-center">
         <div
