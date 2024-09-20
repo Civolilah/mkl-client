@@ -43,7 +43,7 @@
     "save": "Kaydet",
     "name": "İsim",
     "color": "Renk",
-    "transparent": "Şeffaf",
+    "no_color": "Renk yok",
     "copy_to_clipboard": "Panoya kopyala",
     "copied_to_clipboard": "Panoya kopyalandı",
     "done": "Tamam",

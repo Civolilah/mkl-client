@@ -76,7 +76,7 @@ const MobileNavBar = (props: Props) => {
         open={open}
         closable={false}
         onClose={onClose}
-        width={isMiniSideBar ? '4.35rem' : 290}
+        width={isMiniSideBar ? '4.35rem' : '19rem'}
         rootStyle={{ padding: 0 }}
         styles={{ body: { padding: 0 } }}
       >
@@ -96,7 +96,7 @@ const MobileNavBar = (props: Props) => {
               {items
                 .filter((item) => item.visible)
                 .map((item) => (
-                  <NavItemElement key={item.key} item={item} mobileSideBar />
+                  <NavItemElement key={item.key} item={item} />
                 ))}
             </div>
 

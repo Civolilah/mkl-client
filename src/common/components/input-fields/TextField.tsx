@@ -11,9 +11,12 @@
 import { KeyboardEvent, useEffect, useState } from 'react';
 
 import { Input } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 import { useDebounce } from 'react-use';
 
 import { Icon, Text } from '@components/index';
+
+import { useTranslation } from '@hooks/index';
 
 type Props = {
   maxLength?: number;
@@ -31,6 +34,8 @@ type Props = {
 };
 
 const TextField = (props: Props) => {
+  const t = useTranslation();
+
   const {
     value,
     onValueChange,
@@ -48,6 +53,8 @@ const TextField = (props: Props) => {
 
   const [currentValue, setCurrentValue] = useState<string>(value);
 
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+
   useDebounce(
     () => {
       onValueChange?.(currentValue);
@@ -63,9 +70,19 @@ const TextField = (props: Props) => {
   return (
     <div className="flex flex-col space-y-2 w-full">
       {label && (
-        <Text style={{ fontSize: '15px' }}>
-          {label} {required && <span className="text-red-600">*</span>}
-        </Text>
+        <div className="flex items-center space-x-1">
+          <Text style={{ fontSize: isSmallScreen ? '14px' : '15px' }}>
+            {label}
+          </Text>
+
+          {required ? (
+            <span className="self-start text-red-600">*</span>
+          ) : (
+            <span style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+              ({t('optional')})
+            </span>
+          )}
+        </div>
       )}
 
       {type !== 'password' && (

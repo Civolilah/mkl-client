@@ -8,11 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
-
 import classNames from 'classnames';
 import { useAtomValue } from 'jotai';
-import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -25,7 +22,6 @@ import { isMiniSideBarAtom } from './NavBarIconsBox';
 
 type Props = {
   item: NavItemType;
-  mobileSideBar?: boolean;
 };
 
 const Div = styled.div`
@@ -47,58 +43,23 @@ const IconWrapper = styled.div`
   }
 `;
 
-const RightIconWrapper = styled.div`
-  width: 31px;
-  height: 31px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.15s ease;
-  color: ${(props) => props.theme.color};
-  border: ${(props) =>
-    props.theme.displayRoundedBorder ? '1.5px solid' : 'none'};
-
-  &:hover {
-    border: 1.5px solid;
-  }
-`;
-
-type TooltipProps = {
-  isMiniSideBar: boolean;
-  children: ReactNode;
-  tooltipText: string;
-};
-
-const TooltipWrapper = (props: TooltipProps) => {
-  const { isMiniSideBar, children, tooltipText } = props;
-
-  const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
-
-  if (!isMiniSideBar || !isMiddleScreen) {
-    return <>{children}</>;
-  }
-
-  return <Tooltip text={tooltipText}>{children}</Tooltip>;
-};
-
 const NavItem = (props: Props) => {
   const t = useTranslation();
 
-  const { item, mobileSideBar } = props;
-
-  const colors = useColors();
-  const accentColor = useAccentColor();
+  const { item } = props;
 
   const navigate = useNavigate();
+
+  const colors = useColors();
   const location = useLocation();
+  const accentColor = useAccentColor();
 
   const isMiniSideBar = useAtomValue(isMiniSideBarAtom);
 
   return (
-    <TooltipWrapper isMiniSideBar={isMiniSideBar} tooltipText={t(item.label)}>
+    <Tooltip text={isMiniSideBar ? t(item.label) : ''}>
       <Div
-        className={classNames('py-3 cursor-pointer rounded', {
+        className={classNames('flex items-center cursor-pointer rounded', {
           'px-2': !isMiniSideBar,
           'px-3': isMiniSideBar,
         })}
@@ -108,9 +69,10 @@ const NavItem = (props: Props) => {
           isActive: location.pathname.startsWith(item.href),
         }}
         onClick={() => navigate(item.href)}
+        style={{ height: '3rem' }}
       >
         <div
-          className={classNames('flex items-center', {
+          className={classNames('flex w-full items-center', {
             'justify-center': isMiniSideBar,
             'justify-between': !isMiniSideBar,
           })}
@@ -129,43 +91,30 @@ const NavItem = (props: Props) => {
             </div>
 
             {!isMiniSideBar && (
-              <Text style={{ fontSize: 16.5 }}>{t(item.label)}</Text>
+              <Text style={{ fontSize: 15.5 }}>{t(item.label)}</Text>
             )}
           </div>
 
           {Boolean(item.rightIcon && !isMiniSideBar) && (
-            <>
-              {!mobileSideBar ? (
-                <Tooltip
-                  text={t(item.rightIcon!.tooltipText)}
-                  href={item.rightIcon!.href}
-                >
-                  <RightIconWrapper
-                    className="ml-6"
-                    theme={{
-                      color: accentColor,
-                      displayRoundedBorder: mobileSideBar,
-                    }}
-                  >
-                    <Icon name={item.rightIcon!.name} size={27} />
-                  </RightIconWrapper>
-                </Tooltip>
-              ) : (
-                <RightIconWrapper
-                  className="ml-6"
-                  theme={{
-                    color: colors.$10,
-                    displayRoundedBorder: mobileSideBar,
-                  }}
-                >
-                  <Icon name={item.rightIcon!.name} size={27} />
-                </RightIconWrapper>
-              )}
-            </>
+            <Tooltip
+              text={t(item.rightIcon!.tooltipText)}
+              href={item.rightIcon!.href}
+            >
+              <div
+                className="flex items-center justify-center ml-6"
+                style={{
+                  borderRadius: '50%',
+                  color: accentColor,
+                  border: `1px solid ${accentColor}`,
+                }}
+              >
+                <Icon name={item.rightIcon!.name} size={21.5} />
+              </div>
+            </Tooltip>
           )}
         </div>
       </Div>
-    </TooltipWrapper>
+    </Tooltip>
   );
 };
 

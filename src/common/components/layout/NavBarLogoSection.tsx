@@ -39,7 +39,7 @@ const NavBarLogoSection = (props: Props) => {
       style={{
         height: '4.35rem',
         borderColor: colors.$1,
-        width: isMiniSideBar ? '4.35rem' : '18rem',
+        width: isMiniSideBar ? '4.35rem' : '19rem',
       }}
     >
       <div className="flex w-full justify-between items-center">

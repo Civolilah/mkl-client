@@ -12,6 +12,7 @@ import { useState } from 'react';
 
 import classNames from 'classnames';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
+import { useMediaQuery } from 'react-responsive';
 import { useDebounce } from 'react-use';
 import styled from 'styled-components';
 
@@ -61,6 +62,8 @@ const ColorPicker = (props: Props) => {
   const colors = useColors();
   const accentColor = useAccentColor();
 
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+
   const { value, onValueChange, label, required } = props;
 
   const [color, setColor] = useState<string>(value);
@@ -78,9 +81,19 @@ const ColorPicker = (props: Props) => {
     <>
       <div className="flex flex-col justify-center items-start">
         {label && (
-          <span style={{ fontSize: '15px' }}>
-            {label} {required && <span className="text-red-600">*</span>}
-          </span>
+          <div className="flex items-center space-x-1">
+            <Text style={{ fontSize: isSmallScreen ? '14px' : '15px' }}>
+              {label}
+            </Text>
+
+            {required ? (
+              <span className="self-start text-red-600">*</span>
+            ) : (
+              <span style={{ fontSize: isSmallScreen ? '11.75px' : '12.5px' }}>
+                ({t('optional')})
+              </span>
+            )}
+          </div>
         )}
 
         <Div
@@ -98,7 +111,7 @@ const ColorPicker = (props: Props) => {
             >
               <TransparentColorBox />
 
-              <Text>{t('transparent')}</Text>
+              <Text>{t('no_color')}</Text>
             </div>
           ) : (
             <div className="flex items-center space-x-4 px-1.5 py-1">

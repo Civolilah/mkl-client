@@ -42,11 +42,11 @@
     "delivered_products": "Delivered Products",
     "name": "Name",
     "color": "Color",
-    "transparent": "Transparent",
+    "no_color": "No color",
     "copy_to_clipboard": "Copy to clipboard",
     "copied_to_clipboard": "Copied to clipboard",
     "done": "Done",
-    "status_name_placeholder": "E.g., Delivered, Sold, Damaged, Reserved, Returned, On Sale, etc.",
+    "status_name_placeholder": "E.g., Damaged, Returned, Reserved, In Transit, etc.",
     "already_have_account": "Already have an account?",
     "create_your_account": "Create your account",
     "create_account": "Create account",
@@ -57,5 +57,9 @@
     "confirm_password": "Confirm password",
     "passwords_not_match": "Confirm password does not match password.",
     "forgot_password": "Forgot your password?",
-    "send_email": "Send email"
+    "send_email": "Send email",
+    "imported_products": "Imported Products",
+    "status_marked_products": "Status-Marked Products",
+    "company_details": "Company Details",
+    "optional": "optional"
 }

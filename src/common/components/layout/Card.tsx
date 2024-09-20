@@ -11,6 +11,7 @@
 import { ReactNode } from 'react';
 
 import { Card as CardBase } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 
 import { Button } from '@components/index';
 
@@ -31,6 +32,7 @@ const Card = (props: Props) => {
   const { children, title, className, onSaveClick, saveButtonText } = props;
 
   const colors = useColors();
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
     <div className="flex w-full h-full justify-start items-start">
@@ -40,7 +42,11 @@ const Card = (props: Props) => {
         style={{ borderColor: colors.$1, borderRadius: '4px' }}
         styles={{
           body: { padding: 0 },
-          header: { fontSize: '1.155rem', fontWeight: 500 },
+          header: {
+            fontSize: isSmallScreen ? '1.05rem' : '1.155rem',
+            fontWeight: 500,
+            letterSpacing: 0.8,
+          },
         }}
       >
         <div className="p-6">{children}</div>

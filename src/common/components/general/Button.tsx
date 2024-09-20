@@ -12,6 +12,7 @@ import { CSSProperties, ReactNode } from 'react';
 
 import { Button as BaseButton } from 'antd';
 import classNames from 'classnames';
+import { useMediaQuery } from 'react-responsive';
 
 type Props = {
   htmlType?: 'submit' | 'button' | 'reset';
@@ -37,6 +38,8 @@ const Button = (props: Props) => {
     className,
   } = props;
 
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+
   return (
     <BaseButton
       className={classNames(
@@ -48,6 +51,7 @@ const Button = (props: Props) => {
       loading={disabled && disabledWithLoadingIcon}
       onClick={onClick}
       style={{
+        fontSize: isSmallScreen ? '14.5px' : '16px',
         letterSpacing: 0.8,
         color: 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',

@@ -56,6 +56,7 @@ export const navItems: NavItem[] = [
   //   iconName: 'dashboard',
   //   href: '/dashboard',
   //   visible: true,
+  //   iconSize: 21,
   // },
   {
     key: 'products',
@@ -63,7 +64,7 @@ export const navItems: NavItem[] = [
     iconName: 'product',
     href: '/products',
     visible: true,
-    iconSize: 27,
+    iconSize: 25.5,
     rightIcon: {
       name: 'add',
       href: '/products/new',
@@ -72,19 +73,35 @@ export const navItems: NavItem[] = [
     },
   },
   {
+    key: 'imported_products',
+    label: 'imported_products',
+    iconName: 'import',
+    href: '/imported_products',
+    visible: true,
+    iconSize: 24,
+  },
+  {
+    key: 'marked_products',
+    label: 'status_marked_products',
+    iconName: 'status_marked',
+    href: '/marked_products',
+    visible: true,
+    iconSize: 22,
+  },
+  {
     key: 'delivered_products',
     label: 'delivered_products',
     iconName: 'deliveredProducts',
     href: '/delivered_products',
     visible: true,
-    iconSize: 26.5,
+    iconSize: 22.5,
   },
   {
     key: 'suppliers',
     label: 'suppliers',
     iconName: 'truck',
     href: '/suppliers',
-    iconSize: 24,
+    iconSize: 23,
     visible: true,
     rightIcon: {
       name: 'add',
@@ -98,7 +115,7 @@ export const navItems: NavItem[] = [
     label: 'subsidiaries',
     iconName: 'subsidiary',
     href: '/subsidiaries',
-    iconSize: 23,
+    iconSize: 21,
     visible: true,
     rightIcon: {
       name: 'add',
@@ -112,7 +129,7 @@ export const navItems: NavItem[] = [
     label: 'categories',
     iconName: 'category',
     href: '/categories',
-    iconSize: 25,
+    iconSize: 23,
     visible: true,
     rightIcon: {
       name: 'add',
@@ -127,7 +144,7 @@ export const navItems: NavItem[] = [
     iconName: 'tag',
     href: '/labels',
     visible: true,
-    iconSize: 20.5,
+    iconSize: 20,
     rightIcon: {
       name: 'add',
       href: '/labels/new',
@@ -169,7 +186,7 @@ export const navItems: NavItem[] = [
     iconName: 'assignment',
     href: '/statuses',
     visible: true,
-    iconSize: 22.75,
+    iconSize: 22.5,
     rightIcon: {
       name: 'add',
       href: '/statuses/new',
@@ -177,26 +194,19 @@ export const navItems: NavItem[] = [
       visible: true,
     },
   },
-  {
-    key: 'profile',
-    label: 'profile',
-    iconName: 'person',
-    href: '/profile',
-    iconSize: 26,
-    visible: true,
-  },
+  // {
+  //   key: 'company_details',
+  //   label: 'company_details',
+  //   iconName: 'company',
+  //   href: '/company_details',
+  //   iconSize: 25,
+  //   visible: true,
+  // },
   // {
   //   key: 'reports',
   //   label: 'Reports',
   //   iconName: 'barChart',
   //   href: '/reports',
-  //   visible: true,
-  // },
-  // {
-  //   key: 'biling',
-  //   label: 'biling',
-  //   iconName: 'attachMoney',
-  //   href: '/biling',
   //   visible: true,
   // },
 ];
@@ -219,7 +229,7 @@ const Default = (props: Props) => {
 
         <div className="flex w-full h-full">
           <div className="hidden lg:flex lg:justify-start">
-            <MainNavBar items={navItems} />
+            <MainNavBar />
           </div>
 
           <div className="flex flex-col flex-1 justify-center items-center p-4 md:p-6">
@@ -232,14 +242,14 @@ const Default = (props: Props) => {
                   >
                     <Icon
                       name="home"
-                      size={isMiddleScreen ? 25 : 22}
+                      size={isMiddleScreen ? 24 : 23}
                       style={{ color: colors.$15 }}
                     />
 
                     <div>
                       <Icon
                         name="arrowForward"
-                        size={isMiddleScreen ? 13 : 11}
+                        size={isMiddleScreen ? 13 : 12}
                         style={{ color: colors.$12 }}
                       />
                     </div>
@@ -249,7 +259,7 @@ const Default = (props: Props) => {
                     <div
                       key={index}
                       className="flex items-center space-x-2"
-                      style={{ fontSize: isMiddleScreen ? 16 : 14 }}
+                      style={{ fontSize: isMiddleScreen ? 15.25 : 14.25 }}
                     >
                       <div
                         className={classNames({
@@ -262,6 +272,7 @@ const Default = (props: Props) => {
                           }
                         }}
                         style={{
+                          letterSpacing: 0.8,
                           color:
                             index !== breadcrumbs.length - 1
                               ? colors.$11
@@ -275,7 +286,7 @@ const Default = (props: Props) => {
                         <div>
                           <Icon
                             name="arrowForward"
-                            size={isMiddleScreen ? 13 : 11}
+                            size={isMiddleScreen ? 13 : 12}
                             style={{ color: colors.$12 }}
                           />
                         </div>

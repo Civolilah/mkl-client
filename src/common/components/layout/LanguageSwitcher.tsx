@@ -44,7 +44,7 @@ const LanguageSwitcher = () => {
         >
           {icon.en}
 
-          <span>English</span>
+          <span style={{ letterSpacing: 0.8 }}>English</span>
         </div>
       ),
       key: 'en',
@@ -59,7 +59,7 @@ const LanguageSwitcher = () => {
         >
           {icon.tr}
 
-          <span>Türkçe</span>
+          <span style={{ letterSpacing: 0.8 }}>Türkçe</span>
         </div>
       ),
       key: 'tr',
@@ -77,7 +77,7 @@ const LanguageSwitcher = () => {
         <div className="flex items-center space-x-3">
           {icon[i18n.language as Languages]}
 
-          <span className="text-sm font-medium text-gray-700">
+          <span className="text-sm font-medium" style={{ letterSpacing: 0.8 }}>
             {LANGUAGE_ALIASES[i18n.language as Languages]}
           </span>
         </div>

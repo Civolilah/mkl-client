@@ -17,8 +17,10 @@ import {
 
 import { IconType } from 'react-icons';
 import { AiOutlineCodeSandbox } from 'react-icons/ai';
-import { BiWorld } from 'react-icons/bi';
+import { BiImport, BiWorld } from 'react-icons/bi';
+import { BsBookmarkStarFill } from 'react-icons/bs';
 import {
+  FaClipboardCheck,
   FaFacebook,
   FaInstagram,
   FaStore,
@@ -27,12 +29,12 @@ import {
   FaTruck,
   FaUsers,
 } from 'react-icons/fa';
-import { HiOutlineClipboardCheck } from 'react-icons/hi';
 import { IoInformationCircleOutline, IoPersonCircle } from 'react-icons/io5';
 import {
   MdAdd,
   MdArrowBackIosNew,
   MdArrowForwardIos,
+  MdBusiness,
   MdCategory,
   MdClose,
   MdContentCopy,
@@ -91,7 +93,10 @@ export type IconName =
   | 'close'
   | 'copy'
   | 'deliveredProducts'
-  | 'error';
+  | 'error'
+  | 'import'
+  | 'status_marked'
+  | 'company';
 
 type Props = {
   className?: string;
@@ -184,9 +189,15 @@ const Icon = (props: Props) => {
     case 'copy':
       return generateIconElement(MdContentCopy);
     case 'deliveredProducts':
-      return generateIconElement(HiOutlineClipboardCheck);
+      return generateIconElement(FaClipboardCheck);
     case 'error':
       return generateIconElement(MdErrorOutline);
+    case 'import':
+      return generateIconElement(BiImport);
+    case 'status_marked':
+      return generateIconElement(BsBookmarkStarFill);
+    case 'company':
+      return generateIconElement(MdBusiness);
 
     default:
       return <></>;
