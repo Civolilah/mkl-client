@@ -82,7 +82,12 @@ const ColorPicker = (props: Props) => {
       <div className="flex flex-col justify-center items-start">
         {label && (
           <div className="flex items-center space-x-1">
-            <Text style={{ fontSize: isSmallScreen ? '14px' : '15px' }}>
+            <Text
+              style={{
+                fontSize: isSmallScreen ? '14px' : '15px',
+                fontWeight: 500,
+              }}
+            >
               {label}
             </Text>
 

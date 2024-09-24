@@ -8,8 +8,4 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export { tt } from './global/global';
-
-export { INITIAL_STATUS } from './status/status';
-
-export { VALIDATION_ERROR_STATUS_CODE } from './errors/errors';
+export const VALIDATION_ERROR_STATUS_CODE = 422;

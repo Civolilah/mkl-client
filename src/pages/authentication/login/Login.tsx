@@ -8,14 +8,17 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request } from '@helpers/index';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { ValidationErrors } from '@interfaces/index';
 
 import {
   Button,
+  Captcha,
   GoogleButton,
   LanguageSwitcher,
   Link,
@@ -33,6 +36,8 @@ const Login = () => {
   const t = useTranslation();
   const colors = useColors();
 
+  const captchaRef = useRef<ReCAPTCHA | null>(null);
+
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [userDetails, setUserDetails] = useState<UserDetails>({
@@ -41,7 +46,13 @@ const Login = () => {
   });
 
   const handleAccessApp = async (type: AccessType, token?: string) => {
-    if (!Object.keys(errors).length) {
+    if (!captchaRef.current) return;
+
+    const captchaToken = await captchaRef.current.executeAsync();
+
+    captchaRef.current.reset();
+
+    if (!Object.keys(errors).length && captchaToken) {
       setIsFormBusy(true);
 
       const result =
@@ -56,10 +67,13 @@ const Login = () => {
           type,
           ...(token && { token }),
           ...(!token && { details: userDetails }),
+          captcha_token: captchaToken,
         })
           .then((response) => response)
           .catch((error) => {
-            console.error(error);
+            if (error.response.status_code === VALIDATION_ERROR_STATUS_CODE) {
+              setErrors(error.response.errors);
+            }
           });
       }
 
@@ -130,6 +144,7 @@ const Login = () => {
                 debounce={0}
                 onPressEnter={() => handleAccessApp('credentials')}
                 errorMessage={errors.email && t(errors.email)}
+                withoutOptionalText
               />
 
               <div className="flex flex-col w-full space-y-1">
@@ -152,6 +167,7 @@ const Login = () => {
                       ? t('password_special_char')
                       : t(errors.password))
                   }
+                  withoutOptionalText
                 />
 
                 <ForgotPasswordModal email={userDetails.email} />
@@ -210,6 +226,8 @@ const Login = () => {
                 isFormBusy={isFormBusy}
                 handleAccessApp={handleAccessApp}
               />
+
+              <Captcha innerRef={captchaRef} />
             </div>
           </div>
         </div>

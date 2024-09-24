@@ -31,6 +31,7 @@ type Props = {
   errorMessage?: string;
   onPressEnter?: (event: KeyboardEvent<HTMLInputElement> | undefined) => void;
   debounce?: number;
+  withoutOptionalText?: boolean;
 };
 
 const TextField = (props: Props) => {
@@ -49,6 +50,7 @@ const TextField = (props: Props) => {
     disabled = false,
     maxLength,
     debounce,
+    withoutOptionalText,
   } = props;
 
   const [currentValue, setCurrentValue] = useState<string>(value);
@@ -71,16 +73,25 @@ const TextField = (props: Props) => {
     <div className="flex flex-col space-y-2 w-full">
       {label && (
         <div className="flex items-center space-x-1">
-          <Text style={{ fontSize: isSmallScreen ? '14px' : '15px' }}>
+          <Text
+            style={{
+              fontSize: isSmallScreen ? '14px' : '15px',
+              fontWeight: 500,
+            }}
+          >
             {label}
           </Text>
 
           {required ? (
             <span className="self-start text-red-600">*</span>
           ) : (
-            <span style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
-              ({t('optional')})
-            </span>
+            <>
+              {Boolean(!withoutOptionalText) && (
+                <span style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+                  ({t('optional')})
+                </span>
+              )}
+            </>
           )}
         </div>
       )}

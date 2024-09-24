@@ -36,3 +36,5 @@ export { default as TransparentColorBox } from '@components/icons/TransparentCol
 export { default as CopyToClipboard } from '@components/general/CopyToClipboard';
 export { default as CopyToClipboardOnlyIcon } from '@components/general/CopyToClipboardOnlyIcon';
 export { default as ScrollToTop } from '@components/general/ScrollToTop';
+export { default as Captcha } from '@components/general/Captcha';
+export { default as LabelElement } from '@components/general/LabelElement';

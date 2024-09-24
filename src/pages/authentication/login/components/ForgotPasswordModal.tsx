@@ -8,18 +8,19 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { request, useToast } from '@helpers/index';
 import classNames from 'classnames';
 import { set } from 'lodash';
+import ReCAPTCHA from 'react-google-recaptcha';
 import styled from 'styled-components';
 import isEmail from 'validator/lib/isEmail';
 import * as Yup from 'yup';
 
 import { ValidationErrors } from '@interfaces/index';
 
-import { Button, Modal, Text, TextField } from '@components/index';
+import { Button, Captcha, Modal, Text, TextField } from '@components/index';
 
 import { useAccentColor, useTranslation } from '@hooks/index';
 
@@ -38,6 +39,8 @@ type Props = {
 
 const ForgotPasswordModal = ({ email }: Props) => {
   const t = useTranslation();
+
+  const captchaRef = useRef<ReCAPTCHA | null>(null);
 
   const toast = useToast();
   const accentColor = useAccentColor();
@@ -86,6 +89,12 @@ const ForgotPasswordModal = ({ email }: Props) => {
   };
 
   const handleResetPassword = async () => {
+    if (!captchaRef.current) return;
+
+    const captchaToken = await captchaRef.current.executeAsync();
+
+    captchaRef.current.reset();
+
     if (!Object.keys(errors).length) {
       setIsFormBusy(true);
 
@@ -96,6 +105,7 @@ const ForgotPasswordModal = ({ email }: Props) => {
       } else {
         await request('POST', '/api/reset-password', {
           email,
+          captcha_token: captchaToken,
         })
           .then(() => {
             toast.success(t('check_email'));
@@ -136,6 +146,7 @@ const ForgotPasswordModal = ({ email }: Props) => {
             value={currentEmail}
             onValueChange={(value) => setCurrentEmail(value)}
             errorMessage={errors.email && t(errors.email)}
+            withoutOptionalText
           />
 
           <Button
@@ -146,6 +157,8 @@ const ForgotPasswordModal = ({ email }: Props) => {
           >
             {t('send_email')}
           </Button>
+
+          <Captcha innerRef={captchaRef} />
         </div>
       </Modal>
 
