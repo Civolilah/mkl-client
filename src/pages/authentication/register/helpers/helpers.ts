@@ -22,11 +22,12 @@ export const validateUserDetails = async (useDetails: UserDetails) => {
         Boolean(value && isEmail(value))
       ),
     password: Yup.string()
+      .required('password_required')
       .min(8, 'password_min_length')
+      .max(100, 'password_max_length')
       .matches(/[A-Z]/, 'password_uppercase')
       .matches(/[0-9]/, 'password_number')
-      .matches(/[!@#$%^&*(),.?":{}|<>]/, 'password_special_char')
-      .required('password_required'),
+      .matches(/[!@#$%^&*(),.?":{}|<>]/, 'password_special_char'),
     password_confirmation: Yup.string().oneOf(
       [Yup.ref('password')],
       'passwords_not_match'

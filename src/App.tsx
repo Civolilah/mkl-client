@@ -10,9 +10,11 @@
 
 import { useEffect } from 'react';
 
+import { useToast } from '@helpers/index';
 import { ConfigProvider } from 'antd';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import {
   AVAILABLE_LANGUAGES,
@@ -27,7 +29,26 @@ const App = () => {
   const theme = useTheme();
   const { i18n } = useTranslation();
 
+  const toast = useToast();
+
+  const navigate = useNavigate();
   const switchLanguage = useSwitchLanguage();
+
+  const handleDisplayWelcomeMessage = () => {
+    toast.success('Welcome!');
+  };
+
+  const handleNavigateNotFoundPage = () => {
+    navigate('/not_found');
+  };
+
+  const handleDisplayErrorToaster = (event: Event) => {
+    const { message } = (event as CustomEvent).detail;
+
+    if (message) {
+      toast.error(message);
+    }
+  };
 
   useEffect(() => {
     const currentStoredLanguage = localStorage.getItem('MKL-LOCALE');
@@ -41,6 +62,35 @@ const App = () => {
     ) {
       switchLanguage(currentLocale);
     }
+
+    window.addEventListener(
+      'navigate_not_found_page',
+      handleNavigateNotFoundPage
+    );
+
+    window.addEventListener(
+      'display_welcome_message',
+      handleDisplayWelcomeMessage
+    );
+
+    window.addEventListener('display_error_toaster', handleDisplayErrorToaster);
+
+    return () => {
+      window.removeEventListener(
+        'navigate_not_found_page',
+        handleNavigateNotFoundPage
+      );
+
+      window.removeEventListener(
+        'display_error_toaster',
+        handleDisplayErrorToaster
+      );
+
+      window.removeEventListener(
+        'display_welcome_message',
+        handleDisplayWelcomeMessage
+      );
+    };
   }, []);
 
   return (

@@ -12,7 +12,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request } from '@helpers/index';
+import { atom, useSetAtom } from 'jotai';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
@@ -25,10 +27,9 @@ import {
   Text,
   TextField,
 } from '@components/index';
+import { Languages } from '@components/layout/LanguageSwitcher';
 
 import { useColors, useTranslation } from '@hooks/index';
-
-import { validateUserDetails } from './helpers/helpers';
 
 export type UserDetails = {
   email: string;
@@ -38,11 +39,45 @@ export type UserDetails = {
 
 export type AccessType = 'credentials' | 'google';
 
+type UserLoginDetails = {
+  user: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    created_at: number;
+    is_director: boolean;
+    is_owner: boolean;
+    preference: {
+      language: Languages;
+      mini_side_bar: boolean | null;
+      time_zone: string | null;
+      comma_as_decimal_separator: boolean | null;
+      color_theme: string | null;
+      accent_color: string | null;
+      hover_accent_color: string | null;
+      email_notification: boolean | null;
+    };
+    permissions: string[];
+  };
+  company: {
+    name: string;
+  };
+  token: string;
+};
+
+export const userLoginDetailsAtom = atom<UserLoginDetails | undefined>(
+  undefined
+);
+
 const Register = () => {
   const t = useTranslation();
   const colors = useColors();
 
   const captchaRef = useRef<ReCAPTCHA | null>(null);
+
+  const navigate = useNavigate();
+
+  const setUserLoginDetails = useSetAtom(userLoginDetailsAtom);
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
@@ -62,10 +97,7 @@ const Register = () => {
     if (!Object.keys(errors).length && captchaToken) {
       setIsFormBusy(true);
 
-      const result =
-        type === 'credentials'
-          ? await validateUserDetails(userDetails)
-          : undefined;
+      const result = undefined;
 
       if (result !== undefined) {
         setErrors(result);
@@ -75,11 +107,20 @@ const Register = () => {
           ...(token && { token }),
           ...(!token && { details: userDetails }),
           captcha_token: captchaToken,
+          language: navigator?.language?.split('-')?.[0] || 'en',
         })
-          .then((response) => response)
+          .then((response) => {
+            setUserLoginDetails(response.data.user);
+            localStorage.setItem('MKL-TOKEN', response.data.token);
+            setTimeout(() => {
+              window.dispatchEvent(new CustomEvent('display_welcome_message'));
+            }, 450);
+
+            navigate('/');
+          })
           .catch((error) => {
-            if (error.response.status_code === VALIDATION_ERROR_STATUS_CODE) {
-              setErrors(error.response.errors);
+            if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
+              setErrors(error.response.data?.errors);
             }
           });
       }

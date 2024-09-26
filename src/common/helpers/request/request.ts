@@ -12,7 +12,7 @@
 import axios, { AxiosRequestConfig, Method } from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'https://localhost:8000',
   timeout: 10000,
 });
 
@@ -24,7 +24,18 @@ client.interceptors.response.use(
     //   window.location.href = '/login';
     // }
 
-    console.error(error);
+    // if (
+    //   error.response?.status === MAXIMUM_REQUESTS_ERROR_STATUS_CODE &&
+    //   typeof error.response?.data === 'string'
+    // ) {
+    //   window.dispatchEvent(
+    //     new CustomEvent('display_error_toaster', {
+    //       detail: {
+    //         message: error.response.data,
+    //       },
+    //     })
+    //   );
+    // }
 
     return Promise.reject(error);
   }
@@ -32,8 +43,8 @@ client.interceptors.response.use(
 
 const defaultHeaders = () => {
   return {
-    'MKL-Api-Token': localStorage.getItem('MKL-TOKEN') as string,
-    'MKL-Company-Key': localStorage.getItem('MKL-COMPANY') as string,
+    'MKL-STORE-TOKEN':
+      (localStorage.getItem('MKL-STORE-TOKEN') as string) || '',
     'X-Requested-With': 'XMLHttpRequest',
   };
 };

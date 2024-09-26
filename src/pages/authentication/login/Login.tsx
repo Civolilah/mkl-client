@@ -71,7 +71,7 @@ const Login = () => {
         })
           .then((response) => response)
           .catch((error) => {
-            if (error.response.status_code === VALIDATION_ERROR_STATUS_CODE) {
+            if (error.response?.status_code === VALIDATION_ERROR_STATUS_CODE) {
               setErrors(error.response.errors);
             }
           });

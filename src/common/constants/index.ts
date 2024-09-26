@@ -12,4 +12,7 @@ export { tt } from './global/global';
 
 export { INITIAL_STATUS } from './status/status';
 
-export { VALIDATION_ERROR_STATUS_CODE } from './errors/errors';
+export {
+  VALIDATION_ERROR_STATUS_CODE,
+  MAXIMUM_REQUESTS_ERROR_STATUS_CODE,
+} from './errors/errors';
