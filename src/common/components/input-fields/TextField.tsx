@@ -107,7 +107,7 @@ const TextField = (props: Props) => {
           placeholder={placeHolder}
           onPressEnter={onPressEnter}
           disabled={disabled}
-          style={{ boxShadow: 'none', borderRadius: '4px' }}
+          style={{ boxShadow: 'none' }}
         />
       )}
 
@@ -122,7 +122,7 @@ const TextField = (props: Props) => {
           maxLength={maxLength}
           disabled={disabled}
           onPressEnter={onPressEnter}
-          style={{ boxShadow: 'none', borderRadius: '4px' }}
+          style={{ boxShadow: 'none' }}
         />
       )}
 

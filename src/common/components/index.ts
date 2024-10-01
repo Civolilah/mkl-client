@@ -38,3 +38,5 @@ export { default as CopyToClipboardOnlyIcon } from '@components/general/CopyToCl
 export { default as ScrollToTop } from '@components/general/ScrollToTop';
 export { default as Captcha } from '@components/general/Captcha';
 export { default as LabelElement } from '@components/general/LabelElement';
+export { default as Box } from '@components/general/Box';
+export { default as Spinner } from '@components/icons/Spinner';

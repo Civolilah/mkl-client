@@ -8,12 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import {
-  MobileNavBar,
-  NavBarLogoSection,
-  PersonIcon,
-  Text,
-} from '@components/index';
+import { Icon, MobileNavBar, NavBarLogoSection, Text } from '@components/index';
 
 import { useColors } from '@hooks/index';
 
@@ -31,7 +26,7 @@ const Header = (props: Props) => {
 
   return (
     <div
-      className="flex items-center justify-center w-full border-b shadow-sm py-4"
+      className="flex items-center justify-center w-full border-b py-4"
       style={{
         height: '4.35rem',
         borderColor: colors.$1,
@@ -46,7 +41,7 @@ const Header = (props: Props) => {
         <MobileNavBar items={navItems} />
       </div>
 
-      <div className="flex w-full justify-between items-center px-6">
+      <div className="flex w-full justify-between items-center px-2 md:px-6">
         <Text className="text-lg md:text-xl whitespace-nowrap">{title}</Text>
 
         <div className="flex w-full justify-end">
@@ -55,8 +50,14 @@ const Header = (props: Props) => {
               <LanguageSwitcher />
             </div>
 
-            <div className="cursor-pointer">
-              <PersonIcon />
+            <div className="flex relative items-center cursor-pointer pr-3">
+              <div>
+                <Icon name="person" size={30} />
+              </div>
+
+              <div className="absolute left-6" style={{ top: '0.25rem' }}>
+                <Icon name="arrowDown" size={24} />
+              </div>
             </div>
           </div>
         </div>

@@ -9,32 +9,64 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
-import { atom, useAtomValue } from 'jotai';
-import { Outlet } from 'react-router-dom';
+import { atom } from 'jotai';
+import { Navigate, Outlet } from 'react-router-dom';
 
-import { IUser } from '@interfaces/index';
+import { Languages } from '@components/layout/LanguageSwitcher';
 
 import { useAuthenticated } from '@hooks/index';
 
 import LoadingScreen from './LoadingScreen';
 
-export const userAtom = atom<IUser | null>(null);
+type UserCompanyDetails = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  created_at: number;
+  is_director: boolean;
+  is_owner: boolean;
+  permissions: string[];
+  preference: {
+    language: Languages;
+    mini_side_bar: boolean | null;
+    time_zone: string | null;
+    comma_as_decimal_separator: boolean | null;
+    color_theme: string | null;
+    accent_color: string | null;
+    hover_accent_color: string | null;
+    email_notification: boolean | null;
+  };
+  company: {
+    name: string;
+  };
+};
+
+export const userCompanyAtom = atom<UserCompanyDetails | null>(null);
 
 const PrivateRoute = () => {
   const authenticated = useAuthenticated();
-  const user = useAtomValue(userAtom);
 
-  //   return authenticated ? (
-  //     user?.id ? (
-  //       <Outlet />
-  //     ) : (
-  //       <LoadingScreen />
-  //     )
-  //   ) : (
-  //     <Navigate to="/login" />
-  //   );
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState<
+    boolean | null
+  >(null);
+
+  useEffect(() => {
+    (async () => {
+      const isAuthenticated = await authenticated();
+
+      setIsUserAuthenticated(isAuthenticated);
+    })();
+  }, []);
+
+  if (isUserAuthenticated === null) {
+    return <LoadingScreen />;
+  }
+
+  if (isUserAuthenticated === false) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <Suspense fallback={<LoadingScreen />}>

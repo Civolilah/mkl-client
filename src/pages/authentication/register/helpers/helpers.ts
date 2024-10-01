@@ -23,11 +23,7 @@ export const validateUserDetails = async (useDetails: UserDetails) => {
       ),
     password: Yup.string()
       .required('password_required')
-      .min(8, 'password_min_length')
-      .max(100, 'password_max_length')
-      .matches(/[A-Z]/, 'password_uppercase')
-      .matches(/[0-9]/, 'password_number')
-      .matches(/[!@#$%^&*(),.?":{}|<>]/, 'password_special_char'),
+      .min(5, 'password_min_length'),
     password_confirmation: Yup.string().oneOf(
       [Yup.ref('password')],
       'passwords_not_match'

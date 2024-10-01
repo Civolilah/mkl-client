@@ -104,9 +104,6 @@ const ColorPicker = (props: Props) => {
         <Div
           className={classNames('cursor-pointer mt-2')}
           onClick={() => setIsModalOpen(true)}
-          style={{
-            borderRadius: '4px',
-          }}
           theme={{ borderColor: colors.$1, hoverBorderColor: accentColor }}
         >
           {color === '' ? (
@@ -165,7 +162,6 @@ const ColorPicker = (props: Props) => {
               className="my-2 p-2"
               style={{
                 width: '100%',
-                borderRadius: '4px',
               }}
               theme={{ borderColor: colors.$1, hoverBorderColor: accentColor }}
             />

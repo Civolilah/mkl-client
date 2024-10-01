@@ -35,11 +35,11 @@ const Card = (props: Props) => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
-    <div className="flex w-full h-full justify-start items-start">
+    <div className="flex w-full h-full justify-center items-start">
       <CardBase
         title={title}
         className={className}
-        style={{ borderColor: colors.$1, borderRadius: '4px' }}
+        style={{ borderColor: colors.$1, borderRadius: '0px' }}
         styles={{
           body: { padding: 0 },
           header: {

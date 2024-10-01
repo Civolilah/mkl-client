@@ -40,13 +40,18 @@ const Create = () => {
     console.log('save');
   };
 
+  const handleCancel = () => {
+    console.log('cancel');
+  };
+
   return (
-    <Default title={t('new_status')} breadcrumbs={breadcrumbs}>
-      <Card
-        title={t('new_status')}
-        className="w-full md:w-3/4 xl:w-1/2"
-        onSaveClick={handleSave}
-      >
+    <Default
+      title={t('new_status')}
+      breadcrumbs={breadcrumbs}
+      onSaveClick={handleSave}
+      onCancelClick={handleCancel}
+    >
+      <Card title={t('new_status')} className="w-full md:w-3/4 xl:w-1/2 pb-6">
         <Form status={status} setStatus={setStatus} />
       </Card>
     </Default>

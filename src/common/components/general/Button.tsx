@@ -13,6 +13,9 @@ import { CSSProperties, ReactNode } from 'react';
 import { Button as BaseButton } from 'antd';
 import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
+import styled from 'styled-components';
+
+import { useColors } from '@hooks/index';
 
 type Props = {
   htmlType?: 'submit' | 'button' | 'reset';
@@ -26,6 +29,12 @@ type Props = {
   style?: CSSProperties;
 };
 
+const StyledBaseButton = styled(BaseButton)`
+  &:hover {
+    background-color: ${(props) => props.theme.hoverBackgroundColor} !important;
+  }
+`;
+
 const Button = (props: Props) => {
   const {
     disabled,
@@ -38,12 +47,17 @@ const Button = (props: Props) => {
     className,
   } = props;
 
+  const colors = useColors();
+
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
-    <BaseButton
+    <StyledBaseButton
       className={classNames(
-        'transition-none shadow-none border-0 rounded-md',
+        'transition-none rounded-none shadow-sm',
+        {
+          'border-none': type !== 'default',
+        },
         className
       )}
       type={type}
@@ -53,16 +67,20 @@ const Button = (props: Props) => {
       style={{
         fontSize: isSmallScreen ? '14.5px' : '16px',
         letterSpacing: 0.8,
-        color: 'white',
+        color: type === 'default' ? 'black' : 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.8 : 1,
         transition: 'background-color 0.3s ease',
+        borderColor: type === 'default' ? colors.$17 : '',
         ...style,
       }}
       size={size}
+      theme={{
+        hoverBackgroundColor: type === 'default' ? colors.$18 : '',
+      }}
     >
       {children}
-    </BaseButton>
+    </StyledBaseButton>
   );
 };
 

@@ -20,6 +20,7 @@ import { AiOutlineCodeSandbox } from 'react-icons/ai';
 import { BiImport, BiWorld } from 'react-icons/bi';
 import { BsBookmarkStarFill } from 'react-icons/bs';
 import {
+  FaCheckCircle,
   FaClipboardCheck,
   FaFacebook,
   FaInstagram,
@@ -29,7 +30,7 @@ import {
   FaTruck,
   FaUsers,
 } from 'react-icons/fa';
-import { IoInformationCircleOutline, IoPersonCircle } from 'react-icons/io5';
+import { IoInformationCircleOutline } from 'react-icons/io5';
 import {
   MdAdd,
   MdArrowBackIosNew,
@@ -44,6 +45,7 @@ import {
   MdOutlineEmail,
   MdOutlineMenu,
   MdOutlineShoppingCart,
+  MdSave,
 } from 'react-icons/md';
 import {
   MdDashboard,
@@ -56,6 +58,7 @@ import {
   MdBarChart,
   MdAttachMoney,
 } from 'react-icons/md';
+import { RxPerson } from 'react-icons/rx';
 import { SiCashapp } from 'react-icons/si';
 
 export type IconName =
@@ -96,7 +99,9 @@ export type IconName =
   | 'error'
   | 'import'
   | 'status_marked'
-  | 'company';
+  | 'company'
+  | 'checkCircle'
+  | 'save';
 
 type Props = {
   className?: string;
@@ -131,7 +136,7 @@ const Icon = (props: Props) => {
     case 'information':
       return generateIconElement(IoInformationCircleOutline);
     case 'person':
-      return generateIconElement(IoPersonCircle);
+      return generateIconElement(RxPerson);
     case 'shoppingCart':
       return generateIconElement(MdOutlineShoppingCart);
     case 'world':
@@ -198,6 +203,10 @@ const Icon = (props: Props) => {
       return generateIconElement(BsBookmarkStarFill);
     case 'company':
       return generateIconElement(MdBusiness);
+    case 'checkCircle':
+      return generateIconElement(FaCheckCircle);
+    case 'save':
+      return generateIconElement(MdSave);
 
     default:
       return <></>;

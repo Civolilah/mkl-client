@@ -8,8 +8,9 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dropdown as DropdownBase, MenuProps } from 'antd';
 import { ReactNode } from 'react';
+
+import { Dropdown as DropdownBase, MenuProps } from 'antd';
 
 type Props = {
   children: ReactNode;

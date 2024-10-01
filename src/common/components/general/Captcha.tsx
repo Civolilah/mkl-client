@@ -8,22 +8,20 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { LegacyRef } from 'react';
-
-import ReCAPTCHA from 'react-google-recaptcha';
+import Turnstile from 'react-turnstile';
 
 type Props = {
-  innerRef: LegacyRef<ReCAPTCHA> | undefined;
+  onVerify: (token: string) => void;
 };
 
 const Captcha = (props: Props) => {
-  const { innerRef } = props;
+  const { onVerify } = props;
 
   return (
-    <ReCAPTCHA
-      ref={innerRef}
-      size="invisible"
-      sitekey={import.meta.env.VITE_CAPTCHA_SITE_KEY}
+    <Turnstile
+      sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+      appearance="always"
+      onVerify={onVerify}
     />
   );
 };

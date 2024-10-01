@@ -9,21 +9,14 @@
  */
 
 import { set } from 'lodash';
-import isEmail from 'validator/lib/isEmail';
 import * as Yup from 'yup';
 
 import { UserDetails } from '@pages/authentication/register/Register';
 
 export const validateUserDetails = async (useDetails: UserDetails) => {
   const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .required('email_required')
-      .test('is-email-valid', 'invalid_email', (value) =>
-        Boolean(value && isEmail(value))
-      ),
-    password: Yup.string()
-      .min(8, 'password_min_length')
-      .required('password_required'),
+    email: Yup.string().required('email_required'),
+    password: Yup.string().required('password_required'),
   });
 
   try {

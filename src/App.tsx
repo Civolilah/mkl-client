@@ -8,34 +8,54 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useToast } from '@helpers/index';
 import { ConfigProvider } from 'antd';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { useAtomValue } from 'jotai';
+import { publicIp } from 'public-ip';
 import { Toaster } from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
+import { useTranslation as useTranslationBase } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
+import { userCompanyAtom } from '@components/general/PrivateRoute';
+import { Box, Button, Modal, Text } from '@components/index';
 import {
   AVAILABLE_LANGUAGES,
   Languages,
 } from '@components/layout/LanguageSwitcher';
 
-import { useSwitchLanguage, useTheme } from '@hooks/index';
+import { useSwitchLanguage, useTheme, useTranslation } from '@hooks/index';
 
 import { routes } from './routes';
 
-const App = () => {
-  const theme = useTheme();
-  const { i18n } = useTranslation();
+dayjs.extend(utc);
 
+const App = () => {
+  const t = useTranslation();
+
+  const theme = useTheme();
   const toast = useToast();
+  const { i18n } = useTranslationBase();
 
   const navigate = useNavigate();
   const switchLanguage = useSwitchLanguage();
 
-  const handleDisplayWelcomeMessage = () => {
-    toast.success('Welcome!');
+  const currentUser = useAtomValue(userCompanyAtom);
+  const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState<boolean>(false);
+
+  const handleDisplayWelcomeModal = () => {
+    if (currentUser?.created_at) {
+      const currentUnixUTC = dayjs().unix();
+      const timeDifferenceInSeconds = currentUnixUTC - currentUser?.created_at;
+
+      if (timeDifferenceInSeconds <= 60) {
+        setIsWelcomeModalOpen(true);
+      }
+    }
   };
 
   const handleNavigateNotFoundPage = () => {
@@ -68,10 +88,7 @@ const App = () => {
       handleNavigateNotFoundPage
     );
 
-    window.addEventListener(
-      'display_welcome_message',
-      handleDisplayWelcomeMessage
-    );
+    window.addEventListener('display_welcome_modal', handleDisplayWelcomeModal);
 
     window.addEventListener('display_error_toaster', handleDisplayErrorToaster);
 
@@ -87,20 +104,57 @@ const App = () => {
       );
 
       window.removeEventListener(
-        'display_welcome_message',
-        handleDisplayWelcomeMessage
+        'display_welcome_modal',
+        handleDisplayWelcomeModal
       );
     };
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const currentUserIdentifier = localStorage.getItem('MKL-IDENTIFIER');
+
+      if (!currentUserIdentifier) {
+        const userIdentifier = await publicIp();
+
+        if (userIdentifier) {
+          localStorage.setItem('MKL-IDENTIFIER', userIdentifier);
+        } else {
+          localStorage.setItem('MKL-IDENTIFIER', uuidv4());
+        }
+      }
+    })();
+  }, []);
+
   return (
-    <div className="min-w-full min-h-screen">
+    <Box className="min-w-full min-h-screen">
+      <Modal
+        size="small"
+        title={t('add_product')}
+        visible={isWelcomeModalOpen}
+        onClose={() => setIsWelcomeModalOpen(false)}
+      >
+        <Box className="flex flex-col items-center space-y-6 w-full">
+          <Text className="text-base font-medium">
+            {t('add_first_product')}
+          </Text>
+
+          <Button
+            className="w-full"
+            type="primary"
+            onClick={() => navigate('/products/new')}
+          >
+            {t('add_product')}
+          </Button>
+        </Box>
+      </Modal>
+
       <ConfigProvider wave={{ disabled: true }} theme={theme}>
         <Toaster position="top-center" />
 
         {routes}
       </ConfigProvider>
-    </div>
+    </Box>
   );
 };
 

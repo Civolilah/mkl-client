@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * MKL (https://mkl.ba).
  *
@@ -9,16 +8,34 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Outlet } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
+import { Navigate, Outlet } from 'react-router-dom';
 
 import { useAuthenticated } from '@hooks/index';
+
+import LoadingScreen from './LoadingScreen';
 
 const PublicRoute = () => {
   const authenticated = useAuthenticated();
 
-  // return authenticated ? <Navigate to="/dashboard" /> : <Outlet />;
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState<
+    boolean | null
+  >(null);
 
-  return <Outlet />;
+  useEffect(() => {
+    (async () => {
+      const isAuthenticated = await authenticated();
+
+      setIsUserAuthenticated(isAuthenticated);
+    })();
+  }, []);
+
+  if (isUserAuthenticated === null) {
+    return <LoadingScreen />;
+  }
+
+  return isUserAuthenticated ? <Navigate to="/dashboard" /> : <Outlet />;
 };
 
 export default PublicRoute;

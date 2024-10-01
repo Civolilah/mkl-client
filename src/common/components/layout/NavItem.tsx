@@ -59,7 +59,7 @@ const NavItem = (props: Props) => {
   return (
     <Tooltip text={isMiniSideBar ? t(item.label) : ''}>
       <Div
-        className={classNames('flex items-center cursor-pointer rounded', {
+        className={classNames('flex items-center cursor-pointer', {
           'px-2': !isMiniSideBar,
           'px-3': isMiniSideBar,
         })}

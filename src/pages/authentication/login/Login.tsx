@@ -8,17 +8,15 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request } from '@helpers/index';
-import ReCAPTCHA from 'react-google-recaptcha';
 
 import { ValidationErrors } from '@interfaces/index';
 
 import {
   Button,
-  Captcha,
   GoogleButton,
   LanguageSwitcher,
   Link,
@@ -36,8 +34,6 @@ const Login = () => {
   const t = useTranslation();
   const colors = useColors();
 
-  const captchaRef = useRef<ReCAPTCHA | null>(null);
-
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [userDetails, setUserDetails] = useState<UserDetails>({
@@ -46,13 +42,7 @@ const Login = () => {
   });
 
   const handleAccessApp = async (type: AccessType, token?: string) => {
-    if (!captchaRef.current) return;
-
-    const captchaToken = await captchaRef.current.executeAsync();
-
-    captchaRef.current.reset();
-
-    if (!Object.keys(errors).length && captchaToken) {
+    if (!Object.keys(errors).length) {
       setIsFormBusy(true);
 
       const result =
@@ -67,7 +57,6 @@ const Login = () => {
           type,
           ...(token && { token }),
           ...(!token && { details: userDetails }),
-          captcha_token: captchaToken,
         })
           .then((response) => response)
           .catch((error) => {
@@ -117,7 +106,6 @@ const Login = () => {
         <div
           className="flex flex-col border px-4 sm:px-8 md:px-10 pb-12 pt-10 w-full"
           style={{
-            borderRadius: '4px',
             borderColor: colors.$1,
             boxShadow: `
             0 1px 2px rgba(0, 0, 0, 0.04),
@@ -223,11 +211,9 @@ const Login = () => {
               </div>
 
               <GoogleButton
-                isFormBusy={isFormBusy}
+                disabled={isFormBusy}
                 handleAccessApp={handleAccessApp}
               />
-
-              <Captcha innerRef={captchaRef} />
             </div>
           </div>
         </div>

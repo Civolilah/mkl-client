@@ -15,9 +15,9 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import Icon, { IconName } from '@components/general/Icon';
-import { Header } from '@components/index';
+import { Box, Button, Header, Text } from '@components/index';
 
-import { useColors } from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 import MainNavBar from './MainNavBar';
 
@@ -30,6 +30,8 @@ type Props = {
   children: ReactNode;
   title?: string;
   breadcrumbs?: BreadcrumbItem[];
+  onSaveClick?: () => void;
+  onCancelClick?: () => void;
 };
 
 type RightIcon = {
@@ -212,98 +214,172 @@ export const navItems: NavItem[] = [
 ];
 
 const Default = (props: Props) => {
-  const { title, children, breadcrumbs } = props;
+  const t = useTranslation();
+
+  const { title, children, breadcrumbs, onSaveClick, onCancelClick } = props;
 
   const colors = useColors();
+  const accentColor = useAccentColor();
+
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
   const navigate = useNavigate();
 
   return (
-    <div
+    <Box
       className={classNames('flex min-w-screen min-h-screen')}
       style={{ backgroundColor: colors.$3 }}
     >
-      <div className="flex flex-col flex-1 justify-start items-center">
+      <Box className="flex flex-col flex-1 justify-start items-center">
         <Header title={title} />
 
-        <div className="flex w-full h-full">
-          <div className="hidden lg:flex lg:justify-start">
+        <Box className="flex w-full h-full">
+          <Box className="hidden lg:flex lg:justify-start">
             <MainNavBar />
-          </div>
+          </Box>
 
-          <div className="flex flex-col flex-1 justify-center items-center p-4 md:p-6">
-            {breadcrumbs && (
-              <div className="flex w-full justify-start">
-                <div className="flex items-center space-x-2">
-                  <div
-                    className="flex items-center space-x-2 cursor-pointer"
-                    onClick={() => navigate('/')}
-                  >
-                    <Icon
-                      name="home"
-                      size={isMiddleScreen ? 24 : 23}
-                      style={{ color: colors.$15 }}
-                    />
-
-                    <div>
-                      <Icon
-                        name="arrowForward"
-                        size={isMiddleScreen ? 13 : 12}
-                        style={{ color: colors.$12 }}
-                      />
-                    </div>
-                  </div>
-
-                  {breadcrumbs.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-2"
-                      style={{ fontSize: isMiddleScreen ? 15.25 : 14.25 }}
-                    >
-                      <div
-                        className={classNames({
-                          'cursor-pointer hover:underline':
-                            index !== breadcrumbs.length - 1,
-                        })}
-                        onClick={() => {
-                          if (item.href && index !== breadcrumbs.length - 1) {
-                            navigate(item.href);
-                          }
-                        }}
-                        style={{
-                          letterSpacing: 0.8,
-                          color:
-                            index !== breadcrumbs.length - 1
-                              ? colors.$11
-                              : colors.$13,
-                        }}
+          <Box className="flex flex-col flex-1 justify-center items-center">
+            <Box
+              className="flex items-center justify-end sm:justify-between w-full px-2 md:px-6 py-2 border-b shadow-sm space-x-2"
+              style={{
+                borderColor: colors.$1,
+                backgroundColor: colors.$6,
+              }}
+            >
+              <Box className="flex-1 hidden sm:flex">
+                {breadcrumbs && (
+                  <Box className="flex justify-start w-full">
+                    <Box className="flex items-center space-x-1 md:space-x-2">
+                      <Box
+                        className="flex items-center space-x-1 md:space-x-2 cursor-pointer"
+                        onClick={() => navigate('/')}
                       >
-                        {item.title}
-                      </div>
+                        <Icon
+                          name="home"
+                          size={isMiddleScreen ? 24 : 23}
+                          style={{ color: accentColor }}
+                        />
 
-                      {index !== breadcrumbs.length - 1 && (
-                        <div>
+                        <Box>
                           <Icon
                             name="arrowForward"
                             size={isMiddleScreen ? 13 : 12}
                             style={{ color: colors.$12 }}
                           />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                        </Box>
+                      </Box>
 
-            <div className="flex flex-1 w-full justify-center items-center pt-4 md:pt-6">
+                      {breadcrumbs.map((item, index) => (
+                        <Box
+                          key={index}
+                          className="flex items-center space-x-1 md:space-x-2"
+                          style={{ fontSize: isMiddleScreen ? 15.25 : 14.25 }}
+                        >
+                          <Text
+                            className={classNames({
+                              'cursor-pointer hover:underline':
+                                index !== breadcrumbs.length - 1,
+                            })}
+                            onClick={() => {
+                              if (
+                                item.href &&
+                                index !== breadcrumbs.length - 1
+                              ) {
+                                navigate(item.href);
+                              }
+                            }}
+                            style={{
+                              letterSpacing: 0.8,
+                              color:
+                                index !== breadcrumbs.length - 1
+                                  ? colors.$11
+                                  : colors.$13,
+                            }}
+                          >
+                            {item.title}
+                          </Text>
+
+                          {index !== breadcrumbs.length - 1 && (
+                            <Box>
+                              <Icon
+                                name="arrowForward"
+                                size={isMiddleScreen ? 13 : 12}
+                                style={{ color: colors.$12 }}
+                              />
+                            </Box>
+                          )}
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+
+              {(onSaveClick || onCancelClick) && (
+                <Box
+                  className="flex space-x-2 md:space-x-4"
+                  style={{
+                    height: '2.5rem',
+                    borderColor: colors.$1,
+                    backgroundColor: colors.$6,
+                  }}
+                >
+                  {onCancelClick && (
+                    <Button
+                      className="h-full"
+                      type="default"
+                      onClick={onCancelClick}
+                      style={{
+                        padding: isMiddleScreen ? '0.75rem' : '0.5rem',
+                      }}
+                    >
+                      <Box className="flex items-center space-x-1 md:space-x-2">
+                        <Box>
+                          <Icon name="close" size={isMiddleScreen ? 20 : 18} />
+                        </Box>
+
+                        <Text
+                          style={{ fontSize: isMiddleScreen ? '15px' : '13px' }}
+                        >
+                          {t('cancel')}
+                        </Text>
+                      </Box>
+                    </Button>
+                  )}
+
+                  {onSaveClick && (
+                    <Button
+                      className="h-full"
+                      type="primary"
+                      onClick={onSaveClick}
+                      style={{
+                        padding: isMiddleScreen ? '0.75rem' : '0.5rem',
+                      }}
+                    >
+                      <Box className="flex items-center space-x-1 md:space-x-2">
+                        <Box>
+                          <Icon name="save" size={isMiddleScreen ? 20 : 18} />
+                        </Box>
+
+                        <Text
+                          style={{ fontSize: isMiddleScreen ? '15px' : '13px' }}
+                        >
+                          {t('save')}
+                        </Text>
+                      </Box>
+                    </Button>
+                  )}
+                </Box>
+              )}
+            </Box>
+
+            <Box className="flex flex-1 w-full justify-center items-center p-2 md:p-6">
               {children}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

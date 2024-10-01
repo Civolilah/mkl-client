@@ -23,8 +23,9 @@ const COLORS = {
   $12: '#7e7e7e', // Breadcrumbs separator color
   $13: '#1a1a1a', // Active breadcrumbs color
   $14: '#ffffff', // Card background color
-  $15: '#2E6CBD', // Breadcrumb home icon color
   $16: '#6B7280', // Label element help label color
+  $17: '#d8d8d8', // Default button background color
+  $18: '#f7f7f7', // Default button background color
 };
 
 const useColors = () => {

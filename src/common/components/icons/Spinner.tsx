@@ -8,8 +8,16 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-const Spinner = () => {
-  return <div>Spinner</div>;
+import { Spin } from 'antd';
+
+type Props = {
+  size?: 'small' | 'large' | 'default';
+};
+
+const Spinner = (props?: Props) => {
+  const { size = 'default' } = props || {};
+
+  return <Spin size={size} />;
 };
 
 export default Spinner;

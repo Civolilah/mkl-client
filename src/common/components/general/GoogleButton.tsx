@@ -21,9 +21,13 @@ import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 const Div = styled.div`
   border: 1px solid ${(props) => props.theme.borderColor};
 
-  &:hover {
-    border: 1px solid ${(props) => props.theme.hoverBorderColor};
-  }
+  ${(props) =>
+    !props.theme.disabled &&
+    `
+    &:hover {
+      border: 1px solid ${props.theme.hoverBorderColor};
+    }
+  `}
 `;
 
 const GoogleLogo = () => (
@@ -54,14 +58,14 @@ const GoogleLogo = () => (
 );
 
 type Props = {
-  isFormBusy: boolean;
+  disabled: boolean;
   handleAccessApp: (type: AccessType, token?: string) => void;
 };
 
 const GoogleButton = (props: Props) => {
   const t = useTranslation();
 
-  const { isFormBusy, handleAccessApp } = props;
+  const { disabled, handleAccessApp } = props;
 
   const colors = useColors();
   const accentColor = useAccentColor();
@@ -78,8 +82,8 @@ const GoogleButton = (props: Props) => {
       className={classNames(
         'flex items-center justify-center w-full space-x-5 px-4 py-3 text-sm font-medium border',
         {
-          'cursor-not-allowed opacity-75': isFormBusy,
-          'cursor-pointer': !isFormBusy,
+          'cursor-not-allowed opacity-75': disabled,
+          'cursor-pointer': !disabled,
         }
       )}
       onClick={(event) => {
@@ -87,10 +91,10 @@ const GoogleButton = (props: Props) => {
 
         login();
       }}
-      style={{ borderRadius: '4px' }}
       theme={{
         borderColor: colors.$1,
         hoverBorderColor: accentColor,
+        disabled,
       }}
     >
       <GoogleLogo />

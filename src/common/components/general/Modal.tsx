@@ -14,15 +14,17 @@ import { Modal as ModalBase } from 'antd';
 
 import { useColors } from '@hooks/index';
 
+import Box from './Box';
 import Icon from './Icon';
 
 type Props = {
   visible: boolean;
-  title: ReactNode;
+  title?: ReactNode;
   isLoading?: boolean;
   children: ReactNode;
   onClose?: () => void;
   size?: 'extraSmall' | 'small' | 'regular' | 'large';
+  disableClosing?: boolean;
 };
 
 const Modal = (props: Props) => {
@@ -33,6 +35,7 @@ const Modal = (props: Props) => {
     children,
     onClose,
     size = 'regular',
+    disableClosing,
   } = props;
 
   const colors = useColors();
@@ -67,26 +70,28 @@ const Modal = (props: Props) => {
       closable={false}
       styles={{
         header: { display: 'none' },
-        content: { padding: '0px' },
+        content: { padding: '0px', borderRadius: '0px' },
       }}
       centered
     >
-      <div className="flex flex-col items-center justify-center">
-        <div
-          className="flex w-full items-center justify-between self-start p-4 text-lg font-medium border-b"
-          style={{ borderColor: colors.$1 }}
-        >
-          <div>{title}</div>
+      <Box className="flex flex-col items-center justify-center">
+        {!disableClosing && (
+          <Box
+            className="flex w-full items-center justify-between self-start p-4 text-lg font-medium border-b"
+            style={{ borderColor: colors.$1 }}
+          >
+            <Box>{title}</Box>
 
-          <div className="cursor-pointer">
-            <Icon name="close" onClick={onClose} size={25} />
-          </div>
-        </div>
+            <Box className="cursor-pointer">
+              <Icon name="close" onClick={onClose} size={25} />
+            </Box>
+          </Box>
+        )}
 
-        <div className="flex flex-col justify-center items-center w-full p-6">
+        <Box className="flex flex-col justify-center items-center w-full p-6">
           {children}
-        </div>
-      </div>
+        </Box>
+      </Box>
     </ModalBase>
   );
 };
