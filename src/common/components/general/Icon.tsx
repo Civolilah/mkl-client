@@ -19,6 +19,7 @@ import { IconType } from 'react-icons';
 import { AiOutlineCodeSandbox } from 'react-icons/ai';
 import { BiImport, BiWorld } from 'react-icons/bi';
 import { BsBookmarkStarFill } from 'react-icons/bs';
+import { CiLogout } from 'react-icons/ci';
 import {
   FaCheckCircle,
   FaClipboardCheck,
@@ -101,7 +102,8 @@ export type IconName =
   | 'status_marked'
   | 'company'
   | 'checkCircle'
-  | 'save';
+  | 'save'
+  | 'logout';
 
 type Props = {
   className?: string;
@@ -207,6 +209,8 @@ const Icon = (props: Props) => {
       return generateIconElement(FaCheckCircle);
     case 'save':
       return generateIconElement(MdSave);
+    case 'logout':
+      return generateIconElement(CiLogout);
 
     default:
       return <></>;

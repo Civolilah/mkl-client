@@ -9,16 +9,19 @@
  */
 
 import classNames from 'classnames';
-import { useAtomValue } from 'jotai';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Icon, Text, Tooltip } from '@components/index';
 
-import { useAccentColor, useColors, useTranslation } from '@hooks/index';
+import {
+  useAccentColor,
+  useColors,
+  useIsMiniSidebar,
+  useTranslation,
+} from '@hooks/index';
 
 import { NavItem as NavItemType } from './Default';
-import { isMiniSideBarAtom } from './NavBarIconsBox';
 
 type Props = {
   item: NavItemType;
@@ -53,8 +56,7 @@ const NavItem = (props: Props) => {
   const colors = useColors();
   const location = useLocation();
   const accentColor = useAccentColor();
-
-  const isMiniSideBar = useAtomValue(isMiniSideBarAtom);
+  const isMiniSideBar = useIsMiniSidebar();
 
   return (
     <Tooltip text={isMiniSideBar ? t(item.label) : ''}>

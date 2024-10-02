@@ -8,27 +8,35 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { request } from '@helpers/index';
 import classNames from 'classnames';
-import { useAtom } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
 
 import { Icon, Tooltip } from '@components/index';
 
-import { useAccentColor, useColors, useTranslation } from '@hooks/index';
-
-export const isMiniSideBarAtom = atomWithStorage('MKL-MINI-SIDE-BAR', false);
+import {
+  useAccentColor,
+  useColors,
+  useHandleChangeUserCompanyDetails,
+  useIsMiniSidebar,
+  useTranslation,
+} from '@hooks/index';
 
 const NavBarIconsBox = () => {
   const t = useTranslation();
   const colors = useColors();
   const accentColor = useAccentColor();
 
-  const [isMiniSideBar, setIsMiniSideBar] = useAtom(isMiniSideBarAtom);
+  const isMiniSideBar = useIsMiniSidebar();
+
+  const handleChangeUserCompanyDetails = useHandleChangeUserCompanyDetails();
 
   const handleClick = () => {
-    setTimeout(() => {
-      setIsMiniSideBar((current) => !current);
-    }, 50);
+    request('POST', '/api/users/toggle_side_bar').then((response) =>
+      handleChangeUserCompanyDetails(
+        'preference.mini_side_bar',
+        response.data.value
+      )
+    );
   };
 
   return (

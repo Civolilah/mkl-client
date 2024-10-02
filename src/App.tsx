@@ -44,13 +44,14 @@ const App = () => {
   const navigate = useNavigate();
   const switchLanguage = useSwitchLanguage();
 
-  const currentUser = useAtomValue(userCompanyAtom);
+  const currentUserCompanyDetails = useAtomValue(userCompanyAtom);
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState<boolean>(false);
 
   const handleDisplayWelcomeModal = () => {
-    if (currentUser?.created_at) {
+    if (currentUserCompanyDetails?.created_at) {
       const currentUnixUTC = dayjs().unix();
-      const timeDifferenceInSeconds = currentUnixUTC - currentUser?.created_at;
+      const timeDifferenceInSeconds =
+        (currentUnixUTC - currentUserCompanyDetails?.created_at) / 60;
 
       if (timeDifferenceInSeconds <= 60) {
         setIsWelcomeModalOpen(true);
@@ -130,7 +131,7 @@ const App = () => {
     <Box className="min-w-full min-h-screen">
       <Modal
         size="small"
-        title={t('add_product')}
+        title={t('welcome')}
         visible={isWelcomeModalOpen}
         onClose={() => setIsWelcomeModalOpen(false)}
       >

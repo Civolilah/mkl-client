@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 
 import { Drawer } from 'antd';
 import classNames from 'classnames';
-import { useAtomValue } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
 
 import Icon from '@components/general/Icon';
@@ -22,10 +21,9 @@ import {
   NavItem as NavItemElement,
 } from '@components/index';
 
-import { useColors } from '@hooks/index';
+import { useColors, useIsMiniSidebar } from '@hooks/index';
 
 import { NavItem } from './Default';
-import { isMiniSideBarAtom } from './NavBarIconsBox';
 
 type Props = {
   items: NavItem[];
@@ -37,7 +35,8 @@ const MobileNavBar = (props: Props) => {
   const colors = useColors();
 
   const [open, setOpen] = useState<boolean>(false);
-  const isMiniSideBar = useAtomValue(isMiniSideBarAtom);
+
+  const isMiniSideBar = useIsMiniSidebar();
 
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
 

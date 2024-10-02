@@ -66,5 +66,8 @@
     "anti_bot_verification": "Anti-bot verification!",
     "add_product": "Add Product",
     "add_first_product": "Add your first product to the store!",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "logout": "Log out",
+    "welcome": "Welcome",
+    "required": "required"
 }

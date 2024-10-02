@@ -30,7 +30,6 @@ const Dropdown = (props: Props) => {
               style: { ...item.style, borderRadius: 0 },
             }
         ),
-        style: { borderRadius: 0 },
       }}
       trigger={['click']}
     >

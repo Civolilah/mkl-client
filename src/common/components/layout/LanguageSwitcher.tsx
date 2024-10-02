@@ -12,7 +12,7 @@ import { MenuProps } from 'antd';
 import { TR, GB } from 'country-flag-icons/react/3x2';
 import { useTranslation } from 'react-i18next';
 
-import { Dropdown, Icon } from '@components/index';
+import { Box, Dropdown, Icon, Text } from '@components/index';
 
 import { useColors, useSwitchLanguage } from '@hooks/index';
 
@@ -38,14 +38,14 @@ const LanguageSwitcher = () => {
   const languages: MenuProps['items'] = [
     {
       label: (
-        <div
+        <Box
           className="flex items-center space-x-4"
           onClick={() => switchLanguage('en')}
         >
           {icon.en}
 
-          <span style={{ letterSpacing: 0.8 }}>English</span>
-        </div>
+          <Text>English</Text>
+        </Box>
       ),
       key: 'en',
       disabled: i18n.language === 'en',
@@ -53,14 +53,14 @@ const LanguageSwitcher = () => {
     },
     {
       label: (
-        <div
+        <Box
           className="flex items-center space-x-4"
           onClick={() => switchLanguage('tr')}
         >
           {icon.tr}
 
-          <span style={{ letterSpacing: 0.8 }}>Türkçe</span>
-        </div>
+          <Text style={{ letterSpacing: 0.8 }}>Türkçe</Text>
+        </Box>
       ),
       key: 'tr',
       disabled: i18n.language === 'tr',
@@ -70,20 +70,20 @@ const LanguageSwitcher = () => {
 
   return (
     <Dropdown menu={{ items: languages }}>
-      <div
-        className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap rounded w-full"
+      <Box
+        className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap w-full"
         style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
       >
-        <div className="flex items-center space-x-3">
+        <Box className="flex items-center space-x-3">
           {icon[i18n.language as Languages]}
 
-          <span className="text-sm font-medium" style={{ letterSpacing: 0.8 }}>
+          <Text className="text-sm font-medium">
             {LANGUAGE_ALIASES[i18n.language as Languages]}
-          </span>
-        </div>
+          </Text>
+        </Box>
 
         <Icon name="arrowDown" size={25} style={{ color: colors.$10 }} />
-      </div>
+      </Box>
     </Dropdown>
   );
 };

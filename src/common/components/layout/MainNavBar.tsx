@@ -8,19 +8,16 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useAtomValue } from 'jotai';
-
 import { NavBarIconsBox, NavItem as NavItemElement } from '@components/index';
 
-import { useColors } from '@hooks/index';
+import { useColors, useIsMiniSidebar } from '@hooks/index';
 
 import { navItems } from './Default';
-import { isMiniSideBarAtom } from './NavBarIconsBox';
 
 const NavigationBar = () => {
   const colors = useColors();
 
-  const isMiniSideBar = useAtomValue(isMiniSideBarAtom);
+  const isMiniSideBar = useIsMiniSidebar();
 
   return (
     <nav

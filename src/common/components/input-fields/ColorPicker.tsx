@@ -17,6 +17,7 @@ import { useDebounce } from 'react-use';
 import styled from 'styled-components';
 
 import {
+  Box,
   Button,
   CopyToClipboard,
   CopyToClipboardOnlyIcon,
@@ -79,9 +80,9 @@ const ColorPicker = (props: Props) => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-start">
+      <Box className="flex flex-col justify-center items-start">
         {label && (
-          <div className="flex items-center space-x-1">
+          <Box className="flex items-center space-x-1">
             <Text
               style={{
                 fontSize: isSmallScreen ? '14px' : '15px',
@@ -92,13 +93,15 @@ const ColorPicker = (props: Props) => {
             </Text>
 
             {required ? (
-              <span className="self-start text-red-600">*</span>
+              <Text style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+                ({t('required')})
+              </Text>
             ) : (
-              <span style={{ fontSize: isSmallScreen ? '11.75px' : '12.5px' }}>
+              <Text style={{ fontSize: isSmallScreen ? '11.75px' : '12.5px' }}>
                 ({t('optional')})
-              </span>
+              </Text>
             )}
-          </div>
+          </Box>
         )}
 
         <Div
@@ -107,17 +110,17 @@ const ColorPicker = (props: Props) => {
           theme={{ borderColor: colors.$1, hoverBorderColor: accentColor }}
         >
           {color === '' ? (
-            <div
+            <Box
               className="flex items-center space-x-2 px-1.5 py-1"
               style={{ borderColor: colors.$1 }}
             >
               <TransparentColorBox />
 
               <Text>{t('no_color')}</Text>
-            </div>
+            </Box>
           ) : (
-            <div className="flex items-center space-x-4 px-1.5 py-1">
-              <div
+            <Box className="flex items-center space-x-4 px-1.5 py-1">
+              <Box
                 style={{
                   width: '2.2rem',
                   height: '2.2rem',
@@ -128,10 +131,10 @@ const ColorPicker = (props: Props) => {
               <CopyToClipboard text={color}>
                 <Text>{color}</Text>
               </CopyToClipboard>
-            </div>
+            </Box>
           )}
         </Div>
-      </div>
+      </Box>
 
       <Modal
         title={t('color')}
@@ -139,23 +142,23 @@ const ColorPicker = (props: Props) => {
         visible={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
-        <div className="flex flex-col w-full items-center justify-center space-y-6">
-          <div className="flex w-full flex-col space-y-1">
-            <div
+        <Box className="flex flex-col w-full items-center justify-center space-y-6">
+          <Box className="flex w-full flex-col space-y-1">
+            <Box
               className="cursor-pointer self-end"
               onClick={() => setColor('')}
             >
               <TransparentColorBox size="30px" />
-            </div>
+            </Box>
 
             <HexColorPicker
               color={color}
               onChange={setColor}
               style={{ width: '100%' }}
             />
-          </div>
+          </Box>
 
-          <div className="flex w-full items-center justify-between space-x-4">
+          <Box className="flex w-full items-center justify-between space-x-4">
             <HexColorInputStyled
               color={color}
               onChange={setColor}
@@ -167,14 +170,14 @@ const ColorPicker = (props: Props) => {
             />
 
             {color && <CopyToClipboardOnlyIcon text={color} />}
-          </div>
+          </Box>
 
-          <div className="flex w-full items-center space-x-2">
+          <Box className="flex w-full items-center space-x-2">
             <Button className="w-full" onClick={() => setIsModalOpen(false)}>
               {t('done')}
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Modal>
     </>
   );

@@ -25,5 +25,8 @@ export const useToast = () => {
     loading: (message?: string) => {
       toast.loading(t(message ?? 'processing'));
     },
+    dismiss: () => {
+      toast.dismiss();
+    },
   };
 };

@@ -8,9 +8,20 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Icon, MobileNavBar, NavBarLogoSection, Text } from '@components/index';
+import { useAtomValue } from 'jotai';
+import styled from 'styled-components';
 
-import { useColors } from '@hooks/index';
+import { userCompanyAtom } from '@components/general/PrivateRoute';
+import {
+  Box,
+  Icon,
+  MobileNavBar,
+  NavBarLogoSection,
+  Popover,
+  Text,
+} from '@components/index';
+
+import { useColors, useLogout, useTranslation } from '@hooks/index';
 
 import { navItems } from './Default';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -19,13 +30,24 @@ type Props = {
   title?: string;
 };
 
-const Header = (props: Props) => {
-  const { title } = props;
+const StyledBox = styled.div`
+  &:hover {
+    background-color: ${(props) => props.theme.hoverBackgroundColor};
+  }
+`;
 
+const Header = (props: Props) => {
+  const t = useTranslation();
   const colors = useColors();
 
+  const { title } = props;
+
+  const logout = useLogout();
+
+  const userCompanyDetails = useAtomValue(userCompanyAtom);
+
   return (
-    <div
+    <Box
       className="flex items-center justify-center w-full border-b py-4"
       style={{
         height: '4.35rem',
@@ -33,36 +55,70 @@ const Header = (props: Props) => {
         backgroundColor: colors.$6,
       }}
     >
-      <div className="hidden lg:flex">
+      <Box className="hidden lg:flex">
         <NavBarLogoSection />
-      </div>
+      </Box>
 
-      <div className="flex lg:hidden">
+      <Box className="flex lg:hidden">
         <MobileNavBar items={navItems} />
-      </div>
+      </Box>
 
-      <div className="flex w-full justify-between items-center px-2 md:px-6">
+      <Box className="flex w-full justify-between items-center px-2 md:px-6">
         <Text className="text-lg md:text-xl whitespace-nowrap">{title}</Text>
 
-        <div className="flex w-full justify-end">
-          <div className="flex items-center space-x-9">
-            <div className="hidden md:flex">
+        <Box className="flex w-full justify-end">
+          <Box className="flex items-center space-x-9">
+            <Box className="hidden md:flex">
               <LanguageSwitcher />
-            </div>
+            </Box>
 
-            <div className="flex relative items-center cursor-pointer pr-3">
-              <div>
-                <Icon name="person" size={30} />
-              </div>
+            <Popover
+              content={
+                <Box className="flex flex-col justify-center items-center min-w-60">
+                  <Box className="py-4 px-4">
+                    <Text className="text-base font-medium">
+                      {userCompanyDetails?.email}
+                    </Text>
+                  </Box>
 
-              <div className="absolute left-6" style={{ top: '0.25rem' }}>
-                <Icon name="arrowDown" size={24} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                  <StyledBox
+                    className="flex w-full items-center space-x-5 cursor-pointer px-3 py-2.5 border-t"
+                    onClick={logout}
+                    theme={{
+                      hoverBackgroundColor: colors.$19,
+                      borderColor: colors.$1,
+                    }}
+                  >
+                    <Box>
+                      <Icon
+                        name="logout"
+                        style={{ rotate: '180deg' }}
+                        size={27}
+                      />
+                    </Box>
+
+                    <Text className="text-base">{t('logout')}</Text>
+                  </StyledBox>
+                </Box>
+              }
+            >
+              <Box
+                className="flex relative items-center cursor-pointer"
+                style={{ width: '2.6rem' }}
+              >
+                <Box>
+                  <Icon name="person" size={30} />
+                </Box>
+
+                <Box className="absolute left-6" style={{ top: '0.25rem' }}>
+                  <Icon name="arrowDown" size={24} />
+                </Box>
+              </Box>
+            </Popover>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

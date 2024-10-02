@@ -14,3 +14,6 @@ export { default as useTheme } from '@hooks/global/useTheme';
 export { default as useColors } from '@hooks/global/useColors';
 export { default as useSwitchLanguage } from '@hooks/global/useSwitchLanguage';
 export { default as useAuthenticated } from '@hooks/auth/useAuthenticated';
+export { default as useLogout } from '@hooks/auth/useLogout';
+export { default as useIsMiniSidebar } from '@hooks/global/useIsMiniSidebar';
+export { default as useHandleChangeUserCompanyDetails } from '@hooks/global/useHandleChangeUserCompanyDetails';

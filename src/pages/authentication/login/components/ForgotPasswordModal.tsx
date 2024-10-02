@@ -20,7 +20,7 @@ import * as Yup from 'yup';
 
 import { ValidationErrors } from '@interfaces/index';
 
-import { Button, Captcha, Modal, Text, TextField } from '@components/index';
+import { Button, Modal, Text, TextField } from '@components/index';
 
 import { useAccentColor, useTranslation } from '@hooks/index';
 
@@ -158,7 +158,7 @@ const ForgotPasswordModal = ({ email }: Props) => {
             {t('send_email')}
           </Button>
 
-          <Captcha innerRef={captchaRef} />
+          {/* <Captcha innerRef={captchaRef} /> */}
         </div>
       </Modal>
 

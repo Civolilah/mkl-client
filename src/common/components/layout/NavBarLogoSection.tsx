@@ -9,13 +9,10 @@
  */
 
 import classNames from 'classnames';
-import { useAtomValue } from 'jotai';
 
 import { Icon } from '@components/index';
 
-import { useColors } from '@hooks/index';
-
-import { isMiniSideBarAtom } from './NavBarIconsBox';
+import { useColors, useIsMiniSidebar } from '@hooks/index';
 
 type Props = {
   mobileSideBar?: boolean;
@@ -26,7 +23,8 @@ const NavBarLogoSection = (props: Props) => {
   const { mobileSideBar, handleCloseSideBar } = props;
 
   const colors = useColors();
-  const isMiniSideBar = useAtomValue(isMiniSideBarAtom);
+
+  const isMiniSideBar = useIsMiniSidebar();
 
   return (
     <div

@@ -14,7 +14,7 @@ import { Input } from 'antd';
 import { useMediaQuery } from 'react-responsive';
 import { useDebounce } from 'react-use';
 
-import { Icon, Text } from '@components/index';
+import { Box, Icon, Text } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -70,9 +70,9 @@ const TextField = (props: Props) => {
   }, [value]);
 
   return (
-    <div className="flex flex-col space-y-2 w-full">
+    <Box className="flex flex-col space-y-2 w-full">
       {label && (
-        <div className="flex items-center space-x-1">
+        <Box className="flex items-center space-x-1">
           <Text
             style={{
               fontSize: isSmallScreen ? '14px' : '15px',
@@ -83,17 +83,19 @@ const TextField = (props: Props) => {
           </Text>
 
           {required ? (
-            <span className="self-start text-red-600">*</span>
+            <Text style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+              ({t('required')})
+            </Text>
           ) : (
             <>
               {Boolean(!withoutOptionalText) && (
-                <span style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+                <Text style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
                   ({t('optional')})
-                </span>
+                </Text>
               )}
             </>
           )}
-        </div>
+        </Box>
       )}
 
       {type !== 'password' && (
@@ -127,15 +129,15 @@ const TextField = (props: Props) => {
       )}
 
       {errorMessage && (
-        <div className="mt-1 text-sm text-red-600 flex items-center space-x-1">
-          <div className="mt-0.5">
+        <Box className="mt-1 text-sm text-red-600 flex items-center space-x-1">
+          <Box className="mt-0.5">
             <Icon name="error" size={19} style={{ color: '#dc2626' }} />
-          </div>
+          </Box>
 
           <Text className="break-words">{errorMessage}</Text>
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 
