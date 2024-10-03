@@ -33,7 +33,7 @@ const Dropdown = (props: Props) => {
       }}
       trigger={['click']}
     >
-      {children}
+      <div>{children}</div>
     </DropdownBase>
   );
 };

@@ -33,6 +33,8 @@ import {
 
 import { useColors, useTranslation } from '@hooks/index';
 
+import { validateUserDetails } from './helpers/helpers';
+
 export type UserDetails = {
   email: string;
   password: string;
@@ -62,10 +64,13 @@ const Register = () => {
   };
 
   const handleRegister = async (type: AccessType, token?: string) => {
-    if (!Object.keys(errors).length) {
+    if (!Object.keys(errors).length || type !== 'credentials') {
       setIsFormBusy(true);
 
-      const result = undefined;
+      const result =
+        type === 'credentials'
+          ? await validateUserDetails(userDetails)
+          : undefined;
 
       if (result !== undefined) {
         setErrors(result);
@@ -96,6 +101,7 @@ const Register = () => {
       }
 
       setIsFormBusy(false);
+      setTurnstileToken('');
     }
   };
 

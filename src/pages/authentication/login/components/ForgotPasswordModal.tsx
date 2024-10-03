@@ -74,8 +74,6 @@ const ForgotPasswordModal = ({ email }: Props) => {
       const updatedValidationError =
         validationError as unknown as Yup.ValidationError;
 
-      console.log(updatedValidationError);
-
       const errorMessages = {};
 
       updatedValidationError.inner.forEach((error) => {
@@ -157,8 +155,6 @@ const ForgotPasswordModal = ({ email }: Props) => {
           >
             {t('send_email')}
           </Button>
-
-          {/* <Captcha innerRef={captchaRef} /> */}
         </div>
       </Modal>
 

@@ -27,7 +27,7 @@ const Popover = (props: Props) => {
       arrow={false}
       overlayInnerStyle={{ borderRadius: '0px', padding: 0 }}
     >
-      {children}
+      <div>{children}</div>
     </PopoverBase>
   );
 };

@@ -12,10 +12,12 @@ import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request } from '@helpers/index';
+import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
 import {
+  Box,
   Button,
   GoogleButton,
   LanguageSwitcher,
@@ -27,12 +29,13 @@ import {
 import { useColors, useTranslation } from '@hooks/index';
 
 import { AccessType, UserDetails } from '../register/Register';
-import ForgotPasswordModal from './components/ForgotPasswordModal';
 import { validateUserDetails } from './helpers/helpers';
 
 const Login = () => {
   const t = useTranslation();
   const colors = useColors();
+
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
@@ -42,7 +45,7 @@ const Login = () => {
   });
 
   const handleAccessApp = async (type: AccessType, token?: string) => {
-    if (!Object.keys(errors).length) {
+    if (!Object.keys(errors).length || type !== 'credentials') {
       setIsFormBusy(true);
 
       const result =
@@ -57,11 +60,24 @@ const Login = () => {
           type,
           ...(token && { token }),
           ...(!token && { details: userDetails }),
+          ...(type === 'credentials' && {
+            language: localStorage.getItem('MKL-LOCALE') || 'en',
+            timezone:
+              Intl?.DateTimeFormat()?.resolvedOptions()?.timeZone ||
+              'Europe/Sarajevo',
+          }),
         })
-          .then((response) => response)
+          .then((response) => {
+            localStorage.setItem('MKL-TOKEN', response.data.token);
+            setTimeout(() => {
+              window.dispatchEvent(new CustomEvent('display_welcome_modal'));
+            }, 450);
+
+            navigate('/');
+          })
           .catch((error) => {
-            if (error.response?.status_code === VALIDATION_ERROR_STATUS_CODE) {
-              setErrors(error.response.errors);
+            if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
+              setErrors(error.response.data.errors);
             }
           });
       }
@@ -88,7 +104,7 @@ const Login = () => {
   }, []);
 
   return (
-    <div
+    <Box
       className="flex flex-col items-center justify-center min-h-screen min-w-screen space-y-16"
       style={{
         backgroundColor: colors.$3,
@@ -102,8 +118,8 @@ const Login = () => {
         alt="The MKL Store Logo"
       />
 
-      <div className="px-2 md:px-0 max-w-full w-[26.5rem]">
-        <div
+      <Box className="px-2 md:px-0 max-w-full w-[26.5rem]">
+        <Box
           className="flex flex-col border px-4 sm:px-8 md:px-10 pb-12 pt-10 w-full"
           style={{
             borderColor: colors.$1,
@@ -116,12 +132,12 @@ const Login = () => {
             backgroundColor: colors.$2,
           }}
         >
-          <div className="flex flex-col items-center justify-center space-y-10">
-            <h1 style={{ fontSize: '2rem', letterSpacing: 0.8 }}>
+          <Box className="flex flex-col items-center justify-center space-y-10">
+            <Text style={{ fontSize: '2rem', letterSpacing: 0.8 }}>
               {t('sign_in')}
-            </h1>
+            </Text>
 
-            <div className="flex flex-col justify-center items-center space-y-4 w-full">
+            <Box className="flex flex-col justify-center items-center space-y-4 w-full">
               <TextField
                 label={t('email')}
                 placeHolder={t('email_placeholder')}
@@ -135,7 +151,7 @@ const Login = () => {
                 withoutOptionalText
               />
 
-              <div className="flex flex-col w-full space-y-1">
+              <Box className="flex flex-col w-full space-y-1">
                 <TextField
                   type="password"
                   label={t('password')}
@@ -158,10 +174,10 @@ const Login = () => {
                   withoutOptionalText
                 />
 
-                <ForgotPasswordModal email={userDetails.email} />
-              </div>
+                {/* <ForgotPasswordModal email={userDetails.email} /> */}
+              </Box>
 
-              <div
+              <Box
                 className="flex flex-col items-center justify-center w-full space-y-3"
                 style={{ marginTop: '1.5rem' }}
               >
@@ -174,17 +190,17 @@ const Login = () => {
                   {t('sign_in')}
                 </Button>
 
-                <div className="flex items-center justify-center w-full space-x-3">
+                <Box className="flex items-center justify-center w-full space-x-3">
                   <Text className="text-sm">{t('dont_have_account')}</Text>
 
                   <Link className="text-sm" to="/register" constantUnderline>
                     {t('sign_up')}
                   </Link>
-                </div>
-              </div>
+                </Box>
+              </Box>
 
-              <div className="flex items-center w-full space-x-4">
-                <div
+              <Box className="flex items-center w-full space-x-4">
+                <Box
                   className="flex-1"
                   style={{
                     height: '1px',
@@ -192,39 +208,39 @@ const Login = () => {
                   }}
                 />
 
-                <div
+                <Box
                   className="text-sm font-medium uppercase"
                   style={{
                     color: colors.$5,
                   }}
                 >
                   {t('or')}
-                </div>
+                </Box>
 
-                <div
+                <Box
                   className="flex-1"
                   style={{
                     height: '1px',
                     backgroundColor: colors.$1,
                   }}
                 />
-              </div>
+              </Box>
 
               <GoogleButton
                 disabled={isFormBusy}
                 handleAccessApp={handleAccessApp}
               />
-            </div>
-          </div>
-        </div>
-      </div>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
 
       <div className="w-38">
         <div className="w-full">
           <LanguageSwitcher />
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

@@ -69,5 +69,9 @@
     "cancel": "Cancel",
     "logout": "Log out",
     "welcome": "Welcome",
-    "required": "required"
+    "required": "required",
+    "invalid_credentials": "You have entered an invalid email or password.",
+    "page_does_not_exist": "The page you are looking for doesn't exist.",
+    "page_not_found": "Oops! Page not found.",
+    "home": "Home"
 }
