@@ -21,9 +21,8 @@ import {
   NavItem as NavItemElement,
 } from '@components/index';
 
+import { NavItem } from '@hooks/global/useNavItems';
 import { useColors, useIsMiniSidebar } from '@hooks/index';
-
-import { NavItem } from './Default';
 
 type Props = {
   items: NavItem[];
@@ -75,7 +74,7 @@ const MobileNavBar = (props: Props) => {
         open={open}
         closable={false}
         onClose={onClose}
-        width={isMiniSideBar ? '4.35rem' : '19rem'}
+        width={isMiniSideBar ? '4.35rem' : '17.5rem'}
         rootStyle={{ padding: 0 }}
         styles={{ body: { padding: 0 } }}
       >

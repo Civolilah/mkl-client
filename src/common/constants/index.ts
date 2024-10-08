@@ -12,6 +12,8 @@ export { tt } from './global/global';
 
 export { INITIAL_STATUS } from './status/status';
 
+export { INITIAL_SUBSIDIARY } from './subsidiary/subsidiary';
+
 export {
   VALIDATION_ERROR_STATUS_CODE,
   MAX_REQUESTS_LOGIN_REGISTER_ERROR_STATUS_CODE,

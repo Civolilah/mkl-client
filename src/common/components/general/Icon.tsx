@@ -31,6 +31,7 @@ import {
   FaTruck,
   FaUsers,
 } from 'react-icons/fa';
+import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { IoInformationCircleOutline } from 'react-icons/io5';
 import {
   MdAdd,
@@ -47,6 +48,7 @@ import {
   MdOutlineMenu,
   MdOutlineShoppingCart,
   MdSave,
+  MdWarehouse,
 } from 'react-icons/md';
 import {
   MdDashboard,
@@ -61,6 +63,7 @@ import {
 } from 'react-icons/md';
 import { RxPerson } from 'react-icons/rx';
 import { SiCashapp } from 'react-icons/si';
+import { TbPackageExport } from 'react-icons/tb';
 
 export type IconName =
   | 'facebook'
@@ -103,14 +106,17 @@ export type IconName =
   | 'company'
   | 'checkCircle'
   | 'save'
-  | 'logout';
+  | 'logout'
+  | 'store'
+  | 'export'
+  | 'closeRounded';
 
 type Props = {
   className?: string;
   onClick?: () => void;
   style?: CSSProperties;
   name: IconName;
-  size?: number;
+  size?: number | string;
 };
 
 const Icon = (props: Props) => {
@@ -121,7 +127,7 @@ const Icon = (props: Props) => {
 
     if (isValidElement(iconElement)) {
       return cloneElement(iconElement, {
-        fontSize: props.size || 18,
+        fontSize: props.size || '1.125rem',
         onClick: props.onClick,
         style: props.style,
       });
@@ -211,6 +217,12 @@ const Icon = (props: Props) => {
       return generateIconElement(MdSave);
     case 'logout':
       return generateIconElement(CiLogout);
+    case 'store':
+      return generateIconElement(MdWarehouse);
+    case 'export':
+      return generateIconElement(TbPackageExport);
+    case 'closeRounded':
+      return generateIconElement(IoMdCloseCircleOutline);
 
     default:
       return <></>;

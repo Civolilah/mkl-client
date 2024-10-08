@@ -16,3 +16,5 @@ export type {
 export type { IUser } from '@interfaces/user/user';
 
 export type { Status } from '@interfaces/status/status';
+
+export type { Subsidiary } from '@interfaces/subsidiary/subsidiary';

@@ -28,16 +28,16 @@ const NavBarLogoSection = (props: Props) => {
 
   return (
     <div
-      className={classNames('flex items-center py-4', {
+      className={classNames('flex items-center py-2', {
         'border-r': !mobileSideBar,
         'border-b': mobileSideBar,
-        'px-4 md:px-6': !mobileSideBar,
+        'px-2': !mobileSideBar,
         'px-3': mobileSideBar,
       })}
       style={{
         height: '4.35rem',
         borderColor: colors.$1,
-        width: isMiniSideBar ? '4.35rem' : '19rem',
+        width: isMiniSideBar ? '4.35rem' : '17.5rem',
       }}
     >
       <div className="flex w-full justify-between items-center">
@@ -46,9 +46,10 @@ const NavBarLogoSection = (props: Props) => {
             <img
               className="cursor-pointer"
               src="/images/logo.png"
-              width={120}
-              height={32}
+              width="full"
+              height="full"
               alt="The MKL Store Logo"
+              style={{ objectFit: 'contain' }}
             />
           </div>
         )}

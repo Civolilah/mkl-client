@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAccentColor } from '@hooks/index';
 
+import Box from './Box';
+
 type Props = {
   href?: string;
   className?: string;
@@ -32,7 +34,7 @@ const Tooltip = (props: Props) => {
 
   if (href) {
     return (
-      <div
+      <Box
         onClick={(event) => {
           event.stopPropagation();
           navigate(href);
@@ -43,16 +45,16 @@ const Tooltip = (props: Props) => {
           title={text}
           trigger={['hover']}
           mouseEnterDelay={0}
-          overlayClassName="rounded"
           overlayInnerStyle={{
-            padding: 6,
-            fontSize: 13.2,
+            padding: '0.375rem',
+            fontSize: '0.825rem',
+            borderRadius: 0,
           }}
           color={accentColor}
         >
           {children}
         </TooltipBase>
-      </div>
+      </Box>
     );
   }
 
@@ -62,10 +64,10 @@ const Tooltip = (props: Props) => {
       title={text}
       trigger={trigger ?? ['hover']}
       mouseEnterDelay={0}
-      overlayClassName="rounded"
       overlayInnerStyle={{
-        padding: 6,
-        fontSize: 13.2,
+        padding: '0.375rem',
+        fontSize: '0.825rem',
+        borderRadius: 0,
       }}
       mouseLeaveDelay={0}
       color={accentColor}

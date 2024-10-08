@@ -32,6 +32,8 @@ type Props = {
   onPressEnter?: (event: KeyboardEvent<HTMLInputElement> | undefined) => void;
   debounce?: number;
   withoutOptionalText?: boolean;
+  autoComplete?: 'email';
+  changeOnBlur?: boolean;
 };
 
 const TextField = (props: Props) => {
@@ -51,6 +53,8 @@ const TextField = (props: Props) => {
     maxLength,
     debounce,
     withoutOptionalText,
+    autoComplete,
+    changeOnBlur = false,
   } = props;
 
   const [currentValue, setCurrentValue] = useState<string>(value);
@@ -59,7 +63,9 @@ const TextField = (props: Props) => {
 
   useDebounce(
     () => {
-      onValueChange?.(currentValue);
+      if (!changeOnBlur) {
+        onValueChange?.(currentValue);
+      }
     },
     debounce ?? 300,
     [currentValue]
@@ -75,7 +81,7 @@ const TextField = (props: Props) => {
         <Box className="flex items-center space-x-1">
           <Text
             style={{
-              fontSize: isSmallScreen ? '14px' : '15px',
+              fontSize: isSmallScreen ? '0.875rem' : '0.938rem',
               fontWeight: 500,
             }}
           >
@@ -83,13 +89,15 @@ const TextField = (props: Props) => {
           </Text>
 
           {required ? (
-            <Text style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+            <Text style={{ fontSize: isSmallScreen ? '0.719rem' : '0.781rem' }}>
               ({t('required')})
             </Text>
           ) : (
             <>
               {Boolean(!withoutOptionalText) && (
-                <Text style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+                <Text
+                  style={{ fontSize: isSmallScreen ? '0.719rem' : '0.781rem' }}
+                >
                   ({t('optional')})
                 </Text>
               )}
@@ -105,11 +113,13 @@ const TextField = (props: Props) => {
           size={size}
           value={currentValue}
           onChange={(event) => setCurrentValue(event.target.value)}
+          onBlur={() => changeOnBlur && onValueChange?.(currentValue)}
           maxLength={maxLength}
           placeholder={placeHolder}
           onPressEnter={onPressEnter}
           disabled={disabled}
           style={{ boxShadow: 'none' }}
+          autoComplete={autoComplete}
         />
       )}
 

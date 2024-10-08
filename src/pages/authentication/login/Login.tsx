@@ -60,7 +60,7 @@ const Login = () => {
           type,
           ...(token && { token }),
           ...(!token && { details: userDetails }),
-          ...(type === 'credentials' && {
+          ...(type !== 'credentials' && {
             language: localStorage.getItem('MKL-LOCALE') || 'en',
             timezone:
               Intl?.DateTimeFormat()?.resolvedOptions()?.timeZone ||
@@ -113,8 +113,8 @@ const Login = () => {
       <img
         className="cursor-pointer"
         src="/images/logo.png"
-        width={195}
-        height={60}
+        width={450}
+        height={130}
         alt="The MKL Store Logo"
       />
 
@@ -133,9 +133,7 @@ const Login = () => {
           }}
         >
           <Box className="flex flex-col items-center justify-center space-y-10">
-            <Text style={{ fontSize: '2rem', letterSpacing: 0.8 }}>
-              {t('sign_in')}
-            </Text>
+            <Text style={{ fontSize: '2rem' }}>{t('sign_in')}</Text>
 
             <Box className="flex flex-col justify-center items-center space-y-4 w-full">
               <TextField
@@ -149,6 +147,7 @@ const Login = () => {
                 onPressEnter={() => handleAccessApp('credentials')}
                 errorMessage={errors.email && t(errors.email)}
                 withoutOptionalText
+                autoComplete="email"
               />
 
               <Box className="flex flex-col w-full space-y-1">

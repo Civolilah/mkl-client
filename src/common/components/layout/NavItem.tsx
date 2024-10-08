@@ -12,16 +12,15 @@ import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Icon, Text, Tooltip } from '@components/index';
+import { Box, Icon, Text, Tooltip } from '@components/index';
 
+import { NavItem as NavItemType } from '@hooks/global/useNavItems';
 import {
   useAccentColor,
   useColors,
   useIsMiniSidebar,
   useTranslation,
 } from '@hooks/index';
-
-import { NavItem as NavItemType } from './Default';
 
 type Props = {
   item: NavItemType;
@@ -73,14 +72,14 @@ const NavItem = (props: Props) => {
         onClick={() => navigate(item.href)}
         style={{ height: '3rem' }}
       >
-        <div
+        <Box
           className={classNames('flex w-full items-center', {
             'justify-center': isMiniSideBar,
             'justify-between': !isMiniSideBar,
           })}
         >
-          <div className="flex items-center space-x-2">
-            <div className="flex justify-center items-center min-w-8">
+          <Box className="flex items-center space-x-2">
+            <Box className="flex justify-center items-center min-w-8">
               <IconWrapper
                 theme={{
                   color: accentColor,
@@ -90,12 +89,12 @@ const NavItem = (props: Props) => {
               >
                 <Icon name={item.iconName} size={item.iconSize} />
               </IconWrapper>
-            </div>
+            </Box>
 
             {!isMiniSideBar && (
-              <Text style={{ fontSize: 15.5 }}>{t(item.label)}</Text>
+              <Text style={{ fontSize: '0.969rem' }}>{t(item.label)}</Text>
             )}
-          </div>
+          </Box>
 
           {Boolean(item.rightIcon && !isMiniSideBar) && (
             <Tooltip
@@ -110,11 +109,11 @@ const NavItem = (props: Props) => {
                   border: `1px solid ${accentColor}`,
                 }}
               >
-                <Icon name={item.rightIcon!.name} size={21.5} />
+                <Icon name={item.rightIcon!.name} size="1.165rem" />
               </div>
             </Tooltip>
           )}
-        </div>
+        </Box>
       </Div>
     </Tooltip>
   );

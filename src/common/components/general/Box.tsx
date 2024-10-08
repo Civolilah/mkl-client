@@ -8,13 +8,13 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, MouseEvent, ReactNode } from 'react';
 
 type Props = {
   className?: string;
   children?: ReactNode;
   style?: CSSProperties;
-  onClick?: () => void;
+  onClick?: (event: MouseEvent<HTMLDivElement>) => void;
 };
 
 const Box = (props: Props) => {

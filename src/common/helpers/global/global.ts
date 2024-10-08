@@ -30,3 +30,14 @@ export const useToast = () => {
     },
   };
 };
+
+type RouteParams = {
+  [key: string]: string;
+};
+
+export const route = (url: string, params: RouteParams): string => {
+  return Object.entries(params).reduce((acc, [key, value]) => {
+    const pattern = new RegExp(`:${key}`, 'g');
+    return acc.replace(pattern, value.toString());
+  }, url);
+};

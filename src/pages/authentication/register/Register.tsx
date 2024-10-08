@@ -207,6 +207,7 @@ const Register = () => {
                   }}
                   errorMessage={errors.email && t(errors.email)}
                   withoutOptionalText
+                  autoComplete="email"
                 />
 
                 <TextField

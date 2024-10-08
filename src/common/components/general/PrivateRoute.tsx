@@ -16,6 +16,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import { Languages } from '@components/layout/LanguageSwitcher';
 
+import { Permission } from '@hooks/global/useHasPermission';
 import { useAuthenticated } from '@hooks/index';
 
 import LoadingScreen from './LoadingScreen';
@@ -27,7 +28,7 @@ type UserCompanyDetails = {
   created_at: number;
   is_director: boolean;
   is_owner: boolean;
-  permissions: string[];
+  permissions: Permission[];
   preference: {
     language: Languages;
     mini_side_bar: boolean | null;

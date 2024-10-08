@@ -17,8 +17,10 @@ import Index from '@pages/index';
 import { PrivateRoute } from '@components/index';
 
 import authenticationRoutes from './authentication/routes';
+import employeeRoutes from './employee/routes';
 import productRoutes from './product/routes';
 import statusRoutes from './status/routes';
+import subsidiaryRoutes from './subsidiary/routes';
 
 const Dashboard = lazy(() => import('@pages/dashboard/Dashboard'));
 const NotFound = lazy(() => import('@pages/not-found/NotFound'));
@@ -35,6 +37,10 @@ export const routes = (
       {productRoutes}
 
       {statusRoutes}
+
+      {subsidiaryRoutes}
+
+      {employeeRoutes}
     </Route>
 
     <Route path="*" element={<NotFound />} />

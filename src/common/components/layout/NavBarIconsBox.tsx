@@ -31,7 +31,9 @@ const NavBarIconsBox = () => {
   const handleChangeUserCompanyDetails = useHandleChangeUserCompanyDetails();
 
   const handleClick = () => {
-    request('POST', '/api/users/toggle_side_bar').then((response) =>
+    request('POST', '/api/users/toggle_sidebar', {
+      value: !isMiniSideBar,
+    }).then((response) =>
       handleChangeUserCompanyDetails(
         'preference.mini_side_bar',
         response.data.value

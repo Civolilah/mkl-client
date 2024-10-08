@@ -85,7 +85,7 @@ const ColorPicker = (props: Props) => {
           <Box className="flex items-center space-x-1">
             <Text
               style={{
-                fontSize: isSmallScreen ? '14px' : '15px',
+                fontSize: isSmallScreen ? '0.875rem' : '0.938rem',
                 fontWeight: 500,
               }}
             >
@@ -93,11 +93,15 @@ const ColorPicker = (props: Props) => {
             </Text>
 
             {required ? (
-              <Text style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+              <Text
+                style={{ fontSize: isSmallScreen ? '0.719rem' : '0.781rem' }}
+              >
                 ({t('required')})
               </Text>
             ) : (
-              <Text style={{ fontSize: isSmallScreen ? '11.75px' : '12.5px' }}>
+              <Text
+                style={{ fontSize: isSmallScreen ? '0.734rem' : '0.781rem' }}
+              >
                 ({t('optional')})
               </Text>
             )}
@@ -148,7 +152,7 @@ const ColorPicker = (props: Props) => {
               className="cursor-pointer self-end"
               onClick={() => setColor('')}
             >
-              <TransparentColorBox size="30px" />
+              <TransparentColorBox size="1.875rem" />
             </Box>
 
             <HexColorPicker

@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 
-import { Text } from '@components/index';
+import { Box, Text } from '@components/index';
 
 import { useColors, useTranslation } from '@hooks/index';
 
@@ -41,7 +41,7 @@ const LabelElement = (props: Props) => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
-    <div
+    <Box
       className={classNames(
         `flex flex-col lg:flex-row sm:grid sm:gap-10 ${className}`,
         {
@@ -52,15 +52,15 @@ const LabelElement = (props: Props) => {
         }
       )}
     >
-      <div
+      <Box
         className={classNames('flex flex-col', {
           'opacity-75': props.disabledLabels,
         })}
       >
-        <div className="flex items-center space-x-1">
+        <Box className="flex items-center space-x-1">
           <Text
             style={{
-              fontSize: isSmallScreen ? '14px' : '15px',
+              fontSize: isSmallScreen ? '0.875rem' : '0.94rem',
               fontWeight: 500,
             }}
           >
@@ -68,31 +68,33 @@ const LabelElement = (props: Props) => {
           </Text>
 
           {required ? (
-            <span className="self-start text-red-600">*</span>
+            <Text>{t('required')}</Text>
           ) : (
             <>
               {Boolean(!withoutOptionalText) && (
-                <span style={{ fontSize: isSmallScreen ? '11.5px' : '12.5px' }}>
+                <Text
+                  style={{ fontSize: isSmallScreen ? '0.9375rem' : '0.781rem' }}
+                >
                   ({t('optional')})
-                </span>
+                </Text>
               )}
             </>
           )}
-        </div>
+        </Box>
 
         {helpLabel && (
-          <div
+          <Box
             style={{
               color: colors.$16,
-              fontSize: isSmallScreen ? '12px' : '13.35px',
+              fontSize: isSmallScreen ? '0.75rem' : '0.834rem',
             }}
           >
             {helpLabel}
-          </div>
+          </Box>
         )}
-      </div>
+      </Box>
 
-      <div
+      <Box
         className={classNames({
           'flex flex-col sm:flex-row sm:justify-end': props.pushContentToRight,
           'sm:col-span-1': props.twoGridColumns,
@@ -100,8 +102,8 @@ const LabelElement = (props: Props) => {
         })}
       >
         {props.children}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

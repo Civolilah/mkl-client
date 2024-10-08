@@ -17,3 +17,5 @@ export { default as useAuthenticated } from '@hooks/auth/useAuthenticated';
 export { default as useLogout } from '@hooks/auth/useLogout';
 export { default as useIsMiniSidebar } from '@hooks/global/useIsMiniSidebar';
 export { default as useHandleChangeUserCompanyDetails } from '@hooks/global/useHandleChangeUserCompanyDetails';
+export { default as useHasPermission } from '@hooks/global/useHasPermission';
+export { default as useNavItems } from '@hooks/global/useNavItems';

@@ -17,6 +17,8 @@ import styled from 'styled-components';
 
 import { useColors } from '@hooks/index';
 
+import Box from './Box';
+
 type Props = {
   htmlType?: 'submit' | 'button' | 'reset';
   type?: 'primary' | 'default' | 'link' | 'text' | 'dashed';
@@ -27,6 +29,7 @@ type Props = {
   children: ReactNode;
   size?: 'large' | 'middle' | 'small';
   style?: CSSProperties;
+  icon?: ReactNode;
 };
 
 const StyledBaseButton = styled(BaseButton)`
@@ -45,11 +48,13 @@ const Button = (props: Props) => {
     style,
     disabledWithLoadingIcon,
     className,
+    icon,
   } = props;
 
   const colors = useColors();
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+  const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
   return (
     <StyledBaseButton
@@ -61,17 +66,19 @@ const Button = (props: Props) => {
         className
       )}
       type={type}
+      icon={icon ? <Box>{icon}</Box> : null}
       disabled={disabled && !disabledWithLoadingIcon}
       loading={disabled && disabledWithLoadingIcon}
       onClick={onClick}
       style={{
-        fontSize: isSmallScreen ? '14.5px' : '16px',
+        fontSize: isSmallScreen ? '0.9rem' : '0.975rem',
         letterSpacing: 0.8,
         color: type === 'default' ? 'black' : 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.8 : 1,
         transition: 'background-color 0.3s ease',
         borderColor: type === 'default' ? colors.$17 : '',
+        padding: isMiddleScreen ? '0.75rem' : '0.5rem',
         ...style,
       }}
       size={size}

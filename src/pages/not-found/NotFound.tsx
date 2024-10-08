@@ -32,16 +32,13 @@ const NotFound = () => {
         {t('page_does_not_exist')}
       </Text>
 
-      <Button onClick={() => navigate('/')}>
-        <Box className="flex items-center space-x-1 md:space-x-2">
-          <Box>
-            <Icon name="home" size={isMiddleScreen ? 20 : 18} />
-          </Box>
-
-          <Text style={{ fontSize: isMiddleScreen ? '15px' : '13px' }}>
-            {t('home')}
-          </Text>
-        </Box>
+      <Button
+        icon={
+          <Icon name="home" size={isMiddleScreen ? '1.25rem' : '1.125rem'} />
+        }
+        onClick={() => navigate('/')}
+      >
+        {t('home')}
       </Button>
     </Box>
   );

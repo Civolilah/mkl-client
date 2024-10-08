@@ -8,5 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export { default as request } from '@helpers/request/request';
-export { useToast, route } from '@helpers/global/global';
+export type Subsidiary = {
+  id?: string;
+  name: string;
+};

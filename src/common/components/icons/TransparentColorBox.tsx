@@ -14,7 +14,7 @@ const TransparentColorBox = (props?: Props) => {
   const { size } = props || {};
 
   return (
-    <div style={{ width: size ?? '35.2px', height: size ?? '35.2px' }}>
+    <div style={{ width: size ?? '2.2rem', height: size ?? '2.2rem' }}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"

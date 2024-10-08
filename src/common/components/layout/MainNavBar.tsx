@@ -10,12 +10,11 @@
 
 import { NavBarIconsBox, NavItem as NavItemElement } from '@components/index';
 
-import { useColors, useIsMiniSidebar } from '@hooks/index';
-
-import { navItems } from './Default';
+import { useColors, useIsMiniSidebar, useNavItems } from '@hooks/index';
 
 const NavigationBar = () => {
   const colors = useColors();
+  const navItems = useNavItems();
 
   const isMiniSideBar = useIsMiniSidebar();
 
@@ -25,7 +24,7 @@ const NavigationBar = () => {
       style={{
         backgroundColor: colors.$6,
         height: 'calc(100vh - 4.35rem)',
-        width: isMiniSideBar ? '4.35rem' : '19rem',
+        width: isMiniSideBar ? '4.35rem' : '17.5rem',
         borderColor: colors.$1,
       }}
     >

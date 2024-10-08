@@ -21,9 +21,13 @@ import {
   Text,
 } from '@components/index';
 
-import { useColors, useLogout, useTranslation } from '@hooks/index';
+import {
+  useColors,
+  useLogout,
+  useNavItems,
+  useTranslation,
+} from '@hooks/index';
 
-import { navItems } from './Default';
 import LanguageSwitcher from './LanguageSwitcher';
 
 type Props = {
@@ -38,9 +42,11 @@ const StyledBox = styled.div`
 
 const Header = (props: Props) => {
   const t = useTranslation();
-  const colors = useColors();
 
   const { title } = props;
+
+  const colors = useColors();
+  const navItems = useNavItems();
 
   const logout = useLogout();
 

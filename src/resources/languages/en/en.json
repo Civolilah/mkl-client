@@ -38,7 +38,7 @@
     "subsidiaries": "Subsidiaries",
     "new_subsidiary": "New Subsidiary",
     "save": "Save",
-    "delivered_products": "Delivered Products",
+    "export": "Export",
     "name": "Name",
     "color": "Color",
     "no_color": "No color",
@@ -57,8 +57,8 @@
     "passwords_not_match": "Confirm password does not match password.",
     "forgot_password": "Forgot your password?",
     "send_email": "Send email",
-    "imported_products": "Imported Products",
-    "status_marked_products": "Status-Marked Products",
+    "import": "Import",
+    "store": "Store",
     "company_details": "Company Details",
     "optional": "optional",
     "email_already_exists": "An account with this email address already exists. Please use a different email or try logging in.",
@@ -73,5 +73,7 @@
     "invalid_credentials": "You have entered an invalid email or password.",
     "page_does_not_exist": "The page you are looking for doesn't exist.",
     "page_not_found": "Oops! Page not found.",
-    "home": "Home"
+    "home": "Home",
+    "access_denied": "Access Denied",
+    "do_not_have_page_permission": "Sorry, you don't have permission to view this page."
 }

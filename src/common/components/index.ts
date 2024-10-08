@@ -41,3 +41,5 @@ export { default as LabelElement } from '@components/general/LabelElement';
 export { default as Box } from '@components/general/Box';
 export { default as Spinner } from '@components/icons/Spinner';
 export { default as Popover } from '@components/general/Popover';
+export { default as RoutePermission } from '@components/general/RoutePermission';
+export { default as PermissionScreen } from '@components/layout/PermissionScreen';
