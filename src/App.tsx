@@ -63,6 +63,10 @@ const App = () => {
     navigate('/not_found');
   };
 
+  const handleNavigateUnauthorizedPage = () => {
+    navigate('/unauthorized');
+  };
+
   const handleDisplayErrorToaster = (event: Event) => {
     const { message } = (event as CustomEvent).detail;
 
@@ -89,6 +93,11 @@ const App = () => {
       handleNavigateNotFoundPage
     );
 
+    window.addEventListener(
+      'navigate_unauthorized_page',
+      handleNavigateUnauthorizedPage
+    );
+
     window.addEventListener('display_welcome_modal', handleDisplayWelcomeModal);
 
     window.addEventListener('display_error_toaster', handleDisplayErrorToaster);
@@ -97,6 +106,11 @@ const App = () => {
       window.removeEventListener(
         'navigate_not_found_page',
         handleNavigateNotFoundPage
+      );
+
+      window.removeEventListener(
+        'navigate_unauthorized_page',
+        handleNavigateUnauthorizedPage
       );
 
       window.removeEventListener(

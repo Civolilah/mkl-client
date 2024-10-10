@@ -101,6 +101,8 @@ const ForgotPasswordModal = ({ email }: Props) => {
       if (result !== undefined) {
         setErrors(result);
       } else {
+        toast.loading();
+
         await request('POST', '/api/reset-password', {
           email,
           captcha_token: captchaToken,
@@ -110,6 +112,7 @@ const ForgotPasswordModal = ({ email }: Props) => {
             handleClose();
           })
           .catch((error) => {
+            toast.dismiss();
             console.error(error);
           });
       }

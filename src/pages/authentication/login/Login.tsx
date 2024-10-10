@@ -138,7 +138,6 @@ const Login = () => {
             <Box className="flex flex-col justify-center items-center space-y-4 w-full">
               <TextField
                 label={t('email')}
-                placeHolder={t('email_placeholder')}
                 value={userDetails.email}
                 onValueChange={(value) =>
                   setUserDetails((current) => ({ ...current, email: value }))
@@ -154,7 +153,6 @@ const Login = () => {
                 <TextField
                   type="password"
                   label={t('password')}
-                  placeHolder={t('password_placeholder')}
                   value={userDetails.password}
                   onValueChange={(value) =>
                     setUserDetails((current) => ({

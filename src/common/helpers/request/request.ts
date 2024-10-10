@@ -12,6 +12,7 @@
 import {
   GLOBAL_ERROR_STATUS_CODE,
   MAX_REQUESTS_LOGIN_REGISTER_ERROR_STATUS_CODE,
+  PERMISSIONS_ERROR_STATUS_CODE,
 } from '@constants/index';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 
@@ -40,6 +41,10 @@ client.interceptors.response.use(
           },
         })
       );
+    }
+
+    if (error.response?.status === PERMISSIONS_ERROR_STATUS_CODE) {
+      window.dispatchEvent(new CustomEvent('navigate_unauthorized_page'));
     }
 
     if (error.response?.status === GLOBAL_ERROR_STATUS_CODE) {

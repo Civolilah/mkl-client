@@ -22,24 +22,28 @@ type Props = {
   subsidiary: Subsidiary | undefined;
   setSubsidiary: Dispatch<SetStateAction<Subsidiary | undefined>>;
   errors: ValidationErrors;
+  editPage?: boolean;
 };
 
 const SubsidiaryForm = (props: Props) => {
   const t = useTranslation();
 
-  const { subsidiary, setSubsidiary, errors } = props;
+  const { subsidiary, setSubsidiary, errors, editPage } = props;
 
   const handleChange = useHandleChange({ setSubsidiary });
 
   return (
-    <Card title={t('new_subsidiary')} className="w-full md:w-3/4 xl:w-1/2 pb-6">
+    <Card
+      title={editPage ? t('edit_subsidiary') : t('new_subsidiary')}
+      className="w-full md:w-3/4 xl:w-1/2 pb-6"
+    >
       <TextField
         required
         label={t('name')}
         value={subsidiary?.name || ''}
         onValueChange={(value) => handleChange('name', value)}
         changeOnBlur
-        errorMessage={errors?.name}
+        errorMessage={errors?.name && t(errors.name)}
       />
     </Card>
   );

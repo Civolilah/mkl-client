@@ -75,5 +75,11 @@
     "page_not_found": "Oops! Page not found.",
     "home": "Home",
     "access_denied": "Access Denied",
-    "do_not_have_page_permission": "Sorry, you don't have permission to view this page."
+    "do_not_have_page_permission": "Sorry, you don't have permission to view this page.",
+    "subsidiary_name_required": "Subsidiary name is required.",
+    "subsidiary_name_max_length": "Max length for subsidiary name is 200 characters.",
+    "created_subsidiary": "Successfully created subsidiary.",
+    "subsidiary_name_already_exists": "Subsidiary with this name already exists.",
+    "do_not_have_action_permission": "Sorry, you don't have permission to perform this action.",
+    "edit_subsidiary": "Edit Subsidiary"
 }

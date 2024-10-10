@@ -8,6 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import './resources/css/app.css';
@@ -18,7 +19,7 @@ import { initReactI18next } from 'react-i18next';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 
-import { ScrollToTop } from '@components/index';
+import { LoadingScreen, ScrollToTop } from '@components/index';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -48,17 +49,19 @@ i18n.use(initReactI18next).init({
 });
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <GoogleOAuthProvider
-        clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID as string}
-      >
-        <ScrollToTop>
-          <App />
-        </ScrollToTop>
-      </GoogleOAuthProvider>
-    </BrowserRouter>
-  </QueryClientProvider>
+  <Suspense fallback={<LoadingScreen />}>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <GoogleOAuthProvider
+          clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID as string}
+        >
+          <ScrollToTop>
+            <App />
+          </ScrollToTop>
+        </GoogleOAuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  </Suspense>
 );
 
 // If you want to start measuring performance in your app, pass a function

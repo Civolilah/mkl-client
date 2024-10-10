@@ -17,16 +17,18 @@ export const useToast = () => {
 
   return {
     success: (message: string) => {
-      toast.success(t(message));
+      toast.success(t(message), { id: '1212' });
     },
     error: (message: string) => {
-      toast.error(t(message));
+      toast.error(t(message), { id: '1212' });
     },
     loading: (message?: string) => {
-      toast.loading(t(message ?? 'processing'));
+      toast.loading(t(message ?? 'processing'), {
+        id: '1212',
+      });
     },
     dismiss: () => {
-      toast.dismiss();
+      toast.dismiss('1212');
     },
   };
 };
@@ -36,6 +38,13 @@ type RouteParams = {
 };
 
 export const route = (url: string, params: RouteParams): string => {
+  return Object.entries(params).reduce((acc, [key, value]) => {
+    const pattern = new RegExp(`:${key}`, 'g');
+    return acc.replace(pattern, value.toString());
+  }, url);
+};
+
+export const endpoint = (url: string, params: RouteParams): string => {
   return Object.entries(params).reduce((acc, [key, value]) => {
     const pattern = new RegExp(`:${key}`, 'g');
     return acc.replace(pattern, value.toString());

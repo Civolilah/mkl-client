@@ -14,8 +14,8 @@ import {
   INITIAL_SUBSIDIARY,
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
-import { request, route, useToast } from '@helpers/index';
-import { useNavigate } from 'react-router-dom';
+import { endpoint, request, route, useToast } from '@helpers/index';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Subsidiary, ValidationErrors } from '@interfaces/index';
 
@@ -39,26 +39,25 @@ const Edit = () => {
     },
   ];
 
+  const { id } = useParams();
   const toast = useToast();
 
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
-  const [subsidiary, setSubsidiary] = useState<Subsidiary | undefined>(
-    INITIAL_SUBSIDIARY
-  );
+  const [subsidiary, setSubsidiary] = useState<Subsidiary | undefined>();
 
   const handleCancel = () => {
     setSubsidiary(INITIAL_SUBSIDIARY);
   };
 
   const handleSave = () => {
-    if (!isFormBusy) {
+    if (!isFormBusy && id) {
       setIsFormBusy(true);
       toast.loading();
 
-      request('POST', '/api/subsidiaries', subsidiary)
+      request('PUT', endpoint('/api/subsidiaries/:id', { id }), subsidiary)
         .then((response) => {
           toast.success('created_subsidiary');
 
@@ -68,6 +67,8 @@ const Edit = () => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
             setErrors(error.response.data.errors);
           }
+
+          toast.dismiss();
         })
         .finally(() => setIsFormBusy(false));
     }
@@ -100,6 +101,7 @@ const Edit = () => {
         subsidiary={subsidiary}
         setSubsidiary={setSubsidiary}
         errors={errors}
+        editPage
       />
     </Default>
   );

@@ -14,8 +14,14 @@ import Text from '@components/typography/Text';
 
 import { useTranslation } from '@hooks/index';
 
-const PermissionScreen = () => {
+type Props = {
+  unauthorizedAction?: boolean;
+};
+
+const PermissionScreen = (props: Props) => {
   const t = useTranslation();
+
+  const { unauthorizedAction = false } = props || {};
 
   return (
     <Box className="flex flex-col items-center justify-center text-center space-y-2">
@@ -24,7 +30,11 @@ const PermissionScreen = () => {
       </Box>
 
       <Text className="text-2xl font-bold">{t('access_denied')}</Text>
-      <Text className="text-gray-600">{t('do_not_have_page_permission')}</Text>
+      <Text className="text-gray-600">
+        {unauthorizedAction
+          ? t('do_not_have_action_permission')
+          : t('do_not_have_page_permission')}
+      </Text>
     </Box>
   );
 };

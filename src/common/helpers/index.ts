@@ -9,4 +9,4 @@
  */
 
 export { default as request } from '@helpers/request/request';
-export { useToast, route } from '@helpers/global/global';
+export { useToast, route, endpoint } from '@helpers/global/global';

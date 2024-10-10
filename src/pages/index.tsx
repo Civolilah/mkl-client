@@ -8,14 +8,38 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { useEffect, useState } from 'react';
+
 import { Navigate } from 'react-router-dom';
+
+import { LoadingScreen } from '@components/index';
 
 import { useAuthenticated } from '@hooks/index';
 
 const IndexPage = () => {
   const authenticated = useAuthenticated();
 
-  return authenticated ? <Navigate to="/products" /> : <Navigate to="/login" />;
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState<
+    boolean | null
+  >(null);
+
+  useEffect(() => {
+    (async () => {
+      const isAuthenticated = await authenticated();
+
+      setIsUserAuthenticated(isAuthenticated);
+    })();
+  }, []);
+
+  if (isUserAuthenticated === null) {
+    return <LoadingScreen />;
+  }
+
+  return isUserAuthenticated ? (
+    <Navigate to="/dashboard" />
+  ) : (
+    <Navigate to="/login" />
+  );
 };
 
 export default IndexPage;

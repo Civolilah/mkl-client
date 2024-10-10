@@ -43,3 +43,4 @@ export { default as Spinner } from '@components/icons/Spinner';
 export { default as Popover } from '@components/general/Popover';
 export { default as RoutePermission } from '@components/general/RoutePermission';
 export { default as PermissionScreen } from '@components/layout/PermissionScreen';
+export { default as LoadingScreen } from '@components/general/LoadingScreen';
