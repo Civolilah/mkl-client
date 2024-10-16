@@ -8,14 +8,46 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Default } from '@components/index';
+import { useState } from 'react';
 
-import { useTranslation } from '@hooks/index';
+import { Subsidiary } from '@interfaces/index';
+
+import { Default, Table } from '@components/index';
+
+import { useFetchEntity, useTranslation } from '@hooks/index';
+
+import useColumns from './common/hooks/useColumns';
 
 const Subsidiaries = () => {
   const t = useTranslation();
 
-  return <Default title={t('subsidiaries')}>Subsidiaries</Default>;
+  const columns = useColumns();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [subsidiaries, setSubsidiaries] = useState<Subsidiary[]>([]);
+
+  const { refresh } = useFetchEntity({
+    queryKey: '/api/subsidiaries',
+    setEntities: setSubsidiaries,
+    setIsLoading,
+    listQuery: true,
+  });
+
+  return (
+    <Default title={t('subsidiaries')}>
+      <Table
+        columns={columns}
+        data={subsidiaries}
+        isDataLoading={isLoading}
+        handleRefresh={refresh}
+        enableFiltering
+        filteringProps={['name']}
+        creationRoute="/subsidiaries/new"
+        creationButtonLabel={t('new_subsidiary')}
+        filterFieldPlaceHolder={t('search_by_name')}
+      />
+    </Default>
+  );
 };
 
 export default Subsidiaries;

@@ -8,7 +8,11 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { NavBarIconsBox, NavItem as NavItemElement } from '@components/index';
+import {
+  Box,
+  NavBarIconsBox,
+  NavItem as NavItemElement,
+} from '@components/index';
 
 import { useColors, useIsMiniSidebar, useNavItems } from '@hooks/index';
 
@@ -20,7 +24,7 @@ const NavigationBar = () => {
 
   return (
     <nav
-      className="flex flex-col space-y-3 border-r shadow-md pt-2"
+      className="flex flex-col space-y-3 border-r shadow-md pt-2 w-full"
       style={{
         backgroundColor: colors.$6,
         height: 'calc(100vh - 4.35rem)',
@@ -28,13 +32,13 @@ const NavigationBar = () => {
         borderColor: colors.$1,
       }}
     >
-      <div className="flex flex-col space-y-0.5 flex-1 px-2 overflow-hidden break-all">
+      <Box className="flex flex-col space-y-0.5 flex-1 px-2 overflow-hidden break-all">
         {navItems
           .filter((item) => item.visible)
           .map((item) => (
             <NavItemElement key={item.key} item={item} />
           ))}
-      </div>
+      </Box>
 
       <NavBarIconsBox />
     </nav>

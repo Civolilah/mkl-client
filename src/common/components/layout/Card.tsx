@@ -13,7 +13,7 @@ import { ReactNode } from 'react';
 import { Card as CardBase } from 'antd';
 import { useMediaQuery } from 'react-responsive';
 
-import { Button } from '@components/index';
+import { Box, Button, Text } from '@components/index';
 
 import { useColors, useTranslation } from '@hooks/index';
 
@@ -24,12 +24,22 @@ type Props = {
   width?: 'full';
   saveButtonText?: string;
   onSaveClick?: () => void;
+  isLoading?: boolean;
+  topRight?: ReactNode;
 };
 
 const Card = (props: Props) => {
   const t = useTranslation();
 
-  const { children, title, className, onSaveClick, saveButtonText } = props;
+  const {
+    children,
+    title,
+    className,
+    onSaveClick,
+    saveButtonText,
+    isLoading = false,
+    topRight,
+  } = props;
 
   const colors = useColors();
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
@@ -37,17 +47,24 @@ const Card = (props: Props) => {
   return (
     <div className="flex w-full h-full justify-center items-start">
       <CardBase
-        title={title}
+        title={
+          <Box className="flex items-center justify-between">
+            <Text>{title}</Text>
+
+            {topRight}
+          </Box>
+        }
         className={className}
         style={{ borderColor: colors.$1, borderRadius: '0px' }}
         styles={{
-          body: { padding: 0 },
+          body: { padding: isLoading ? '2rem' : 0 },
           header: {
             fontSize: isSmallScreen ? '1.05rem' : '1.155rem',
             fontWeight: 500,
             letterSpacing: 0.8,
           },
         }}
+        loading={isLoading}
       >
         <div className="p-6">{children}</div>
 

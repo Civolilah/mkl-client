@@ -27,6 +27,7 @@ const COLORS = {
   $17: '#d8d8d8', // Default button background color
   $18: '#f7f7f7', // Default button background color,
   $19: '#e8e8e8', // Popover items hover background color,
+  $20: '#007bff', // Action table element color
 };
 
 const useColors = () => {

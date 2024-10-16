@@ -8,16 +8,17 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 import { Dropdown as DropdownBase, MenuProps } from 'antd';
 
 type Props = {
   children: ReactNode;
   menu: MenuProps;
+  style?: CSSProperties;
 };
 const Dropdown = (props: Props) => {
-  const { children, menu } = props;
+  const { children, menu, style } = props;
 
   return (
     <DropdownBase
@@ -30,6 +31,8 @@ const Dropdown = (props: Props) => {
               style: { ...item.style, borderRadius: 0 },
             }
         ),
+
+        style: { borderRadius: 0, ...style },
       }}
       trigger={['click']}
     >

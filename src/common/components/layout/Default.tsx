@@ -17,7 +17,12 @@ import { useNavigate } from 'react-router-dom';
 import Icon from '@components/general/Icon';
 import { Box, Button, Header, Text } from '@components/index';
 
-import { useAccentColor, useColors, useTranslation } from '@hooks/index';
+import {
+  useAccentColor,
+  useColors,
+  useIsMiniSidebar,
+  useTranslation,
+} from '@hooks/index';
 
 import MainNavBar from './MainNavBar';
 
@@ -56,16 +61,16 @@ const Default = (props: Props) => {
   const colors = useColors();
   const accentColor = useAccentColor();
 
+  const isMiniSideBar = useIsMiniSidebar();
+
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const navigate = useNavigate();
 
   return (
-    <Box
-      className={classNames('flex min-w-screen min-h-screen')}
-      style={{ backgroundColor: colors.$3 }}
-    >
-      <Box className="flex flex-col flex-1 justify-start items-center">
+    <Box style={{ backgroundColor: colors.$3 }}>
+      <Box className="flex flex-col justify-start items-center w-full h-full">
         <Header title={title} />
 
         <Box className="flex w-full h-full">
@@ -73,7 +78,14 @@ const Default = (props: Props) => {
             <MainNavBar />
           </Box>
 
-          <Box className="flex flex-col flex-1 justify-center items-center">
+          <Box
+            className="flex flex-col justify-center items-center h-full"
+            style={{
+              width: isLargeScreen
+                ? `calc(100% - ${isMiniSideBar ? '4.35rem' : '17.5rem'})`
+                : '100%',
+            }}
+          >
             {Boolean(breadcrumbs.length || onCancelClick || onSaveClick) && (
               <Box
                 className="flex items-center justify-end sm:justify-between w-full px-2 md:px-6 py-2 border-b shadow-sm space-x-2"
@@ -174,6 +186,7 @@ const Default = (props: Props) => {
                         disabledWithLoadingIcon={
                           disabledCancelButtonWithLoadingIcon
                         }
+                        smallText
                       >
                         {t('cancel')}
                       </Button>
@@ -189,6 +202,7 @@ const Default = (props: Props) => {
                         disabledWithLoadingIcon={
                           disabledSaveButtonWithLoadingIcon
                         }
+                        smallText
                       >
                         {t('save')}
                       </Button>
@@ -198,7 +212,7 @@ const Default = (props: Props) => {
               </Box>
             )}
 
-            <Box className="flex flex-1 w-full justify-center items-center p-2 md:p-6">
+            <Box className="flex w-full justify-center items-center p-2 md:p-6 overflow-y-auto">
               {children}
             </Box>
           </Box>

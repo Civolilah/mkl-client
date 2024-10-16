@@ -41,12 +41,15 @@ import {
   MdCategory,
   MdClose,
   MdContentCopy,
+  MdDelete,
+  MdEdit,
   MdErrorOutline,
   MdHome,
   MdKeyboardArrowDown,
   MdOutlineEmail,
   MdOutlineMenu,
   MdOutlineShoppingCart,
+  MdRefresh,
   MdSave,
   MdWarehouse,
 } from 'react-icons/md';
@@ -109,7 +112,10 @@ export type IconName =
   | 'logout'
   | 'store'
   | 'export'
-  | 'closeRounded';
+  | 'closeRounded'
+  | 'refresh'
+  | 'edit'
+  | 'delete';
 
 type Props = {
   className?: string;
@@ -223,6 +229,12 @@ const Icon = (props: Props) => {
       return generateIconElement(TbPackageExport);
     case 'closeRounded':
       return generateIconElement(IoMdCloseCircleOutline);
+    case 'refresh':
+      return generateIconElement(MdRefresh);
+    case 'edit':
+      return generateIconElement(MdEdit);
+    case 'delete':
+      return generateIconElement(MdDelete);
 
     default:
       return <></>;

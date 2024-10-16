@@ -44,3 +44,7 @@ export { default as Popover } from '@components/general/Popover';
 export { default as RoutePermission } from '@components/general/RoutePermission';
 export { default as PermissionScreen } from '@components/layout/PermissionScreen';
 export { default as LoadingScreen } from '@components/general/LoadingScreen';
+export { default as Table } from '@components/general/Table';
+export { default as ActionLabelElement } from '@components/general/ActionLabelElement';
+export { default as ActionElement } from '@components/general/ActionElement';
+export { default as TableActionsDropdown } from '@components/general/TableActionsDropdown';

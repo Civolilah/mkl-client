@@ -10,19 +10,17 @@
 
 import { useEffect, useState } from 'react';
 
-import {
-  INITIAL_SUBSIDIARY,
-  VALIDATION_ERROR_STATUS_CODE,
-} from '@constants/index';
-import { endpoint, request, route, useToast } from '@helpers/index';
-import { useNavigate, useParams } from 'react-router-dom';
+import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
+import { endpoint, request, useToast } from '@helpers/index';
+import { cloneDeep } from 'lodash';
+import { useParams } from 'react-router-dom';
 
 import { Subsidiary, ValidationErrors } from '@interfaces/index';
 
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useTranslation } from '@hooks/index';
+import { useFetchEntity, useTranslation } from '@hooks/index';
 
 import SubsidiaryForm from '../common/components/SubsidiaryForm';
 
@@ -39,29 +37,36 @@ const Edit = () => {
     },
   ];
 
-  const { id } = useParams();
   const toast = useToast();
-
-  const navigate = useNavigate();
+  const { id } = useParams();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [subsidiary, setSubsidiary] = useState<Subsidiary | undefined>();
+  const [initialResponse, setInitialResponse] = useState<
+    Subsidiary | undefined
+  >();
+
+  const { refresh } = useFetchEntity({
+    queryKey: '/api/subsidiaries',
+    setEntity: setSubsidiary,
+    setIsLoading,
+    setInitialResponse,
+  });
 
   const handleCancel = () => {
-    setSubsidiary(INITIAL_SUBSIDIARY);
+    setSubsidiary(initialResponse);
   };
 
   const handleSave = () => {
-    if (!isFormBusy && id) {
-      setIsFormBusy(true);
+    if (!isLoading && id) {
+      setIsLoading(true);
       toast.loading();
 
-      request('PUT', endpoint('/api/subsidiaries/:id', { id }), subsidiary)
-        .then((response) => {
-          toast.success('created_subsidiary');
-
-          navigate(route('/subsidiaries/:id/edit', { id: response.data.id }));
+      request('PATCH', endpoint('/api/subsidiaries/:id', { id }), subsidiary)
+        .then(() => {
+          toast.success('updated_subsidiary');
+          setInitialResponse(cloneDeep(subsidiary));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -70,7 +75,7 @@ const Edit = () => {
 
           toast.dismiss();
         })
-        .finally(() => setIsFormBusy(false));
+        .finally(() => setIsLoading(false));
     }
   };
 
@@ -83,7 +88,7 @@ const Edit = () => {
   useEffect(() => {
     return () => {
       setErrors({});
-      setSubsidiary(INITIAL_SUBSIDIARY);
+      setSubsidiary(undefined);
     };
   }, []);
 
@@ -93,15 +98,17 @@ const Edit = () => {
       breadcrumbs={breadcrumbs}
       onSaveClick={handleSave}
       onCancelClick={handleCancel}
-      disabledSaveButton={isFormBusy}
-      disabledCancelButton={isFormBusy}
-      disabledSaveButtonWithLoadingIcon={isFormBusy}
+      disabledSaveButton={isLoading}
+      disabledCancelButton={isLoading}
+      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && subsidiary)}
     >
       <SubsidiaryForm
         subsidiary={subsidiary}
         setSubsidiary={setSubsidiary}
         errors={errors}
         editPage
+        isLoading={isLoading}
+        onRefresh={refresh}
       />
     </Default>
   );

@@ -142,7 +142,7 @@ const App = () => {
   }, []);
 
   return (
-    <Box className="min-w-full min-h-screen">
+    <Box className="w-screen h-screen">
       <Modal
         size="small"
         title={t('welcome')}

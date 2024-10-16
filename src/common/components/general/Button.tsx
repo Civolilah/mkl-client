@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
-import { useColors } from '@hooks/index';
+import { useAccentColor, useColors } from '@hooks/index';
 
 import Box from './Box';
 
@@ -30,9 +30,12 @@ type Props = {
   size?: 'large' | 'middle' | 'small';
   style?: CSSProperties;
   icon?: ReactNode;
+  smallText?: boolean;
 };
 
 const StyledBaseButton = styled(BaseButton)`
+  background-color: ${(props) => props.theme.backgroundColor} !important;
+
   &:hover {
     background-color: ${(props) => props.theme.hoverBackgroundColor} !important;
   }
@@ -49,9 +52,11 @@ const Button = (props: Props) => {
     disabledWithLoadingIcon,
     className,
     icon,
+    smallText,
   } = props;
 
   const colors = useColors();
+  const accentColor = useAccentColor();
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
@@ -59,9 +64,10 @@ const Button = (props: Props) => {
   return (
     <StyledBaseButton
       className={classNames(
-        'transition-none rounded-none shadow-sm',
+        'transition-none rounded-none shadow-sm text-sm',
         {
           'border-none': type !== 'default',
+          'text-sm': smallText,
         },
         className
       )}
@@ -71,7 +77,7 @@ const Button = (props: Props) => {
       loading={disabled && disabledWithLoadingIcon}
       onClick={onClick}
       style={{
-        fontSize: isSmallScreen ? '0.9rem' : '0.975rem',
+        ...(!smallText && { fontSize: isSmallScreen ? '0.9rem' : '0.975rem' }),
         letterSpacing: 0.8,
         color: type === 'default' ? 'black' : 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
@@ -83,7 +89,13 @@ const Button = (props: Props) => {
       }}
       size={size}
       theme={{
-        hoverBackgroundColor: type === 'default' ? colors.$18 : '',
+        backgroundColor: type === 'default' && disabled ? 'transparent' : '',
+        hoverBackgroundColor:
+          type === 'default' && !disabled
+            ? colors.$18
+            : type === 'primary' && disabled
+              ? accentColor
+              : '',
       }}
     >
       {children}
