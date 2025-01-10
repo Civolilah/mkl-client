@@ -34,6 +34,7 @@ const useFetchEntity = <T>(params: Params<T>) => {
     setInitialResponse,
     setEntities,
     listQuery,
+    formatRecords,
   } = params;
 
   const { id } = useParams();
@@ -70,10 +71,22 @@ const useFetchEntity = <T>(params: Params<T>) => {
 
     const response = await refetch();
 
-    setEntity?.(cloneDeep(response.data));
-    setEntities?.(cloneDeep(response.data));
+    setEntity?.(
+      formatRecords
+        ? formatRecords(cloneDeep(response.data))
+        : cloneDeep(response.data)
+    );
+    setEntities?.(
+      formatRecords
+        ? formatRecords(cloneDeep(response.data))
+        : cloneDeep(response.data)
+    );
 
-    setInitialResponse?.(cloneDeep(response.data));
+    setInitialResponse?.(
+      formatRecords
+        ? formatRecords(cloneDeep(response.data))
+        : cloneDeep(response.data)
+    );
 
     setIsLoading(false);
   };
@@ -87,10 +100,22 @@ const useFetchEntity = <T>(params: Params<T>) => {
     setIsLoading(isLoading);
 
     if (entityResponse) {
-      setEntity?.(cloneDeep(entityResponse));
-      setEntities?.(cloneDeep(entityResponse));
+      setEntity?.(
+        cloneDeep(
+          formatRecords ? formatRecords(entityResponse) : entityResponse
+        )
+      );
+      setEntities?.(
+        cloneDeep(
+          formatRecords ? formatRecords(entityResponse) : entityResponse
+        )
+      );
 
-      setInitialResponse?.(cloneDeep(entityResponse));
+      setInitialResponse?.(
+        cloneDeep(
+          formatRecords ? formatRecords(entityResponse) : entityResponse
+        )
+      );
     }
 
     return () => {

@@ -34,6 +34,9 @@ const COLORS = {
   $24: '#000000', // Tab item color
   $25: '#e6e6e6', // Tab item background color
   $26: '#ffffff', // Containers background color
+  $27: '#e6e6e6', // Selected option background color,
+  $28: '#000000', // Selected option text color,
+  $29: '#ffffff', // Selector background color
 };
 
 const useColors = () => {

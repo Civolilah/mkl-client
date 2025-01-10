@@ -121,5 +121,6 @@
     "label_category": "Label Category",
     "subsidiary": "Subsidiary",
     "subsidiary_assigning": "Without selecting subsidiaries, employees can manage all products across subsidiaries according to their Product permissions.",
-    "select_subsidiaries": "Select Subsidiaries"
+    "select_subsidiaries": "Select Subsidiaries",
+    "product_permissions_per_subsidiary": "Product permissions by subsidiary:"
 }

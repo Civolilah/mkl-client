@@ -11,9 +11,10 @@
 import { useEffect, useState } from 'react';
 
 import { Select } from 'antd';
+import Fuse from 'fuse.js';
 import { useMediaQuery } from 'react-responsive';
 
-import { Box, Icon, Label, Text } from '@components/index';
+import { Box, Icon, Label, Text, Tooltip } from '@components/index';
 
 import { useFetchEntity, useTranslation } from '@hooks/index';
 
@@ -27,6 +28,9 @@ type Props = {
   onChange: (value: string[]) => void;
   errorMessage?: string;
   labelKey?: string;
+  valueKey?: string;
+  onClear?: () => void;
+  endpoint: string;
 };
 
 type Option = {
@@ -47,32 +51,66 @@ const SelectDataField = (props: Props) => {
     placeholder,
     errorMessage,
     labelKey,
+    valueKey,
+    onClear,
+    endpoint,
   } = props;
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   const [options, setOptions] = useState<Option[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  console.log(options);
+  const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
 
   const { refresh } = useFetchEntity({
-    queryKey: '/api/subsidiaries',
+    queryKey: endpoint,
     setEntities: setOptions,
     setIsLoading,
     listQuery: true,
+    formatRecords: (records) =>
+      records.map((record) => ({
+        label: record[labelKey as keyof Option],
+        value: record[(valueKey || 'id') as keyof Option],
+      })),
   });
 
-  useEffect(() => {
-    if (labelKey) {
-      setOptions(
-        options.map((option) => ({
-          label: option[labelKey as keyof Option],
-          value: option[valueKey || ('id' as keyof Option)],
-        }))
-      );
+  const handleSearch = (value: string) => {
+    if (!value) {
+      setFilteredOptions(options);
+      return;
     }
+
+    const directMatches = options.filter((option) =>
+      option.label.toLowerCase().includes(value.toLowerCase())
+    );
+
+    if (directMatches.length) {
+      setFilteredOptions(directMatches);
+      return;
+    }
+
+    const fuse = new Fuse(options, {
+      keys: ['label'],
+      threshold: 0.4,
+    });
+
+    const fuseResults = fuse.search(value);
+
+    const formattedResults = fuseResults.map((result) => result.item);
+    setFilteredOptions(formattedResults);
+  };
+
+  useEffect(() => {
+    setFilteredOptions(options);
   }, [options]);
+
+  useEffect(() => {
+    return () => {
+      setOptions([]);
+      setIsLoading(false);
+      setFilteredOptions([]);
+    };
+  }, []);
 
   return (
     <Box className="flex flex-col space-y-2 w-full">
@@ -98,18 +136,32 @@ const SelectDataField = (props: Props) => {
         </Box>
       )}
 
-      <Select
-        mode={mode}
-        size="large"
-        className="outline-none"
-        style={{ width: '100%', boxShadow: 'none !important' }}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        options={options}
-        loading={false}
-        filterOption={() => true}
-      />
+      <Box className="flex items-center w-full space-x-3">
+        <Select
+          mode={mode}
+          size="large"
+          style={{ width: '100%' }}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          options={filteredOptions}
+          disabled={isLoading}
+          loading={isLoading}
+          filterOption={false}
+          onSearch={handleSearch}
+          onClear={onClear}
+          allowClear={Boolean(onClear)}
+        />
+
+        <Tooltip text={t('refresh_data')}>
+          <div
+            className="cursor-pointer"
+            onClick={() => !isLoading && refresh()}
+          >
+            <Icon name="refresh" size="1.45rem" />
+          </div>
+        </Tooltip>
+      </Box>
 
       {errorMessage && (
         <Box className="mt-1 text-sm text-red-600 flex items-center space-x-1">

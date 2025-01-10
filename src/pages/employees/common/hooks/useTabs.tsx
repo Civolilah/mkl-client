@@ -8,29 +8,15 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ItemType } from 'antd/es/menu/interface';
-
-import { User } from '@interfaces/index';
-
 import { Icon, Text } from '@components/index';
 import { Box } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
-import Details from '../components/Details';
+import Details, { EmployeeProps } from '../components/Details';
 import Permissions from '../components/Permissions';
 
-type Params = {
-  employee: User | undefined;
-  editPage: boolean | undefined;
-  isLoading: boolean | undefined;
-  onRefresh?: () => void;
-  actions: ItemType[];
-  errors: Record<string, string>;
-  handleChange: (field: keyof User, value: string) => void;
-};
-
-const useTabs = (params: Params) => {
+const useTabs = (params: EmployeeProps) => {
   const t = useTranslation();
 
   const {
@@ -38,9 +24,9 @@ const useTabs = (params: Params) => {
     editPage,
     isLoading,
     onRefresh,
-    actions,
     errors,
     handleChange,
+    setEmployee,
   } = params;
 
   const tabs = [
@@ -61,9 +47,9 @@ const useTabs = (params: Params) => {
           editPage={editPage}
           isLoading={isLoading}
           onRefresh={onRefresh}
-          actions={actions}
           errors={errors}
           handleChange={handleChange}
+          setEmployee={setEmployee}
         />
       ),
     },
@@ -84,9 +70,9 @@ const useTabs = (params: Params) => {
           editPage={editPage}
           isLoading={isLoading}
           onRefresh={onRefresh}
-          actions={actions}
           errors={errors}
           handleChange={handleChange}
+          setEmployee={setEmployee}
         />
       ),
     },

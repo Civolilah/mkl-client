@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ItemType } from 'antd/es/menu/interface';
+import { Dispatch, SetStateAction } from 'react';
 
 import { User } from '@interfaces/index';
 
@@ -24,25 +24,25 @@ import {
 
 import { useTranslation } from '@hooks/index';
 
-type Props = {
+export type EmployeeProps = {
   employee: User | undefined;
   editPage: boolean | undefined;
   isLoading: boolean | undefined;
   onRefresh?: () => void;
-  actions: ItemType[];
   errors: Record<string, string>;
   handleChange: (field: keyof User, value: string | string[]) => void;
+  setEmployee: Dispatch<SetStateAction<User | undefined>>;
 };
 
-const Details = (props: Props) => {
+const Details = (props: EmployeeProps) => {
   const {
     editPage,
     isLoading,
     onRefresh,
-    actions,
     errors,
     handleChange,
     employee,
+    setEmployee,
   } = props;
 
   const t = useTranslation();
@@ -52,7 +52,6 @@ const Details = (props: Props) => {
       title={t('details')}
       className="w-full pb-6"
       isLoading={isLoading}
-      actions={editPage ? actions : undefined}
       topRight={
         editPage && onRefresh && typeof isLoading === 'boolean' ? (
           <RefreshDataElement
@@ -92,8 +91,41 @@ const Details = (props: Props) => {
           <SelectDataField
             label={t('subsidiaries')}
             placeholder={t('select_subsidiaries')}
+            valueKey="name"
+            labelKey="name"
+            endpoint="/api/subsidiaries?selector=true"
             value={employee?.subsidiaries || []}
-            onChange={(value) => handleChange('subsidiaries', value)}
+            onChange={(value) => {
+              handleChange('subsidiaries', value);
+
+              setEmployee(
+                (current) =>
+                  current && {
+                    ...current,
+                    permissions: current.permissions.filter(
+                      (permission) =>
+                        !permission.includes('product_') ||
+                        (permission.includes('product_') &&
+                          (value.includes(permission.split('_')[2]) ||
+                            permission.endsWith('product_all')))
+                    ),
+                  }
+              );
+            }}
+            onClear={() => {
+              handleChange('subsidiaries', []);
+
+              setEmployee(
+                (current) =>
+                  current && {
+                    ...current,
+                    permissions: current.permissions.filter(
+                      (currentPermission) =>
+                        !currentPermission.includes('product_')
+                    ),
+                  }
+              );
+            }}
             errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
           />
 

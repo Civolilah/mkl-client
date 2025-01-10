@@ -66,7 +66,7 @@ const Create = () => {
 
       setIsFormBusy(true);
 
-      request('POST', '/api/users', employee)
+      request('POST', '/api/users/add', employee)
         .then((response) => {
           toast.success('created_employee');
 
@@ -87,12 +87,14 @@ const Create = () => {
     if (Object.keys(errors).length) {
       setErrors({});
     }
+  }, [employee]);
 
+  useEffect(() => {
     return () => {
       setErrors({});
       setEmployee(INITIAL_EMPLOYEE);
     };
-  }, [employee]);
+  }, []);
 
   return (
     <Default

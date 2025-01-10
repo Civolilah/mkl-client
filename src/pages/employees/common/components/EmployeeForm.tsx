@@ -14,7 +14,6 @@ import { User, ValidationErrors } from '@interfaces/index';
 
 import { Box, StaticTabs } from '@components/index';
 
-import useActions from '../hooks/useActions';
 import useHandleChange from '../hooks/useHandleChange';
 import useTabs from '../hooks/useTabs';
 
@@ -31,8 +30,6 @@ const EmployeeForm = (props: Props) => {
   const { employee, setEmployee, errors, editPage, isLoading, onRefresh } =
     props;
 
-  const actions = useActions();
-
   const handleChange = useHandleChange({ setEmployee });
 
   const tabs = useTabs({
@@ -40,9 +37,9 @@ const EmployeeForm = (props: Props) => {
     editPage,
     isLoading,
     onRefresh,
-    actions,
     errors,
     handleChange,
+    setEmployee,
   });
 
   return (

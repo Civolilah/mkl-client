@@ -27,7 +27,13 @@ const useTheme = () => {
         colorBgContainerDisabled: accentColor,
       },
       Input: { hoverBorderColor: accentColor },
-      Select: { hoverBorderColor: accentColor },
+      Select: {
+        optionSelectedBg: colors.$27,
+        optionSelectedColor: colors.$28,
+        optionPadding: '0.5rem',
+        selectorBg: colors.$29,
+      },
+
       Tabs: {
         itemColor: colors.$24,
         itemHoverColor: colors.$24,
