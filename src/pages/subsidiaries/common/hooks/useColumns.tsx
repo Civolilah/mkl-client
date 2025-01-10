@@ -8,22 +8,103 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { route } from '@helpers/index';
 import { TableColumnsType } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
-import { Subsidiary } from '@interfaces/index';
+import { Subsidiary, User } from '@interfaces/index';
 
-import { Box, TableActionsDropdown } from '@components/index';
+import { Box, Link, TableActionsDropdown, Text } from '@components/index';
 
-import { useTranslation } from '@hooks/index';
+import { useFormatUnixTime, useTranslation } from '@hooks/index';
 
-const useColumns = () => {
+type Props = {
+  refresh: () => void;
+};
+
+const useColumns = (props: Props) => {
   const t = useTranslation();
+
+  const { refresh } = props;
+
+  const navigate = useNavigate();
+  const formatUnixTime = useFormatUnixTime();
 
   const columns: TableColumnsType<Subsidiary> = [
     {
       title: t('name'),
       dataIndex: 'name',
-      render: (value) => <Box className="w-full truncate">{value}</Box>,
+      render: (value, resource) => (
+        <Box className="w-full truncate">
+          <Link
+            to={route('/subsidiaries/:id/edit', { id: resource.id as string })}
+          >
+            {value}
+          </Link>
+        </Box>
+      ),
+      onCell: (record) => ({
+        onClick: () =>
+          navigate(
+            route('/subsidiaries/:id/edit', { id: record.id as string })
+          ),
+      }),
+    },
+    {
+      title: t('created_at'),
+      dataIndex: 'created_at',
+      render: (value) => (
+        <Box className="w-full truncate">
+          <Text>{formatUnixTime(value)}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('created_by'),
+      dataIndex: 'user',
+      render: (user: User) => (
+        <Box className="w-full truncate">
+          <Text>
+            {user.first_name || user.last_name
+              ? `${user.first_name} ${user.last_name}`
+              : user.email}
+          </Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('updated_at'),
+      dataIndex: 'updated_at',
+      render: (value) => {
+        if (!value) {
+          return <></>;
+        }
+
+        return (
+          <Box className="w-full truncate">
+            <Text>{formatUnixTime(value)}</Text>
+          </Box>
+        );
+      },
+    },
+    {
+      title: t('updated_by'),
+      dataIndex: 'updated_by',
+      render: (user: User | null) => {
+        if (!user) {
+          return <></>;
+        }
+
+        return (
+          <Box className="w-full truncate">
+            <Text>
+              {user.first_name || user.last_name
+                ? `${user.first_name} ${user.last_name}`
+                : user.email}
+            </Text>
+          </Box>
+        );
+      },
     },
     {
       title: '',
@@ -32,9 +113,14 @@ const useColumns = () => {
         <TableActionsDropdown
           resource={resource}
           editPageLink="/subsidiaries/:id/edit"
+          resourceType="subsidiary"
+          deleteEndpoint="/api/subsidiaries/:id"
+          resourceName={resource.name}
+          refresh={refresh}
         />
       ),
       width: '6rem',
+      fixed: 'right',
     },
   ];
 

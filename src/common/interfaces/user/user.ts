@@ -8,10 +8,11 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export type IUser = {
-  id: string;
-  name: string;
+export type User = {
+  id?: string;
+  first_name: string | null;
+  last_name: string | null;
   email: string;
-  phone: string;
-  role: string;
+  permissions: string[];
+  subsidiaries: string[];
 };

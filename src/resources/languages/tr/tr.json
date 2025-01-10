@@ -48,5 +48,11 @@
     "copied_to_clipboard": "Panoya kopyalandı",
     "done": "Tamam",
     "status_name_placeholder": "Örn. Teslim Edildi, Satıldı, Hasarlı, Rezerve Edildi, İade Edildi, İndirimde, vb.",
-    "register": "Kayıt Ol"
+    "register": "Kayıt Ol",
+    "created_at": "Oluşturulma Tarihi",
+    "updated_at": "Güncellenme Tarihi",
+    "created_by": "Oluşturan",
+    "required": "zorunlu",
+    "updated_by": "Güncelleyen",
+    "refresh_data": "Verileri Yenile"
 }

@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { endpoint, request, useToast } from '@helpers/index';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import { useParams } from 'react-router-dom';
 
 import { Subsidiary, ValidationErrors } from '@interfaces/index';
@@ -23,6 +23,8 @@ import { BreadcrumbItem } from '@components/layout/Default';
 import { useFetchEntity, useTranslation } from '@hooks/index';
 
 import SubsidiaryForm from '../common/components/SubsidiaryForm';
+import { validateSubsidiary } from '../common/helpers/helpers';
+import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
   const t = useTranslation();
@@ -47,21 +49,34 @@ const Edit = () => {
     Subsidiary | undefined
   >();
 
-  const { refresh } = useFetchEntity({
+  const actions = useActions();
+
+  const { refresh } = useFetchEntity<Subsidiary>({
     queryKey: '/api/subsidiaries',
     setEntity: setSubsidiary,
     setIsLoading,
     setInitialResponse,
   });
 
-  const handleCancel = () => {
-    setSubsidiary(initialResponse);
-  };
+  const handleSave = async () => {
+    if (!isLoading && id && subsidiary) {
+      if (isEqual(initialResponse, subsidiary)) {
+        toast.success('updated_subsidiary');
+        return;
+      }
 
-  const handleSave = () => {
-    if (!isLoading && id) {
-      setIsLoading(true);
+      setErrors({});
+
+      const validationErrors = await validateSubsidiary(subsidiary);
+
+      if (validationErrors) {
+        setErrors(validationErrors);
+        return;
+      }
+
       toast.loading();
+
+      setIsLoading(true);
 
       request('PATCH', endpoint('/api/subsidiaries/:id', { id }), subsidiary)
         .then(() => {
@@ -96,10 +111,9 @@ const Edit = () => {
     <Default
       title={t('edit_subsidiary')}
       breadcrumbs={breadcrumbs}
+      actions={actions}
       onSaveClick={handleSave}
-      onCancelClick={handleCancel}
       disabledSaveButton={isLoading}
-      disabledCancelButton={isLoading}
       disabledSaveButtonWithLoadingIcon={Boolean(isLoading && subsidiary)}
     >
       <SubsidiaryForm
@@ -107,7 +121,7 @@ const Edit = () => {
         setSubsidiary={setSubsidiary}
         errors={errors}
         editPage
-        isLoading={isLoading}
+        isLoading={isLoading && !subsidiary}
         onRefresh={refresh}
       />
     </Default>

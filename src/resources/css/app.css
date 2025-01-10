@@ -2,3 +2,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+td::before {
+  content: var(--before-content, initial) !important;
+}
+
+.ant-select-selector {
+  box-shadow: none !important;
+}

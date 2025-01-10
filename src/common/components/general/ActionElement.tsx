@@ -23,7 +23,7 @@ const ActionElement = (props: Props) => {
 
   return (
     <Box
-      className="flex justify-start items-center space-x-4 px-3"
+      className="flex justify-start items-center space-x-4 px-3 py-0.5 w-32"
       onClick={(event) => {
         event.stopPropagation();
         onClick?.();

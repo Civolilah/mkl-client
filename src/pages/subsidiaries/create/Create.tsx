@@ -25,6 +25,7 @@ import { BreadcrumbItem } from '@components/layout/Default';
 import { useTranslation } from '@hooks/index';
 
 import SubsidiaryForm from '../common/components/SubsidiaryForm';
+import { validateSubsidiary } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
@@ -49,14 +50,24 @@ const Create = () => {
     INITIAL_SUBSIDIARY
   );
 
-  const handleCancel = () => {
-    setSubsidiary(INITIAL_SUBSIDIARY);
-  };
+  const handleSave = async () => {
+    if (!subsidiary) {
+      return;
+    }
 
-  const handleSave = () => {
     if (!isFormBusy) {
-      setIsFormBusy(true);
+      setErrors({});
+
+      const validationErrors = await validateSubsidiary(subsidiary);
+
+      if (validationErrors) {
+        setErrors(validationErrors);
+        return;
+      }
+
       toast.loading();
+
+      setIsFormBusy(true);
 
       request('POST', '/api/subsidiaries', subsidiary)
         .then((response) => {
@@ -93,9 +104,7 @@ const Create = () => {
       title={t('new_subsidiary')}
       breadcrumbs={breadcrumbs}
       onSaveClick={handleSave}
-      onCancelClick={handleCancel}
       disabledSaveButton={isFormBusy}
-      disabledCancelButton={isFormBusy}
       disabledSaveButtonWithLoadingIcon={isFormBusy}
     >
       <SubsidiaryForm

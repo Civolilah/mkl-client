@@ -10,12 +10,13 @@
 
 import { ReactNode } from 'react';
 
+import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import Icon from '@components/general/Icon';
-import { Box, Button, Header, Text } from '@components/index';
+import { Box, Button, EntityActions, Header, Text } from '@components/index';
 
 import {
   useAccentColor,
@@ -41,6 +42,8 @@ type Props = {
   disabledSaveButtonWithLoadingIcon?: boolean;
   disabledCancelButton?: boolean;
   disabledCancelButtonWithLoadingIcon?: boolean;
+  footer?: ReactNode;
+  actions?: ItemType[];
 };
 
 const Default = (props: Props) => {
@@ -56,6 +59,8 @@ const Default = (props: Props) => {
     disabledSaveButtonWithLoadingIcon = false,
     disabledCancelButton = false,
     disabledCancelButtonWithLoadingIcon = false,
+    footer,
+    actions = [],
   } = props;
 
   const colors = useColors();
@@ -69,17 +74,17 @@ const Default = (props: Props) => {
   const navigate = useNavigate();
 
   return (
-    <Box style={{ backgroundColor: colors.$3 }}>
+    <Box className="h-full w-full" style={{ backgroundColor: colors.$3 }}>
       <Box className="flex flex-col justify-start items-center w-full h-full">
         <Header title={title} />
 
-        <Box className="flex w-full h-full">
+        <Box className="flex w-full" style={{ height: 'calc(100% - 4.35rem)' }}>
           <Box className="hidden lg:flex lg:justify-start">
             <MainNavBar />
           </Box>
 
           <Box
-            className="flex flex-col justify-center items-center h-full"
+            className="flex flex-col justify-center items-center flex-1"
             style={{
               width: isLargeScreen
                 ? `calc(100% - ${isMiniSideBar ? '4.35rem' : '17.5rem'})`
@@ -92,7 +97,7 @@ const Default = (props: Props) => {
                 style={{
                   borderColor: colors.$1,
                   backgroundColor: colors.$6,
-                  height: '57px',
+                  height: '3.5rem',
                 }}
               >
                 <Box className="flex-1 hidden sm:flex">
@@ -171,7 +176,7 @@ const Default = (props: Props) => {
                   <Box
                     className="flex space-x-2 md:space-x-4"
                     style={{
-                      height: '2.5rem',
+                      height: '2.25rem',
                       borderColor: colors.$1,
                       backgroundColor: colors.$6,
                     }}
@@ -207,14 +212,36 @@ const Default = (props: Props) => {
                         {t('save')}
                       </Button>
                     )}
+
+                    {Boolean(actions.length) && (
+                      <EntityActions actions={actions} />
+                    )}
                   </Box>
                 )}
               </Box>
             )}
 
-            <Box className="flex w-full justify-center items-center p-2 md:p-6 overflow-y-auto">
-              {children}
+            <Box className="flex w-full overflow-y-auto flex-1">
+              <Box
+                className="flex items-center justify-center w-full md:px-6 md:pt-6 md:pb-12"
+                style={{ minHeight: 'min-content' }}
+              >
+                {children}
+              </Box>
             </Box>
+
+            {footer && (
+              <Box
+                className="flex w-full items-center border-t shadow-lg px-2 md:px-6"
+                style={{
+                  borderColor: colors.$1,
+                  backgroundColor: colors.$6,
+                  height: '3.45rem',
+                }}
+              >
+                {footer}
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>

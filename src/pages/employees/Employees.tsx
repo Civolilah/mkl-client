@@ -8,23 +8,53 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Default } from '@components/index';
-import { BreadcrumbItem } from '@components/layout/Default';
+import { useState } from 'react';
 
-import { useTranslation } from '@hooks/index';
+import { User } from '@interfaces/index';
+
+import { Box, Default, RefreshDataElement, Table } from '@components/index';
+
+import { useFetchEntity, useTranslation } from '@hooks/index';
+
+import useColumns from './common/hooks/useColumns';
 
 const Employees = () => {
   const t = useTranslation();
 
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      title: t('employees'),
-    },
-  ];
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { refresh } = useFetchEntity<User>({
+    queryKey: '/api/users',
+    setEntities: setUsers,
+    setIsLoading,
+    listQuery: true,
+  });
+
+  const columns = useColumns({
+    refresh,
+  });
 
   return (
-    <Default title={t('employees')} breadcrumbs={breadcrumbs}>
-      employees
+    <Default
+      title={t('employees')}
+      footer={
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement isLoading={isLoading} refresh={refresh} />
+        </Box>
+      }
+    >
+      <Table<User>
+        columns={columns}
+        data={users}
+        isDataLoading={isLoading}
+        enableFiltering
+        filteringProps={['first_name', 'last_name', 'email']}
+        creationRoute="/employees/new"
+        creationButtonLabel={t('new_employee')}
+        filterFieldPlaceHolder={t('search_by_employee')}
+        scrollX="70rem"
+      />
     </Default>
   );
 };

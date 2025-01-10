@@ -190,7 +190,7 @@ const Login = () => {
                 <Box className="flex items-center justify-center w-full space-x-3">
                   <Text className="text-sm">{t('dont_have_account')}</Text>
 
-                  <Link className="text-sm" to="/register" constantUnderline>
+                  <Link className="text-sm" to="/register">
                     {t('sign_up')}
                   </Link>
                 </Box>

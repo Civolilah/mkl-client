@@ -16,7 +16,12 @@ export type Permission =
   | 'create_subsidiary'
   | 'view_subsidiary'
   | 'edit_subsidiary'
-  | 'director';
+  | 'director'
+  | 'admin'
+  | 'view_dashboard'
+  | 'import_products'
+  | 'export_products'
+  | 'view_store';
 
 const useHasPermission = () => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);
@@ -26,7 +31,12 @@ const useHasPermission = () => {
 
     if (!userCompanyDetails) return false;
 
-    if (!permission.includes('_')) return false;
+    if (
+      !permission.includes('_') &&
+      permission !== 'director' &&
+      permission !== 'admin'
+    )
+      return false;
 
     if (permission === 'director' && !userCompanyDetails.is_director)
       return false;

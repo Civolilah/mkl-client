@@ -21,40 +21,31 @@ type Props = {
   target?: '_blank';
   locale?: 'en' | 'tr';
   disableHoverColor?: boolean;
-  enableUnderline?: boolean;
-  constantUnderline?: boolean;
 };
 
 const StyledLink = styled(BaseLink)`
+  color: ${(props) => props.theme.color};
   &:hover {
     color: ${(props) => props.theme.hoverColor};
   }
 `;
 
 const Link = (props: Props) => {
-  const {
-    children,
-    to,
-    target,
-    className,
-    enableUnderline,
-    constantUnderline,
-  } = props;
+  const { children, to, target, className } = props;
 
   return (
     <StyledLink
       to={to}
       className={classNames(
-        'transition-colors duration-200',
-        {
-          'hover:underline': enableUnderline,
-          underline: constantUnderline,
-        },
+        'transition-colors duration-200 hover:underline',
         className
       )}
       target={target}
       style={{ letterSpacing: 0.8 }}
-      theme={{ hoverColor: '#2E6CBD' }}
+      theme={{
+        color: '#2E6CBD',
+        hoverColor: '#2E6CBD',
+      }}
     >
       {children}
     </StyledLink>

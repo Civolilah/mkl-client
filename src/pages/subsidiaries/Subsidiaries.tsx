@@ -12,7 +12,7 @@ import { useState } from 'react';
 
 import { Subsidiary } from '@interfaces/index';
 
-import { Default, Table } from '@components/index';
+import { Box, Default, RefreshDataElement, Table } from '@components/index';
 
 import { useFetchEntity, useTranslation } from '@hooks/index';
 
@@ -20,8 +20,6 @@ import useColumns from './common/hooks/useColumns';
 
 const Subsidiaries = () => {
   const t = useTranslation();
-
-  const columns = useColumns();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [subsidiaries, setSubsidiaries] = useState<Subsidiary[]>([]);
@@ -33,18 +31,29 @@ const Subsidiaries = () => {
     listQuery: true,
   });
 
+  const columns = useColumns({
+    refresh,
+  });
+
   return (
-    <Default title={t('subsidiaries')}>
-      <Table
+    <Default
+      title={t('subsidiaries')}
+      footer={
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement isLoading={isLoading} refresh={refresh} />
+        </Box>
+      }
+    >
+      <Table<Subsidiary>
         columns={columns}
         data={subsidiaries}
         isDataLoading={isLoading}
-        handleRefresh={refresh}
         enableFiltering
         filteringProps={['name']}
         creationRoute="/subsidiaries/new"
         creationButtonLabel={t('new_subsidiary')}
         filterFieldPlaceHolder={t('search_by_name')}
+        scrollX="70rem"
       />
     </Default>
   );

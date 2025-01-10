@@ -78,9 +78,9 @@ const NavBarIconsBox = () => {
           >
             <div className="cursor-pointer">
               {isMiniSideBar ? (
-                <Icon name="arrowForward" size={23} onClick={handleClick} />
+                <Icon name="arrowForward" size={33} onClick={handleClick} />
               ) : (
-                <Icon name="arrowBack" size={23} onClick={handleClick} />
+                <Icon name="arrowBack" size={33} onClick={handleClick} />
               )}
             </div>
           </Tooltip>

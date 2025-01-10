@@ -67,6 +67,11 @@ const App = () => {
     navigate('/unauthorized');
   };
 
+  const handleLogoutUser = () => {
+    localStorage.removeItem('MKL-TOKEN');
+    navigate('/login');
+  };
+
   const handleDisplayErrorToaster = (event: Event) => {
     const { message } = (event as CustomEvent).detail;
 
@@ -98,6 +103,8 @@ const App = () => {
       handleNavigateUnauthorizedPage
     );
 
+    window.addEventListener('logout_user', handleLogoutUser);
+
     window.addEventListener('display_welcome_modal', handleDisplayWelcomeModal);
 
     window.addEventListener('display_error_toaster', handleDisplayErrorToaster);
@@ -122,6 +129,8 @@ const App = () => {
         'display_welcome_modal',
         handleDisplayWelcomeModal
       );
+
+      window.removeEventListener('logout_user', handleLogoutUser);
     };
   }, []);
 

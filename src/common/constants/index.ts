@@ -14,9 +14,12 @@ export { INITIAL_STATUS } from './status/status';
 
 export { INITIAL_SUBSIDIARY } from './subsidiary/subsidiary';
 
+export { INITIAL_EMPLOYEE } from './employee/employee';
+
 export {
   VALIDATION_ERROR_STATUS_CODE,
   MAX_REQUESTS_LOGIN_REGISTER_ERROR_STATUS_CODE,
   GLOBAL_ERROR_STATUS_CODE,
   PERMISSIONS_ERROR_STATUS_CODE,
+  UNAUTHORIZED_ERROR_STATUS_CODE,
 } from './errors/errors';

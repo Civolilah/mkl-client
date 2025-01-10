@@ -28,6 +28,12 @@ const COLORS = {
   $18: '#f7f7f7', // Default button background color,
   $19: '#e8e8e8', // Popover items hover background color,
   $20: '#007bff', // Action table element color
+  $21: '#d3d3d3', // Pagination disabled arrow box hover background color
+  $22: '#dedede', // Pagination enabled arrow box hover background color
+  $23: '#ffffff', // Pagination arrow box background color
+  $24: '#000000', // Tab item color
+  $25: '#e6e6e6', // Tab item background color
+  $26: '#ffffff', // Containers background color
 };
 
 const useColors = () => {

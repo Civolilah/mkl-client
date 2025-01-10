@@ -8,9 +8,11 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 import { Card as CardBase } from 'antd';
+import { ItemType } from 'antd/es/menu/interface';
+import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 
 import { Box, Button, Text } from '@components/index';
@@ -26,6 +28,9 @@ type Props = {
   onSaveClick?: () => void;
   isLoading?: boolean;
   topRight?: ReactNode;
+  actions?: ItemType[];
+  childrenParentClassName?: string;
+  childrenParentStyle?: CSSProperties;
 };
 
 const Card = (props: Props) => {
@@ -39,13 +44,16 @@ const Card = (props: Props) => {
     saveButtonText,
     isLoading = false,
     topRight,
+    actions = [],
+    childrenParentClassName,
+    childrenParentStyle,
   } = props;
 
   const colors = useColors();
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
-    <div className="flex w-full h-full justify-center items-start">
+    <Box className="flex w-full h-full justify-center items-start">
       <CardBase
         title={
           <Box className="flex items-center justify-between">
@@ -54,8 +62,12 @@ const Card = (props: Props) => {
             {topRight}
           </Box>
         }
-        className={className}
-        style={{ borderColor: colors.$1, borderRadius: '0px' }}
+        className={classNames(className)}
+        style={{
+          borderColor: colors.$1,
+          borderRadius: 0,
+          paddingBottom: '1rem',
+        }}
         styles={{
           body: { padding: isLoading ? '2rem' : 0 },
           header: {
@@ -66,20 +78,24 @@ const Card = (props: Props) => {
         }}
         loading={isLoading}
       >
-        <div className="p-6">{children}</div>
+        <Box
+          className={classNames('px-6 pt-6 pb-4', childrenParentClassName)}
+          style={childrenParentStyle}
+        >
+          {children}
+        </Box>
 
-        {onSaveClick && (
-          <div
-            className="flex justify-end border-t py-4 px-6"
-            style={{ borderColor: colors.$1 }}
-          >
-            <Button type="primary" onClick={onSaveClick}>
-              {saveButtonText || t('save')}
-            </Button>
-          </div>
+        {Boolean(actions.length || onSaveClick) && (
+          <Box className="flex justify-end border-t px-6">
+            {onSaveClick && (
+              <Button type="primary" onClick={onSaveClick}>
+                {saveButtonText || t('save')}
+              </Button>
+            )}
+          </Box>
         )}
       </CardBase>
-    </div>
+    </Box>
   );
 };
 

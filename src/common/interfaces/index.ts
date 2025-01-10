@@ -13,7 +13,7 @@ export type {
   YupValidationError,
 } from '@interfaces/global/global';
 
-export type { IUser } from '@interfaces/user/user';
+export type { User } from '@interfaces/user/user';
 
 export type { Status } from '@interfaces/status/status';
 

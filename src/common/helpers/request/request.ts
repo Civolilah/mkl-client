@@ -13,6 +13,7 @@ import {
   GLOBAL_ERROR_STATUS_CODE,
   MAX_REQUESTS_LOGIN_REGISTER_ERROR_STATUS_CODE,
   PERMISSIONS_ERROR_STATUS_CODE,
+  UNAUTHORIZED_ERROR_STATUS_CODE,
 } from '@constants/index';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 
@@ -24,10 +25,9 @@ const client = axios.create({
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    // if (error.response.status === 401) {
-    //   localStorage.removeItem('TOKEN');
-    //   window.location.href = '/login';
-    // }
+    if (error.response.status === UNAUTHORIZED_ERROR_STATUS_CODE) {
+      window.dispatchEvent(new CustomEvent('logout_user'));
+    }
 
     if (
       error.response?.status ===

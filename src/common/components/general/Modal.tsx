@@ -88,7 +88,7 @@ const Modal = (props: Props) => {
           </Box>
         )}
 
-        <Box className="flex flex-col justify-center items-center w-full p-6">
+        <Box className="flex flex-col justify-center items-center w-full p-4">
           {children}
         </Box>
       </Box>

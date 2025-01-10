@@ -276,7 +276,7 @@ const Register = () => {
                   <Box className="flex items-center justify-center w-full space-x-3">
                     <Text className="text-sm">{t('already_have_account')}</Text>
 
-                    <Link className="text-sm" to="/login" constantUnderline>
+                    <Link className="text-sm" to="/login">
                       {t('sign_in')}
                     </Link>
                   </Box>

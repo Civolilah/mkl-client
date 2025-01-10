@@ -35,8 +35,6 @@ import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { IoInformationCircleOutline } from 'react-icons/io5';
 import {
   MdAdd,
-  MdArrowBackIosNew,
-  MdArrowForwardIos,
   MdBusiness,
   MdCategory,
   MdClose,
@@ -47,10 +45,15 @@ import {
   MdHome,
   MdKeyboardArrowDown,
   MdOutlineEmail,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardArrowRight,
+  MdOutlineKeyboardDoubleArrowLeft,
+  MdOutlineKeyboardDoubleArrowRight,
   MdOutlineMenu,
   MdOutlineShoppingCart,
   MdRefresh,
   MdSave,
+  MdSecurity,
   MdWarehouse,
 } from 'react-icons/md';
 import {
@@ -64,7 +67,9 @@ import {
   MdBarChart,
   MdAttachMoney,
 } from 'react-icons/md';
+import { RiInboxLine } from 'react-icons/ri';
 import { RxPerson } from 'react-icons/rx';
+import { RxDotsHorizontal } from 'react-icons/rx';
 import { SiCashapp } from 'react-icons/si';
 import { TbPackageExport } from 'react-icons/tb';
 
@@ -115,7 +120,12 @@ export type IconName =
   | 'closeRounded'
   | 'refresh'
   | 'edit'
-  | 'delete';
+  | 'delete'
+  | 'emptyData'
+  | 'ellipsis'
+  | 'doubleArrowBack'
+  | 'doubleArrowForward'
+  | 'security';
 
 type Props = {
   className?: string;
@@ -123,6 +133,11 @@ type Props = {
   style?: CSSProperties;
   name: IconName;
   size?: number | string;
+};
+
+const DEFAULT_ICON_COLORS: Record<string, string> = {
+  edit: '#007bff',
+  delete: '#dc2626',
 };
 
 const Icon = (props: Props) => {
@@ -135,7 +150,7 @@ const Icon = (props: Props) => {
       return cloneElement(iconElement, {
         fontSize: props.size || '1.125rem',
         onClick: props.onClick,
-        style: props.style,
+        style: { color: DEFAULT_ICON_COLORS[name], ...props.style },
       });
     }
 
@@ -190,9 +205,9 @@ const Icon = (props: Props) => {
     case 'add':
       return generateIconElement(MdAdd);
     case 'arrowBack':
-      return generateIconElement(MdArrowBackIosNew);
+      return generateIconElement(MdOutlineKeyboardArrowLeft);
     case 'arrowForward':
-      return generateIconElement(MdArrowForwardIos);
+      return generateIconElement(MdOutlineKeyboardArrowRight);
     case 'email':
       return generateIconElement(MdOutlineEmail);
     case 'menu':
@@ -235,6 +250,16 @@ const Icon = (props: Props) => {
       return generateIconElement(MdEdit);
     case 'delete':
       return generateIconElement(MdDelete);
+    case 'emptyData':
+      return generateIconElement(RiInboxLine);
+    case 'ellipsis':
+      return generateIconElement(RxDotsHorizontal);
+    case 'doubleArrowBack':
+      return generateIconElement(MdOutlineKeyboardDoubleArrowLeft);
+    case 'doubleArrowForward':
+      return generateIconElement(MdOutlineKeyboardDoubleArrowRight);
+    case 'security':
+      return generateIconElement(MdSecurity);
 
     default:
       return <></>;

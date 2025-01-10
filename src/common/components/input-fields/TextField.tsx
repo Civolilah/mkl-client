@@ -81,7 +81,7 @@ const TextField = (props: Props) => {
         <Box className="flex items-center space-x-1">
           <Text
             style={{
-              fontSize: isSmallScreen ? '0.875rem' : '0.938rem',
+              fontSize: isSmallScreen ? '0.76rem' : '0.875rem',
               fontWeight: 500,
             }}
           >
@@ -89,14 +89,14 @@ const TextField = (props: Props) => {
           </Text>
 
           {required ? (
-            <Text style={{ fontSize: isSmallScreen ? '0.719rem' : '0.781rem' }}>
+            <Text style={{ fontSize: isSmallScreen ? '0.65rem' : '0.72rem' }}>
               ({t('required')})
             </Text>
           ) : (
             <>
               {Boolean(!withoutOptionalText) && (
                 <Text
-                  style={{ fontSize: isSmallScreen ? '0.719rem' : '0.781rem' }}
+                  style={{ fontSize: isSmallScreen ? '0.65rem' : '0.72rem' }}
                 >
                   ({t('optional')})
                 </Text>

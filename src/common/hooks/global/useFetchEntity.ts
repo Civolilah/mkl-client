@@ -16,20 +16,17 @@ import { cloneDeep } from 'lodash';
 import { useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
-import { Subsidiary } from '@interfaces/index';
-
-type Entity = Subsidiary;
-
-type Params = {
+type Params<T> = {
   queryKey: string;
-  setEntity?: Dispatch<SetStateAction<Entity | undefined>>;
-  setEntities?: Dispatch<SetStateAction<Entity[]>>;
+  setEntity?: Dispatch<SetStateAction<T | undefined>>;
+  setEntities?: Dispatch<SetStateAction<T[]>>;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
-  setInitialResponse?: Dispatch<SetStateAction<Entity | undefined>>;
+  setInitialResponse?: Dispatch<SetStateAction<T | undefined>>;
   listQuery?: boolean;
+  formatRecords?: (data: T[]) => T[];
 };
 
-const useFetchEntity = (params: Params) => {
+const useFetchEntity = <T>(params: Params<T>) => {
   const {
     queryKey,
     setEntity,

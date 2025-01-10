@@ -60,7 +60,7 @@ const LabelElement = (props: Props) => {
         <Box className="flex items-center space-x-1">
           <Text
             style={{
-              fontSize: isSmallScreen ? '0.875rem' : '0.94rem',
+              fontSize: isSmallScreen ? '0.76rem' : '0.875rem',
               fontWeight: 500,
             }}
           >
@@ -73,7 +73,7 @@ const LabelElement = (props: Props) => {
             <>
               {Boolean(!withoutOptionalText) && (
                 <Text
-                  style={{ fontSize: isSmallScreen ? '0.9375rem' : '0.781rem' }}
+                  style={{ fontSize: isSmallScreen ? '0.7rem' : '0.82rem' }}
                 >
                   ({t('optional')})
                 </Text>
@@ -86,7 +86,7 @@ const LabelElement = (props: Props) => {
           <Box
             style={{
               color: colors.$16,
-              fontSize: isSmallScreen ? '0.75rem' : '0.834rem',
+              fontSize: isSmallScreen ? '0.7rem' : '0.75rem',
             }}
           >
             {helpLabel}

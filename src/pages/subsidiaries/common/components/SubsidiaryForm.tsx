@@ -10,13 +10,11 @@
 
 import { Dispatch, SetStateAction } from 'react';
 
-import classNames from 'classnames';
-
 import { Subsidiary, ValidationErrors } from '@interfaces/index';
 
-import { Box, Card, Icon, TextField } from '@components/index';
+import { Box, Card, RefreshDataElement, TextField } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useTranslation } from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
 
@@ -35,8 +33,6 @@ const SubsidiaryForm = (props: Props) => {
   const { subsidiary, setSubsidiary, errors, editPage, isLoading, onRefresh } =
     props;
 
-  const colors = useColors();
-
   const handleChange = useHandleChange({ setSubsidiary });
 
   return (
@@ -45,32 +41,25 @@ const SubsidiaryForm = (props: Props) => {
       className="w-full md:w-3/4 xl:w-1/2 pb-6"
       isLoading={isLoading}
       topRight={
-        editPage && onRefresh ? (
-          <Box
-            className={classNames('p-1.5 border', {
-              'cursor-pointer': !isLoading,
-              'cursor-not-allowed': isLoading,
-            })}
-            onClick={() => {
-              if (!isLoading) {
-                onRefresh();
-              }
-            }}
-            style={{ borderColor: colors.$1 }}
-          >
-            <Icon name="refresh" size="1.35rem" />
-          </Box>
+        editPage && onRefresh && typeof isLoading === 'boolean' ? (
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={onRefresh}
+            iconSize="1.45rem"
+          />
         ) : undefined
       }
     >
-      <TextField
-        required
-        label={t('name')}
-        value={subsidiary?.name || ''}
-        onValueChange={(value) => handleChange('name', value)}
-        changeOnBlur
-        errorMessage={errors?.name && t(errors.name)}
-      />
+      <Box className="pb-4">
+        <TextField
+          required
+          label={t('name')}
+          value={subsidiary?.name || ''}
+          onValueChange={(value) => handleChange('name', value)}
+          changeOnBlur
+          errorMessage={errors?.name && t(errors.name)}
+        />
+      </Box>
     </Card>
   );
 };
