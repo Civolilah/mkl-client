@@ -16,4 +16,6 @@ export const INITIAL_EMPLOYEE: User = {
   email: '',
   permissions: [],
   subsidiaries: [],
+  password: '',
+  password_confirmation: '',
 };

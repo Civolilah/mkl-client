@@ -66,25 +66,56 @@ const Details = (props: EmployeeProps) => {
         <TextField
           required
           label={t('first_name')}
+          placeHolder={t('first_name_placeholder')}
           value={employee?.first_name || ''}
           onValueChange={(value) => handleChange('first_name', value)}
           changeOnBlur
           errorMessage={errors?.first_name && t(errors.first_name)}
         />
+
         <TextField
           label={t('last_name')}
+          placeHolder={t('last_name_placeholder')}
           value={employee?.last_name || ''}
           onValueChange={(value) => handleChange('last_name', value)}
           changeOnBlur
           errorMessage={errors?.last_name && t(errors.last_name)}
         />
+
         <TextField
           required
           label={t('email')}
+          placeHolder={t('email_placeholder')}
           value={employee?.email || ''}
           onValueChange={(value) => handleChange('email', value)}
           changeOnBlur
           errorMessage={errors?.email && t(errors.email)}
+        />
+
+        <TextField
+          required
+          type="password"
+          label={t('password')}
+          placeHolder={t('password_placeholder')}
+          value={employee?.password || ''}
+          onValueChange={(value) => handleChange('password', value)}
+          changeOnBlur
+          errorMessage={errors?.password && t(errors.password)}
+        />
+
+        <TextField
+          required
+          type="password"
+          label={t('confirm_password')}
+          placeHolder={t('password_placeholder')}
+          value={employee?.password_confirmation || ''}
+          onValueChange={(value) =>
+            handleChange('password_confirmation', value)
+          }
+          changeOnBlur
+          errorMessage={
+            errors?.password_confirmation && t(errors.password_confirmation)
+          }
         />
 
         <Box className="flex flex-col space-y-2 w-full">

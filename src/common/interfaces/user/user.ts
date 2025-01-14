@@ -15,4 +15,6 @@ export type User = {
   email: string;
   permissions: string[];
   subsidiaries: string[];
+  password?: string;
+  password_confirmation?: string;
 };

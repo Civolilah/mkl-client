@@ -54,6 +54,7 @@ const SubsidiaryForm = (props: Props) => {
         <TextField
           required
           label={t('name')}
+          placeHolder={t('subsidiary_name_placeholder')}
           value={subsidiary?.name || ''}
           onValueChange={(value) => handleChange('name', value)}
           changeOnBlur

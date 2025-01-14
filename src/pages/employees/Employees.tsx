@@ -52,7 +52,7 @@ const Employees = () => {
         filteringProps={['first_name', 'last_name', 'email']}
         creationRoute="/employees/new"
         creationButtonLabel={t('new_employee')}
-        filterFieldPlaceHolder={t('search_by_employee')}
+        filterFieldPlaceHolder={t('search_employee_by')}
         scrollX="70rem"
       />
     </Default>

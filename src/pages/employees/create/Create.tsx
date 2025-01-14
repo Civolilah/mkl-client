@@ -66,7 +66,7 @@ const Create = () => {
 
       setIsFormBusy(true);
 
-      request('POST', '/api/users/add', employee)
+      request('POST', '/api/users/add_employee', employee)
         .then((response) => {
           toast.success('created_employee');
 

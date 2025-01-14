@@ -131,6 +131,7 @@ const TextField = (props: Props) => {
           value={currentValue}
           placeholder={placeHolder}
           onChange={(event) => setCurrentValue(event.target.value)}
+          onBlur={() => changeOnBlur && onValueChange?.(currentValue)}
           maxLength={maxLength}
           disabled={disabled}
           onPressEnter={onPressEnter}
