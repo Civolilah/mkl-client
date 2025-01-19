@@ -40,15 +40,13 @@ const useFetchEntity = <T>(params: Params<T>) => {
   const { id } = useParams();
   const queryClient = useQueryClient();
 
-  const controller = new AbortController();
-
   const {
     data: entityResponse,
     isLoading,
     refetch,
   } = useQuery(
     listQuery ? [queryKey] : [queryKey, id],
-    () =>
+    ({ signal }) =>
       request(
         'GET',
         listQuery
@@ -57,7 +55,7 @@ const useFetchEntity = <T>(params: Params<T>) => {
               id: id as string,
             }),
         {},
-        { signal: controller.signal }
+        { signal }
       ).then((response) => response.data),
     {
       enabled: Boolean(id) || listQuery,
@@ -117,10 +115,6 @@ const useFetchEntity = <T>(params: Params<T>) => {
         )
       );
     }
-
-    return () => {
-      controller.abort();
-    };
   }, [entityResponse, isLoading]);
 
   useEffect(() => {

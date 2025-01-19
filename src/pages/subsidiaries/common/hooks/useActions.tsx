@@ -15,7 +15,11 @@ import { useParams } from 'react-router-dom';
 
 import { DeleteAction } from '@components/index';
 
-const useActions = () => {
+type Params = {
+  resourceName: string;
+};
+
+const useActions = ({ resourceName }: Params) => {
   const { id } = useParams();
 
   const actions: MenuProps['items'] = [
@@ -24,7 +28,7 @@ const useActions = () => {
         <DeleteAction
           resourceType="subsidiary"
           deleteEndpoint="/api/subsidiaries/:id"
-          resourceName="subsidiary"
+          resourceName={resourceName}
           resourceId={id as string}
           editPageAction
           mainPageURL="/subsidiaries"

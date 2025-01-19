@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Suspense } from 'react';
+import { StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import './resources/css/app.css';
@@ -49,19 +49,21 @@ i18n.use(initReactI18next).init({
 });
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <Suspense fallback={<LoadingScreen />}>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <GoogleOAuthProvider
-          clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID as string}
-        >
-          <ScrollToTop>
-            <App />
-          </ScrollToTop>
-        </GoogleOAuthProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
-  </Suspense>
+  <StrictMode>
+    <Suspense fallback={<LoadingScreen />}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <GoogleOAuthProvider
+            clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID as string}
+          >
+            <ScrollToTop>
+              <App />
+            </ScrollToTop>
+          </GoogleOAuthProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </Suspense>
+  </StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

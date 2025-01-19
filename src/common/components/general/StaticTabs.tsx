@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import { Tabs } from 'antd';
 
@@ -20,11 +20,19 @@ type Props = {
     icon?: ReactNode;
   }[];
   type?: 'card' | 'line';
-  defaultActiveKey: string;
+  defaultActiveKey?: string;
+  activeTab?: string;
+  setActiveTab?: Dispatch<SetStateAction<string>>;
 };
 
 const StaticTabs = (props: Props) => {
-  const { tabs, type = 'line', defaultActiveKey } = props;
+  const {
+    tabs,
+    type = 'line',
+    defaultActiveKey,
+    activeTab,
+    setActiveTab,
+  } = props;
 
   return (
     <Tabs
@@ -32,6 +40,8 @@ const StaticTabs = (props: Props) => {
       type={type}
       defaultActiveKey={defaultActiveKey}
       style={{ width: '100%' }}
+      activeKey={activeTab}
+      onChange={(activeKey) => setActiveTab?.(activeKey)}
     />
   );
 };

@@ -69,7 +69,8 @@ const App = () => {
 
   const handleLogoutUser = () => {
     localStorage.removeItem('MKL-TOKEN');
-    navigate('/login');
+
+    window.location.reload();
   };
 
   const handleDisplayErrorToaster = (event: Event) => {

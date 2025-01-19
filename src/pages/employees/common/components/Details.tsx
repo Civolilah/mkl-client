@@ -92,31 +92,35 @@ const Details = (props: EmployeeProps) => {
           errorMessage={errors?.email && t(errors.email)}
         />
 
-        <TextField
-          required
-          type="password"
-          label={t('password')}
-          placeHolder={t('password_placeholder')}
-          value={employee?.password || ''}
-          onValueChange={(value) => handleChange('password', value)}
-          changeOnBlur
-          errorMessage={errors?.password && t(errors.password)}
-        />
+        {!editPage && (
+          <>
+            <TextField
+              required
+              type="password"
+              label={t('password')}
+              placeHolder={t('password_placeholder')}
+              value={employee?.password || ''}
+              onValueChange={(value) => handleChange('password', value)}
+              changeOnBlur
+              errorMessage={errors?.password && t(errors.password)}
+            />
 
-        <TextField
-          required
-          type="password"
-          label={t('confirm_password')}
-          placeHolder={t('password_placeholder')}
-          value={employee?.password_confirmation || ''}
-          onValueChange={(value) =>
-            handleChange('password_confirmation', value)
-          }
-          changeOnBlur
-          errorMessage={
-            errors?.password_confirmation && t(errors.password_confirmation)
-          }
-        />
+            <TextField
+              required
+              type="password"
+              label={t('confirm_password')}
+              placeHolder={t('password_placeholder')}
+              value={employee?.password_confirmation || ''}
+              onValueChange={(value) =>
+                handleChange('password_confirmation', value)
+              }
+              changeOnBlur
+              errorMessage={
+                errors?.password_confirmation && t(errors.password_confirmation)
+              }
+            />
+          </>
+        )}
 
         <Box className="flex flex-col space-y-2 w-full">
           <SelectDataField

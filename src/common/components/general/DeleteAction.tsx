@@ -12,6 +12,7 @@ import { useState } from 'react';
 
 import { endpoint, request, useToast } from '@helpers/index';
 import { useNavigate } from 'react-router-dom';
+import reactStringReplace from 'react-string-replace';
 
 import { ActionElement, Box, Button, Modal, Text } from '@components/index';
 
@@ -85,9 +86,23 @@ const DeleteAction = (props: Props) => {
       >
         <Box className="flex flex-col space-y-6">
           <Text className="text-center text-base break-words">
-            {t('are_you_sure_you_want_to_delete')}{' '}
-            <Text className="font-medium">{`"${resourceName}"`}</Text>{' '}
-            {t(resourceType)}?
+            {reactStringReplace(
+              reactStringReplace(
+                t('are_you_sure_you_want_to_delete_resource', {
+                  resourceName: ':resourceName',
+                  resourceType: ':resourceType',
+                }),
+                ':resourceName',
+                () => (
+                  <Text
+                    key={resourceName}
+                    className="font-medium"
+                  >{`"${resourceName}"`}</Text>
+                )
+              ),
+              ':resourceType',
+              () => t(resourceType).toLowerCase()
+            )}
           </Text>
 
           <Box className="flex justify-between">

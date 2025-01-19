@@ -74,21 +74,30 @@ const useColumns = (props: Props) => {
     {
       title: t('email'),
       dataIndex: 'email',
-      render: (value, resource) => (
-        <Box className="flex items-center space-x-2 w-full truncate">
-          <Link
-            to={route('/employees/:id/edit', { id: resource.id as string })}
-          >
-            {value}
-          </Link>
+      render: (value) => (
+        <Box className="flex items-center space-x-4 w-full truncate">
+          <Text>{value}</Text>
 
           <CopyToClipboardOnlyIcon text={value} />
         </Box>
       ),
-      onCell: (record) => ({
-        onClick: () =>
-          navigate(route('/employees/:id/edit', { id: record.id as string })),
-      }),
+    },
+    {
+      title: t('subsidiaries'),
+      dataIndex: 'subsidiaries',
+      render: (subsidiaries: { id: string; name: string }[]) => (
+        <Box className="flex items-center w-full truncate">
+          {subsidiaries.map((subsidiary, index, array) => (
+            <Box key={subsidiary.id} className="flex items-center">
+              <Link to={route('/subsidiaries/:id/edit', { id: subsidiary.id })}>
+                {subsidiary.name}
+              </Link>
+
+              {index < array.length - 1 && <Text className="mx-2">|</Text>}
+            </Box>
+          ))}
+        </Box>
+      ),
     },
     {
       title: t('created_at'),
@@ -101,16 +110,22 @@ const useColumns = (props: Props) => {
     },
     {
       title: t('created_by'),
-      dataIndex: 'user',
-      render: (user: User) => (
-        <Box className="w-full truncate">
-          <Text>
-            {user.first_name || user.last_name
-              ? `${user.first_name} ${user.last_name}`
-              : user.email}
-          </Text>
-        </Box>
-      ),
+      dataIndex: 'created_by',
+      render: (user: User | null) => {
+        if (!user) {
+          return <></>;
+        }
+
+        return (
+          <Box className="w-full truncate">
+            <Text>
+              {user.first_name || user.last_name
+                ? `${user.first_name} ${user.last_name}`
+                : user.email}
+            </Text>
+          </Box>
+        );
+      },
     },
     {
       title: t('updated_at'),
@@ -154,7 +169,7 @@ const useColumns = (props: Props) => {
           resource={resource}
           editPageLink="/employees/:id/edit"
           resourceType="employee"
-          deleteEndpoint="/api/users/:id"
+          deleteEndpoint="/api/users/:id/delete_employee"
           resourceName={
             resource.first_name || resource.last_name || resource.email
           }

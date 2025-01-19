@@ -49,7 +49,7 @@ const Edit = () => {
     Subsidiary | undefined
   >();
 
-  const actions = useActions();
+  const actions = useActions({ resourceName: subsidiary?.name || '' });
 
   const { refresh } = useFetchEntity<Subsidiary>({
     queryKey: '/api/subsidiaries',

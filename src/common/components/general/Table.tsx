@@ -18,6 +18,7 @@ import {
   TableProps,
 } from 'antd';
 import classNames from 'classnames';
+import { get, some } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -285,11 +286,29 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
     } else {
       setCurrentData({
         data: data.filter((item) =>
-          filteringProps?.some((filteringProp) =>
-            (item[filteringProp] as string)
-              .toLowerCase()
-              .includes(filter.toLowerCase())
-          )
+          some(filteringProps, (filteringProp) => {
+            let updatedFilteringProp = filteringProp;
+            let labelProp = '';
+
+            if (filteringProp.toString().includes('.')) {
+              updatedFilteringProp = filteringProp
+                .toString()
+                .split('.')[0] as keyof EntityType;
+              labelProp = filteringProp.toString().split('.')[1];
+            }
+
+            const value = get(item, updatedFilteringProp);
+
+            if (Array.isArray(value) && labelProp) {
+              return some(value, (v) =>
+                v[labelProp].toLowerCase().includes(filter.toLowerCase())
+              );
+            }
+
+            return value
+              ? value.toLowerCase().includes(filter.toLowerCase())
+              : false;
+          })
         ),
         total: data.length,
       });
@@ -314,12 +333,31 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
     const endIndex = startIndex + perPage;
 
     const updatedData = data.filter((item) =>
-      filteringProps?.some((filteringProp) =>
-        (item[filteringProp] as string)
-          .toLowerCase()
-          .includes(filter.toLowerCase())
-      )
+      some(filteringProps, (filteringProp) => {
+        let updatedFilteringProp = filteringProp;
+        let labelProp = '';
+
+        if (filteringProp.toString().includes('.')) {
+          updatedFilteringProp = filteringProp
+            .toString()
+            .split('.')[0] as keyof EntityType;
+          labelProp = filteringProp.toString().split('.')[1];
+        }
+
+        const value = get(item, updatedFilteringProp);
+
+        if (Array.isArray(value) && labelProp) {
+          return some(value, (v) =>
+            v[labelProp].toLowerCase().includes(filter.toLowerCase())
+          );
+        }
+
+        return value
+          ? value.toLowerCase().includes(filter.toLowerCase())
+          : false;
+      })
     );
+
     setCurrentData({
       data: updatedData.slice(startIndex, endIndex),
       total: updatedData.length,
@@ -330,7 +368,7 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
     <Box className="flex flex-col relative h-full w-full items-start space-y-4">
       <Box className="flex justify-between items-center w-full">
         {enableFiltering && (
-          <Box>
+          <Box className="w-72">
             <TextField
               placeHolder={filterFieldPlaceHolder}
               value={filter}

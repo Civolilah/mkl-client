@@ -49,11 +49,18 @@ const Employees = () => {
         data={users}
         isDataLoading={isLoading}
         enableFiltering
-        filteringProps={['first_name', 'last_name', 'email']}
+        filteringProps={
+          [
+            'first_name',
+            'last_name',
+            'email',
+            'subsidiaries.name',
+          ] as (keyof User)[]
+        }
         creationRoute="/employees/new"
         creationButtonLabel={t('new_employee')}
         filterFieldPlaceHolder={t('search_employee_by')}
-        scrollX="70rem"
+        scrollX="130rem"
       />
     </Default>
   );

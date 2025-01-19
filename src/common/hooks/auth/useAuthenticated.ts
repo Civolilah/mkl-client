@@ -35,23 +35,26 @@ const useAuthenticated = () => {
 
     let isAuthenticated = false;
 
-    await queryClient.fetchQuery(
+    const response = await queryClient.fetchQuery(
       `/api/v1/refresh-${token}`,
       () =>
         request('POST', '/api/users/authorize')
-          .then((response) => {
-            isAuthenticated = true;
-            setUserCompanyDetails(response.data.data);
-          })
-          .catch(() => {
-            localStorage.removeItem('MKL-TOKEN');
-
-            isAuthenticated = false;
-
-            navigate('/login');
-          }),
+          .then((response) => response.data.data)
+          .catch(() => null),
       { staleTime: Infinity }
     );
+
+    if (response) {
+      setUserCompanyDetails(response);
+
+      isAuthenticated = true;
+    } else {
+      localStorage.removeItem('MKL-TOKEN');
+
+      isAuthenticated = false;
+
+      navigate('/login');
+    }
 
     return isAuthenticated;
   };

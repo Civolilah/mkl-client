@@ -236,7 +236,7 @@ const Default = (props: Props) => {
                 style={{
                   borderColor: colors.$1,
                   backgroundColor: colors.$6,
-                  height: '3.45rem',
+                  height: '3.25rem',
                 }}
               >
                 {footer}

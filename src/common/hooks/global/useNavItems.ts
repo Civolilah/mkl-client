@@ -157,13 +157,13 @@ const useNavItems = () => {
       label: 'employees',
       iconName: 'employees',
       href: '/employees',
-      visible: true,
-      iconSize: '1.438rem', // 23px
+      visible: hasPermission('admin'),
+      iconSize: '1.438rem',
       rightIcon: {
         name: 'add',
         href: '/employees/new',
         tooltipText: 'new_employee',
-        visible: true,
+        visible: hasPermission('admin'),
       },
     },
     {

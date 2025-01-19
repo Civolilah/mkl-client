@@ -27,7 +27,6 @@ const permissionRows: PermissionRow[] = [
   { name: 'category', key: 'category' },
   { name: 'label', key: 'label' },
   { name: 'label_category', key: 'label_category' },
-  { name: 'employee', key: 'user' },
   { name: 'status', key: 'status' },
 ];
 

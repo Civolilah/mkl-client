@@ -15,25 +15,26 @@ import { endpoint, request, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
 import { useParams } from 'react-router-dom';
 
-import { Subsidiary, ValidationErrors } from '@interfaces/index';
+import { User, ValidationErrors } from '@interfaces/index';
 
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import { useFetchEntity, useTranslation } from '@hooks/index';
 
-import SubsidiaryForm from '../common/components/EmployeeForm';
+import EmployeeForm from '../common/components/EmployeeForm';
+import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
   const t = useTranslation();
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('subsidiaries'),
-      href: '/subsidiaries',
+      title: t('employees'),
+      href: '/employees',
     },
     {
-      title: t('edit_subsidiary'),
+      title: t('edit_employee'),
     },
   ];
 
@@ -42,26 +43,26 @@ const Edit = () => {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [subsidiary, setSubsidiary] = useState<Subsidiary | undefined>();
-  const [initialResponse, setInitialResponse] = useState<
-    Subsidiary | undefined
-  >();
+  const [employee, setEmployee] = useState<User | undefined>();
+  const [initialResponse, setInitialResponse] = useState<User | undefined>();
+
+  const actions = useActions({
+    resourceName: employee?.first_name
+      ? `${employee.first_name} ${employee.last_name}`
+      : '',
+  });
 
   const { refresh } = useFetchEntity({
-    queryKey: '/api/subsidiaries',
-    setEntity: setSubsidiary,
+    queryKey: '/api/users',
+    setEntity: setEmployee,
     setIsLoading,
     setInitialResponse,
   });
 
-  const handleCancel = () => {
-    setSubsidiary(initialResponse);
-  };
-
   const handleSave = async () => {
-    if (!isLoading && id && subsidiary) {
-      if (isEqual(initialResponse, subsidiary)) {
-        toast.success('updated_subsidiary');
+    if (!isLoading && id && employee) {
+      if (isEqual(initialResponse, employee)) {
+        toast.success('updated_employee');
         return;
       }
 
@@ -78,10 +79,14 @@ const Edit = () => {
 
       setIsLoading(true);
 
-      request('PATCH', endpoint('/api/subsidiaries/:id', { id }), subsidiary)
+      request(
+        'PATCH',
+        endpoint('/api/users/:id/update_employee', { id }),
+        employee
+      )
         .then(() => {
-          toast.success('updated_subsidiary');
-          setInitialResponse(cloneDeep(subsidiary));
+          toast.success('updated_employee');
+          setInitialResponse(cloneDeep(employee));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -98,31 +103,30 @@ const Edit = () => {
     if (Object.keys(errors).length) {
       setErrors({});
     }
-  }, [subsidiary]);
+  }, [employee]);
 
   useEffect(() => {
     return () => {
       setErrors({});
-      setSubsidiary(undefined);
+      setEmployee(undefined);
     };
   }, []);
 
   return (
     <Default
-      title={t('edit_subsidiary')}
+      title={t('edit_employee')}
       breadcrumbs={breadcrumbs}
       onSaveClick={handleSave}
-      onCancelClick={handleCancel}
       disabledSaveButton={isLoading}
-      disabledCancelButton={isLoading}
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && subsidiary)}
+      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && employee)}
+      actions={actions}
     >
-      <SubsidiaryForm
-        subsidiary={subsidiary}
-        setSubsidiary={setSubsidiary}
+      <EmployeeForm
+        employee={employee}
+        setEmployee={setEmployee}
         errors={errors}
         editPage
-        isLoading={isLoading && !subsidiary}
+        isLoading={isLoading && !employee}
         onRefresh={refresh}
       />
     </Default>

@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
@@ -32,6 +32,8 @@ const EmployeeForm = (props: Props) => {
 
   const handleChange = useHandleChange({ setEmployee });
 
+  const [activeTab, setActiveTab] = useState<string>('details');
+
   const tabs = useTabs({
     employee,
     editPage,
@@ -42,9 +44,32 @@ const EmployeeForm = (props: Props) => {
     setEmployee,
   });
 
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      const isErrorFromDetailsPage = Object.keys(errors).some(
+        (key) =>
+          key.includes('first_name') ||
+          key.includes('last_name') ||
+          key.includes('email') ||
+          key.includes('password') ||
+          key.includes('password_confirmation') ||
+          key.includes('subsidiaries')
+      );
+
+      if (isErrorFromDetailsPage) {
+        setActiveTab('details');
+      }
+    }
+  }, [errors]);
+
   return (
     <Box className="flex w-full self-start md:w-3/4 xl:w-2/3">
-      <StaticTabs defaultActiveKey="details" tabs={tabs} type="card" />
+      <StaticTabs
+        tabs={tabs}
+        type="card"
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
     </Box>
   );
 };
