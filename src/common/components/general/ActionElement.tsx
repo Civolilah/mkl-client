@@ -16,22 +16,25 @@ type Props = {
   iconName: IconName;
   label?: string;
   onClick?: () => void;
+  iconSize?: string;
 };
 
 const ActionElement = (props: Props) => {
-  const { iconName, label, onClick } = props;
+  const { iconName, label, onClick, iconSize = '1.25rem' } = props;
 
   return (
     <Box
-      className="flex justify-start items-center space-x-4 px-3 py-0.5 w-32"
+      className="flex justify-start items-center space-x-4 pl-3 py-1.5 pr-6 min-w-32"
       onClick={(event) => {
         event.stopPropagation();
         onClick?.();
       }}
     >
-      <Icon name={iconName} size={20} />
+      <Box>
+        <Icon name={iconName} size={iconSize} />
+      </Box>
 
-      <Text>{label}</Text>
+      <Text className="whitespace-nowrap">{label}</Text>
     </Box>
   );
 };

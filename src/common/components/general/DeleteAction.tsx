@@ -11,19 +11,28 @@
 import { useState } from 'react';
 
 import { endpoint, request, useToast } from '@helpers/index';
+import { useAtomValue } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
-import { ActionElement, Box, Button, Modal, Text } from '@components/index';
+import {
+  ActionElement,
+  Box,
+  Button,
+  Modal,
+  PasswordConfirmationModal,
+  Text,
+} from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
+import { userCompanyAtom } from './PrivateRoute';
 import { ResourceType } from './TableActionsDropdown';
 
 type Props = {
+  resourceName: string;
   deleteEndpoint: string;
   resourceId: string;
-  resourceName: string;
   resourceType: ResourceType;
   refresh?: () => void;
   editPageAction?: boolean;
@@ -37,25 +46,47 @@ const DeleteAction = (props: Props) => {
 
   const navigate = useNavigate();
 
+  const userCompany = useAtomValue(userCompanyAtom);
+
   const {
     deleteEndpoint,
-    resourceName,
     resourceType,
     refresh,
     resourceId,
     editPageAction = false,
     mainPageURL,
+    resourceName,
   } = props;
 
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isPasswordConfirmationModalOpen, setIsPasswordConfirmationModalOpen] =
+    useState<boolean>(false);
 
-  const handleDeleteResource = () => {
+  const handleDeleteResource = async (
+    enteredPassword?: string,
+    withoutRequiredPassword?: boolean
+  ) => {
     if (!isFormBusy) {
       toast.loading();
       setIsFormBusy(true);
 
-      request('DELETE', endpoint(deleteEndpoint, { id: resourceId }))
+      let headers = {};
+
+      if (!withoutRequiredPassword) {
+        headers = {
+          headers: {
+            'X-Password': enteredPassword,
+          },
+        };
+      }
+
+      return request(
+        'DELETE',
+        endpoint(deleteEndpoint, { id: resourceId }),
+        {},
+        headers
+      )
         .then(() => {
           toast.success(t(`deleted_${resourceType}`));
           refresh?.();
@@ -64,17 +95,27 @@ const DeleteAction = (props: Props) => {
             navigate(mainPageURL);
           }
         })
-        .catch(() => toast.dismiss())
         .finally(() => setIsFormBusy(false));
     }
   };
 
   return (
     <>
+      <PasswordConfirmationModal
+        visible={isPasswordConfirmationModalOpen}
+        setVisible={setIsPasswordConfirmationModalOpen}
+        onConfirm={handleDeleteResource}
+        isFormBusy={isFormBusy}
+      />
+
       <ActionElement
         label={t('delete')}
         iconName="delete"
-        onClick={() => setIsModalOpen(true)}
+        onClick={() =>
+          userCompany?.preference.enabled_security_password
+            ? setIsPasswordConfirmationModalOpen(true)
+            : setIsModalOpen(true)
+        }
       />
 
       <Modal
@@ -94,10 +135,9 @@ const DeleteAction = (props: Props) => {
                 }),
                 ':resourceName',
                 () => (
-                  <Text
-                    key={resourceName}
-                    className="font-medium"
-                  >{`"${resourceName}"`}</Text>
+                  <Text key={resourceName} className="font-medium">
+                    {`"${resourceName}"`}
+                  </Text>
                 )
               ),
               ':resourceType',
@@ -114,7 +154,10 @@ const DeleteAction = (props: Props) => {
               {t('no')}
             </Button>
 
-            <Button onClick={handleDeleteResource} disabled={isFormBusy}>
+            <Button
+              onClick={() => handleDeleteResource('', true)}
+              disabled={isFormBusy}
+            >
               {t('yes')}
             </Button>
           </Box>

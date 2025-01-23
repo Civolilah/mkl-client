@@ -13,33 +13,31 @@ import React from 'react';
 import { MenuProps } from 'antd';
 import { useParams } from 'react-router-dom';
 
+import { Subsidiary } from '@interfaces/index';
+
 import { DeleteAction } from '@components/index';
 
-type Params = {
-  resourceName: string;
-};
-
-const useActions = ({ resourceName }: Params) => {
+const useActions = () => {
   const { id } = useParams();
 
-  const actions: MenuProps['items'] = [
-    {
-      label: (
-        <DeleteAction
-          resourceType="subsidiary"
-          deleteEndpoint="/api/subsidiaries/:id"
-          resourceName={resourceName}
-          resourceId={id as string}
-          editPageAction
-          mainPageURL="/subsidiaries"
-        />
-      ),
-      key: `delete-${id}`,
-      style: { paddingLeft: 0 },
-    },
-  ];
-
-  return actions;
+  return (currentResource: Subsidiary) => {
+    const actions: MenuProps['items'] = [
+      {
+        label: (
+          <DeleteAction
+            resourceType="subsidiary"
+            deleteEndpoint="/api/subsidiaries/:id"
+            resourceId={id as string}
+            editPageAction
+            mainPageURL="/subsidiaries"
+            resourceName={currentResource.name}
+          />
+        ),
+        key: `delete-${id}`,
+      },
+    ];
+    return actions;
+  };
 };
 
 export default useActions;

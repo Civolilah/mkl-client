@@ -77,6 +77,7 @@ const CustomHeaderCell = ({
         backgroundColor: accentColor,
         borderRadius: 0,
         color: 'white',
+        whiteSpace: 'nowrap',
       }}
     >
       {children}
@@ -413,7 +414,7 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
               ),
             },
           }}
-          scroll={{ x: scrollX ?? '100%', y: '29.5rem' }}
+          scroll={{ x: 'max-content', y: '29.5rem' }}
           size="middle"
           locale={{
             emptyText: (

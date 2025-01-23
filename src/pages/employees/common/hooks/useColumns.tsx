@@ -16,7 +16,7 @@ import { User } from '@interfaces/index';
 
 import {
   Box,
-  CopyToClipboardOnlyIcon,
+  CopyToClipboard,
   Link,
   TableActionsDropdown,
   Text,
@@ -53,6 +53,7 @@ const useColumns = (props: Props) => {
         onClick: () =>
           navigate(route('/employees/:id/edit', { id: record.id as string })),
       }),
+      width: '16.5rem',
     },
     {
       title: t('last_name'),
@@ -70,17 +71,19 @@ const useColumns = (props: Props) => {
         onClick: () =>
           navigate(route('/employees/:id/edit', { id: record.id as string })),
       }),
+      width: '16.5rem',
     },
     {
       title: t('email'),
       dataIndex: 'email',
       render: (value) => (
         <Box className="flex items-center space-x-4 w-full truncate">
-          <Text>{value}</Text>
-
-          <CopyToClipboardOnlyIcon text={value} />
+          <CopyToClipboard text={value} copyToClipboardOnHover>
+            <Text>{value}</Text>
+          </CopyToClipboard>
         </Box>
       ),
+      width: '30rem',
     },
     {
       title: t('subsidiaries'),
@@ -98,6 +101,7 @@ const useColumns = (props: Props) => {
           ))}
         </Box>
       ),
+      width: '26.5rem',
     },
     {
       title: t('created_at'),
@@ -107,25 +111,21 @@ const useColumns = (props: Props) => {
           <Text>{formatUnixTime(value)}</Text>
         </Box>
       ),
+      width: '16.5rem',
     },
     {
       title: t('created_by'),
       dataIndex: 'created_by',
-      render: (user: User | null) => {
-        if (!user) {
-          return <></>;
-        }
-
-        return (
-          <Box className="w-full truncate">
-            <Text>
-              {user.first_name || user.last_name
-                ? `${user.first_name} ${user.last_name}`
-                : user.email}
-            </Text>
-          </Box>
-        );
-      },
+      render: (user: User) => (
+        <Box className="w-full truncate">
+          <Text>
+            {user.first_name || user.last_name
+              ? `${user.first_name || ''} ${user.last_name || ''}`
+              : user.email}
+          </Text>
+        </Box>
+      ),
+      width: '16.5rem',
     },
     {
       title: t('updated_at'),
@@ -141,6 +141,7 @@ const useColumns = (props: Props) => {
           </Box>
         );
       },
+      width: '16.5rem',
     },
     {
       title: t('updated_by'),
@@ -154,12 +155,13 @@ const useColumns = (props: Props) => {
           <Box className="w-full truncate">
             <Text>
               {user.first_name || user.last_name
-                ? `${user.first_name} ${user.last_name}`
+                ? `${user.first_name || ''} ${user.last_name || ''}`
                 : user.email}
             </Text>
           </Box>
         );
       },
+      width: '16.5rem',
     },
     {
       title: '',
@@ -170,10 +172,13 @@ const useColumns = (props: Props) => {
           editPageLink="/employees/:id/edit"
           resourceType="employee"
           deleteEndpoint="/api/users/:id/delete_employee"
-          resourceName={
-            resource.first_name || resource.last_name || resource.email
-          }
           refresh={refresh}
+          resourceName={`${
+            resource.first_name || resource.last_name
+              ? (resource.first_name || '') +
+                (resource.last_name ? ' ' + resource.last_name : '')
+              : resource.email
+          }`}
         />
       ),
       width: '6rem',

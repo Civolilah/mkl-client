@@ -17,5 +17,4 @@ export const INITIAL_EMPLOYEE: User = {
   permissions: [],
   subsidiaries: [],
   password: '',
-  password_confirmation: '',
 };

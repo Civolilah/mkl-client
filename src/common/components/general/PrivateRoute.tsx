@@ -21,7 +21,7 @@ import { useAuthenticated } from '@hooks/index';
 
 import LoadingScreen from './LoadingScreen';
 
-type UserCompanyDetails = {
+export type UserCompanyDetails = {
   first_name: string;
   last_name: string;
   email: string;
@@ -38,6 +38,7 @@ type UserCompanyDetails = {
     accent_color: string | null;
     hover_accent_color: string | null;
     email_notification: boolean | null;
+    enabled_security_password: boolean;
   };
   company: {
     name: string;

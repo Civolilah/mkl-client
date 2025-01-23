@@ -52,7 +52,6 @@ const EmployeeForm = (props: Props) => {
           key.includes('last_name') ||
           key.includes('email') ||
           key.includes('password') ||
-          key.includes('password_confirmation') ||
           key.includes('subsidiaries')
       );
 

@@ -11,35 +11,47 @@
 import React from 'react';
 
 import { MenuProps } from 'antd';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
+import { User } from '@interfaces/index';
 
 import { DeleteAction } from '@components/index';
 
-type Params = {
-  resourceName: string;
-};
+const useActions = () => {
+  const location = useLocation();
 
-const useActions = ({ resourceName }: Params) => {
-  const { id } = useParams();
+  return (currentResource: User) => {
+    let actions: MenuProps['items'] = [
+      {
+        label: (
+          <DeleteAction
+            resourceType="employee"
+            deleteEndpoint="/api/users/:id/delete_employee"
+            resourceId={currentResource.id as string}
+            editPageAction
+            mainPageURL="/employees"
+            resourceName={`${
+              currentResource.first_name || currentResource.last_name
+                ? (currentResource.first_name || '') +
+                  (currentResource.last_name
+                    ? ' ' + currentResource.last_name
+                    : '')
+                : currentResource.email
+            }`}
+          />
+        ),
+        key: `delete-${currentResource.id}`,
+      },
+    ];
 
-  const actions: MenuProps['items'] = [
-    {
-      label: (
-        <DeleteAction
-          resourceType="employee"
-          deleteEndpoint="/api/users/:id/delete_employee"
-          resourceName={resourceName}
-          resourceId={id as string}
-          editPageAction
-          mainPageURL="/employees"
-        />
-      ),
-      key: `delete-${id}`,
-      style: { paddingLeft: 0 },
-    },
-  ];
+    if (!location.pathname.includes('edit')) {
+      actions = actions.filter(
+        (action) => action?.key !== `delete-${currentResource.id}`
+      );
+    }
 
-  return actions;
+    return actions;
+  };
 };
 
 export default useActions;

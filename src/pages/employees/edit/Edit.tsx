@@ -40,17 +40,12 @@ const Edit = () => {
 
   const toast = useToast();
   const { id } = useParams();
+  const actions = useActions();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [employee, setEmployee] = useState<User | undefined>();
   const [initialResponse, setInitialResponse] = useState<User | undefined>();
-
-  const actions = useActions({
-    resourceName: employee?.first_name
-      ? `${employee.first_name} ${employee.last_name}`
-      : '',
-  });
 
   const { refresh } = useFetchEntity({
     queryKey: '/api/users',
@@ -85,6 +80,13 @@ const Edit = () => {
         employee
       )
         .then(() => {
+          setEmployee(
+            (prev) =>
+              prev && {
+                ...prev,
+                password: '',
+              }
+          );
           toast.success('updated_employee');
           setInitialResponse(cloneDeep(employee));
         })
@@ -119,7 +121,7 @@ const Edit = () => {
       onSaveClick={handleSave}
       disabledSaveButton={isLoading}
       disabledSaveButtonWithLoadingIcon={Boolean(isLoading && employee)}
-      actions={actions}
+      actions={employee ? actions(employee) : []}
     >
       <EmployeeForm
         employee={employee}

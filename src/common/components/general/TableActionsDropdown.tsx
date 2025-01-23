@@ -22,31 +22,37 @@ import {
   DeleteAction,
 } from '@components/index';
 
-import { useTranslation } from '@hooks/index';
+import { useColors, useTranslation } from '@hooks/index';
 
 export type Resource = Subsidiary | User;
 
 export type ResourceType = 'subsidiary' | 'employee';
 
+type CustomActions = (resource: Resource) => MenuProps['items'];
+
 type Props = {
+  resourceName: string;
   editPageLink?: string;
   resource: Resource;
   deleteEndpoint?: string;
-  resourceName?: string;
   resourceType?: ResourceType;
   refresh?: () => void;
+  customActions?: CustomActions;
 };
 
 const TableActionsDropdown = (props: Props) => {
   const t = useTranslation();
 
+  const colors = useColors();
+
   const {
     resource,
     editPageLink,
     deleteEndpoint,
-    resourceName,
     resourceType,
     refresh,
+    customActions,
+    resourceName,
   } = props;
 
   const navigate = useNavigate();
@@ -65,20 +71,27 @@ const TableActionsDropdown = (props: Props) => {
         />
       ),
       key: `edit-${resource.id}`,
-      style: { paddingLeft: 0 },
+      style: {
+        paddingLeft: 0,
+        ...(customActions && { borderBottom: `1px solid ${colors.$1}` }),
+      },
     },
+    ...(customActions?.(resource) ?? []),
     {
-      label: Boolean(deleteEndpoint && resourceName && resourceType) && (
+      label: Boolean(deleteEndpoint && resourceType) && (
         <DeleteAction
           resourceType={resourceType as ResourceType}
           deleteEndpoint={deleteEndpoint as string}
-          resourceName={resourceName as string}
           refresh={refresh}
           resourceId={resource.id as string}
+          resourceName={resourceName}
         />
       ),
       key: `delete-${resource.id}`,
-      style: { paddingLeft: 0 },
+      style: {
+        paddingLeft: 0,
+        ...(customActions && { borderTop: `1px solid ${colors.$1}` }),
+      },
     },
   ];
 

@@ -13,12 +13,14 @@ import copy from 'copy-to-clipboard';
 
 import { useTranslation } from '@hooks/index';
 
+import { Box } from '..';
 import Icon from './Icon';
 import Tooltip from './Tooltip';
 
 type Props = {
   text: string;
   children: React.ReactNode;
+  copyToClipboardOnHover?: boolean;
 };
 
 const CopyToClipboard = ({ children, text }: Props) => {
@@ -33,11 +35,12 @@ const CopyToClipboard = ({ children, text }: Props) => {
   };
 
   return (
-    <div className="flex items-center space-x-2">
-      <div>{children}</div>
+    <Box className="flex items-center space-x-2">
+      <Box>{children}</Box>
 
       <Tooltip text={t('copy_to_clipboard')}>
         <div
+          className="cursor-pointer"
           onClick={(event) => {
             event.stopPropagation();
 
@@ -47,7 +50,7 @@ const CopyToClipboard = ({ children, text }: Props) => {
           <Icon name="copy" size={19} />
         </div>
       </Tooltip>
-    </div>
+    </Box>
   );
 };
 

@@ -137,7 +137,12 @@ const Register = () => {
 
   return (
     <>
-      <Modal size="extraSmall" visible={isAntiBotModalOpen} disableClosing>
+      <Modal
+        size="extraSmall"
+        visible={isAntiBotModalOpen}
+        withoutTitleAndClose
+        disableClosing
+      >
         {!turnstileToken ? (
           <Box className="flex items-center space-x-7">
             <Spinner size="large" />
@@ -265,7 +270,11 @@ const Register = () => {
                       setTurnstileToken('');
                       setIsAntiBotModalOpen(true);
                     }}
-                    disabled={isFormBusy || Boolean(Object.keys(errors).length)}
+                    disabled={
+                      isFormBusy ||
+                      Boolean(Object.keys(errors).length) ||
+                      isAntiBotModalOpen
+                    }
                     disabledWithLoadingIcon={Boolean(
                       !Object.keys(errors).length && turnstileToken
                     )}

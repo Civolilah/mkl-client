@@ -66,7 +66,7 @@ const useColumns = (props: Props) => {
         <Box className="w-full truncate">
           <Text>
             {user.first_name || user.last_name
-              ? `${user.first_name} ${user.last_name}`
+              ? `${user.first_name || ''} ${user.last_name || ''}`
               : user.email}
           </Text>
         </Box>
@@ -99,7 +99,7 @@ const useColumns = (props: Props) => {
           <Box className="w-full truncate">
             <Text>
               {user.first_name || user.last_name
-                ? `${user.first_name} ${user.last_name}`
+                ? `${user.first_name || ''} ${user.last_name || ''}`
                 : user.email}
             </Text>
           </Box>
@@ -115,8 +115,8 @@ const useColumns = (props: Props) => {
           editPageLink="/subsidiaries/:id/edit"
           resourceType="subsidiary"
           deleteEndpoint="/api/subsidiaries/:id"
-          resourceName={resource.name}
           refresh={refresh}
+          resourceName={resource.name}
         />
       ),
       width: '6rem',

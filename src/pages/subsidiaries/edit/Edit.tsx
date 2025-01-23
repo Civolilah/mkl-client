@@ -41,6 +41,7 @@ const Edit = () => {
 
   const toast = useToast();
   const { id } = useParams();
+  const actions = useActions();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,8 +49,6 @@ const Edit = () => {
   const [initialResponse, setInitialResponse] = useState<
     Subsidiary | undefined
   >();
-
-  const actions = useActions({ resourceName: subsidiary?.name || '' });
 
   const { refresh } = useFetchEntity<Subsidiary>({
     queryKey: '/api/subsidiaries',
@@ -111,7 +110,7 @@ const Edit = () => {
     <Default
       title={t('edit_subsidiary')}
       breadcrumbs={breadcrumbs}
-      actions={actions}
+      actions={subsidiary ? actions(subsidiary) : undefined}
       onSaveClick={handleSave}
       disabledSaveButton={isLoading}
       disabledSaveButtonWithLoadingIcon={Boolean(isLoading && subsidiary)}

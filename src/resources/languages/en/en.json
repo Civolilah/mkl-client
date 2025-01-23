@@ -134,5 +134,11 @@
     "created_employee": "Successfully created employee.",
     "updated_employee": "Successfully updated employee.",
     "deleted_employee": "Successfully deleted employee.",
-    "edit_employee": "Edit Employee"
+    "edit_employee": "Edit Employee",
+    "enter_password": "Enter password",
+    "confirm": "Confirm",
+    "new_password": "New Password",
+    "confirm_password_message": "For security, this action requires password verification.",
+    "security_password": "Security Password",
+    "incorrect_password": "Incorrect password."
 }

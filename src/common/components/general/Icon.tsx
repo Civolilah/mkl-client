@@ -67,7 +67,7 @@ import {
   MdBarChart,
   MdAttachMoney,
 } from 'react-icons/md';
-import { RiInboxLine } from 'react-icons/ri';
+import { RiInboxLine, RiLockPasswordFill } from 'react-icons/ri';
 import { RxPerson } from 'react-icons/rx';
 import { RxDotsHorizontal } from 'react-icons/rx';
 import { SiCashapp } from 'react-icons/si';
@@ -125,7 +125,8 @@ export type IconName =
   | 'ellipsis'
   | 'doubleArrowBack'
   | 'doubleArrowForward'
-  | 'security';
+  | 'security'
+  | 'password';
 
 type Props = {
   className?: string;
@@ -260,6 +261,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdOutlineKeyboardDoubleArrowRight);
     case 'security':
       return generateIconElement(MdSecurity);
+    case 'password':
+      return generateIconElement(RiLockPasswordFill);
 
     default:
       return <></>;

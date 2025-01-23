@@ -28,11 +28,19 @@ const Dropdown = (props: Props) => {
           (item) =>
             item && {
               ...item,
-              style: { ...item.style, borderRadius: 0 },
+              style: {
+                ...item.style,
+                padding: 0,
+                borderRadius: 0,
+              },
             }
         ),
 
-        style: { borderRadius: 0, ...style },
+        style: {
+          borderRadius: 0,
+          minWidth: 'fit-content',
+          ...style,
+        },
       }}
       trigger={['click']}
     >

@@ -96,7 +96,9 @@ const NavItem = (props: Props) => {
             )}
           </Box>
 
-          {Boolean(item.rightIcon && !isMiniSideBar) && (
+          {Boolean(
+            item.rightIcon && !isMiniSideBar && item.rightIcon.visible
+          ) && (
             <Tooltip
               text={t(item.rightIcon!.tooltipText)}
               href={item.rightIcon!.href}

@@ -47,6 +47,6 @@ export const route = (url: string, params: RouteParams): string => {
 export const endpoint = (url: string, params: RouteParams): string => {
   return Object.entries(params).reduce((acc, [key, value]) => {
     const pattern = new RegExp(`:${key}`, 'g');
-    return acc.replace(pattern, value.toString());
+    return acc.replace(pattern, value?.toString() ?? '');
   }, url);
 };

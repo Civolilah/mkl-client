@@ -25,6 +25,7 @@ type Props = {
   onClose?: () => void;
   size?: 'extraSmall' | 'small' | 'regular' | 'large';
   disableClosing?: boolean;
+  withoutTitleAndClose?: boolean;
 };
 
 const Modal = (props: Props) => {
@@ -36,6 +37,7 @@ const Modal = (props: Props) => {
     onClose,
     size = 'regular',
     disableClosing,
+    withoutTitleAndClose,
   } = props;
 
   const colors = useColors();
@@ -65,7 +67,11 @@ const Modal = (props: Props) => {
       footer={null}
       loading={isLoading}
       open={visible}
-      onCancel={onClose}
+      onCancel={() => {
+        if (!disableClosing) {
+          onClose?.();
+        }
+      }}
       width={getWidth()}
       closable={false}
       styles={{
@@ -75,7 +81,7 @@ const Modal = (props: Props) => {
       centered
     >
       <Box className="flex flex-col items-center justify-center">
-        {!disableClosing && (
+        {!withoutTitleAndClose && (
           <Box
             className="flex w-full items-center justify-between self-start p-4 text-lg font-medium border-b"
             style={{ borderColor: colors.$1 }}
@@ -83,7 +89,15 @@ const Modal = (props: Props) => {
             <Box>{title}</Box>
 
             <Box className="cursor-pointer">
-              <Icon name="close" onClick={onClose} size={25} />
+              <Icon
+                name="close"
+                onClick={() => {
+                  if (!disableClosing) {
+                    onClose?.();
+                  }
+                }}
+                size={25}
+              />
             </Box>
           </Box>
         )}
