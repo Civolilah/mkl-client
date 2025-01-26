@@ -13,7 +13,7 @@ import { createRoot } from 'react-dom/client';
 
 import './resources/css/app.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { en, tr } from '@resources/index';
+import { bs, en, tr } from '@resources/index';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -39,6 +39,9 @@ i18n.use(initReactI18next).init({
     },
     tr: {
       translation: tr,
+    },
+    bs: {
+      translation: bs,
     },
   },
   lng: 'en',

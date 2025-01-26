@@ -10,16 +10,14 @@
 
 import { useEffect, useState } from 'react';
 
-import { useToast } from '@helpers/index';
+import { request, useToast } from '@helpers/index';
 import { ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { useAtomValue } from 'jotai';
-import { publicIp } from 'public-ip';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation as useTranslationBase } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
 import { Box, Button, Modal, Text } from '@components/index';
@@ -49,12 +47,14 @@ const App = () => {
 
   const handleDisplayWelcomeModal = () => {
     if (currentUserCompanyDetails?.created_at) {
-      const currentUnixUTC = dayjs().unix();
-      const timeDifferenceInSeconds =
-        (currentUnixUTC - currentUserCompanyDetails?.created_at) / 60;
+      const timeDifference = dayjs
+        .utc(dayjs().utc().unix() * 1000)
+        .diff(currentUserCompanyDetails.created_at * 1000, 'seconds');
 
-      if (timeDifferenceInSeconds <= 60) {
-        setIsWelcomeModalOpen(true);
+      if (timeDifference <= 5) {
+        setTimeout(() => {
+          setIsWelcomeModalOpen(true);
+        }, 250);
       }
     }
   };
@@ -82,18 +82,31 @@ const App = () => {
   };
 
   useEffect(() => {
-    const currentStoredLanguage = localStorage.getItem('MKL-LOCALE');
-    const currentLocale =
-      currentStoredLanguage || navigator.language.split('-')[0];
+    (async () => {
+      const currentStoredLanguage = localStorage.getItem('MKL-LOCALE');
 
-    if (
-      currentLocale &&
-      AVAILABLE_LANGUAGES.includes(currentLocale as Languages) &&
-      i18n.language !== currentLocale
-    ) {
-      switchLanguage(currentLocale);
-    }
+      let ipStackResponse = null;
 
+      if (!currentStoredLanguage) {
+        ipStackResponse = await request('POST', '/api/location').then(
+          (res) => res.data.data
+        );
+      }
+
+      const currentLocale =
+        currentStoredLanguage || ipStackResponse?.language || 'en';
+
+      if (
+        currentLocale &&
+        AVAILABLE_LANGUAGES.includes(currentLocale as Languages) &&
+        i18n.language !== currentLocale
+      ) {
+        switchLanguage(currentLocale);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     window.addEventListener(
       'navigate_not_found_page',
       handleNavigateNotFoundPage
@@ -105,8 +118,6 @@ const App = () => {
     );
 
     window.addEventListener('logout_user', handleLogoutUser);
-
-    window.addEventListener('display_welcome_modal', handleDisplayWelcomeModal);
 
     window.addEventListener('display_error_toaster', handleDisplayErrorToaster);
 
@@ -126,30 +137,15 @@ const App = () => {
         handleDisplayErrorToaster
       );
 
-      window.removeEventListener(
-        'display_welcome_modal',
-        handleDisplayWelcomeModal
-      );
-
       window.removeEventListener('logout_user', handleLogoutUser);
     };
   }, []);
 
   useEffect(() => {
-    (async () => {
-      const currentUserIdentifier = localStorage.getItem('MKL-IDENTIFIER');
-
-      if (!currentUserIdentifier) {
-        const userIdentifier = await publicIp();
-
-        if (userIdentifier) {
-          localStorage.setItem('MKL-IDENTIFIER', userIdentifier);
-        } else {
-          localStorage.setItem('MKL-IDENTIFIER', uuidv4());
-        }
-      }
-    })();
-  }, []);
+    if (currentUserCompanyDetails?.created_at) {
+      handleDisplayWelcomeModal();
+    }
+  }, [currentUserCompanyDetails?.created_at]);
 
   return (
     <Box className="w-screen h-screen">

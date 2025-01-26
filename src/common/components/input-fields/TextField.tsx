@@ -14,7 +14,7 @@ import { Input } from 'antd';
 import { useMediaQuery } from 'react-responsive';
 import { useDebounce } from 'react-use';
 
-import { Box, Icon, Text } from '@components/index';
+import { Box, ErrorMessageElement, Text } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -139,15 +139,7 @@ const TextField = (props: Props) => {
         />
       )}
 
-      {errorMessage && (
-        <Box className="mt-1 text-sm text-red-600 flex items-center space-x-1">
-          <Box className="mt-0.5">
-            <Icon name="error" size={19} style={{ color: '#dc2626' }} />
-          </Box>
-
-          <Text className="break-words">{errorMessage}</Text>
-        </Box>
-      )}
+      <ErrorMessageElement errorMessage={errorMessage} />
     </Box>
   );
 };

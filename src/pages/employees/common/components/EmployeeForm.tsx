@@ -10,6 +10,8 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
+import { useSearchParams } from 'react-router-dom';
+
 import { User, ValidationErrors } from '@interfaces/index';
 
 import { Box, StaticTabs } from '@components/index';
@@ -30,9 +32,13 @@ const EmployeeForm = (props: Props) => {
   const { employee, setEmployee, errors, editPage, isLoading, onRefresh } =
     props;
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const handleChange = useHandleChange({ setEmployee });
 
-  const [activeTab, setActiveTab] = useState<string>('details');
+  const [activeTab, setActiveTab] = useState<string>(
+    searchParams.get('tab') ?? 'details'
+  );
 
   const tabs = useTabs({
     employee,
@@ -55,11 +61,25 @@ const EmployeeForm = (props: Props) => {
           key.includes('subsidiaries')
       );
 
+      const isErrorFromPermissionsPage = Object.keys(errors).some((key) =>
+        key.includes('permissions')
+      );
+
       if (isErrorFromDetailsPage) {
         setActiveTab('details');
+      } else if (isErrorFromPermissionsPage) {
+        setActiveTab('permissions');
       }
     }
   }, [errors]);
+
+  useEffect(() => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set('tab', activeTab);
+      return newParams;
+    });
+  }, [activeTab]);
 
   return (
     <Box className="flex w-full self-start md:w-3/4 xl:w-2/3">

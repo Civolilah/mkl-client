@@ -56,3 +56,4 @@ export { default as Toggle } from '@components/input-fields/Toggle';
 export { default as Label } from '@components/general/Label';
 export { default as SelectDataField } from '@components/input-fields/SelectDataField';
 export { default as PasswordConfirmationModal } from '@components/general/PasswordConfirmationModal';
+export { default as ErrorMessageElement } from '@components/input-fields/ErrorMessageElement';

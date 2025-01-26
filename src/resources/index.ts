@@ -10,3 +10,4 @@
 
 export { default as en } from './languages/en/en.json';
 export { default as tr } from './languages/tr/tr.json';
+export { default as bs } from './languages/bs/bs.json';

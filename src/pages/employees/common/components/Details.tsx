@@ -35,17 +35,10 @@ export type EmployeeProps = {
 };
 
 const Details = (props: EmployeeProps) => {
-  const {
-    editPage,
-    isLoading,
-    onRefresh,
-    errors,
-    handleChange,
-    employee,
-    setEmployee,
-  } = props;
-
   const t = useTranslation();
+
+  const { editPage, isLoading, onRefresh, errors, handleChange, employee } =
+    props;
 
   return (
     <Card
@@ -111,37 +104,8 @@ const Details = (props: EmployeeProps) => {
             labelKey="name"
             endpoint="/api/subsidiaries?selector=true"
             value={employee?.subsidiaries || []}
-            onChange={(value) => {
-              handleChange('subsidiaries', value);
-
-              setEmployee(
-                (current) =>
-                  current && {
-                    ...current,
-                    permissions: current.permissions.filter(
-                      (permission) =>
-                        !permission.includes('product_') ||
-                        (permission.includes('product_') &&
-                          (value.includes(permission.split('_')[2]) ||
-                            permission.endsWith('product_all')))
-                    ),
-                  }
-              );
-            }}
-            onClear={() => {
-              handleChange('subsidiaries', []);
-
-              setEmployee(
-                (current) =>
-                  current && {
-                    ...current,
-                    permissions: current.permissions.filter(
-                      (currentPermission) =>
-                        !currentPermission.includes('product_')
-                    ),
-                  }
-              );
-            }}
+            onChange={(value) => handleChange('subsidiaries', value)}
+            onClear={() => handleChange('subsidiaries', [])}
             errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
           />
 

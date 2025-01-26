@@ -60,18 +60,9 @@ const Login = () => {
           type,
           ...(token && { token }),
           ...(!token && { details: userDetails }),
-          ...(type !== 'credentials' && {
-            language: localStorage.getItem('MKL-LOCALE') || 'en',
-            timezone:
-              Intl?.DateTimeFormat()?.resolvedOptions()?.timeZone ||
-              'Europe/Sarajevo',
-          }),
         })
           .then((response) => {
             localStorage.setItem('MKL-TOKEN', response.data.token);
-            setTimeout(() => {
-              window.dispatchEvent(new CustomEvent('display_welcome_modal'));
-            }, 450);
 
             navigate('/');
           })

@@ -23,6 +23,7 @@ import { BreadcrumbItem } from '@components/layout/Default';
 import { useFetchEntity, useTranslation } from '@hooks/index';
 
 import EmployeeForm from '../common/components/EmployeeForm';
+import { validateEmployee } from '../common/helpers/helpers';
 import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
@@ -63,12 +64,15 @@ const Edit = () => {
 
       setErrors({});
 
-      // const validationErrors = await validateSubsidiary(subsidiary);
+      const validationErrors = await validateEmployee(employee, {
+        creatingUser: false,
+        password: employee.password,
+      });
 
-      // if (validationErrors) {
-      //   setErrors(validationErrors);
-      //   return;
-      // }
+      if (validationErrors) {
+        setErrors(validationErrors);
+        return;
+      }
 
       toast.loading();
 

@@ -25,6 +25,7 @@ import { BreadcrumbItem } from '@components/layout/Default';
 import { useTranslation } from '@hooks/index';
 
 import EmployeeForm from '../common/components/EmployeeForm';
+import { validateEmployee } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
@@ -55,12 +56,14 @@ const Create = () => {
     if (!isFormBusy) {
       setErrors({});
 
-      // const validationErrors = await validateEmployee(employee);
+      const validationErrors = await validateEmployee(employee, {
+        creatingUser: true,
+      });
 
-      // if (validationErrors) {
-      //   setErrors(validationErrors);
-      //   return;
-      // }
+      if (validationErrors) {
+        setErrors(validationErrors);
+        return;
+      }
 
       toast.loading();
 

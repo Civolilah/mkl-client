@@ -47,6 +47,8 @@ const useAuthenticated = () => {
     if (response) {
       setUserCompanyDetails(response);
 
+      localStorage.setItem('MKL-LOCALE', response.preference.language);
+
       isAuthenticated = true;
     } else {
       localStorage.removeItem('MKL-TOKEN');
