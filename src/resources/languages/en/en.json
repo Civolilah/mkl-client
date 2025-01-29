@@ -141,5 +141,9 @@
     "confirm_password_message": "For security, this action requires password verification.",
     "security_password": "Security Password",
     "incorrect_password": "Incorrect password.",
-    "incorrect_input": "Incorrect input."
+    "incorrect_input": "Incorrect input.",
+    "no_permission_to_edit_subsidiary": "You do not have permission to edit this subsidiary.",
+    "created_status": "Successfully created status.",
+    "updated_status": "Successfully updated status.",
+    "deleted_status": "Successfully deleted status."
 }

@@ -35,7 +35,7 @@ const useColumns = (props: Props) => {
       title: t('name'),
       dataIndex: 'name',
       render: (value, resource) => (
-        <Box className="w-full truncate">
+        <Box className="min-w-56">
           <Link
             to={route('/subsidiaries/:id/edit', { id: resource.id as string })}
           >
@@ -54,7 +54,7 @@ const useColumns = (props: Props) => {
       title: t('created_at'),
       dataIndex: 'created_at',
       render: (value) => (
-        <Box className="w-full truncate">
+        <Box className="min-w-56 max-w-96 truncate">
           <Text>{formatUnixTime(value)}</Text>
         </Box>
       ),
@@ -63,7 +63,7 @@ const useColumns = (props: Props) => {
       title: t('created_by'),
       dataIndex: 'user',
       render: (user: User) => (
-        <Box className="w-full truncate">
+        <Box className="min-w-56 max-w-96 truncate">
           <Text>
             {user.first_name || user.last_name
               ? `${user.first_name || ''} ${user.last_name || ''}`
@@ -75,36 +75,28 @@ const useColumns = (props: Props) => {
     {
       title: t('updated_at'),
       dataIndex: 'updated_at',
-      render: (value) => {
-        if (!value) {
-          return <></>;
-        }
-
-        return (
-          <Box className="w-full truncate">
-            <Text>{formatUnixTime(value)}</Text>
-          </Box>
-        );
-      },
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          {value ? <Text>{formatUnixTime(value)}</Text> : <></>}
+        </Box>
+      ),
     },
     {
       title: t('updated_by'),
       dataIndex: 'updated_by',
-      render: (user: User | null) => {
-        if (!user) {
-          return <></>;
-        }
-
-        return (
-          <Box className="w-full truncate">
+      render: (user: User | null) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          {user ? (
             <Text>
               {user.first_name || user.last_name
                 ? `${user.first_name || ''} ${user.last_name || ''}`
                 : user.email}
             </Text>
-          </Box>
-        );
-      },
+          ) : (
+            <></>
+          )}
+        </Box>
+      ),
     },
     {
       title: '',
@@ -119,7 +111,6 @@ const useColumns = (props: Props) => {
           resourceName={resource.name}
         />
       ),
-      width: '6rem',
       fixed: 'right',
     },
   ];

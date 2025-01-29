@@ -31,6 +31,7 @@ type Props = {
   valueKey?: string;
   onClear?: () => void;
   endpoint: string;
+  enableByPermission: boolean;
 };
 
 type Option = {
@@ -54,6 +55,7 @@ const SelectDataField = (props: Props) => {
     valueKey,
     onClear,
     endpoint,
+    enableByPermission,
   } = props;
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
@@ -72,6 +74,7 @@ const SelectDataField = (props: Props) => {
         label: record[labelKey as keyof Option],
         value: record[(valueKey || 'id') as keyof Option],
       })),
+    enableByPermission,
   });
 
   const handleSearch = (value: string) => {

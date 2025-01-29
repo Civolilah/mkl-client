@@ -20,7 +20,12 @@ import { Subsidiary, ValidationErrors } from '@interfaces/index';
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useFetchEntity, useTranslation } from '@hooks/index';
+import {
+  useCanEditEntity,
+  useFetchEntity,
+  useHasPermission,
+  useTranslation,
+} from '@hooks/index';
 
 import SubsidiaryForm from '../common/components/SubsidiaryForm';
 import { validateSubsidiary } from '../common/helpers/helpers';
@@ -41,7 +46,10 @@ const Edit = () => {
 
   const toast = useToast();
   const { id } = useParams();
+
   const actions = useActions();
+  const hasPermission = useHasPermission();
+  const canEditEntity = useCanEditEntity();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,6 +63,10 @@ const Edit = () => {
     setEntity: setSubsidiary,
     setIsLoading,
     setInitialResponse,
+    enableByPermission:
+      hasPermission('create_subsidiary') ||
+      hasPermission('view_subsidiary') ||
+      hasPermission('edit_subsidiary'),
   });
 
   const handleSave = async () => {
@@ -112,8 +124,15 @@ const Edit = () => {
       breadcrumbs={breadcrumbs}
       actions={subsidiary ? actions(subsidiary) : undefined}
       onSaveClick={handleSave}
-      disabledSaveButton={isLoading}
+      disabledSaveButton={
+        isLoading ||
+        !canEditEntity('edit_subsidiary', 'create_subsidiary', subsidiary)
+      }
+      displayPermissionTooltip={
+        !canEditEntity('edit_subsidiary', 'create_subsidiary', subsidiary)
+      }
       disabledSaveButtonWithLoadingIcon={Boolean(isLoading && subsidiary)}
+      tooltipPermissionMessage={t('no_permission_to_edit_subsidiary')}
     >
       <SubsidiaryForm
         subsidiary={subsidiary}

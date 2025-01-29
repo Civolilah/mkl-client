@@ -14,21 +14,27 @@ import { Subsidiary } from '@interfaces/index';
 
 import { Box, Default, RefreshDataElement, Table } from '@components/index';
 
-import { useFetchEntity, useTranslation } from '@hooks/index';
+import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
 
 import useColumns from './common/hooks/useColumns';
 
 const Subsidiaries = () => {
   const t = useTranslation();
 
+  const hasPermission = useHasPermission();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [subsidiaries, setSubsidiaries] = useState<Subsidiary[]>([]);
 
-  const { refresh } = useFetchEntity({
+  const { refresh } = useFetchEntity<Subsidiary>({
     queryKey: '/api/subsidiaries',
     setEntities: setSubsidiaries,
     setIsLoading,
     listQuery: true,
+    enableByPermission:
+      hasPermission('create_subsidiary') ||
+      hasPermission('view_subsidiary') ||
+      hasPermission('edit_subsidiary'),
   });
 
   const columns = useColumns({
@@ -53,7 +59,6 @@ const Subsidiaries = () => {
         creationRoute="/subsidiaries/new"
         creationButtonLabel={t('new_subsidiary')}
         filterFieldPlaceHolder={t('search_by_name')}
-        scrollX="70rem"
       />
     </Default>
   );

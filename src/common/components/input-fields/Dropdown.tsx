@@ -16,9 +16,11 @@ type Props = {
   children: ReactNode;
   menu: MenuProps;
   style?: CSSProperties;
+  disabled?: boolean;
 };
+
 const Dropdown = (props: Props) => {
-  const { children, menu, style } = props;
+  const { children, menu, style, disabled = false } = props;
 
   return (
     <DropdownBase
@@ -43,6 +45,7 @@ const Dropdown = (props: Props) => {
         },
       }}
       trigger={['click']}
+      disabled={disabled}
     >
       <div>{children}</div>
     </DropdownBase>

@@ -23,10 +23,13 @@ type Props = {
   text?: string;
   children: ReactNode;
   trigger?: ('hover' | 'click')[];
+  placement?: 'bottom';
+  withoutArrow?: boolean;
 };
 
 const Tooltip = (props: Props) => {
-  const { className, children, text, href, trigger } = props;
+  const { className, children, text, href, trigger, placement, withoutArrow } =
+    props;
 
   const accentColor = useAccentColor();
 
@@ -51,6 +54,8 @@ const Tooltip = (props: Props) => {
             borderRadius: 0,
           }}
           color={accentColor}
+          placement={placement}
+          arrow={!withoutArrow}
         >
           {children}
         </TooltipBase>
@@ -71,6 +76,8 @@ const Tooltip = (props: Props) => {
       }}
       mouseLeaveDelay={0}
       color={accentColor}
+      placement={placement}
+      arrow={!withoutArrow}
     >
       {children}
     </TooltipBase>

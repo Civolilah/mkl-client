@@ -171,13 +171,16 @@ const useNavItems = () => {
       label: 'statuses',
       iconName: 'assignment',
       href: '/statuses',
-      visible: true,
+      visible:
+        hasPermission('create_status') ||
+        hasPermission('view_status') ||
+        hasPermission('edit_status'),
       iconSize: '1.406rem',
       rightIcon: {
         name: 'add',
         href: '/statuses/new',
         tooltipText: 'new_status',
-        visible: true,
+        visible: hasPermission('create_status'),
       },
     },
     // {

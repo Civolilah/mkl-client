@@ -8,23 +8,23 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { INITIAL_STATUS } from '@constants/index';
+import { INITIAL_STATUS, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
+import { request, route, useToast } from '@helpers/index';
+import { useNavigate } from 'react-router-dom';
 
-import { Status } from '@interfaces/index';
+import { Status, ValidationErrors } from '@interfaces/index';
 
-import { Card, Default } from '@components/index';
+import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import { useTranslation } from '@hooks/index';
 
-import Form from '../components/Form';
+import Form from '../common/components/Form';
 
 const Create = () => {
   const t = useTranslation();
-
-  const [status, setStatus] = useState<Status>(INITIAL_STATUS);
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -36,24 +36,70 @@ const Create = () => {
     },
   ];
 
-  const handleSave = () => {
-    console.log('save');
+  const toast = useToast();
+
+  const navigate = useNavigate();
+
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
+  const [status, setStatus] = useState<Status | undefined>(INITIAL_STATUS);
+
+  const handleSave = async () => {
+    if (!status) {
+      return;
+    }
+
+    if (!isFormBusy) {
+      setErrors({});
+
+      // const validationErrors = await validateSubsidiary(subsidiary);
+
+      // if (validationErrors) {
+      //   setErrors(validationErrors);
+      //   return;
+      // }
+
+      toast.loading();
+
+      setIsFormBusy(true);
+
+      request('POST', '/api/statuses', status)
+        .then((response) => {
+          toast.success('created_status');
+
+          navigate(route('/statuses/:id/edit', { id: response.data.id }));
+        })
+        .catch((error) => {
+          if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
+            setErrors(error.response.data.errors);
+          }
+
+          toast.dismiss();
+        })
+        .finally(() => setIsFormBusy(false));
+    }
   };
 
-  const handleCancel = () => {
-    console.log('cancel');
-  };
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      setErrors({});
+    }
+  }, [status]);
+
+  useEffect(() => {
+    return () => {
+      setErrors({});
+      setStatus(INITIAL_STATUS);
+    };
+  }, []);
 
   return (
     <Default
       title={t('new_status')}
       breadcrumbs={breadcrumbs}
       onSaveClick={handleSave}
-      onCancelClick={handleCancel}
     >
-      <Card title={t('new_status')} className="w-full md:w-3/4 xl:w-1/2 pb-6">
-        <Form status={status} setStatus={setStatus} />
-      </Card>
+      <Form status={status} setStatus={setStatus} />
     </Default>
   );
 };

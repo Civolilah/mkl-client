@@ -29,7 +29,7 @@ import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 import Box from './Box';
 import Icon from './Icon';
 
-type CreationRoute = '/subsidiaries/new' | '/employees/new';
+type CreationRoute = '/subsidiaries/new' | '/employees/new' | '/statuses/new';
 
 export type EntityColumnType<EntityType> = {
   title: string;
@@ -54,7 +54,6 @@ type Props<EntityType> = {
   creationRoute?: CreationRoute;
   creationButtonLabel?: string;
   filterFieldPlaceHolder?: string;
-  scrollX?: string;
 };
 
 type CustomHeaderCellProps = {
@@ -78,6 +77,10 @@ const CustomHeaderCell = ({
         borderRadius: 0,
         color: 'white',
         whiteSpace: 'nowrap',
+        paddingLeft: '1.25rem',
+        paddingRight: '1.25rem',
+        paddingTop: '0.75rem',
+        paddingBottom: '0.75rem',
       }}
     >
       {children}
@@ -89,12 +92,14 @@ type CustomBodyCellProps = {
   children: ReactNode;
   onClick?: () => void;
   className?: string;
+  style?: CSSProperties;
 };
 
 const CustomBodyCell = ({
   children,
   className,
   onClick,
+  style,
   ...restProps
 }: CustomBodyCellProps) => {
   return (
@@ -102,6 +107,13 @@ const CustomBodyCell = ({
       className={classNames(className, { 'cursor-pointer': onClick })}
       onClick={onClick}
       {...restProps}
+      style={{
+        ...(style || {}),
+        paddingLeft: '1.25rem',
+        paddingRight: '1.25rem',
+        paddingTop: '0.75rem',
+        paddingBottom: '0.75rem',
+      }}
     >
       {children}
     </td>
@@ -265,7 +277,6 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
     creationButtonLabel,
     creationRoute,
     filterFieldPlaceHolder,
-    scrollX,
   } = props;
 
   const navigate = useNavigate();

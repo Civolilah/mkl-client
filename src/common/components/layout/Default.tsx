@@ -16,7 +16,14 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import Icon from '@components/general/Icon';
-import { Box, Button, EntityActions, Header, Text } from '@components/index';
+import {
+  Box,
+  Button,
+  EntityActions,
+  Header,
+  Text,
+  Tooltip,
+} from '@components/index';
 
 import {
   useAccentColor,
@@ -44,6 +51,8 @@ type Props = {
   disabledCancelButtonWithLoadingIcon?: boolean;
   footer?: ReactNode;
   actions?: ItemType[];
+  tooltipPermissionMessage?: string;
+  displayPermissionTooltip?: boolean;
 };
 
 const Default = (props: Props) => {
@@ -61,6 +70,8 @@ const Default = (props: Props) => {
     disabledCancelButtonWithLoadingIcon = false,
     footer,
     actions = [],
+    tooltipPermissionMessage,
+    displayPermissionTooltip = false,
   } = props;
 
   const colors = useColors();
@@ -198,23 +209,63 @@ const Default = (props: Props) => {
                     )}
 
                     {onSaveClick && (
-                      <Button
-                        className="h-full"
-                        type="primary"
-                        onClick={onSaveClick}
-                        icon={<Icon name="save" />}
-                        disabled={disabledSaveButton}
-                        disabledWithLoadingIcon={
-                          disabledSaveButtonWithLoadingIcon
-                        }
-                        smallText
-                      >
-                        {t('save')}
-                      </Button>
+                      <>
+                        {tooltipPermissionMessage &&
+                        displayPermissionTooltip ? (
+                          <Tooltip text={tooltipPermissionMessage}>
+                            <div>
+                              <Button
+                                className="h-full"
+                                type="primary"
+                                onClick={onSaveClick}
+                                icon={<Icon name="save" />}
+                                disabled={disabledSaveButton}
+                                disabledWithLoadingIcon={
+                                  disabledSaveButtonWithLoadingIcon
+                                }
+                                smallText
+                              >
+                                {t('save')}
+                              </Button>
+                            </div>
+                          </Tooltip>
+                        ) : (
+                          <Button
+                            className="h-full"
+                            type="primary"
+                            onClick={onSaveClick}
+                            icon={<Icon name="save" />}
+                            disabled={disabledSaveButton}
+                            disabledWithLoadingIcon={
+                              disabledSaveButtonWithLoadingIcon
+                            }
+                            smallText
+                          >
+                            {t('save')}
+                          </Button>
+                        )}
+                      </>
                     )}
 
                     {Boolean(actions.length) && (
-                      <EntityActions actions={actions} />
+                      <>
+                        {displayPermissionTooltip &&
+                        tooltipPermissionMessage ? (
+                          <Tooltip text={tooltipPermissionMessage}>
+                            <div>
+                              <EntityActions
+                                actions={actions}
+                                disabled={disabledSaveButton}
+                              />
+                            </div>
+                          </Tooltip>
+                        ) : (
+                          <EntityActions
+                            actions={actions}
+                            disabled={disabledSaveButton}
+                          />
+                        )}
+                      </>
                     )}
                   </Box>
                 )}

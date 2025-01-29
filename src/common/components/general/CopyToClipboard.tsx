@@ -20,7 +20,6 @@ import Tooltip from './Tooltip';
 type Props = {
   text: string;
   children: React.ReactNode;
-  copyToClipboardOnHover?: boolean;
 };
 
 const CopyToClipboard = ({ children, text }: Props) => {

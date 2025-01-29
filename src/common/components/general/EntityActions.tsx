@@ -9,6 +9,7 @@
  */
 
 import { ItemType } from 'antd/es/menu/interface';
+import classNames from 'classnames';
 import styled from 'styled-components';
 
 import { Box, Dropdown, Icon, Text } from '@components/index';
@@ -17,6 +18,7 @@ import { useColors, useTranslation } from '@hooks/index';
 
 type Props = {
   actions: ItemType[];
+  disabled?: boolean;
 };
 
 const StyledBox = styled(Box)`
@@ -30,12 +32,18 @@ const EntityActions = (props: Props) => {
 
   const colors = useColors();
 
-  const { actions } = props;
+  const { actions, disabled = false } = props;
 
   return (
-    <Dropdown menu={{ items: actions }}>
+    <Dropdown menu={{ items: actions }} disabled={disabled}>
       <StyledBox
-        className="flex items-center space-x-1 cursor-pointer border h-full py-1.5 px-2"
+        className={classNames(
+          'flex items-center space-x-1 border h-full py-1.5 px-2',
+          {
+            'cursor-not-allowed opacity-75': disabled,
+            'cursor-pointer': !disabled,
+          }
+        )}
         theme={{ backgroundColor: colors.$18 }}
         style={{ borderColor: colors.$1 }}
       >

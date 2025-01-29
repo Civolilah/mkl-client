@@ -20,7 +20,7 @@ import { User, ValidationErrors } from '@interfaces/index';
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useFetchEntity, useTranslation } from '@hooks/index';
+import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
 
 import EmployeeForm from '../common/components/EmployeeForm';
 import { validateEmployee } from '../common/helpers/helpers';
@@ -41,18 +41,21 @@ const Edit = () => {
 
   const toast = useToast();
   const { id } = useParams();
+
   const actions = useActions();
+  const hasPermission = useHasPermission();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [employee, setEmployee] = useState<User | undefined>();
   const [initialResponse, setInitialResponse] = useState<User | undefined>();
 
-  const { refresh } = useFetchEntity({
+  const { refresh } = useFetchEntity<User>({
     queryKey: '/api/users',
     setEntity: setEmployee,
     setIsLoading,
     setInitialResponse,
+    enableByPermission: hasPermission('admin'),
   });
 
   const handleSave = async () => {

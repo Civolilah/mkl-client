@@ -14,12 +14,14 @@ import { User } from '@interfaces/index';
 
 import { Box, Default, RefreshDataElement, Table } from '@components/index';
 
-import { useFetchEntity, useTranslation } from '@hooks/index';
+import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
 
 import useColumns from './common/hooks/useColumns';
 
 const Employees = () => {
   const t = useTranslation();
+
+  const hasPermission = useHasPermission();
 
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,6 +31,7 @@ const Employees = () => {
     setEntities: setUsers,
     setIsLoading,
     listQuery: true,
+    enableByPermission: hasPermission('admin'),
   });
 
   const columns = useColumns({
@@ -60,7 +63,6 @@ const Employees = () => {
         creationRoute="/employees/new"
         creationButtonLabel={t('new_employee')}
         filterFieldPlaceHolder={t('search_employee_by')}
-        scrollX="130rem"
       />
     </Default>
   );

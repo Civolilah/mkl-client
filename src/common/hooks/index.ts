@@ -22,3 +22,4 @@ export { default as useNavItems } from '@hooks/global/useNavItems';
 export { default as useFetchEntity } from '@hooks/global/useFetchEntity';
 export { default as useFormatUnixTime } from '@hooks/date-time/useFormatUnixTime';
 export { default as useChangeUserCompanyProperty } from '@hooks/global/useChangeUserCompanyProperty';
+export { default as useCanEditEntity } from '@hooks/global/useCanEditEntity';

@@ -24,6 +24,7 @@ type Params<T> = {
   setInitialResponse?: Dispatch<SetStateAction<T | undefined>>;
   listQuery?: boolean;
   formatRecords?: (data: T[]) => T[];
+  enableByPermission: boolean;
 };
 
 const useFetchEntity = <T>(params: Params<T>) => {
@@ -35,6 +36,7 @@ const useFetchEntity = <T>(params: Params<T>) => {
     setEntities,
     listQuery,
     formatRecords,
+    enableByPermission,
   } = params;
 
   const { id } = useParams();
@@ -58,7 +60,7 @@ const useFetchEntity = <T>(params: Params<T>) => {
         { signal }
       ).then((response) => response.data),
     {
-      enabled: Boolean(id) || listQuery,
+      enabled: (Boolean(id) || listQuery) && enableByPermission,
       staleTime: Infinity,
       refetchOnWindowFocus: false,
     }

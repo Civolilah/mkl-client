@@ -100,9 +100,10 @@ const Details = (props: EmployeeProps) => {
           <SelectDataField
             label={t('subsidiaries')}
             placeholder={t('select_subsidiaries')}
-            valueKey="name"
+            valueKey="id"
             labelKey="name"
             endpoint="/api/subsidiaries?selector=true"
+            enableByPermission
             value={employee?.subsidiaries || []}
             onChange={(value) => handleChange('subsidiaries', value)}
             onClear={() => handleChange('subsidiaries', [])}

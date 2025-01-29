@@ -12,15 +12,9 @@ import { route } from '@helpers/index';
 import { TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import { User } from '@interfaces/index';
+import { Status, User } from '@interfaces/index';
 
-import {
-  Box,
-  CopyToClipboard,
-  Link,
-  TableActionsDropdown,
-  Text,
-} from '@components/index';
+import { Box, Link, TableActionsDropdown, Text } from '@components/index';
 
 import { useFormatUnixTime, useTranslation } from '@hooks/index';
 
@@ -36,14 +30,14 @@ const useColumns = (props: Props) => {
   const navigate = useNavigate();
   const formatUnixTime = useFormatUnixTime();
 
-  const columns: TableColumnsType<User> = [
+  const columns: TableColumnsType<Status> = [
     {
-      title: t('first_name'),
-      dataIndex: 'first_name',
+      title: t('name'),
+      dataIndex: 'name',
       render: (value, resource) => (
-        <Box className="min-w-56 max-w-96 truncate">
+        <Box className="min-w-56">
           <Link
-            to={route('/employees/:id/edit', { id: resource.id as string })}
+            to={route('/subsidiaries/:id/edit', { id: resource.id as string })}
           >
             {value}
           </Link>
@@ -51,53 +45,10 @@ const useColumns = (props: Props) => {
       ),
       onCell: (record) => ({
         onClick: () =>
-          navigate(route('/employees/:id/edit', { id: record.id as string })),
+          navigate(
+            route('/subsidiaries/:id/edit', { id: record.id as string })
+          ),
       }),
-    },
-    {
-      title: t('last_name'),
-      dataIndex: 'last_name',
-      render: (value, resource) => (
-        <Box className="min-w-56 max-w-96 truncate">
-          <Link
-            to={route('/employees/:id/edit', { id: resource.id as string })}
-          >
-            {value}
-          </Link>
-        </Box>
-      ),
-      onCell: (record) => ({
-        onClick: () =>
-          navigate(route('/employees/:id/edit', { id: record.id as string })),
-      }),
-    },
-    {
-      title: t('email'),
-      dataIndex: 'email',
-      render: (value) => (
-        <Box className="flex items-center space-x-4 min-w-56">
-          <CopyToClipboard text={value}>
-            <Text>{value}</Text>
-          </CopyToClipboard>
-        </Box>
-      ),
-    },
-    {
-      title: t('subsidiaries'),
-      dataIndex: 'subsidiaries',
-      render: (subsidiaries: { id: string; name: string }[]) => (
-        <Box className="flex items-center min-w-56 max-w-96 truncate">
-          {subsidiaries.map((subsidiary, index, array) => (
-            <Box key={subsidiary.id} className="flex items-center">
-              <Link to={route('/subsidiaries/:id/edit', { id: subsidiary.id })}>
-                {subsidiary.name}
-              </Link>
-
-              {index < array.length - 1 && <Text className="mx-2">|</Text>}
-            </Box>
-          ))}
-        </Box>
-      ),
     },
     {
       title: t('created_at'),
@@ -110,7 +61,7 @@ const useColumns = (props: Props) => {
     },
     {
       title: t('created_by'),
-      dataIndex: 'created_by',
+      dataIndex: 'user',
       render: (user: User) => (
         <Box className="min-w-56 max-w-96 truncate">
           <Text>
@@ -153,16 +104,11 @@ const useColumns = (props: Props) => {
       render: (_, resource) => (
         <TableActionsDropdown
           resource={resource}
-          editPageLink="/employees/:id/edit"
-          resourceType="employee"
-          deleteEndpoint="/api/users/:id/delete_employee"
+          editPageLink="/subsidiaries/:id/edit"
+          resourceType="subsidiary"
+          deleteEndpoint="/api/subsidiaries/:id"
           refresh={refresh}
-          resourceName={`${
-            resource.first_name || resource.last_name
-              ? (resource.first_name || '') +
-                (resource.last_name ? ' ' + resource.last_name : '')
-              : resource.email
-          }`}
+          resourceName={resource.name}
         />
       ),
       fixed: 'right',

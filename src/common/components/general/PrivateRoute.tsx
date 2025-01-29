@@ -22,6 +22,7 @@ import { useAuthenticated } from '@hooks/index';
 import LoadingScreen from './LoadingScreen';
 
 export type UserCompanyDetails = {
+  id: string;
   first_name: string;
   last_name: string;
   email: string;
