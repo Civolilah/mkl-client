@@ -18,6 +18,8 @@ import { Box, Link, TableActionsDropdown, Text } from '@components/index';
 
 import { useFormatUnixTime, useTranslation } from '@hooks/index';
 
+import ColorColumn from '../components/ColorColumn';
+
 type Props = {
   refresh: () => void;
 };
@@ -36,25 +38,30 @@ const useColumns = (props: Props) => {
       dataIndex: 'name',
       render: (value, resource) => (
         <Box className="min-w-56">
-          <Link
-            to={route('/subsidiaries/:id/edit', { id: resource.id as string })}
-          >
+          <Link to={route('/statuses/:id/edit', { id: resource.id as string })}>
             {value}
           </Link>
         </Box>
       ),
       onCell: (record) => ({
         onClick: () =>
-          navigate(
-            route('/subsidiaries/:id/edit', { id: record.id as string })
-          ),
+          navigate(route('/statuses/:id/edit', { id: record.id as string })),
       }),
+    },
+    {
+      title: t('color'),
+      dataIndex: 'color',
+      render: (value) => (
+        <Box style={{ minWidth: '9rem' }}>
+          <ColorColumn color={value} />
+        </Box>
+      ),
     },
     {
       title: t('created_at'),
       dataIndex: 'created_at',
       render: (value) => (
-        <Box className="min-w-56 max-w-96 truncate">
+        <Box className="min-w-40 max-w-96 truncate">
           <Text>{formatUnixTime(value)}</Text>
         </Box>
       ),
@@ -76,7 +83,7 @@ const useColumns = (props: Props) => {
       title: t('updated_at'),
       dataIndex: 'updated_at',
       render: (value) => (
-        <Box className="min-w-56 max-w-96 truncate">
+        <Box className="min-w-40 max-w-96 truncate">
           {value ? <Text>{formatUnixTime(value)}</Text> : <></>}
         </Box>
       ),
@@ -104,9 +111,9 @@ const useColumns = (props: Props) => {
       render: (_, resource) => (
         <TableActionsDropdown
           resource={resource}
-          editPageLink="/subsidiaries/:id/edit"
-          resourceType="subsidiary"
-          deleteEndpoint="/api/subsidiaries/:id"
+          editPageLink="/statuses/:id/edit"
+          resourceType="status"
+          deleteEndpoint="/api/statuses/:id"
           refresh={refresh}
           resourceName={resource.name}
         />

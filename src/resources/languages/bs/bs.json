@@ -41,7 +41,6 @@
     "export": "Izvoz",
     "name": "Naziv",
     "color": "Boja",
-    "no_color": "Bez boje",
     "copy_to_clipboard": "Kopiraj",
     "copied_to_clipboard": "Kopirano",
     "done": "Gotovo",

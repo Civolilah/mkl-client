@@ -12,6 +12,7 @@
 import {
   GLOBAL_ERROR_STATUS_CODE,
   MAX_REQUESTS_LOGIN_REGISTER_ERROR_STATUS_CODE,
+  NOT_FOUND_ERROR,
   PERMISSIONS_ERROR_STATUS_CODE,
   UNAUTHORIZED_ERROR_STATUS_CODE,
 } from '@constants/index';
@@ -45,6 +46,10 @@ client.interceptors.response.use(
 
     if (error.response?.status === PERMISSIONS_ERROR_STATUS_CODE) {
       window.dispatchEvent(new CustomEvent('navigate_unauthorized_page'));
+    }
+
+    if (error.response?.status === NOT_FOUND_ERROR) {
+      window.dispatchEvent(new CustomEvent('navigate_not_found_page'));
     }
 
     if (error.response?.status === GLOBAL_ERROR_STATUS_CODE) {

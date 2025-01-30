@@ -108,7 +108,7 @@ const ForgotPasswordModal = ({ email }: Props) => {
           captcha_token: captchaToken,
         })
           .then(() => {
-            toast.success(t('check_email'));
+            toast.success('check_email');
             handleClose();
           })
           .catch((error) => {

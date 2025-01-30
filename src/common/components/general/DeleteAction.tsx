@@ -88,7 +88,7 @@ const DeleteAction = (props: Props) => {
         headers
       )
         .then(() => {
-          toast.success(t(`deleted_${resourceType}`));
+          toast.success(`deleted_${resourceType}`);
           refresh?.();
 
           if (editPageAction && mainPageURL) {
@@ -111,11 +111,7 @@ const DeleteAction = (props: Props) => {
       <ActionElement
         label={t('delete')}
         iconName="delete"
-        onClick={() =>
-          userCompany?.preference.enabled_security_password
-            ? setIsPasswordConfirmationModalOpen(true)
-            : setIsModalOpen(true)
-        }
+        onClick={() => setIsModalOpen(true)}
       />
 
       <Modal
@@ -155,7 +151,17 @@ const DeleteAction = (props: Props) => {
             </Button>
 
             <Button
-              onClick={() => handleDeleteResource('', true)}
+              onClick={() => {
+                if (userCompany?.preference.enabled_security_password) {
+                  setIsModalOpen(false);
+
+                  setTimeout(() => {
+                    setIsPasswordConfirmationModalOpen(true);
+                  }, 100);
+                } else {
+                  handleDeleteResource('', true);
+                }
+              }}
               disabled={isFormBusy}
             >
               {t('yes')}

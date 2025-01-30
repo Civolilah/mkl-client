@@ -148,25 +148,25 @@ const Footer = ({
 
   const actions: MenuProps['items'] = [
     {
-      label: '10',
+      label: <Box className="px-2 py-1">10</Box>,
       onClick: () => setPerPage(10),
       key: '10',
       disabled: perPage === 10,
     },
     {
-      label: '20',
+      label: <Box className="px-2 py-1">20</Box>,
       onClick: () => setPerPage(20),
       key: '20',
       disabled: perPage === 20,
     },
     {
-      label: '50',
+      label: <Box className="px-2 py-1">50</Box>,
       onClick: () => setPerPage(50),
       key: '50',
       disabled: perPage === 50,
     },
     {
-      label: '100',
+      label: <Box className="px-2 py-1">100</Box>,
       onClick: () => setPerPage(100),
       key: '100',
       disabled: perPage === 100,
@@ -288,6 +288,7 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
     data,
     total: data.length,
   });
+  const [currentScrollY, setCurrentScrollY] = useState<string | undefined>();
 
   const handleFiltering = () => {
     if (!filter) {
@@ -374,6 +375,12 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
       data: updatedData.slice(startIndex, endIndex),
       total: updatedData.length,
     });
+
+    if (perPage === 10 || (perPage > 10 && updatedData.length < 11)) {
+      setCurrentScrollY(undefined);
+    } else {
+      setCurrentScrollY('30.75rem');
+    }
   }, [currentPage, perPage, filter, data]);
 
   return (
@@ -425,7 +432,10 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
               ),
             },
           }}
-          scroll={{ x: 'max-content', y: '29.5rem' }}
+          scroll={{
+            x: 'max-content',
+            y: currentScrollY,
+          }}
           size="middle"
           locale={{
             emptyText: (

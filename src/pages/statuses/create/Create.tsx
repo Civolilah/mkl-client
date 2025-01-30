@@ -22,6 +22,7 @@ import { BreadcrumbItem } from '@components/layout/Default';
 import { useTranslation } from '@hooks/index';
 
 import Form from '../common/components/Form';
+import { validateStatus } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
@@ -52,12 +53,12 @@ const Create = () => {
     if (!isFormBusy) {
       setErrors({});
 
-      // const validationErrors = await validateSubsidiary(subsidiary);
+      const validationErrors = await validateStatus(status);
 
-      // if (validationErrors) {
-      //   setErrors(validationErrors);
-      //   return;
-      // }
+      if (validationErrors) {
+        setErrors(validationErrors);
+        return;
+      }
 
       toast.loading();
 
@@ -71,10 +72,9 @@ const Create = () => {
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
+            toast.dismiss();
             setErrors(error.response.data.errors);
           }
-
-          toast.dismiss();
         })
         .finally(() => setIsFormBusy(false));
     }
@@ -98,8 +98,10 @@ const Create = () => {
       title={t('new_status')}
       breadcrumbs={breadcrumbs}
       onSaveClick={handleSave}
+      disabledSaveButton={isFormBusy}
+      disabledSaveButtonWithLoadingIcon={isFormBusy}
     >
-      <Form status={status} setStatus={setStatus} />
+      <Form status={status} setStatus={setStatus} errors={errors} />
     </Default>
   );
 };

@@ -12,14 +12,43 @@ import { lazy } from 'react';
 
 import { Route } from 'react-router-dom';
 
+import { RoutePermission } from '@components/index';
+
 const Statuses = lazy(() => import('@pages/statuses/Statuses'));
 const CreateStatus = lazy(() => import('@pages/statuses/create/Create'));
+const EditStatus = lazy(() => import('@pages/statuses/edit/Edit'));
 
 const Routes = (
   <>
-    <Route path="/statuses" element={<Statuses />} />
+    <Route
+      path="/statuses"
+      element={
+        <RoutePermission
+          permissions={['create_status', 'edit_status', 'view_status']}
+          routeComponent={<Statuses />}
+        />
+      }
+    />
 
-    <Route path="/statuses/new" element={<CreateStatus />} />
+    <Route
+      path="/statuses/new"
+      element={
+        <RoutePermission
+          permissions={['create_status']}
+          routeComponent={<CreateStatus />}
+        />
+      }
+    />
+
+    <Route
+      path="/statuses/:id/edit"
+      element={
+        <RoutePermission
+          permissions={['create_status', 'edit_status', 'view_status']}
+          routeComponent={<EditStatus />}
+        />
+      }
+    />
   </>
 );
 

@@ -11,7 +11,7 @@
 import { request } from '@helpers/index';
 import classNames from 'classnames';
 
-import { Icon, Tooltip } from '@components/index';
+import { Box, Icon, Tooltip } from '@components/index';
 
 import {
   useAccentColor,
@@ -42,11 +42,11 @@ const NavBarIconsBox = () => {
   };
 
   return (
-    <div
+    <Box
       className="flex py-3 border-t items-center justify-center relative"
-      style={{ borderColor: colors.$1 }}
+      style={{ borderColor: colors.$1, height: '3.25rem' }}
     >
-      <div
+      <Box
         className="flex space-x-5 items-center justify-center"
         style={{ color: accentColor }}
       >
@@ -66,10 +66,10 @@ const NavBarIconsBox = () => {
           </Tooltip>
         )}
 
-        <div
-          className={classNames({
-            'absolute right-4': !isMiniSideBar,
-            'flex justify-center': isMiniSideBar,
+        <Box
+          className={classNames('absolute', {
+            'right-4': !isMiniSideBar,
+            'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2': isMiniSideBar,
           })}
         >
           <Tooltip
@@ -84,9 +84,9 @@ const NavBarIconsBox = () => {
               )}
             </div>
           </Tooltip>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

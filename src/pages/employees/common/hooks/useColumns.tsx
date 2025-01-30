@@ -103,7 +103,7 @@ const useColumns = (props: Props) => {
       title: t('created_at'),
       dataIndex: 'created_at',
       render: (value) => (
-        <Box className="min-w-56 max-w-96 truncate">
+        <Box className="min-w-40 max-w-96 truncate">
           <Text>{formatUnixTime(value)}</Text>
         </Box>
       ),
@@ -125,7 +125,7 @@ const useColumns = (props: Props) => {
       title: t('updated_at'),
       dataIndex: 'updated_at',
       render: (value) => (
-        <Box className="min-w-56 max-w-96 truncate">
+        <Box className="min-w-40 max-w-96 truncate">
           {value ? <Text>{formatUnixTime(value)}</Text> : <></>}
         </Box>
       ),

@@ -8,27 +8,69 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { toast } from 'react-hot-toast';
+import { toast, ToastOptions } from 'react-toastify';
 
 import { useTranslation } from '@hooks/index';
+
+const toastOptions: ToastOptions = {
+  position: 'top-center',
+  autoClose: 2000,
+  closeOnClick: true,
+  pauseOnHover: true,
+};
+
+let globalLoadingToastId: string | number | undefined;
 
 export const useToast = () => {
   const t = useTranslation();
 
   return {
     success: (message: string) => {
-      toast.success(t(message), { id: '1212' });
+      if (globalLoadingToastId) {
+        toast.update(globalLoadingToastId, {
+          render: t(message),
+          type: 'success',
+          isLoading: false,
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+        globalLoadingToastId = undefined;
+      } else {
+        toast.success(t(message), toastOptions);
+      }
     },
     error: (message: string) => {
-      toast.error(t(message), { id: '1212' });
+      if (globalLoadingToastId) {
+        toast.update(globalLoadingToastId, {
+          render: t(message),
+          type: 'error',
+          isLoading: false,
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+        });
+        globalLoadingToastId = undefined;
+      } else {
+        toast.error(t(message), toastOptions);
+      }
     },
     loading: (message?: string) => {
-      toast.loading(t(message ?? 'processing'), {
-        id: '1212',
+      globalLoadingToastId = toast.loading(t(message ?? 'processing'), {
+        ...toastOptions,
+        autoClose: false,
+        pauseOnHover: false,
+        closeOnClick: false,
       });
     },
+    info: (message: string) => {
+      toast.info(t(message), toastOptions);
+    },
     dismiss: () => {
-      toast.dismiss('1212');
+      if (globalLoadingToastId) {
+        toast.dismiss(globalLoadingToastId);
+        globalLoadingToastId = undefined;
+      }
     },
   };
 };

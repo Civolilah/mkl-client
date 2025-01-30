@@ -144,7 +144,7 @@ const LanguageSwitcher = () => {
         >
           {icon.tr}
 
-          <Text style={{ letterSpacing: 0.8 }}>Türkçe</Text>
+          <Text>Türkçe</Text>
         </Box>
       ),
       key: 'tr',
@@ -159,7 +159,7 @@ const LanguageSwitcher = () => {
         >
           {icon.bs}
 
-          <Text style={{ letterSpacing: 0.8 }}>Bosanski</Text>
+          <Text>Bosanski</Text>
         </Box>
       ),
       key: 'bs',

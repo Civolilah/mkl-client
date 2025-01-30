@@ -15,9 +15,9 @@ import { ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { useAtomValue } from 'jotai';
-import { Toaster } from 'react-hot-toast';
 import { useTranslation as useTranslationBase } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
 import { Box, Button, Modal, Text } from '@components/index';
@@ -171,7 +171,7 @@ const App = () => {
       </Modal>
 
       <ConfigProvider wave={{ disabled: true }} theme={theme}>
-        <Toaster position="top-center" />
+        <ToastContainer />
 
         {routes}
       </ConfigProvider>

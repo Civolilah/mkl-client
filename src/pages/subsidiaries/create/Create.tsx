@@ -77,10 +77,9 @@ const Create = () => {
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
+            toast.dismiss();
             setErrors(error.response.data.errors);
           }
-
-          toast.dismiss();
         })
         .finally(() => setIsFormBusy(false));
     }

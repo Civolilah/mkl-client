@@ -61,7 +61,7 @@ const Edit = () => {
   const handleSave = async () => {
     if (!isLoading && id && employee) {
       if (isEqual(initialResponse, employee)) {
-        toast.success('updated_employee');
+        toast.info('no_employee_changes');
         return;
       }
 
@@ -94,15 +94,15 @@ const Edit = () => {
                 password: '',
               }
           );
+
           toast.success('updated_employee');
           setInitialResponse(cloneDeep(employee));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
+            toast.dismiss();
             setErrors(error.response.data.errors);
           }
-
-          toast.dismiss();
         })
         .finally(() => setIsLoading(false));
     }

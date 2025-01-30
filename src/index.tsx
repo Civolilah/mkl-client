@@ -12,6 +12,7 @@ import { StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import './resources/css/app.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { bs, en, tr } from '@resources/index';
 import i18n from 'i18next';

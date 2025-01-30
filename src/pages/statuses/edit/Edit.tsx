@@ -15,7 +15,7 @@ import { endpoint, request, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
 import { useParams } from 'react-router-dom';
 
-import { Subsidiary, ValidationErrors } from '@interfaces/index';
+import { Status, ValidationErrors } from '@interfaces/index';
 
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -27,8 +27,8 @@ import {
   useTranslation,
 } from '@hooks/index';
 
-import SubsidiaryForm from '../common/components/SubsidiaryForm';
-import { validateSubsidiary } from '../common/helpers/helpers';
+import Form from '../common/components/Form';
+import { validateStatus } from '../common/helpers/helpers';
 import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
@@ -36,11 +36,11 @@ const Edit = () => {
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('subsidiaries'),
-      href: '/subsidiaries',
+      title: t('statuses'),
+      href: '/statuses',
     },
     {
-      title: t('edit_subsidiary'),
+      title: t('edit_status'),
     },
   ];
 
@@ -53,32 +53,30 @@ const Edit = () => {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [subsidiary, setSubsidiary] = useState<Subsidiary | undefined>();
-  const [initialResponse, setInitialResponse] = useState<
-    Subsidiary | undefined
-  >();
+  const [status, setStatus] = useState<Status | undefined>();
+  const [initialResponse, setInitialResponse] = useState<Status | undefined>();
 
-  const { refresh } = useFetchEntity<Subsidiary>({
-    queryKey: '/api/subsidiaries',
-    setEntity: setSubsidiary,
+  const { refresh } = useFetchEntity<Status>({
+    queryKey: '/api/statuses',
+    setEntity: setStatus,
     setIsLoading,
     setInitialResponse,
     enableByPermission:
-      hasPermission('create_subsidiary') ||
-      hasPermission('view_subsidiary') ||
-      hasPermission('edit_subsidiary'),
+      hasPermission('create_status') ||
+      hasPermission('view_status') ||
+      hasPermission('edit_status'),
   });
 
   const handleSave = async () => {
-    if (!isLoading && id && subsidiary) {
-      if (isEqual(initialResponse, subsidiary)) {
-        toast.info('no_subsidiary_changes');
+    if (!isLoading && id && status) {
+      if (isEqual(initialResponse, status)) {
+        toast.info('no_status_changes');
         return;
       }
 
       setErrors({});
 
-      const validationErrors = await validateSubsidiary(subsidiary);
+      const validationErrors = await validateStatus(status);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -89,10 +87,10 @@ const Edit = () => {
 
       setIsLoading(true);
 
-      request('PATCH', endpoint('/api/subsidiaries/:id', { id }), subsidiary)
+      request('PATCH', endpoint('/api/statuses/:id', { id }), status)
         .then(() => {
-          toast.success('updated_subsidiary');
-          setInitialResponse(cloneDeep(subsidiary));
+          toast.success('updated_status');
+          setInitialResponse(cloneDeep(status));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -108,37 +106,36 @@ const Edit = () => {
     if (Object.keys(errors).length) {
       setErrors({});
     }
-  }, [subsidiary]);
+  }, [status]);
 
   useEffect(() => {
     return () => {
       setErrors({});
-      setSubsidiary(undefined);
+      setStatus(undefined);
     };
   }, []);
 
   return (
     <Default
-      title={t('edit_subsidiary')}
+      title={t('edit_status')}
       breadcrumbs={breadcrumbs}
-      actions={subsidiary ? actions(subsidiary) : undefined}
+      actions={status ? actions(status) : undefined}
       onSaveClick={handleSave}
       disabledSaveButton={
-        isLoading ||
-        !canEditEntity('edit_subsidiary', 'create_subsidiary', subsidiary)
+        isLoading || !canEditEntity('edit_status', 'create_status', status)
       }
       displayPermissionTooltip={
-        !canEditEntity('edit_subsidiary', 'create_subsidiary', subsidiary)
+        !canEditEntity('edit_status', 'create_status', status)
       }
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && subsidiary)}
-      tooltipPermissionMessage={t('no_permission_to_edit_subsidiary')}
+      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && status)}
+      tooltipPermissionMessage={t('no_permission_to_edit_status')}
     >
-      <SubsidiaryForm
-        subsidiary={subsidiary}
-        setSubsidiary={setSubsidiary}
+      <Form
+        status={status}
+        setStatus={setStatus}
         errors={errors}
         editPage
-        isLoading={isLoading && !subsidiary}
+        isLoading={isLoading && !status}
         onRefresh={refresh}
       />
     </Default>

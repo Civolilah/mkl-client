@@ -8,9 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import classNames from 'classnames';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 import { useMediaQuery } from 'react-responsive';
 import { useDebounce } from 'react-use';
@@ -21,6 +20,7 @@ import {
   Button,
   CopyToClipboard,
   CopyToClipboardOnlyIcon,
+  ErrorMessageElement,
   Modal,
   Text,
   TransparentColorBox,
@@ -56,6 +56,7 @@ type Props = {
   allowClear?: boolean;
   showText?: boolean;
   onValueChange: (value: string) => void;
+  errorMessage?: string;
 };
 
 const ColorPicker = (props: Props) => {
@@ -63,9 +64,11 @@ const ColorPicker = (props: Props) => {
   const colors = useColors();
   const accentColor = useAccentColor();
 
+  const initialValue = useRef(props.value);
+
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
-  const { value, onValueChange, label, required } = props;
+  const { value, onValueChange, label, required, errorMessage } = props;
 
   const [color, setColor] = useState<string>(value);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -78,9 +81,13 @@ const ColorPicker = (props: Props) => {
     [color]
   );
 
+  useEffect(() => {
+    setColor(value);
+  }, [value]);
+
   return (
     <>
-      <Box className="flex flex-col justify-center items-start">
+      <Box className="flex flex-col justify-center items-start space-y-2">
         {label && (
           <Box className="flex items-center space-x-1">
             <Text
@@ -109,7 +116,7 @@ const ColorPicker = (props: Props) => {
         )}
 
         <Div
-          className={classNames('cursor-pointer mt-2')}
+          className="cursor-pointer mt-2"
           onClick={() => setIsModalOpen(true)}
           theme={{ borderColor: colors.$1, hoverBorderColor: accentColor }}
         >
@@ -120,15 +127,17 @@ const ColorPicker = (props: Props) => {
             >
               <TransparentColorBox />
 
-              <Text>{t('no_color')}</Text>
+              <Text>{t('transparent')}</Text>
             </Box>
           ) : (
             <Box className="flex items-center space-x-4 px-1.5 py-1">
               <Box
+                className="border"
                 style={{
                   width: '2.2rem',
                   height: '2.2rem',
                   backgroundColor: color,
+                  borderColor: colors.$1,
                 }}
               />
 
@@ -138,13 +147,21 @@ const ColorPicker = (props: Props) => {
             </Box>
           )}
         </Div>
+
+        <ErrorMessageElement errorMessage={errorMessage} />
       </Box>
 
       <Modal
         title={t('color')}
         size="small"
         visible={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          if (initialValue.current !== value) {
+            onValueChange(initialValue.current);
+          }
+
+          setIsModalOpen(false);
+        }}
       >
         <Box className="flex flex-col w-full items-center justify-center space-y-6">
           <Box className="flex w-full flex-col space-y-1">
@@ -177,7 +194,16 @@ const ColorPicker = (props: Props) => {
           </Box>
 
           <Box className="flex w-full items-center space-x-2">
-            <Button className="w-full" onClick={() => setIsModalOpen(false)}>
+            <Button
+              className="w-full"
+              onClick={() => {
+                initialValue.current = color;
+
+                setTimeout(() => {
+                  setIsModalOpen(false);
+                }, 25);
+              }}
+            >
               {t('done')}
             </Button>
           </Box>
