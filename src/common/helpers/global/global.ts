@@ -56,12 +56,24 @@ export const useToast = () => {
       }
     },
     loading: (message?: string) => {
-      globalLoadingToastId = toast.loading(t(message ?? 'processing'), {
-        ...toastOptions,
-        autoClose: false,
-        pauseOnHover: false,
-        closeOnClick: false,
-      });
+      if (globalLoadingToastId) {
+        toast.update(globalLoadingToastId, {
+          render: t(message ?? 'processing'),
+          type: 'default',
+          isLoading: true,
+          autoClose: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+        });
+      } else {
+        globalLoadingToastId = toast.loading(t(message ?? 'processing'), {
+          ...toastOptions,
+          autoClose: false,
+          pauseOnHover: false,
+          closeOnClick: false,
+          isLoading: true,
+        });
+      }
     },
     info: (message: string) => {
       toast.info(t(message), toastOptions);
