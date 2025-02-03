@@ -18,3 +18,5 @@ export type { User } from '@interfaces/user/user';
 export type { Status } from '@interfaces/status/status';
 
 export type { Subsidiary } from '@interfaces/subsidiary/subsidiary';
+
+export type { LabelCategory } from '@interfaces/label-category/label-category';

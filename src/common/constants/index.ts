@@ -24,3 +24,5 @@ export {
   UNAUTHORIZED_ERROR_STATUS_CODE,
   NOT_FOUND_ERROR,
 } from './errors/errors';
+
+export { INITIAL_LABEL_CATEGORY } from './label-category/label-category';

@@ -115,21 +115,21 @@ const LanguageSwitcher = () => {
   const switchLanguage = useSwitchLanguage();
 
   const icon = {
-    en: <GB title="Great Britain" className="w-6 h-6" />,
-    tr: <TR title="Turkey" className="w-6 h-6" />,
-    bs: <BA title="Bosnia and Herzegovina" className="w-6 h-6" />,
+    en: <GB title="Great Britain" className="w-5 h-5" />,
+    tr: <TR title="Turkey" className="w-5 h-5" />,
+    bs: <BA title="Bosnia and Herzegovina" className="w-5 h-5" />,
   };
 
   const languages: MenuProps['items'] = [
     {
       label: (
         <Box
-          className="flex items-center space-x-4"
+          className="flex items-center space-x-4 py-1 px-2"
           onClick={() => switchLanguage('en')}
         >
           {icon.en}
 
-          <Text>English</Text>
+          <Text className="text-xs">English</Text>
         </Box>
       ),
       key: 'en',
@@ -139,12 +139,12 @@ const LanguageSwitcher = () => {
     {
       label: (
         <Box
-          className="flex items-center space-x-4"
+          className="flex items-center space-x-4 py-1 px-2"
           onClick={() => switchLanguage('tr')}
         >
           {icon.tr}
 
-          <Text>Türkçe</Text>
+          <Text className="text-xs">Türkçe</Text>
         </Box>
       ),
       key: 'tr',
@@ -154,12 +154,12 @@ const LanguageSwitcher = () => {
     {
       label: (
         <Box
-          className="flex items-center space-x-4"
+          className="flex items-center space-x-4 py-1 px-2"
           onClick={() => switchLanguage('bs')}
         >
           {icon.bs}
 
-          <Text>Bosanski</Text>
+          <Text className="text-xs">Bosanski</Text>
         </Box>
       ),
       key: 'bs',
@@ -177,12 +177,12 @@ const LanguageSwitcher = () => {
         <Box className="flex items-center space-x-3">
           {icon[i18n.language as Languages]}
 
-          <Text className="text-sm font-medium">
+          <Text className="text-xs font-medium">
             {LANGUAGE_ALIASES[i18n.language as Languages]}
           </Text>
         </Box>
 
-        <Icon name="arrowDown" size={25} style={{ color: colors.$10 }} />
+        <Icon name="arrowDown" size="1.25rem" style={{ color: colors.$10 }} />
       </Box>
     </Dropdown>
   );

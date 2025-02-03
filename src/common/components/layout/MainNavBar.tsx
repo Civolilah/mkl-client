@@ -8,6 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import classNames from 'classnames';
+
 import {
   Box,
   NavBarIconsBox,
@@ -27,12 +29,20 @@ const NavigationBar = () => {
       className="flex flex-col space-y-3 border-r shadow-md pt-2 w-full"
       style={{
         backgroundColor: colors.$6,
-        height: 'calc(100vh - 4.35rem)',
-        width: isMiniSideBar ? '4.35rem' : '17.5rem',
+        height: 'calc(100vh - 3.5rem)',
+        width: isMiniSideBar ? '4rem' : '15rem',
         borderColor: colors.$1,
       }}
     >
-      <Box className="flex flex-col space-y-0.5 flex-1 px-2 overflow-hidden break-all">
+      <Box
+        className={classNames(
+          'flex flex-col space-y-1 flex-1 overflow-hidden break-all',
+          {
+            'px-2': !isMiniSideBar,
+            'px-1': isMiniSideBar,
+          }
+        )}
+      >
         {navItems
           .filter((item) => item.visible)
           .map((item) => (

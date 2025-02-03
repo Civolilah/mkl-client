@@ -58,11 +58,15 @@ const NavItem = (props: Props) => {
   const isMiniSideBar = useIsMiniSidebar();
 
   return (
-    <Tooltip text={isMiniSideBar ? t(item.label) : ''}>
+    <Tooltip
+      placement="right"
+      text={isMiniSideBar ? t(item.label) : ''}
+      withoutArrow
+    >
       <Div
         className={classNames('flex items-center cursor-pointer', {
-          'px-2': !isMiniSideBar,
-          'px-3': isMiniSideBar,
+          'pl-1 pr-2': !isMiniSideBar,
+          'px-1': isMiniSideBar,
         })}
         theme={{
           hoverBackgroundColor: colors.$7,
@@ -92,7 +96,7 @@ const NavItem = (props: Props) => {
             </Box>
 
             {!isMiniSideBar && (
-              <Text style={{ fontSize: '0.969rem' }}>{t(item.label)}</Text>
+              <Text style={{ fontSize: '0.8rem' }}>{t(item.label)}</Text>
             )}
           </Box>
 
@@ -104,14 +108,14 @@ const NavItem = (props: Props) => {
               href={item.rightIcon!.href}
             >
               <div
-                className="flex items-center justify-center ml-6"
+                className="flex items-center justify-center"
                 style={{
                   borderRadius: '50%',
                   color: accentColor,
                   border: `1px solid ${accentColor}`,
                 }}
               >
-                <Icon name={item.rightIcon!.name} size="1.165rem" />
+                <Icon name={item.rightIcon!.name} size="0.96rem" />
               </div>
             </Tooltip>
           )}

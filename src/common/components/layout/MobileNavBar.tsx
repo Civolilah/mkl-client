@@ -74,7 +74,7 @@ const MobileNavBar = (props: Props) => {
         open={open}
         closable={false}
         onClose={onClose}
-        width={isMiniSideBar ? '4.35rem' : '17.5rem'}
+        width={isMiniSideBar ? '4.35rem' : '15rem'}
         rootStyle={{ padding: 0 }}
         styles={{ body: { padding: 0 } }}
       >

@@ -12,7 +12,7 @@ import { route } from '@helpers/index';
 import { MenuProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import { Status, Subsidiary, User } from '@interfaces/index';
+import { LabelCategory, Status, Subsidiary, User } from '@interfaces/index';
 
 import {
   Dropdown,
@@ -24,9 +24,13 @@ import {
 
 import { useColors, useTranslation } from '@hooks/index';
 
-export type Resource = Subsidiary | User | Status;
+export type Resource = Subsidiary | User | Status | LabelCategory;
 
-export type ResourceType = 'subsidiary' | 'employee' | 'status';
+export type ResourceType =
+  | 'subsidiary'
+  | 'employee'
+  | 'status'
+  | 'label_category';
 
 type CustomActions = (resource: Resource) => MenuProps['items'];
 

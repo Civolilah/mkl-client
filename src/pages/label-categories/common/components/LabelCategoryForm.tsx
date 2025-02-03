@@ -13,12 +13,11 @@ import { Dispatch, SetStateAction } from 'react';
 import classNames from 'classnames';
 import reactStringReplace from 'react-string-replace';
 
-import { Status, ValidationErrors } from '@interfaces/index';
+import { LabelCategory, ValidationErrors } from '@interfaces/index';
 
 import {
   Box,
   Card,
-  ColorPicker,
   Icon,
   RefreshDataElement,
   Text,
@@ -27,29 +26,36 @@ import {
 
 import { useColors, useTranslation } from '@hooks/index';
 
-import { useHandleChange } from '../hooks/useHandleChange';
+import useHandleChange from '../hooks/useHandleChange';
 
 type Props = {
+  labelCategory: LabelCategory | undefined;
+  setLabelCategory: Dispatch<SetStateAction<LabelCategory | undefined>>;
+  errors: ValidationErrors;
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
-  status: Status | undefined;
-  errors: ValidationErrors | undefined;
-  setStatus: Dispatch<SetStateAction<Status | undefined>>;
 };
 
-const Form = (props: Props) => {
+const LabelCategoryForm = (props: Props) => {
   const t = useTranslation();
 
   const colors = useColors();
 
-  const { status, setStatus, editPage, isLoading, onRefresh, errors } = props;
+  const {
+    labelCategory,
+    setLabelCategory,
+    errors,
+    editPage,
+    isLoading,
+    onRefresh,
+  } = props;
 
-  const handleChange = useHandleChange({ setStatus });
+  const handleChange = useHandleChange({ setLabelCategory });
 
   return (
     <Card
-      title={editPage ? t('edit_status') : t('new_status')}
+      title={editPage ? t('edit_label_category') : t('new_label_category')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
       topRight={
@@ -66,24 +72,15 @@ const Form = (props: Props) => {
       <Box
         className={classNames('flex flex-col space-y-7', { 'pb-2': editPage })}
       >
-        <Box className="flex flex-col space-y-6">
-          <TextField
-            required
-            placeHolder={t('status_name_placeholder')}
-            label={t('name')}
-            value={status?.name || ''}
-            onValueChange={(value) => handleChange('name', value)}
-            changeOnBlur
-            errorMessage={errors?.name && t(errors.name)}
-          />
-
-          <ColorPicker
-            label={t('color')}
-            value={status?.color || ''}
-            onValueChange={(value) => handleChange('color', value)}
-            errorMessage={errors?.color && t(errors.color)}
-          />
-        </Box>
+        <TextField
+          required
+          label={t('name')}
+          placeHolder={t('label_category_name_placeholder')}
+          value={labelCategory?.name || ''}
+          onValueChange={(value) => handleChange('name', value)}
+          changeOnBlur
+          errorMessage={errors?.name && t(errors.name)}
+        />
 
         {!editPage && (
           <Box className="flex items-center space-x-2">
@@ -92,11 +89,18 @@ const Form = (props: Props) => {
             </Box>
 
             <Text className="text-xs" style={{ color: colors.$16 }}>
-              {reactStringReplace(t('status_helper'), ':status', () => (
-                <span key="statusBolded" className="font-bold lowercase">
-                  {t('status')}
-                </span>
-              ))}
+              {reactStringReplace(
+                t('label_category_helper'),
+                ':labelCategory',
+                () => (
+                  <span
+                    key="labelCategoryBolded"
+                    className="font-bold lowercase"
+                  >
+                    {t('label_category')}
+                  </span>
+                )
+              )}
             </Text>
           </Box>
         )}
@@ -105,4 +109,4 @@ const Form = (props: Props) => {
   );
 };
 
-export default Form;
+export default LabelCategoryForm;

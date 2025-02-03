@@ -29,7 +29,11 @@ import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 import Box from './Box';
 import Icon from './Icon';
 
-type CreationRoute = '/subsidiaries/new' | '/employees/new' | '/statuses/new';
+type CreationRoute =
+  | '/subsidiaries/new'
+  | '/employees/new'
+  | '/statuses/new'
+  | '/label_categories/new';
 
 export type EntityColumnType<EntityType> = {
   title: string;
@@ -77,10 +81,11 @@ const CustomHeaderCell = ({
         borderRadius: 0,
         color: 'white',
         whiteSpace: 'nowrap',
-        paddingLeft: '1.25rem',
-        paddingRight: '1.25rem',
+        paddingLeft: '0.75rem',
+        paddingRight: '0.75rem',
         paddingTop: '0.75rem',
         paddingBottom: '0.75rem',
+        fontSize: '0.75rem',
       }}
     >
       {children}
@@ -109,10 +114,11 @@ const CustomBodyCell = ({
       {...restProps}
       style={{
         ...(style || {}),
-        paddingLeft: '1.25rem',
-        paddingRight: '1.25rem',
+        paddingLeft: '0.75rem',
+        paddingRight: '0.75rem',
         paddingTop: '0.75rem',
         paddingBottom: '0.75rem',
+        fontSize: '0.75rem',
       }}
     >
       {children}
@@ -148,25 +154,25 @@ const Footer = ({
 
   const actions: MenuProps['items'] = [
     {
-      label: <Box className="px-2 py-1">10</Box>,
+      label: <Box className="px-2 py-1 text-xs">10</Box>,
       onClick: () => setPerPage(10),
       key: '10',
       disabled: perPage === 10,
     },
     {
-      label: <Box className="px-2 py-1">20</Box>,
+      label: <Box className="px-2 py-1 text-xs">20</Box>,
       onClick: () => setPerPage(20),
       key: '20',
       disabled: perPage === 20,
     },
     {
-      label: <Box className="px-2 py-1">50</Box>,
+      label: <Box className="px-2 py-1 text-xs">50</Box>,
       onClick: () => setPerPage(50),
       key: '50',
       disabled: perPage === 50,
     },
     {
-      label: <Box className="px-2 py-1">100</Box>,
+      label: <Box className="px-2 py-1 text-xs">100</Box>,
       onClick: () => setPerPage(100),
       key: '100',
       disabled: perPage === 100,
@@ -180,16 +186,16 @@ const Footer = ({
           className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap w-full"
           style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
         >
-          <Text className="text-sm font-medium">{t(perPage.toString())}</Text>
+          <Text className="text-xs font-medium">{t(perPage.toString())}</Text>
 
-          <Icon name="arrowDown" size={25} style={{ color: colors.$10 }} />
+          <Icon name="arrowDown" size="1.2rem" style={{ color: colors.$10 }} />
         </Box>
       </Dropdown>
 
       <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center space-x-2">
-        <Text className="text-sm font-medium">{t('total')}</Text>
+        <Text className="text-xs font-medium">{t('total')}</Text>
 
-        <Text className="text-sm">{total}.</Text>
+        <Text className="text-xs">{total}.</Text>
       </Box>
 
       <Box className="flex items-center">
@@ -205,7 +211,7 @@ const Footer = ({
           }}
           style={{ borderColor: colors.$1 }}
         >
-          <Icon name="doubleArrowBack" size={24} />
+          <Icon name="doubleArrowBack" size="1.2rem" />
         </PaginationArrowBox>
 
         <PaginationArrowBox
@@ -220,7 +226,7 @@ const Footer = ({
           }}
           style={{ borderColor: colors.$1 }}
         >
-          <Icon name="arrowBack" size={24} />
+          <Icon name="arrowBack" size="1.2rem" />
         </PaginationArrowBox>
 
         <PaginationArrowBox
@@ -238,7 +244,7 @@ const Footer = ({
           }}
           style={{ borderColor: colors.$1 }}
         >
-          <Icon name="arrowForward" size={24} />
+          <Icon name="arrowForward" size="1.2rem" />
         </PaginationArrowBox>
 
         <PaginationArrowBox
@@ -258,7 +264,7 @@ const Footer = ({
             borderColor: colors.$1,
           }}
         >
-          <Icon name="doubleArrowForward" size={24} />
+          <Icon name="doubleArrowForward" size="1.2rem" />
         </PaginationArrowBox>
       </Box>
     </Box>
@@ -379,7 +385,7 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
     if (perPage === 10 || (perPage > 10 && updatedData.length < 11)) {
       setCurrentScrollY(undefined);
     } else {
-      setCurrentScrollY('30.75rem');
+      setCurrentScrollY('28.25rem');
     }
   }, [currentPage, perPage, filter, data]);
 

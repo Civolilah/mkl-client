@@ -31,6 +31,7 @@ type Props = {
   actions?: ItemType[];
   childrenParentClassName?: string;
   childrenParentStyle?: CSSProperties;
+  paddingBottom?: string;
 };
 
 const Card = (props: Props) => {
@@ -47,6 +48,7 @@ const Card = (props: Props) => {
     actions = [],
     childrenParentClassName,
     childrenParentStyle,
+    paddingBottom,
   } = props;
 
   const colors = useColors();
@@ -66,7 +68,7 @@ const Card = (props: Props) => {
         style={{
           borderColor: colors.$1,
           borderRadius: 0,
-          paddingBottom: '1rem',
+          paddingBottom: paddingBottom ?? '1rem',
         }}
         styles={{
           body: { padding: isLoading ? '2rem' : 0 },

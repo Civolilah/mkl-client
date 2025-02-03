@@ -32,8 +32,8 @@ const Div = styled.div`
 
 const GoogleLogo = () => (
   <svg
-    width="24"
-    height="24"
+    width="1.35rem"
+    height="1.35rem"
     viewBox="0 0 775 794"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@ const GoogleButton = (props: Props) => {
   return (
     <Div
       className={classNames(
-        'flex items-center justify-center w-full space-x-5 px-4 py-3 text-sm font-medium border',
+        'flex items-center justify-center w-full space-x-4 px-3 py-2.5 text-sm font-medium border',
         {
           'cursor-not-allowed opacity-75': disabled,
           'cursor-pointer': !disabled,
@@ -99,7 +99,7 @@ const GoogleButton = (props: Props) => {
     >
       <GoogleLogo />
 
-      <Text>{t('continue_with_google')}</Text>
+      <Text className="text-xs">{t('continue_with_google')}</Text>
     </Div>
   );
 };

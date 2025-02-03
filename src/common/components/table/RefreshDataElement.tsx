@@ -23,7 +23,7 @@ type Props = {
 const RefreshDataElement = ({
   isLoading,
   refresh,
-  iconSize = '1.55rem',
+  iconSize = '1.3rem',
 }: Props) => {
   const t = useTranslation();
 

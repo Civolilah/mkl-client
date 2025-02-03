@@ -18,9 +18,9 @@ const ErrorMessageElement = ({ errorMessage }: Props) => {
   return (
     <>
       {errorMessage && (
-        <Box className="mt-1 text-sm text-red-600 flex items-center space-x-1">
+        <Box className="mt-1 text-xs text-red-600 flex items-center space-x-1">
           <Box className="mt-0.5">
-            <Icon name="error" size={19} style={{ color: '#dc2626' }} />
+            <Icon name="error" size="1.15rem" style={{ color: '#dc2626' }} />
           </Box>
 
           <Text className="break-words">{errorMessage}</Text>

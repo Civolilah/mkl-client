@@ -47,9 +47,9 @@ const EntityActions = (props: Props) => {
         theme={{ backgroundColor: colors.$18 }}
         style={{ borderColor: colors.$1 }}
       >
-        <Text className="text-sm font-medium">{t('actions')}</Text>
+        <Text className="text-xs font-medium">{t('actions')}</Text>
 
-        <Icon name="arrowDown" size={22} />
+        <Icon name="arrowDown" size="1.2rem" />
       </StyledBox>
     </Dropdown>
   );

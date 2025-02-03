@@ -21,6 +21,7 @@ import { BiImport, BiWorld } from 'react-icons/bi';
 import { BsBookmarkStarFill } from 'react-icons/bs';
 import { CiLogout } from 'react-icons/ci';
 import {
+  FaAward,
   FaCheckCircle,
   FaClipboardCheck,
   FaFacebook,
@@ -126,7 +127,8 @@ export type IconName =
   | 'doubleArrowBack'
   | 'doubleArrowForward'
   | 'security'
-  | 'password';
+  | 'password'
+  | 'brand';
 
 type Props = {
   className?: string;
@@ -263,6 +265,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdSecurity);
     case 'password':
       return generateIconElement(RiLockPasswordFill);
+    case 'brand':
+      return generateIconElement(FaAward);
 
     default:
       return <></>;

@@ -76,12 +76,12 @@ const TextField = (props: Props) => {
   }, [value]);
 
   return (
-    <Box className="flex flex-col space-y-2 w-full">
+    <Box className="flex flex-col space-y-1 w-full">
       {label && (
         <Box className="flex items-center space-x-1">
           <Text
             style={{
-              fontSize: isSmallScreen ? '0.76rem' : '0.875rem',
+              fontSize: isSmallScreen ? '0.7rem' : '0.75rem',
               fontWeight: 500,
             }}
           >
@@ -89,14 +89,14 @@ const TextField = (props: Props) => {
           </Text>
 
           {required ? (
-            <Text style={{ fontSize: isSmallScreen ? '0.65rem' : '0.72rem' }}>
+            <Text style={{ fontSize: isSmallScreen ? '0.6rem' : '0.65rem' }}>
               ({t('required')})
             </Text>
           ) : (
             <>
               {Boolean(!withoutOptionalText) && (
                 <Text
-                  style={{ fontSize: isSmallScreen ? '0.65rem' : '0.72rem' }}
+                  style={{ fontSize: isSmallScreen ? '0.6rem' : '0.65rem' }}
                 >
                   ({t('optional')})
                 </Text>

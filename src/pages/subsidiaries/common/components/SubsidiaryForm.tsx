@@ -50,7 +50,7 @@ const SubsidiaryForm = (props: Props) => {
         ) : undefined
       }
     >
-      <Box className="pb-4">
+      <Box className="pb-2">
         <TextField
           required
           label={t('name')}

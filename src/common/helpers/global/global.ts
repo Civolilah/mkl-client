@@ -14,9 +14,14 @@ import { useTranslation } from '@hooks/index';
 
 const toastOptions: ToastOptions = {
   position: 'top-center',
-  autoClose: 2000,
+  autoClose: 3000,
   closeOnClick: true,
   pauseOnHover: true,
+  style: {
+    minWidth: '20rem',
+    maxWidth: 'fit-content',
+    width: 'auto',
+  },
 };
 
 let globalLoadingToastId: string | number | undefined;
@@ -31,7 +36,7 @@ export const useToast = () => {
           render: t(message),
           type: 'success',
           isLoading: false,
-          autoClose: 2000,
+          autoClose: 3000,
           closeOnClick: true,
           pauseOnHover: true,
         });
@@ -46,7 +51,7 @@ export const useToast = () => {
           render: t(message),
           type: 'error',
           isLoading: false,
-          autoClose: 2000,
+          autoClose: 3000,
           closeOnClick: true,
           pauseOnHover: true,
         });
@@ -68,6 +73,7 @@ export const useToast = () => {
       } else {
         globalLoadingToastId = toast.loading(t(message ?? 'processing'), {
           ...toastOptions,
+          type: 'default',
           autoClose: false,
           pauseOnHover: false,
           closeOnClick: false,

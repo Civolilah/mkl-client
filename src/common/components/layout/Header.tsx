@@ -54,7 +54,7 @@ const Header = (props: Props) => {
     <Box
       className="flex items-center justify-center w-full border-b py-4"
       style={{
-        height: '4.35rem',
+        height: '3.5rem',
         borderColor: colors.$1,
         backgroundColor: colors.$6,
       }}
@@ -68,20 +68,20 @@ const Header = (props: Props) => {
       </Box>
 
       <Box className="flex w-full justify-between items-center px-2 md:px-6">
-        <Text className="text-lg md:text-xl whitespace-nowrap">{title}</Text>
+        <Text className="text-base md:text-lg whitespace-nowrap">{title}</Text>
 
         <Box className="flex w-full justify-end">
           <Popover
             content={
               <Box className="flex flex-col justify-center items-center min-w-60">
-                <Box className="py-4 px-4">
-                  <Text className="text-base font-medium">
+                <Box className="py-3 px-1.5">
+                  <Text className="text-sm font-medium">
                     {userCompanyDetails?.email}
                   </Text>
                 </Box>
 
                 <StyledBox
-                  className="flex w-full items-center space-x-5 cursor-pointer px-3 py-2.5 border-t"
+                  className="flex w-full items-center space-x-5 cursor-pointer px-2.5 py-2 border-t"
                   onClick={logout}
                   theme={{
                     hoverBackgroundColor: colors.$19,
@@ -92,11 +92,11 @@ const Header = (props: Props) => {
                     <Icon
                       name="logout"
                       style={{ rotate: '180deg' }}
-                      size={27}
+                      size="1.35rem"
                     />
                   </Box>
 
-                  <Text className="text-base">{t('logout')}</Text>
+                  <Text className="text-sm">{t('logout')}</Text>
                 </StyledBox>
               </Box>
             }
@@ -106,11 +106,11 @@ const Header = (props: Props) => {
               style={{ width: '2.6rem' }}
             >
               <Box>
-                <Icon name="person" size={30} />
+                <Icon name="person" size="1.5rem" />
               </Box>
 
               <Box className="absolute left-6" style={{ top: '0.2rem' }}>
-                <Icon name="arrowDown" size={24} />
+                <Icon name="arrowDown" size="1.3rem" />
               </Box>
             </Box>
           </Popover>

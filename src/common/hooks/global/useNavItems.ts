@@ -33,21 +33,21 @@ const useNavItems = () => {
   const hasPermission = useHasPermission();
 
   const navItems: NavItem[] = [
-    // {
-    //   key: 'dashboard',
-    //   label: 'Dashboard',
-    //   iconName: 'dashboard',
-    //   href: '/dashboard',
-    //   visible: true,
-    //   iconSize: '1.313rem', // 21px
-    // },
+    {
+      key: 'dashboard',
+      label: 'Dashboard',
+      iconName: 'dashboard',
+      href: '/dashboard',
+      visible: true,
+      iconSize: '1.2rem',
+    },
     {
       key: 'products',
       label: 'products',
       iconName: 'product',
       href: '/products',
       visible: true,
-      iconSize: '1.594rem', // 25.5px
+      iconSize: '1.375rem',
       rightIcon: {
         name: 'add',
         href: '/products/new',
@@ -61,7 +61,7 @@ const useNavItems = () => {
       iconName: 'import',
       href: '/import',
       visible: true,
-      iconSize: '1.5rem',
+      iconSize: '1.35rem',
     },
     {
       key: 'store',
@@ -69,7 +69,7 @@ const useNavItems = () => {
       iconName: 'store',
       href: '/store',
       visible: true,
-      iconSize: '1.406rem',
+      iconSize: '1.2rem',
     },
     {
       key: 'export',
@@ -77,14 +77,28 @@ const useNavItems = () => {
       iconName: 'export',
       href: '/export',
       visible: true,
-      iconSize: '1.5rem',
+      iconSize: '1.25rem',
+    },
+    {
+      key: 'brands',
+      label: 'brands',
+      iconName: 'brand',
+      href: '/brands',
+      iconSize: '1.25rem',
+      visible: true,
+      rightIcon: {
+        name: 'add',
+        href: '/brands/new',
+        tooltipText: 'new_brand',
+        visible: true,
+      },
     },
     {
       key: 'suppliers',
       label: 'suppliers',
       iconName: 'truck',
       href: '/suppliers',
-      iconSize: '1.25rem',
+      iconSize: '1.1rem',
       visible: true,
       rightIcon: {
         name: 'add',
@@ -98,7 +112,7 @@ const useNavItems = () => {
       label: 'subsidiaries',
       iconName: 'subsidiary',
       href: '/subsidiaries',
-      iconSize: '1.313rem',
+      iconSize: '1.1rem',
       visible:
         hasPermission('create_subsidiary') ||
         hasPermission('view_subsidiary') ||
@@ -115,7 +129,7 @@ const useNavItems = () => {
       label: 'categories',
       iconName: 'category',
       href: '/categories',
-      iconSize: '1.438rem',
+      iconSize: '1.225rem',
       visible: true,
       rightIcon: {
         name: 'add',
@@ -130,7 +144,7 @@ const useNavItems = () => {
       iconName: 'tag',
       href: '/labels',
       visible: true,
-      iconSize: '1.25rem',
+      iconSize: '1.05rem',
       rightIcon: {
         name: 'add',
         href: '/labels/new',
@@ -143,13 +157,16 @@ const useNavItems = () => {
       label: 'label_categories',
       iconName: 'tags',
       href: '/label_categories',
-      visible: true,
-      iconSize: '1.5rem',
+      visible:
+        hasPermission('create_label_category') ||
+        hasPermission('view_label_category') ||
+        hasPermission('edit_label_category'),
+      iconSize: '1.25rem',
       rightIcon: {
         name: 'add',
         href: '/label_categories/new',
         tooltipText: 'new_label_category',
-        visible: true,
+        visible: hasPermission('create_label_category'),
       },
     },
     {
@@ -158,7 +175,7 @@ const useNavItems = () => {
       iconName: 'employees',
       href: '/employees',
       visible: hasPermission('admin'),
-      iconSize: '1.438rem',
+      iconSize: '1.2rem',
       rightIcon: {
         name: 'add',
         href: '/employees/new',
@@ -175,7 +192,7 @@ const useNavItems = () => {
         hasPermission('create_status') ||
         hasPermission('view_status') ||
         hasPermission('edit_status'),
-      iconSize: '1.406rem',
+      iconSize: '1.2rem',
       rightIcon: {
         name: 'add',
         href: '/statuses/new',
@@ -183,21 +200,22 @@ const useNavItems = () => {
         visible: hasPermission('create_status'),
       },
     },
-    // {
-    //   key: 'company_details',
-    //   label: 'company_details',
-    //   iconName: 'company',
-    //   href: '/company_details',
-    //   iconSize: '1.563rem', // 25px
-    //   visible: true,
-    // },
-    // {
-    //   key: 'reports',
-    //   label: 'Reports',
-    //   iconName: 'barChart',
-    //   href: '/reports',
-    //   visible: true,
-    // },
+    {
+      key: 'company_details',
+      label: 'company_details',
+      iconName: 'company',
+      href: '/company_details',
+      iconSize: '1.2rem',
+      visible: true,
+    },
+    {
+      key: 'reports',
+      label: 'Reports',
+      iconName: 'barChart',
+      href: '/reports',
+      iconSize: '1.25rem',
+      visible: true,
+    },
   ];
 
   return navItems;

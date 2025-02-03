@@ -44,7 +44,7 @@ const NavBarIconsBox = () => {
   return (
     <Box
       className="flex py-3 border-t items-center justify-center relative"
-      style={{ borderColor: colors.$1, height: '3.25rem' }}
+      style={{ borderColor: colors.$1, height: '2.85rem' }}
     >
       <Box
         className="flex space-x-5 items-center justify-center"
@@ -53,7 +53,7 @@ const NavBarIconsBox = () => {
         {!isMiniSideBar && (
           <Tooltip text={t('contact_us')}>
             <div className="cursor-pointer">
-              <Icon name="email" size={26.5} />
+              <Icon name="email" size="1.325rem" />
             </div>
           </Tooltip>
         )}
@@ -61,14 +61,14 @@ const NavBarIconsBox = () => {
         {!isMiniSideBar && (
           <Tooltip text={t('about_us')}>
             <div className="cursor-pointer">
-              <Icon name="information" size={27.5} />
+              <Icon name="information" size="1.35rem" />
             </div>
           </Tooltip>
         )}
 
         <Box
           className={classNames('absolute', {
-            'right-4': !isMiniSideBar,
+            'right-2.5': !isMiniSideBar,
             'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2': isMiniSideBar,
           })}
         >
@@ -78,9 +78,9 @@ const NavBarIconsBox = () => {
           >
             <div className="cursor-pointer">
               {isMiniSideBar ? (
-                <Icon name="arrowForward" size={33} onClick={handleClick} />
+                <Icon name="arrowForward" size="1.7rem" onClick={handleClick} />
               ) : (
-                <Icon name="arrowBack" size={33} onClick={handleClick} />
+                <Icon name="arrowBack" size="1.7rem" onClick={handleClick} />
               )}
             </div>
           </Tooltip>

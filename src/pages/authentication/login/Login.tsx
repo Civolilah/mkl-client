@@ -104,14 +104,14 @@ const Login = () => {
       <img
         className="cursor-pointer"
         src="/images/logo.png"
-        width={450}
-        height={130}
+        width={250}
+        height={75}
         alt="The MKL Store Logo"
       />
 
-      <Box className="px-2 md:px-0 max-w-full w-[26.5rem]">
+      <Box className="px-2 md:px-0 max-w-full w-[23rem]">
         <Box
-          className="flex flex-col border px-4 sm:px-8 md:px-10 pb-12 pt-10 w-full"
+          className="flex flex-col border px-4 md:px-6 pb-6 pt-8 md:pb-8 md:pt-10 w-full"
           style={{
             borderColor: colors.$1,
             boxShadow: `
@@ -124,9 +124,9 @@ const Login = () => {
           }}
         >
           <Box className="flex flex-col items-center justify-center space-y-10">
-            <Text style={{ fontSize: '2rem' }}>{t('sign_in')}</Text>
+            <Text style={{ fontSize: '1.5rem' }}>{t('sign_in')}</Text>
 
-            <Box className="flex flex-col justify-center items-center space-y-4 w-full">
+            <Box className="flex flex-col justify-center items-center space-y-2 w-full">
               <TextField
                 label={t('email')}
                 value={userDetails.email}
@@ -166,7 +166,7 @@ const Login = () => {
               </Box>
 
               <Box
-                className="flex flex-col items-center justify-center w-full space-y-3"
+                className="flex flex-col items-center justify-center w-full space-y-4"
                 style={{ marginTop: '1.5rem' }}
               >
                 <Button
@@ -179,9 +179,9 @@ const Login = () => {
                 </Button>
 
                 <Box className="flex items-center justify-center w-full space-x-3">
-                  <Text className="text-sm">{t('dont_have_account')}</Text>
+                  <Text className="text-xs">{t('dont_have_account')}</Text>
 
-                  <Link className="text-sm" to="/register">
+                  <Link className="text-xs" to="/register">
                     {t('sign_up')}
                   </Link>
                 </Box>
@@ -197,7 +197,7 @@ const Login = () => {
                 />
 
                 <Box
-                  className="text-sm font-medium uppercase"
+                  className="text-xs font-medium uppercase"
                   style={{
                     color: colors.$5,
                   }}

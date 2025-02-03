@@ -23,7 +23,7 @@ type Props = {
   text?: string;
   children: ReactNode;
   trigger?: ('hover' | 'click')[];
-  placement?: 'bottom';
+  placement?: 'bottom' | 'right';
   withoutArrow?: boolean;
 };
 
@@ -49,8 +49,8 @@ const Tooltip = (props: Props) => {
           trigger={['hover']}
           mouseEnterDelay={0}
           overlayInnerStyle={{
-            padding: '0.375rem',
-            fontSize: '0.825rem',
+            padding: '0.35rem',
+            fontSize: '0.7rem',
             borderRadius: 0,
           }}
           color={accentColor}
@@ -70,8 +70,8 @@ const Tooltip = (props: Props) => {
       trigger={trigger ?? ['hover']}
       mouseEnterDelay={0}
       overlayInnerStyle={{
-        padding: '0.375rem',
-        fontSize: '0.825rem',
+        padding: '0.35rem',
+        fontSize: '0.7rem',
         borderRadius: 0,
       }}
       mouseLeaveDelay={0}

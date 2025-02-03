@@ -89,7 +89,7 @@ const Default = (props: Props) => {
       <Box className="flex flex-col justify-start items-center w-full h-full">
         <Header title={title} />
 
-        <Box className="flex w-full" style={{ height: 'calc(100% - 4.35rem)' }}>
+        <Box className="flex w-full" style={{ height: 'calc(100% - 3.5rem)' }}>
           <Box className="hidden lg:flex lg:justify-start">
             <MainNavBar />
           </Box>
@@ -98,7 +98,7 @@ const Default = (props: Props) => {
             className="flex flex-col justify-center items-center flex-1"
             style={{
               width: isLargeScreen
-                ? `calc(100% - ${isMiniSideBar ? '4.35rem' : '17.5rem'})`
+                ? `calc(100% - ${isMiniSideBar ? '4.35rem' : '15rem'})`
                 : '100%',
             }}
           >
@@ -287,7 +287,7 @@ const Default = (props: Props) => {
                 style={{
                   borderColor: colors.$1,
                   backgroundColor: colors.$6,
-                  height: '3.25rem',
+                  height: '2.85rem',
                 }}
               >
                 {footer}
