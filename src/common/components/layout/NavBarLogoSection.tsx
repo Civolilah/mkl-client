@@ -32,7 +32,7 @@ const NavBarLogoSection = (props: Props) => {
         'border-r': !mobileSideBar,
         'border-b': mobileSideBar,
         'px-2': !mobileSideBar,
-        'px-3': mobileSideBar,
+        'px-4': mobileSideBar,
       })}
       style={{
         height: '3.5rem',
@@ -64,7 +64,7 @@ const NavBarLogoSection = (props: Props) => {
             )}
             onClick={handleCloseSideBar}
           >
-            <Icon name="close" size={30} style={{ color: colors.$10 }} />
+            <Icon name="close" size="1.3rem" style={{ color: colors.$10 }} />
           </div>
         )}
       </div>

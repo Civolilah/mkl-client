@@ -19,13 +19,13 @@ import {
   Box,
   Card,
   ColorPicker,
-  Icon,
+  InformationLabel,
   RefreshDataElement,
   Text,
   TextField,
 } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useTranslation } from '@hooks/index';
 
 import { useHandleChange } from '../hooks/useHandleChange';
 
@@ -40,8 +40,6 @@ type Props = {
 
 const Form = (props: Props) => {
   const t = useTranslation();
-
-  const colors = useColors();
 
   const { status, setStatus, editPage, isLoading, onRefresh, errors } = props;
 
@@ -86,19 +84,13 @@ const Form = (props: Props) => {
         </Box>
 
         {!editPage && (
-          <Box className="flex items-center space-x-2">
-            <Box>
-              <Icon name="information" size="1.45rem" />
-            </Box>
-
-            <Text className="text-xs" style={{ color: colors.$16 }}>
-              {reactStringReplace(t('status_helper'), ':status', () => (
-                <span key="statusBolded" className="font-bold lowercase">
-                  {t('status')}
-                </span>
-              ))}
-            </Text>
-          </Box>
+          <InformationLabel
+            text={reactStringReplace(t('status_helper'), ':status', () => (
+              <Text key="statusBolded" className="font-bold lowercase">
+                {t('status')}
+              </Text>
+            ))}
+          />
         )}
       </Box>
     </Card>

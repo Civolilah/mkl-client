@@ -15,10 +15,9 @@ import { User } from '@interfaces/index';
 import {
   Box,
   Card,
-  Icon,
+  InformationLabel,
   RefreshDataElement,
   SelectDataField,
-  Text,
   TextField,
 } from '@components/index';
 
@@ -43,7 +42,7 @@ const Details = (props: EmployeeProps) => {
   return (
     <Card
       title={t('details')}
-      className="w-full pb-6"
+      className="w-full"
       isLoading={isLoading}
       topRight={
         editPage && onRefresh && typeof isLoading === 'boolean' ? (
@@ -110,13 +109,7 @@ const Details = (props: EmployeeProps) => {
             errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
           />
 
-          <Box className="flex items-center space-x-2">
-            <Box className="mt-0.5">
-              <Icon name="information" size="1.35rem" />
-            </Box>
-
-            <Text className="text-xs">{t('subsidiary_assigning')}</Text>
-          </Box>
+          <InformationLabel text={t('subsidiary_assigning')} />
         </Box>
       </Box>
     </Card>

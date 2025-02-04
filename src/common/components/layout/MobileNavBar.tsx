@@ -58,7 +58,7 @@ const MobileNavBar = (props: Props) => {
       <div
         className="flex items-center justify-center py-4 px-4 cursor-pointer border-r"
         style={{
-          height: '4.35rem',
+          height: '3.45rem',
           borderColor: colors.$1,
           backgroundColor: colors.$6,
         }}

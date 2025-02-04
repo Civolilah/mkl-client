@@ -77,14 +77,17 @@ const Button = (props: Props) => {
       loading={disabled && disabledWithLoadingIcon}
       onClick={onClick}
       style={{
-        ...(!smallText && { fontSize: isSmallScreen ? '0.9rem' : '0.975rem' }),
+        ...(!smallText && { fontSize: isSmallScreen ? '0.7rem' : '0.8rem' }),
         letterSpacing: 0.8,
         color: type === 'default' ? 'black' : 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.8 : 1,
         transition: 'background-color 0.3s ease',
         borderColor: type === 'default' ? colors.$17 : '',
-        padding: isMiddleScreen ? '0.75rem' : '0.5rem',
+        paddingTop: isMiddleScreen ? '0.5rem' : '0.5rem',
+        paddingBottom: isMiddleScreen ? '0.5rem' : '0.5rem',
+        paddingLeft: isMiddleScreen ? '1rem' : '0.75rem',
+        paddingRight: isMiddleScreen ? '1rem' : '0.75rem',
         ...style,
       }}
       size={size}

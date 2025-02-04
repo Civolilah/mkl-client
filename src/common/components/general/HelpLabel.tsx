@@ -14,27 +14,28 @@ import { useMediaQuery } from 'react-responsive';
 
 import { Text } from '@components/index';
 
+import { useColors } from '@hooks/index';
+
 type Props = {
-  children: ReactNode;
-  className?: string;
+  text: string | ReactNode;
 };
 
-const Label = (props: Props) => {
-  const { children, className } = props;
+const HelpLabel = (props: Props) => {
+  const { text } = props;
 
+  const colors = useColors();
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
     <Text
-      className={className}
       style={{
-        fontSize: isSmallScreen ? '0.65rem' : '0.75rem',
-        fontWeight: 500,
+        color: colors.$16,
+        fontSize: isSmallScreen ? '0.6rem' : '0.65rem',
       }}
     >
-      {children}
+      {text}
     </Text>
   );
 };
 
-export default Label;
+export default HelpLabel;

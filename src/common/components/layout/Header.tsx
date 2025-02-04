@@ -81,7 +81,7 @@ const Header = (props: Props) => {
                 </Box>
 
                 <StyledBox
-                  className="flex w-full items-center space-x-5 cursor-pointer px-2.5 py-2 border-t"
+                  className="flex w-full items-center space-x-5 cursor-pointer p-2.5 border-t"
                   onClick={logout}
                   theme={{
                     hoverBackgroundColor: colors.$19,

@@ -108,7 +108,7 @@ const Default = (props: Props) => {
                 style={{
                   borderColor: colors.$1,
                   backgroundColor: colors.$6,
-                  height: '3.5rem',
+                  height: '3.25rem',
                 }}
               >
                 <Box className="flex-1 hidden sm:flex">
@@ -121,14 +121,14 @@ const Default = (props: Props) => {
                         >
                           <Icon
                             name="home"
-                            size={isMiddleScreen ? '1.5rem' : '1.438rem'}
+                            size={isMiddleScreen ? '1.15rem' : '1rem'}
                             style={{ color: accentColor }}
                           />
 
                           <Box>
                             <Icon
                               name="arrowForward"
-                              size={isMiddleScreen ? '0.8125rem' : '0.75rem'}
+                              size={isMiddleScreen ? '0.85rem' : '0.75rem'}
                               style={{ color: colors.$12 }}
                             />
                           </Box>
@@ -139,9 +139,7 @@ const Default = (props: Props) => {
                             key={index}
                             className="flex items-center space-x-1 md:space-x-2"
                             style={{
-                              fontSize: isMiddleScreen
-                                ? '0.953rem'
-                                : '0.891rem',
+                              fontSize: isMiddleScreen ? '0.75rem' : '0.7rem',
                             }}
                           >
                             <Text
@@ -171,7 +169,7 @@ const Default = (props: Props) => {
                               <Box>
                                 <Icon
                                   name="arrowForward"
-                                  size={isMiddleScreen ? '0.813rem' : '0.75rem'}
+                                  size={isMiddleScreen ? '0.85rem' : '0.75rem'}
                                   style={{ color: colors.$12 }}
                                 />
                               </Box>
@@ -197,12 +195,11 @@ const Default = (props: Props) => {
                         className="h-full"
                         type="default"
                         onClick={onCancelClick}
-                        icon={<Icon name="close" />}
+                        icon={<Icon name="close" size="1rem" />}
                         disabled={disabledCancelButton}
                         disabledWithLoadingIcon={
                           disabledCancelButtonWithLoadingIcon
                         }
-                        smallText
                       >
                         {t('cancel')}
                       </Button>
@@ -218,12 +215,11 @@ const Default = (props: Props) => {
                                 className="h-full"
                                 type="primary"
                                 onClick={onSaveClick}
-                                icon={<Icon name="save" />}
+                                icon={<Icon name="save" size="1rem" />}
                                 disabled={disabledSaveButton}
                                 disabledWithLoadingIcon={
                                   disabledSaveButtonWithLoadingIcon
                                 }
-                                smallText
                               >
                                 {t('save')}
                               </Button>
@@ -234,12 +230,11 @@ const Default = (props: Props) => {
                             className="h-full"
                             type="primary"
                             onClick={onSaveClick}
-                            icon={<Icon name="save" />}
+                            icon={<Icon name="save" size="1rem" />}
                             disabled={disabledSaveButton}
                             disabledWithLoadingIcon={
                               disabledSaveButtonWithLoadingIcon
                             }
-                            smallText
                           >
                             {t('save')}
                           </Button>

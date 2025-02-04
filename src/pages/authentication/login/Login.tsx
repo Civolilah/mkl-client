@@ -126,7 +126,7 @@ const Login = () => {
           <Box className="flex flex-col items-center justify-center space-y-10">
             <Text style={{ fontSize: '1.5rem' }}>{t('sign_in')}</Text>
 
-            <Box className="flex flex-col justify-center items-center space-y-2 w-full">
+            <Box className="flex flex-col justify-center items-center space-y-4 w-full">
               <TextField
                 label={t('email')}
                 value={userDetails.email}

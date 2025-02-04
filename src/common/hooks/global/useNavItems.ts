@@ -208,14 +208,14 @@ const useNavItems = () => {
       iconSize: '1.2rem',
       visible: true,
     },
-    {
-      key: 'reports',
-      label: 'Reports',
-      iconName: 'barChart',
-      href: '/reports',
-      iconSize: '1.25rem',
-      visible: true,
-    },
+    // {
+    //   key: 'reports',
+    //   label: 'Reports',
+    //   iconName: 'barChart',
+    //   href: '/reports',
+    //   iconSize: '1.25rem',
+    //   visible: true,
+    // },
   ];
 
   return navItems;

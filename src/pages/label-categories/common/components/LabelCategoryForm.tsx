@@ -18,13 +18,13 @@ import { LabelCategory, ValidationErrors } from '@interfaces/index';
 import {
   Box,
   Card,
-  Icon,
+  InformationLabel,
   RefreshDataElement,
   Text,
   TextField,
 } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useTranslation } from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
 
@@ -39,8 +39,6 @@ type Props = {
 
 const LabelCategoryForm = (props: Props) => {
   const t = useTranslation();
-
-  const colors = useColors();
 
   const {
     labelCategory,
@@ -83,26 +81,17 @@ const LabelCategoryForm = (props: Props) => {
         />
 
         {!editPage && (
-          <Box className="flex items-center space-x-2">
-            <Box>
-              <Icon name="information" size="1.45rem" />
-            </Box>
-
-            <Text className="text-xs" style={{ color: colors.$16 }}>
-              {reactStringReplace(
-                t('label_category_helper'),
-                ':labelCategory',
-                () => (
-                  <span
-                    key="labelCategoryBolded"
-                    className="font-bold lowercase"
-                  >
-                    {t('label_category')}
-                  </span>
-                )
-              )}
-            </Text>
-          </Box>
+          <InformationLabel
+            text={reactStringReplace(
+              t('label_category_helper'),
+              ':labelCategory',
+              () => (
+                <Text key="labelCategoryBolded" className="font-bold lowercase">
+                  {t('label_category')}
+                </Text>
+              )
+            )}
+          />
         )}
       </Box>
     </Card>

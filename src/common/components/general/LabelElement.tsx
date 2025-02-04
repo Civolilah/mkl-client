@@ -11,11 +11,13 @@
 import { ReactNode } from 'react';
 
 import classNames from 'classnames';
-import { useMediaQuery } from 'react-responsive';
 
-import { Box, Text } from '@components/index';
-
-import { useColors, useTranslation } from '@hooks/index';
+import {
+  Box,
+  HelpLabel,
+  Label,
+  RequiredOptionalLabel,
+} from '@components/index';
 
 type Props = {
   label?: ReactNode;
@@ -35,11 +37,6 @@ type Props = {
 const LabelElement = (props: Props) => {
   const { required, withoutOptionalText, className, label, helpLabel } = props;
 
-  const t = useTranslation();
-  const colors = useColors();
-
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-
   return (
     <Box
       className={classNames(
@@ -58,40 +55,15 @@ const LabelElement = (props: Props) => {
         })}
       >
         <Box className="flex items-center space-x-1">
-          <Text
-            style={{
-              fontSize: isSmallScreen ? '0.76rem' : '0.875rem',
-              fontWeight: 500,
-            }}
-          >
-            {label}
-          </Text>
+          <Label>{label}</Label>
 
-          {required ? (
-            <Text>{t('required')}</Text>
-          ) : (
-            <>
-              {Boolean(!withoutOptionalText) && (
-                <Text
-                  style={{ fontSize: isSmallScreen ? '0.7rem' : '0.82rem' }}
-                >
-                  ({t('optional')})
-                </Text>
-              )}
-            </>
-          )}
+          <RequiredOptionalLabel
+            required={Boolean(required)}
+            withoutOptionalText={withoutOptionalText}
+          />
         </Box>
 
-        {helpLabel && (
-          <Box
-            style={{
-              color: colors.$16,
-              fontSize: isSmallScreen ? '0.7rem' : '0.75rem',
-            }}
-          >
-            {helpLabel}
-          </Box>
-        )}
+        {helpLabel && <HelpLabel text={helpLabel} />}
       </Box>
 
       <Box

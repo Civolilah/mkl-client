@@ -15,7 +15,13 @@ import { useToast } from '@helpers/index';
 
 import { ValidationErrors } from '@interfaces/index';
 
-import { TextField, Modal, Box, Button, Icon, Text } from '@components/index';
+import {
+  TextField,
+  Modal,
+  Box,
+  Button,
+  InformationLabel,
+} from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -105,13 +111,7 @@ const PasswordConfirmationModal = (props: Props) => {
               errorMessage={errors.password && t(errors.password)}
             />
 
-            <Box className="flex items-center space-x-2">
-              <Box className="mt-0.5">
-                <Icon name="information" size="1.35rem" />
-              </Box>
-
-              <Text className="text-xs">{t('confirm_password_message')}</Text>
-            </Box>
+            <InformationLabel text={t('confirm_password_message')} />
           </Box>
 
           <Button

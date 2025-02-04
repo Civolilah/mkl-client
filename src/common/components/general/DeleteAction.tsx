@@ -122,7 +122,7 @@ const DeleteAction = (props: Props) => {
         size="small"
       >
         <Box className="flex flex-col space-y-6">
-          <Text className="text-center text-base break-words">
+          <Text className="text-center text-sm break-words">
             {reactStringReplace(
               reactStringReplace(
                 t('are_you_sure_you_want_to_delete_resource', {

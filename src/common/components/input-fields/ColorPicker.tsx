@@ -11,7 +11,6 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { HexColorInput, HexColorPicker } from 'react-colorful';
-import { useMediaQuery } from 'react-responsive';
 import { useDebounce } from 'react-use';
 import styled from 'styled-components';
 
@@ -21,7 +20,9 @@ import {
   CopyToClipboard,
   CopyToClipboardOnlyIcon,
   ErrorMessageElement,
+  Label,
   Modal,
+  RequiredOptionalLabel,
   Text,
   TransparentColorBox,
 } from '@components/index';
@@ -57,6 +58,7 @@ type Props = {
   showText?: boolean;
   onValueChange: (value: string) => void;
   errorMessage?: string;
+  withoutOptionalText?: boolean;
 };
 
 const ColorPicker = (props: Props) => {
@@ -66,9 +68,14 @@ const ColorPicker = (props: Props) => {
 
   const initialValue = useRef(props.value);
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-
-  const { value, onValueChange, label, required, errorMessage } = props;
+  const {
+    value,
+    onValueChange,
+    label,
+    required,
+    errorMessage,
+    withoutOptionalText,
+  } = props;
 
   const [color, setColor] = useState<string>(value);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -90,28 +97,12 @@ const ColorPicker = (props: Props) => {
       <Box className="flex flex-col justify-center items-start space-y-2">
         {label && (
           <Box className="flex items-center space-x-1">
-            <Text
-              style={{
-                fontSize: isSmallScreen ? '0.875rem' : '0.938rem',
-                fontWeight: 500,
-              }}
-            >
-              {label}
-            </Text>
+            <Label>{label}</Label>
 
-            {required ? (
-              <Text
-                style={{ fontSize: isSmallScreen ? '0.719rem' : '0.781rem' }}
-              >
-                ({t('required')})
-              </Text>
-            ) : (
-              <Text
-                style={{ fontSize: isSmallScreen ? '0.734rem' : '0.781rem' }}
-              >
-                ({t('optional')})
-              </Text>
-            )}
+            <RequiredOptionalLabel
+              required={Boolean(required)}
+              withoutOptionalText={withoutOptionalText}
+            />
           </Box>
         )}
 

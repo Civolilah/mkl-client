@@ -11,6 +11,7 @@
 import { ReactNode, useEffect } from 'react';
 
 import { Modal as ModalBase } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 
 import { useColors } from '@hooks/index';
 
@@ -41,6 +42,8 @@ const Modal = (props: Props) => {
   } = props;
 
   const colors = useColors();
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   const getWidth = () => {
     switch (size) {
@@ -75,7 +78,9 @@ const Modal = (props: Props) => {
       width={getWidth()}
       closable={false}
       styles={{
-        header: { display: 'none' },
+        header: {
+          display: 'none',
+        },
         content: { padding: '0px', borderRadius: '0px' },
       }}
       centered
@@ -86,7 +91,9 @@ const Modal = (props: Props) => {
             className="flex w-full items-center justify-between self-start p-4 text-lg font-medium border-b"
             style={{ borderColor: colors.$1 }}
           >
-            <Box>{title}</Box>
+            <Box style={{ fontSize: isSmallScreen ? '0.9rem' : '1.1rem' }}>
+              {title}
+            </Box>
 
             <Box className="cursor-pointer">
               <Icon
@@ -96,7 +103,7 @@ const Modal = (props: Props) => {
                     onClose?.();
                   }
                 }}
-                size={25}
+                size="1.4rem"
               />
             </Box>
           </Box>

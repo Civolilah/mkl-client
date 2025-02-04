@@ -12,9 +12,15 @@ import { useEffect, useState } from 'react';
 
 import { Select } from 'antd';
 import Fuse from 'fuse.js';
-import { useMediaQuery } from 'react-responsive';
 
-import { Box, Icon, Label, Text, Tooltip } from '@components/index';
+import {
+  Box,
+  Icon,
+  Label,
+  RequiredOptionalLabel,
+  Text,
+  Tooltip,
+} from '@components/index';
 
 import { useFetchEntity, useTranslation } from '@hooks/index';
 
@@ -57,8 +63,6 @@ const SelectDataField = (props: Props) => {
     endpoint,
     enableByPermission,
   } = props;
-
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   const [options, setOptions] = useState<Option[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -121,21 +125,10 @@ const SelectDataField = (props: Props) => {
         <Box className="flex items-center space-x-1">
           <Label>{label}</Label>
 
-          {required ? (
-            <Text style={{ fontSize: isSmallScreen ? '0.65rem' : '0.72rem' }}>
-              ({t('required')})
-            </Text>
-          ) : (
-            <>
-              {Boolean(!withoutOptionalText) && (
-                <Text
-                  style={{ fontSize: isSmallScreen ? '0.65rem' : '0.72rem' }}
-                >
-                  ({t('optional')})
-                </Text>
-              )}
-            </>
-          )}
+          <RequiredOptionalLabel
+            required={Boolean(required)}
+            withoutOptionalText={withoutOptionalText}
+          />
         </Box>
       )}
 

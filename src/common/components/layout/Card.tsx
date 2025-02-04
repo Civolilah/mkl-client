@@ -73,7 +73,7 @@ const Card = (props: Props) => {
         styles={{
           body: { padding: isLoading ? '2rem' : 0 },
           header: {
-            fontSize: isSmallScreen ? '1.05rem' : '1.155rem',
+            fontSize: isSmallScreen ? '0.8rem' : '1rem',
             fontWeight: 500,
             letterSpacing: 0.8,
           },

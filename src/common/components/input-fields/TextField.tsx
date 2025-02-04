@@ -11,12 +11,14 @@
 import { KeyboardEvent, useEffect, useState } from 'react';
 
 import { Input } from 'antd';
-import { useMediaQuery } from 'react-responsive';
 import { useDebounce } from 'react-use';
 
-import { Box, ErrorMessageElement, Text } from '@components/index';
-
-import { useTranslation } from '@hooks/index';
+import {
+  Box,
+  ErrorMessageElement,
+  Label,
+  RequiredOptionalLabel,
+} from '@components/index';
 
 type Props = {
   maxLength?: number;
@@ -37,8 +39,6 @@ type Props = {
 };
 
 const TextField = (props: Props) => {
-  const t = useTranslation();
-
   const {
     value,
     onValueChange,
@@ -59,8 +59,6 @@ const TextField = (props: Props) => {
 
   const [currentValue, setCurrentValue] = useState<string>(value);
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-
   useDebounce(
     () => {
       if (!changeOnBlur) {
@@ -79,30 +77,12 @@ const TextField = (props: Props) => {
     <Box className="flex flex-col space-y-1 w-full">
       {label && (
         <Box className="flex items-center space-x-1">
-          <Text
-            style={{
-              fontSize: isSmallScreen ? '0.7rem' : '0.75rem',
-              fontWeight: 500,
-            }}
-          >
-            {label}
-          </Text>
+          <Label>{label}</Label>
 
-          {required ? (
-            <Text style={{ fontSize: isSmallScreen ? '0.6rem' : '0.65rem' }}>
-              ({t('required')})
-            </Text>
-          ) : (
-            <>
-              {Boolean(!withoutOptionalText) && (
-                <Text
-                  style={{ fontSize: isSmallScreen ? '0.6rem' : '0.65rem' }}
-                >
-                  ({t('optional')})
-                </Text>
-              )}
-            </>
-          )}
+          <RequiredOptionalLabel
+            required={Boolean(required)}
+            withoutOptionalText={withoutOptionalText}
+          />
         </Box>
       )}
 
