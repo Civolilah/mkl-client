@@ -34,7 +34,8 @@ type CreationRoute =
   | '/employees/new'
   | '/statuses/new'
   | '/label_categories/new'
-  | '/labels/new';
+  | '/labels/new'
+  | '/categories/new';
 
 export type EntityColumnType<EntityType> = {
   title: string;

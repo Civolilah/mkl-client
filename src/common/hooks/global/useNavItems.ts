@@ -130,12 +130,15 @@ const useNavItems = () => {
       iconName: 'category',
       href: '/categories',
       iconSize: '1.05rem',
-      visible: true,
+      visible:
+        hasPermission('create_category') ||
+        hasPermission('view_category') ||
+        hasPermission('edit_category'),
       rightIcon: {
         name: 'add',
         href: '/categories/new',
         tooltipText: 'new_category',
-        visible: true,
+        visible: hasPermission('create_category'),
       },
     },
     {

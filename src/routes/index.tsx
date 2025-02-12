@@ -15,6 +15,7 @@ import { Route, Routes } from 'react-router';
 import { PrivateRoute } from '@components/index';
 
 import authenticationRoutes from './authentication/routes';
+import categoryRoutes from './category/routes';
 import employeeRoutes from './employee/routes';
 import labelRoutes from './label/routes';
 import labelCategoryRoutes from './label-category/routes';
@@ -41,6 +42,8 @@ export const routes = (
       {statusRoutes}
 
       {subsidiaryRoutes}
+
+      {categoryRoutes}
 
       {labelRoutes}
 

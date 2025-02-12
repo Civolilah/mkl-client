@@ -183,5 +183,16 @@
     "created_label": "Successfully created label.",
     "updated_label": "Successfully updated label.",
     "deleted_label": "Successfully deleted label.",
-    "e_store": "E-Store"
+    "e_store": "E-Store",
+    "category_name_placeholder": "e.g., Clothes, Electronics, Furniture, Books, etc.",
+    "category_name_required": "Category name is required.",
+    "category_name_max_length": "Category name must be at most 200 characters long.",
+    "category_name_already_exists": "Category with this name already exists.",
+    "no_category_changes": "No updates to this category yet - everything's up to date!",
+    "no_permission_to_edit_category": "You do not have permission to edit this category.",
+    "no_permission_to_create_category": "You do not have permission to create this category.",
+    "created_category": "Successfully created category.",
+    "updated_category": "Successfully updated category.",
+    "deleted_category": "Successfully deleted category.",
+    "edit_category": "Edit Category"
 }
