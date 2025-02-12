@@ -128,7 +128,7 @@ const Default = (props: Props) => {
                           <Box>
                             <Icon
                               name="arrowForward"
-                              size={isMiddleScreen ? '0.85rem' : '0.75rem'}
+                              size={isMiddleScreen ? '1.2rem' : '1rem'}
                               style={{ color: colors.$12 }}
                             />
                           </Box>
@@ -138,12 +138,9 @@ const Default = (props: Props) => {
                           <Box
                             key={index}
                             className="flex items-center space-x-1 md:space-x-2"
-                            style={{
-                              fontSize: isMiddleScreen ? '0.75rem' : '0.7rem',
-                            }}
                           >
                             <Text
-                              className={classNames({
+                              className={classNames('text-xs-plus', {
                                 'cursor-pointer hover:underline':
                                   index !== breadcrumbs.length - 1,
                               })}
@@ -169,7 +166,7 @@ const Default = (props: Props) => {
                               <Box>
                                 <Icon
                                   name="arrowForward"
-                                  size={isMiddleScreen ? '0.85rem' : '0.75rem'}
+                                  size={isMiddleScreen ? '1.2rem' : '1rem'}
                                   style={{ color: colors.$12 }}
                                 />
                               </Box>
@@ -183,7 +180,7 @@ const Default = (props: Props) => {
 
                 {(onSaveClick || onCancelClick) && (
                   <Box
-                    className="flex space-x-2 md:space-x-4"
+                    className="flex items-center space-x-2 md:space-x-4"
                     style={{
                       height: '2.25rem',
                       borderColor: colors.$1,
@@ -212,7 +209,6 @@ const Default = (props: Props) => {
                           <Tooltip text={tooltipPermissionMessage}>
                             <div>
                               <Button
-                                className="h-full"
                                 type="primary"
                                 onClick={onSaveClick}
                                 icon={<Icon name="save" size="1rem" />}
@@ -227,7 +223,6 @@ const Default = (props: Props) => {
                           </Tooltip>
                         ) : (
                           <Button
-                            className="h-full"
                             type="primary"
                             onClick={onSaveClick}
                             icon={<Icon name="save" size="1rem" />}
@@ -269,7 +264,7 @@ const Default = (props: Props) => {
 
             <Box className="flex w-full overflow-y-auto flex-1">
               <Box
-                className="flex items-center justify-center w-full md:px-6 md:pt-6 md:pb-12"
+                className="flex items-center justify-center w-full pt-4 px-2 md:px-6 md:pt-6 md:pb-12"
                 style={{ minHeight: 'min-content' }}
               >
                 {children}

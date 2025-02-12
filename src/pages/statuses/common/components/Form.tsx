@@ -52,11 +52,7 @@ const Form = (props: Props) => {
       isLoading={isLoading}
       topRight={
         editPage && onRefresh && typeof isLoading === 'boolean' ? (
-          <RefreshDataElement
-            isLoading={isLoading}
-            refresh={onRefresh}
-            iconSize="1.45rem"
-          />
+          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
         ) : undefined
       }
       paddingBottom={!editPage ? '0rem' : undefined}
@@ -86,7 +82,10 @@ const Form = (props: Props) => {
         {!editPage && (
           <InformationLabel
             text={reactStringReplace(t('status_helper'), ':status', () => (
-              <Text key="statusBolded" className="font-bold lowercase">
+              <Text
+                key="statusBolded"
+                className="text-xs md:text-xs-mid font-bold lowercase"
+              >
                 {t('status')}
               </Text>
             ))}

@@ -26,7 +26,7 @@ export type NavItem = {
   href: string;
   visible: boolean;
   rightIcon?: RightIcon;
-  iconSize: string;
+  iconSize?: string;
 };
 
 const useNavItems = () => {
@@ -39,7 +39,7 @@ const useNavItems = () => {
       iconName: 'dashboard',
       href: '/dashboard',
       visible: true,
-      iconSize: '1.2rem',
+      iconSize: '1.05rem',
     },
     {
       key: 'products',
@@ -47,7 +47,7 @@ const useNavItems = () => {
       iconName: 'product',
       href: '/products',
       visible: true,
-      iconSize: '1.375rem',
+      iconSize: '1.2rem',
       rightIcon: {
         name: 'add',
         href: '/products/new',
@@ -61,7 +61,7 @@ const useNavItems = () => {
       iconName: 'import',
       href: '/import',
       visible: true,
-      iconSize: '1.35rem',
+      iconSize: '1.15rem',
     },
     {
       key: 'store',
@@ -69,7 +69,7 @@ const useNavItems = () => {
       iconName: 'store',
       href: '/store',
       visible: true,
-      iconSize: '1.2rem',
+      iconSize: '1.05rem',
     },
     {
       key: 'export',
@@ -77,14 +77,14 @@ const useNavItems = () => {
       iconName: 'export',
       href: '/export',
       visible: true,
-      iconSize: '1.25rem',
+      iconSize: '1.15rem',
     },
     {
       key: 'brands',
       label: 'brands',
       iconName: 'brand',
       href: '/brands',
-      iconSize: '1.25rem',
+      iconSize: '1.1rem',
       visible: true,
       rightIcon: {
         name: 'add',
@@ -98,7 +98,7 @@ const useNavItems = () => {
       label: 'suppliers',
       iconName: 'truck',
       href: '/suppliers',
-      iconSize: '1.1rem',
+      iconSize: '1rem',
       visible: true,
       rightIcon: {
         name: 'add',
@@ -112,7 +112,7 @@ const useNavItems = () => {
       label: 'subsidiaries',
       iconName: 'subsidiary',
       href: '/subsidiaries',
-      iconSize: '1.1rem',
+      iconSize: '0.95rem',
       visible:
         hasPermission('create_subsidiary') ||
         hasPermission('view_subsidiary') ||
@@ -129,7 +129,7 @@ const useNavItems = () => {
       label: 'categories',
       iconName: 'category',
       href: '/categories',
-      iconSize: '1.225rem',
+      iconSize: '1.05rem',
       visible: true,
       rightIcon: {
         name: 'add',
@@ -143,13 +143,16 @@ const useNavItems = () => {
       label: 'labels',
       iconName: 'tag',
       href: '/labels',
-      visible: true,
-      iconSize: '1.05rem',
+      visible:
+        hasPermission('create_label') ||
+        hasPermission('view_label') ||
+        hasPermission('edit_label'),
+      iconSize: '0.9rem',
       rightIcon: {
         name: 'add',
         href: '/labels/new',
         tooltipText: 'new_label',
-        visible: true,
+        visible: hasPermission('create_label'),
       },
     },
     {
@@ -161,7 +164,7 @@ const useNavItems = () => {
         hasPermission('create_label_category') ||
         hasPermission('view_label_category') ||
         hasPermission('edit_label_category'),
-      iconSize: '1.25rem',
+      iconSize: '1.05rem',
       rightIcon: {
         name: 'add',
         href: '/label_categories/new',
@@ -175,7 +178,7 @@ const useNavItems = () => {
       iconName: 'employees',
       href: '/employees',
       visible: hasPermission('admin'),
-      iconSize: '1.2rem',
+      iconSize: '1.05rem',
       rightIcon: {
         name: 'add',
         href: '/employees/new',
@@ -192,7 +195,7 @@ const useNavItems = () => {
         hasPermission('create_status') ||
         hasPermission('view_status') ||
         hasPermission('edit_status'),
-      iconSize: '1.2rem',
+      iconSize: '1.05rem',
       rightIcon: {
         name: 'add',
         href: '/statuses/new',
@@ -205,9 +208,26 @@ const useNavItems = () => {
       label: 'company_details',
       iconName: 'company',
       href: '/company_details',
+      iconSize: '1.1rem',
+      visible: true,
+    },
+    {
+      key: 'profile',
+      label: 'profile',
+      iconName: 'person',
+      href: '/my_profile',
       iconSize: '1.2rem',
       visible: true,
     },
+    {
+      key: 'e_store',
+      label: 'e_store',
+      iconName: 'shopCart',
+      href: '/e_store',
+      iconSize: '1.2rem',
+      visible: true,
+    },
+
     // {
     //   key: 'reports',
     //   label: 'Reports',

@@ -20,9 +20,10 @@ import Tooltip from './Tooltip';
 type Props = {
   text: string;
   children: React.ReactNode;
+  iconSize?: string;
 };
 
-const CopyToClipboard = ({ children, text }: Props) => {
+const CopyToClipboard = ({ children, text, iconSize = '1.05rem' }: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
@@ -46,7 +47,7 @@ const CopyToClipboard = ({ children, text }: Props) => {
             handleCopy();
           }}
         >
-          <Icon name="copy" size={19} />
+          <Icon name="copy" size={iconSize} />
         </div>
       </Tooltip>
     </Box>

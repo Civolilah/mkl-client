@@ -16,6 +16,7 @@ import { PrivateRoute } from '@components/index';
 
 import authenticationRoutes from './authentication/routes';
 import employeeRoutes from './employee/routes';
+import labelRoutes from './label/routes';
 import labelCategoryRoutes from './label-category/routes';
 import productRoutes from './product/routes';
 import statusRoutes from './status/routes';
@@ -40,6 +41,8 @@ export const routes = (
       {statusRoutes}
 
       {subsidiaryRoutes}
+
+      {labelRoutes}
 
       {labelCategoryRoutes}
 

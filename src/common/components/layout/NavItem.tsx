@@ -28,10 +28,13 @@ type Props = {
 
 const Div = styled.div`
   background-color: ${(props) =>
-    props.theme.isActive ? props.theme.hoverBackgroundColor : 'transparent'};
+    props.theme.isActive ? props.theme.backgroundColor : 'transparent'};
 
   &:hover {
-    background-color: ${(props) => props.theme.hoverBackgroundColor};
+    background-color: ${(props) =>
+      props.theme.isActive
+        ? props.theme.backgroundColor
+        : props.theme.hoverBackgroundColor};
     color: ${(props) => props.theme.hoverColor};
   }
 `;
@@ -41,6 +44,7 @@ const IconWrapper = styled.div`
     props.theme.isActive ? props.theme.hoverColor : props.theme.color};
 
   ${Div}:hover & {
+    opacity: ${(props) => (props.theme.isActive ? 1 : 0.6)};
     color: ${(props) => props.theme.hoverColor};
   }
 `;
@@ -69,12 +73,13 @@ const NavItem = (props: Props) => {
           'px-1': isMiniSideBar,
         })}
         theme={{
-          hoverBackgroundColor: colors.$7,
+          hoverBackgroundColor: colors.$30,
+          backgroundColor: colors.$7,
           hoverColor: colors.$8,
           isActive: location.pathname.startsWith(item.href),
         }}
         onClick={() => navigate(item.href)}
-        style={{ height: '3rem' }}
+        style={{ minHeight: '2.4rem' }}
       >
         <Box
           className={classNames('flex w-full items-center', {
@@ -95,9 +100,7 @@ const NavItem = (props: Props) => {
               </IconWrapper>
             </Box>
 
-            {!isMiniSideBar && (
-              <Text style={{ fontSize: '0.8rem' }}>{t(item.label)}</Text>
-            )}
+            {!isMiniSideBar && <Text className="text-sm">{t(item.label)}</Text>}
           </Box>
 
           {Boolean(
@@ -115,7 +118,7 @@ const NavItem = (props: Props) => {
                   border: `1px solid ${accentColor}`,
                 }}
               >
-                <Icon name={item.rightIcon!.name} size="0.96rem" />
+                <Icon name={item.rightIcon!.name} size="0.85rem" />
               </div>
             </Tooltip>
           )}

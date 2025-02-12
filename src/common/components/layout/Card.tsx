@@ -13,7 +13,6 @@ import { CSSProperties, ReactNode } from 'react';
 import { Card as CardBase } from 'antd';
 import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
-import { useMediaQuery } from 'react-responsive';
 
 import { Box, Button, Text } from '@components/index';
 
@@ -52,18 +51,10 @@ const Card = (props: Props) => {
   } = props;
 
   const colors = useColors();
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
     <Box className="flex w-full h-full justify-center items-start">
       <CardBase
-        title={
-          <Box className="flex items-center justify-between">
-            <Text>{title}</Text>
-
-            {topRight}
-          </Box>
-        }
         className={classNames(className)}
         style={{
           borderColor: colors.$1,
@@ -72,30 +63,38 @@ const Card = (props: Props) => {
         }}
         styles={{
           body: { padding: isLoading ? '2rem' : 0 },
-          header: {
-            fontSize: isSmallScreen ? '0.8rem' : '1rem',
-            fontWeight: 500,
-            letterSpacing: 0.8,
-          },
         }}
         loading={isLoading}
       >
-        <Box
-          className={classNames('px-6 pt-6 pb-4', childrenParentClassName)}
-          style={childrenParentStyle}
-        >
-          {children}
-        </Box>
+        <Box className="flex flex-col">
+          <Box
+            className="flex items-center justify-between border-b px-5 py-2.5"
+            style={{ borderColor: colors.$1 }}
+          >
+            <Text className="text-base md:text-lg-plus font-medium">
+              {title}
+            </Text>
 
-        {Boolean(actions.length || onSaveClick) && (
-          <Box className="flex justify-end border-t px-6">
-            {onSaveClick && (
-              <Button type="primary" onClick={onSaveClick}>
-                {saveButtonText || t('save')}
-              </Button>
-            )}
+            {topRight}
           </Box>
-        )}
+
+          <Box
+            className={classNames('px-5 pt-5 pb-4', childrenParentClassName)}
+            style={childrenParentStyle}
+          >
+            {children}
+          </Box>
+
+          {Boolean(actions.length || onSaveClick) && (
+            <Box className="flex justify-end border-t px-6">
+              {onSaveClick && (
+                <Button type="primary" onClick={onSaveClick}>
+                  {saveButtonText || t('save')}
+                </Button>
+              )}
+            </Box>
+          )}
+        </Box>
       </CardBase>
     </Box>
   );

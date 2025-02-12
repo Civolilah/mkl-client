@@ -20,3 +20,5 @@ export type { Status } from '@interfaces/status/status';
 export type { Subsidiary } from '@interfaces/subsidiary/subsidiary';
 
 export type { LabelCategory } from '@interfaces/label-category/label-category';
+
+export type { Label } from '@interfaces/label/label';

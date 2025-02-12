@@ -118,22 +118,22 @@ const ColorPicker = (props: Props) => {
             >
               <TransparentColorBox />
 
-              <Text>{t('transparent')}</Text>
+              <Text className="text-sm">{t('transparent')}</Text>
             </Box>
           ) : (
             <Box className="flex items-center space-x-4 px-1.5 py-1">
               <Box
                 className="border"
                 style={{
-                  width: '2.2rem',
-                  height: '2.2rem',
+                  width: '1.625rem',
+                  height: '1.625rem',
                   backgroundColor: color,
                   borderColor: colors.$1,
                 }}
               />
 
-              <CopyToClipboard text={color}>
-                <Text>{color}</Text>
+              <CopyToClipboard text={color} iconSize="1rem">
+                <Text className="text-xs-plus">{color}</Text>
               </CopyToClipboard>
             </Box>
           )}

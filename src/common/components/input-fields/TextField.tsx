@@ -20,9 +20,16 @@ import {
   RequiredOptionalLabel,
 } from '@components/index';
 
+const semiLargeInputStyle = {
+  padding: '0.5rem 0.6875rem',
+  fontSize: '0.89rem',
+  lineHeight: '1.6',
+  height: '2.25rem',
+};
+
 type Props = {
   maxLength?: number;
-  size?: 'large' | 'small';
+  size?: 'large' | 'middle' | 'small' | 'semi-large';
   type?: 'text' | 'password' | 'email';
   label?: string;
   value: string;
@@ -44,13 +51,13 @@ const TextField = (props: Props) => {
     onValueChange,
     label,
     type = 'text',
-    size = 'large',
     placeHolder,
     errorMessage,
     onPressEnter,
     required = false,
     disabled = false,
     maxLength,
+    size = 'semi-large',
     debounce,
     withoutOptionalText,
     autoComplete,
@@ -73,6 +80,13 @@ const TextField = (props: Props) => {
     setCurrentValue(value);
   }, [value]);
 
+  const getInputStyle = () => {
+    if (size === 'semi-large') {
+      return { ...semiLargeInputStyle, boxShadow: 'none' };
+    }
+    return { boxShadow: 'none' };
+  };
+
   return (
     <Box className="flex flex-col space-y-1 w-full">
       {label && (
@@ -90,15 +104,23 @@ const TextField = (props: Props) => {
         <Input
           className="rounded-none"
           type={type}
-          size={size}
           value={currentValue}
           onChange={(event) => setCurrentValue(event.target.value)}
-          onBlur={() => changeOnBlur && onValueChange?.(currentValue)}
+          onBlur={(event) =>
+            changeOnBlur && onValueChange?.(event.target.value)
+          }
           maxLength={maxLength}
           placeholder={placeHolder}
-          onPressEnter={onPressEnter}
+          onKeyDown={(event) => {
+            event.stopPropagation();
+
+            if (event.key === 'Enter') {
+              onPressEnter?.(event);
+            }
+          }}
           disabled={disabled}
-          style={{ boxShadow: 'none' }}
+          size={size === 'semi-large' ? 'middle' : size}
+          style={getInputStyle()}
           autoComplete={autoComplete}
         />
       )}
@@ -107,15 +129,23 @@ const TextField = (props: Props) => {
         <Input.Password
           className="rounded-none"
           type={type}
-          size={size}
           value={currentValue}
           placeholder={placeHolder}
           onChange={(event) => setCurrentValue(event.target.value)}
-          onBlur={() => changeOnBlur && onValueChange?.(currentValue)}
+          onBlur={(event) =>
+            changeOnBlur && onValueChange?.(event.target.value)
+          }
           maxLength={maxLength}
           disabled={disabled}
-          onPressEnter={onPressEnter}
-          style={{ boxShadow: 'none' }}
+          size={size === 'semi-large' ? 'middle' : size}
+          onKeyDown={(event) => {
+            event.stopPropagation();
+
+            if (event.key === 'Enter') {
+              onPressEnter?.(event);
+            }
+          }}
+          style={getInputStyle()}
         />
       )}
 

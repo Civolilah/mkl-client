@@ -41,7 +41,7 @@ const CopyToClipboardOnlyIcon = ({ text }: Props) => {
           handleCopy();
         }}
       >
-        <Icon name="copy" size={19} />
+        <Icon name="copy" size="1.05rem" />
       </div>
     </Tooltip>
   );

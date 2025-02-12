@@ -16,7 +16,7 @@ import {
 } from 'react';
 
 import { IconType } from 'react-icons';
-import { AiOutlineCodeSandbox } from 'react-icons/ai';
+import { AiOutlineCodeSandbox, AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiImport, BiWorld } from 'react-icons/bi';
 import { BsBookmarkStarFill } from 'react-icons/bs';
 import { CiLogout } from 'react-icons/ci';
@@ -128,7 +128,8 @@ export type IconName =
   | 'doubleArrowForward'
   | 'security'
   | 'password'
-  | 'brand';
+  | 'brand'
+  | 'shopCart';
 
 type Props = {
   className?: string;
@@ -267,6 +268,8 @@ const Icon = (props: Props) => {
       return generateIconElement(RiLockPasswordFill);
     case 'brand':
       return generateIconElement(FaAward);
+    case 'shopCart':
+      return generateIconElement(AiOutlineShoppingCart);
 
     default:
       return <></>;

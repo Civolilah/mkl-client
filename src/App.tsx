@@ -149,28 +149,28 @@ const App = () => {
 
   return (
     <Box className="w-screen h-screen">
-      <Modal
-        size="small"
-        title={t('welcome')}
-        visible={isWelcomeModalOpen}
-        onClose={() => setIsWelcomeModalOpen(false)}
-      >
-        <Box className="flex flex-col items-center space-y-6 w-full">
-          <Text className="text-base font-medium">
-            {t('add_first_product')}
-          </Text>
-
-          <Button
-            className="w-full"
-            type="primary"
-            onClick={() => navigate('/products/new')}
-          >
-            {t('add_product')}
-          </Button>
-        </Box>
-      </Modal>
-
       <ConfigProvider wave={{ disabled: true }} theme={theme}>
+        <Modal
+          size="small"
+          title={t('welcome')}
+          visible={isWelcomeModalOpen}
+          onClose={() => setIsWelcomeModalOpen(false)}
+        >
+          <Box className="flex flex-col items-center space-y-6 w-full">
+            <Text className="text-base font-medium">
+              {t('add_first_product')}
+            </Text>
+
+            <Button
+              type="primary"
+              className="w-full"
+              onClick={() => navigate('/products/new')}
+            >
+              {t('add_product')}
+            </Button>
+          </Box>
+        </Modal>
+
         <ToastContainer />
 
         {routes}

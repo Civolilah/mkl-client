@@ -41,7 +41,6 @@ const Link = (props: Props) => {
         className
       )}
       target={target}
-      style={{ letterSpacing: 0.8 }}
       theme={{
         color: '#2E6CBD',
         hoverColor: '#2E6CBD',

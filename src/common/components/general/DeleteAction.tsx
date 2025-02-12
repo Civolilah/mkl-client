@@ -121,8 +121,8 @@ const DeleteAction = (props: Props) => {
         disableClosing={isFormBusy}
         size="small"
       >
-        <Box className="flex flex-col space-y-6">
-          <Text className="text-center text-sm break-words">
+        <Box className="flex flex-col space-y-6 w-full">
+          <Text className="text-center text-base break-words">
             {reactStringReplace(
               reactStringReplace(
                 t('are_you_sure_you_want_to_delete_resource', {
@@ -131,7 +131,7 @@ const DeleteAction = (props: Props) => {
                 }),
                 ':resourceName',
                 () => (
-                  <Text key={resourceName} className="font-medium">
+                  <Text key={resourceName} className="text-base font-medium">
                     {`"${resourceName}"`}
                   </Text>
                 )

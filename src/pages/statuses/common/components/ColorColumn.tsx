@@ -39,7 +39,7 @@ const ColorColumn = ({ color }: Props) => {
       >
         <TransparentColorBox size="1.26rem" />
 
-        <Text>{t('transparent')}</Text>
+        <Text className="text-sm">{t('transparent')}</Text>
       </Box>
     );
   }

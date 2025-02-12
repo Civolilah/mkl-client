@@ -15,29 +15,35 @@ import Fuse from 'fuse.js';
 
 import {
   Box,
-  Icon,
+  ErrorMessageElement,
   Label,
+  RefreshDataElement,
   RequiredOptionalLabel,
-  Text,
-  Tooltip,
 } from '@components/index';
 
-import { useFetchEntity, useTranslation } from '@hooks/index';
+import { useFetchEntity } from '@hooks/index';
+
+const semiLargeSelectStyle = {
+  height: '2.25rem',
+  width: '100%',
+  fontSize: '0.89rem',
+};
 
 type Props = {
   label?: string;
   required?: boolean;
   withoutOptionalText?: boolean;
-  mode?: 'multiple' | 'tags';
+  mode?: 'multiple' | 'tags' | 'single';
   value: string[];
   placeholder?: string;
-  onChange: (value: string[]) => void;
+  onChange: (value: string[] | string) => void;
   errorMessage?: string;
   labelKey?: string;
   valueKey?: string;
   onClear?: () => void;
   endpoint: string;
   enableByPermission: boolean;
+  size?: 'large' | 'middle' | 'small' | 'semi-large';
 };
 
 type Option = {
@@ -46,8 +52,6 @@ type Option = {
 };
 
 const SelectDataField = (props: Props) => {
-  const t = useTranslation();
-
   const {
     label,
     required,
@@ -62,6 +66,7 @@ const SelectDataField = (props: Props) => {
     onClear,
     endpoint,
     enableByPermission,
+    size = 'semi-large',
   } = props;
 
   const [options, setOptions] = useState<Option[]>([]);
@@ -102,7 +107,6 @@ const SelectDataField = (props: Props) => {
     });
 
     const fuseResults = fuse.search(value);
-
     const formattedResults = fuseResults.map((result) => result.item);
     setFilteredOptions(formattedResults);
   };
@@ -120,11 +124,10 @@ const SelectDataField = (props: Props) => {
   }, []);
 
   return (
-    <Box className="flex flex-col space-y-2 w-full">
+    <Box className="flex flex-col space-y-1 w-full">
       {label && (
         <Box className="flex items-center space-x-1">
           <Label>{label}</Label>
-
           <RequiredOptionalLabel
             required={Boolean(required)}
             withoutOptionalText={withoutOptionalText}
@@ -133,41 +136,46 @@ const SelectDataField = (props: Props) => {
       )}
 
       <Box className="flex items-center w-full space-x-3">
-        <Select
-          mode={mode}
-          size="large"
-          style={{ width: '100%' }}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          options={filteredOptions}
-          disabled={isLoading}
-          loading={isLoading}
-          filterOption={false}
-          onSearch={handleSearch}
-          onClear={onClear}
-          allowClear={Boolean(onClear)}
-        />
+        {mode === 'multiple' && (
+          <Select
+            mode={mode}
+            size={size === 'semi-large' ? 'middle' : size}
+            style={semiLargeSelectStyle}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            options={filteredOptions}
+            disabled={isLoading}
+            loading={isLoading}
+            filterOption={false}
+            onSearch={handleSearch}
+            onClear={onClear}
+            allowClear={Boolean(onClear)}
+          />
+        )}
 
-        <Tooltip text={t('refresh_data')}>
-          <div
-            className="cursor-pointer"
-            onClick={() => !isLoading && refresh()}
-          >
-            <Icon name="refresh" size="1.45rem" />
-          </div>
-        </Tooltip>
+        {mode === 'single' && (
+          <Select
+            size={size === 'semi-large' ? 'middle' : size}
+            style={semiLargeSelectStyle}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            options={filteredOptions}
+            disabled={isLoading}
+            loading={isLoading}
+            onSearch={handleSearch}
+            filterOption={false}
+            showSearch
+            onClear={onClear}
+            allowClear={Boolean(onClear)}
+          />
+        )}
+
+        <RefreshDataElement isLoading={isLoading} refresh={refresh} />
       </Box>
 
-      {errorMessage && (
-        <Box className="mt-1 text-sm text-red-600 flex items-center space-x-1">
-          <Box className="mt-0.5">
-            <Icon name="error" size={19} style={{ color: '#dc2626' }} />
-          </Box>
-
-          <Text className="break-words">{errorMessage}</Text>
-        </Box>
-      )}
+      <ErrorMessageElement errorMessage={errorMessage} />
     </Box>
   );
 };

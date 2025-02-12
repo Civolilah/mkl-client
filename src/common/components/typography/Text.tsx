@@ -21,11 +21,7 @@ const Text = (props: Props) => {
   const { children, className, style, onClick } = props;
 
   return (
-    <span
-      className={className}
-      style={{ letterSpacing: 0.8, ...style }}
-      onClick={onClick}
-    >
+    <span className={className} style={style} onClick={onClick}>
       {children}
     </span>
   );

@@ -57,6 +57,8 @@ const PasswordConfirmationModal = (props: Props) => {
     if (!isFormBusy) {
       toast.loading();
 
+      setErrors({});
+
       onConfirm(currentPassword)
         .then(() => handleClose())
         .catch((error) => {

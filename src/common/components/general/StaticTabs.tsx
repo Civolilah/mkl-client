@@ -42,6 +42,7 @@ const StaticTabs = (props: Props) => {
       style={{ width: '100%' }}
       activeKey={activeTab}
       onChange={(activeKey) => setActiveTab?.(activeKey)}
+      size="small"
     />
   );
 };

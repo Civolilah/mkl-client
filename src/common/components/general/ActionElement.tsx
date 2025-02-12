@@ -20,11 +20,11 @@ type Props = {
 };
 
 const ActionElement = (props: Props) => {
-  const { iconName, label, onClick, iconSize = '1.1rem' } = props;
+  const { iconName, label, onClick, iconSize = '1.25rem' } = props;
 
   return (
     <Box
-      className="flex justify-start items-center space-x-4 pl-3 py-2 pr-6 min-w-32"
+      className="flex justify-start items-center space-x-4 pl-3 py-2 pr-6 min-w-36"
       onClick={(event) => {
         event.stopPropagation();
         onClick?.();
@@ -34,7 +34,7 @@ const ActionElement = (props: Props) => {
         <Icon name={iconName} size={iconSize} />
       </Box>
 
-      <Text className="text-xs whitespace-nowrap">{label}</Text>
+      <Text className="text-sm whitespace-nowrap">{label}</Text>
     </Box>
   );
 };

@@ -99,7 +99,7 @@ const GoogleButton = (props: Props) => {
     >
       <GoogleLogo />
 
-      <Text className="text-xs">{t('continue_with_google')}</Text>
+      <Text className="text-xs-plus">{t('continue_with_google')}</Text>
     </Div>
   );
 };

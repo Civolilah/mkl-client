@@ -142,11 +142,7 @@ const Permissions = (props: EmployeeProps) => {
       className="w-full"
       topRight={
         editPage && onRefresh && typeof isLoading === 'boolean' ? (
-          <RefreshDataElement
-            isLoading={isLoading}
-            refresh={onRefresh}
-            iconSize="1.45rem"
-          />
+          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
         ) : undefined
       }
     >

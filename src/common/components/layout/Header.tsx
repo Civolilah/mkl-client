@@ -68,20 +68,22 @@ const Header = (props: Props) => {
       </Box>
 
       <Box className="flex w-full justify-between items-center px-2 md:px-6">
-        <Text className="text-base md:text-lg whitespace-nowrap">{title}</Text>
+        <Text className="text-lg md:text-xl font-medium whitespace-nowrap">
+          {title}
+        </Text>
 
         <Box className="flex w-full justify-end">
           <Popover
             content={
               <Box className="flex flex-col justify-center items-center min-w-60">
                 <Box className="py-3 px-1.5">
-                  <Text className="text-sm font-medium">
+                  <Text className="font-medium">
                     {userCompanyDetails?.email}
                   </Text>
                 </Box>
 
                 <StyledBox
-                  className="flex w-full items-center space-x-5 cursor-pointer p-2.5 border-t"
+                  className="flex w-full items-center space-x-5 cursor-pointer px-4 py-2 border-t"
                   onClick={logout}
                   theme={{
                     hoverBackgroundColor: colors.$19,
@@ -92,11 +94,11 @@ const Header = (props: Props) => {
                     <Icon
                       name="logout"
                       style={{ rotate: '180deg' }}
-                      size="1.35rem"
+                      size="1.325rem"
                     />
                   </Box>
 
-                  <Text className="text-sm">{t('logout')}</Text>
+                  <Text className="mb-0.5">{t('logout')}</Text>
                 </StyledBox>
               </Box>
             }

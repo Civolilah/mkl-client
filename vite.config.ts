@@ -18,6 +18,7 @@ dotenv.config();
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   server: {
+    host:true,
     port: 3000,
     https: {
       key: process.env.VITE_SSL_KEY,

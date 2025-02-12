@@ -84,7 +84,7 @@ const MobileNavBar = (props: Props) => {
 
             <div
               className={classNames(
-                'flex flex-col space-y-1 flex-1 overflow-hidden break-all',
+                'flex flex-col flex-1 overflow-y-auto break-all',
                 {
                   'px-1.5': isMiniSideBar,
                   'px-2.5': !isMiniSideBar,

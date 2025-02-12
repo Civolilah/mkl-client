@@ -22,7 +22,7 @@ const ActionLabelElement = () => {
       className="flex items-center space-x-1 cursor-pointer"
       style={{ color: colors.$20 }}
     >
-      <Text className="text-xs font-medium">{t('actions')}</Text>
+      <Text className="text-sm">{t('actions')}</Text>
 
       <Icon name="arrowDown" size="1.2rem" style={{ color: colors.$20 }} />
     </Box>

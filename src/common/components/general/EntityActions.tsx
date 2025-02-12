@@ -10,7 +10,6 @@
 
 import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
-import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
 import { Box, Dropdown, Icon, Text } from '@components/index';
@@ -35,8 +34,6 @@ const EntityActions = (props: Props) => {
 
   const { actions, disabled = false } = props;
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-
   return (
     <Dropdown menu={{ items: actions }} disabled={disabled}>
       <StyledBox
@@ -48,11 +45,9 @@ const EntityActions = (props: Props) => {
           }
         )}
         theme={{ backgroundColor: colors.$18 }}
-        style={{ borderColor: colors.$1 }}
+        style={{ borderColor: colors.$1, height: '2.25rem' }}
       >
-        <Text style={{ fontSize: isSmallScreen ? '0.7rem' : '0.8rem' }}>
-          {t('actions')}
-        </Text>
+        <Text className="text-base">{t('actions')}</Text>
 
         <Icon name="arrowDown" size="1.2rem" />
       </StyledBox>

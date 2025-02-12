@@ -10,8 +10,6 @@
 
 import { ReactNode } from 'react';
 
-import { useMediaQuery } from 'react-responsive';
-
 import { Text } from '@components/index';
 
 import { useColors } from '@hooks/index';
@@ -24,13 +22,12 @@ const HelpLabel = (props: Props) => {
   const { text } = props;
 
   const colors = useColors();
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
     <Text
+      className="text-xs"
       style={{
         color: colors.$16,
-        fontSize: isSmallScreen ? '0.6rem' : '0.65rem',
       }}
     >
       {text}

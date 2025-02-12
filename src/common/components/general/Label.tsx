@@ -10,7 +10,7 @@
 
 import { ReactNode } from 'react';
 
-import { useMediaQuery } from 'react-responsive';
+import classNames from 'classnames';
 
 import { Text } from '@components/index';
 
@@ -22,19 +22,7 @@ type Props = {
 const Label = (props: Props) => {
   const { children, className } = props;
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-
-  return (
-    <Text
-      className={className}
-      style={{
-        fontSize: isSmallScreen ? '0.65rem' : '0.75rem',
-        fontWeight: 500,
-      }}
-    >
-      {children}
-    </Text>
-  );
+  return <Text className={classNames('text-sm', className)}>{children}</Text>;
 };
 
 export default Label;

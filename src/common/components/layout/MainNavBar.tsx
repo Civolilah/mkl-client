@@ -36,7 +36,7 @@ const NavigationBar = () => {
     >
       <Box
         className={classNames(
-          'flex flex-col space-y-1 flex-1 overflow-hidden break-all',
+          'flex flex-col flex-1 overflow-y-auto break-all',
           {
             'px-2': !isMiniSideBar,
             'px-1': isMiniSideBar,

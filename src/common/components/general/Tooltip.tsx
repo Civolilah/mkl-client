@@ -50,7 +50,7 @@ const Tooltip = (props: Props) => {
           mouseEnterDelay={0}
           overlayInnerStyle={{
             padding: '0.35rem',
-            fontSize: '0.7rem',
+            fontSize: '0.71rem',
             borderRadius: 0,
           }}
           color={accentColor}
@@ -71,7 +71,7 @@ const Tooltip = (props: Props) => {
       mouseEnterDelay={0}
       overlayInnerStyle={{
         padding: '0.35rem',
-        fontSize: '0.7rem',
+        fontSize: '0.71rem',
         borderRadius: 0,
       }}
       mouseLeaveDelay={0}

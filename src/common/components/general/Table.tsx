@@ -33,7 +33,8 @@ type CreationRoute =
   | '/subsidiaries/new'
   | '/employees/new'
   | '/statuses/new'
-  | '/label_categories/new';
+  | '/label_categories/new'
+  | '/labels/new';
 
 export type EntityColumnType<EntityType> = {
   title: string;
@@ -63,11 +64,13 @@ type Props<EntityType> = {
 type CustomHeaderCellProps = {
   children: ReactNode;
   style: CSSProperties;
+  className?: string;
 };
 
 const CustomHeaderCell = ({
   children,
   style,
+  className,
   ...restProps
 }: CustomHeaderCellProps) => {
   const accentColor = useAccentColor();
@@ -75,6 +78,7 @@ const CustomHeaderCell = ({
   return (
     <td
       {...restProps}
+      className={classNames(className, 'text-sm')}
       style={{
         ...style,
         backgroundColor: accentColor,
@@ -83,9 +87,8 @@ const CustomHeaderCell = ({
         whiteSpace: 'nowrap',
         paddingLeft: '0.75rem',
         paddingRight: '0.75rem',
-        paddingTop: '0.75rem',
-        paddingBottom: '0.75rem',
-        fontSize: '0.75rem',
+        paddingTop: '0.6rem',
+        paddingBottom: '0.6rem',
       }}
     >
       {children}
@@ -109,16 +112,17 @@ const CustomBodyCell = ({
 }: CustomBodyCellProps) => {
   return (
     <td
-      className={classNames(className, { 'cursor-pointer': onClick })}
+      className={classNames(className, 'text-sm', {
+        'cursor-pointer': onClick,
+      })}
       onClick={onClick}
       {...restProps}
       style={{
         ...(style || {}),
         paddingLeft: '0.75rem',
         paddingRight: '0.75rem',
-        paddingTop: '0.75rem',
-        paddingBottom: '0.75rem',
-        fontSize: '0.75rem',
+        paddingTop: '0.6rem',
+        paddingBottom: '0.6rem',
       }}
     >
       {children}
@@ -154,25 +158,25 @@ const Footer = ({
 
   const actions: MenuProps['items'] = [
     {
-      label: <Box className="px-2 py-1 text-xs">10</Box>,
+      label: <Box className="px-2 py-1 text-xs-plus">10</Box>,
       onClick: () => setPerPage(10),
       key: '10',
       disabled: perPage === 10,
     },
     {
-      label: <Box className="px-2 py-1 text-xs">20</Box>,
+      label: <Box className="px-2 py-1 text-xs-plus">20</Box>,
       onClick: () => setPerPage(20),
       key: '20',
       disabled: perPage === 20,
     },
     {
-      label: <Box className="px-2 py-1 text-xs">50</Box>,
+      label: <Box className="px-2 py-1 text-xs-plus">50</Box>,
       onClick: () => setPerPage(50),
       key: '50',
       disabled: perPage === 50,
     },
     {
-      label: <Box className="px-2 py-1 text-xs">100</Box>,
+      label: <Box className="px-2 py-1 text-xs-plus">100</Box>,
       onClick: () => setPerPage(100),
       key: '100',
       disabled: perPage === 100,
@@ -186,21 +190,23 @@ const Footer = ({
           className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap w-full"
           style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
         >
-          <Text className="text-xs font-medium">{t(perPage.toString())}</Text>
+          <Text className="text-xs-plus font-medium">
+            {t(perPage.toString())}
+          </Text>
 
           <Icon name="arrowDown" size="1.2rem" style={{ color: colors.$10 }} />
         </Box>
       </Dropdown>
 
       <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center space-x-2">
-        <Text className="text-xs font-medium">{t('total')}</Text>
+        <Text className="text-xs-plus font-medium">{t('total')}</Text>
 
-        <Text className="text-xs">{total}.</Text>
+        <Text className="text-xs-plus">{total}.</Text>
       </Box>
 
       <Box className="flex items-center">
         <PaginationArrowBox
-          className={classNames('p-1.5 border-l border-t border-b', {
+          className={classNames('relative border-l border-t border-b', {
             'opacity-50 cursor-not-allowed': currentPage === 1,
             'cursor-pointer': currentPage !== 1,
           })}
@@ -209,13 +215,19 @@ const Footer = ({
             backgroundColor: colors.$23,
             hoverBgColor: currentPage === 1 ? colors.$21 : colors.$22,
           }}
-          style={{ borderColor: colors.$1 }}
+          style={{
+            borderColor: colors.$1,
+            height: '1.925rem',
+            width: '1.925rem',
+          }}
         >
-          <Icon name="doubleArrowBack" size="1.2rem" />
+          <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Icon name="doubleArrowBack" size="1.2rem" />
+          </Box>
         </PaginationArrowBox>
 
         <PaginationArrowBox
-          className={classNames('p-1.5 border', {
+          className={classNames('relative border', {
             'opacity-50 cursor-not-allowed': currentPage === 1,
             'cursor-pointer': currentPage !== 1,
           })}
@@ -224,13 +236,19 @@ const Footer = ({
             backgroundColor: colors.$23,
             hoverBgColor: currentPage === 1 ? colors.$21 : colors.$22,
           }}
-          style={{ borderColor: colors.$1 }}
+          style={{
+            borderColor: colors.$1,
+            height: '1.925rem',
+            width: '1.925rem',
+          }}
         >
-          <Icon name="arrowBack" size="1.2rem" />
+          <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Icon name="arrowBack" size="1.2rem" />
+          </Box>
         </PaginationArrowBox>
 
         <PaginationArrowBox
-          className={classNames('p-1.5 border-t border-b border-r', {
+          className={classNames('relative border-t border-b border-r', {
             'opacity-50 cursor-not-allowed': currentPage === numberOfPages,
             'cursor-pointer': currentPage !== numberOfPages,
           })}
@@ -242,13 +260,19 @@ const Footer = ({
             hoverBgColor:
               currentPage === numberOfPages ? colors.$21 : colors.$22,
           }}
-          style={{ borderColor: colors.$1 }}
+          style={{
+            borderColor: colors.$1,
+            height: '1.925rem',
+            width: '1.925rem',
+          }}
         >
-          <Icon name="arrowForward" size="1.2rem" />
+          <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Icon name="arrowForward" size="1.2rem" />
+          </Box>
         </PaginationArrowBox>
 
         <PaginationArrowBox
-          className={classNames('p-1.5 border-t border-b border-r', {
+          className={classNames('relative border-t border-b border-r', {
             'opacity-50 cursor-not-allowed': currentPage === numberOfPages,
             'cursor-pointer': currentPage !== numberOfPages,
           })}
@@ -262,9 +286,13 @@ const Footer = ({
           }}
           style={{
             borderColor: colors.$1,
+            height: '1.925rem',
+            width: '1.925rem',
           }}
         >
-          <Icon name="doubleArrowForward" size="1.2rem" />
+          <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Icon name="doubleArrowForward" size="1.2rem" />
+          </Box>
         </PaginationArrowBox>
       </Box>
     </Box>
@@ -391,7 +419,7 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
 
   return (
     <Box className="flex flex-col relative h-full w-full items-start space-y-4">
-      <Box className="flex justify-between items-center w-full">
+      <Box className="flex justify-between space-x-4 items-center w-full">
         {enableFiltering && (
           <Box className="w-72">
             <TextField
@@ -442,7 +470,7 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
             x: 'max-content',
             y: currentScrollY,
           }}
-          size="middle"
+          size="small"
           locale={{
             emptyText: (
               <Empty

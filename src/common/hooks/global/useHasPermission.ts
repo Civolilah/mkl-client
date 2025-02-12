@@ -27,7 +27,10 @@ export type Permission =
   | 'view_store'
   | 'create_label_category'
   | 'view_label_category'
-  | 'edit_label_category';
+  | 'edit_label_category'
+  | 'create_label'
+  | 'view_label'
+  | 'edit_label';
 
 const useHasPermission = () => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);

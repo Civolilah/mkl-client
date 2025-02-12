@@ -53,7 +53,7 @@ const NavBarIconsBox = () => {
         {!isMiniSideBar && (
           <Tooltip text={t('contact_us')}>
             <div className="cursor-pointer">
-              <Icon name="email" size="1.325rem" />
+              <Icon name="email" size="1.375rem" />
             </div>
           </Tooltip>
         )}
@@ -61,7 +61,7 @@ const NavBarIconsBox = () => {
         {!isMiniSideBar && (
           <Tooltip text={t('about_us')}>
             <div className="cursor-pointer">
-              <Icon name="information" size="1.35rem" />
+              <Icon name="information" size="1.425rem" />
             </div>
           </Tooltip>
         )}
@@ -78,9 +78,9 @@ const NavBarIconsBox = () => {
           >
             <div className="cursor-pointer">
               {isMiniSideBar ? (
-                <Icon name="arrowForward" size="1.7rem" onClick={handleClick} />
+                <Icon name="arrowForward" size="1.8rem" onClick={handleClick} />
               ) : (
-                <Icon name="arrowBack" size="1.7rem" onClick={handleClick} />
+                <Icon name="arrowBack" size="1.8rem" onClick={handleClick} />
               )}
             </div>
           </Tooltip>

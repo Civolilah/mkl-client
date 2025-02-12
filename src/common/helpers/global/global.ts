@@ -21,6 +21,7 @@ const toastOptions: ToastOptions = {
     minWidth: '20rem',
     maxWidth: 'fit-content',
     width: 'auto',
+    fontSize: '0.89rem',
   },
 };
 

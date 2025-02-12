@@ -179,9 +179,9 @@ const Login = () => {
                 </Button>
 
                 <Box className="flex items-center justify-center w-full space-x-3">
-                  <Text className="text-xs">{t('dont_have_account')}</Text>
+                  <Text className="text-xs-plus">{t('dont_have_account')}</Text>
 
-                  <Link className="text-xs" to="/register">
+                  <Link className="text-xs-plus" to="/register">
                     {t('sign_up')}
                   </Link>
                 </Box>
@@ -197,7 +197,7 @@ const Login = () => {
                 />
 
                 <Box
-                  className="text-xs font-medium uppercase"
+                  className="text-xs-plus font-medium uppercase"
                   style={{
                     color: colors.$5,
                   }}

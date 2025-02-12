@@ -19,6 +19,12 @@ import { useAccentColor, useColors } from '@hooks/index';
 
 import Box from './Box';
 
+const semiLargeButtonStyle = {
+  height: '2.25rem',
+  fontSize: '0.89rem',
+  padding: '0.5rem 0.6875rem',
+};
+
 type Props = {
   htmlType?: 'submit' | 'button' | 'reset';
   type?: 'primary' | 'default' | 'link' | 'text' | 'dashed';
@@ -27,7 +33,7 @@ type Props = {
   disabledWithLoadingIcon?: boolean;
   onClick?: () => void;
   children: ReactNode;
-  size?: 'large' | 'middle' | 'small';
+  size?: 'large' | 'middle' | 'small' | 'semi-large';
   style?: CSSProperties;
   icon?: ReactNode;
   smallText?: boolean;
@@ -46,7 +52,7 @@ const Button = (props: Props) => {
     disabled,
     onClick,
     children,
-    size = 'large',
+    size = 'semi-large',
     type = 'primary',
     style,
     disabledWithLoadingIcon,
@@ -57,9 +63,34 @@ const Button = (props: Props) => {
 
   const colors = useColors();
   const accentColor = useAccentColor();
-
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
+
+  const getButtonStyle = () => {
+    if (size === 'semi-large') {
+      return {
+        ...semiLargeButtonStyle,
+        color: type === 'default' ? 'black' : 'white',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.8 : 1,
+        transition: 'background-color 0.3s ease',
+        borderColor: type === 'default' ? colors.$17 : '',
+        ...style,
+      };
+    }
+
+    return {
+      color: type === 'default' ? 'black' : 'white',
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.8 : 1,
+      transition: 'background-color 0.3s ease',
+      borderColor: type === 'default' ? colors.$17 : '',
+      paddingTop: isMiddleScreen ? '0.5rem' : '0.5rem',
+      paddingBottom: isMiddleScreen ? '0.5rem' : '0.5rem',
+      paddingLeft: isMiddleScreen ? '1rem' : '0.75rem',
+      paddingRight: isMiddleScreen ? '1rem' : '0.75rem',
+      ...style,
+    };
+  };
 
   return (
     <StyledBaseButton
@@ -76,21 +107,8 @@ const Button = (props: Props) => {
       disabled={disabled && !disabledWithLoadingIcon}
       loading={disabled && disabledWithLoadingIcon}
       onClick={onClick}
-      style={{
-        ...(!smallText && { fontSize: isSmallScreen ? '0.7rem' : '0.8rem' }),
-        letterSpacing: 0.8,
-        color: type === 'default' ? 'black' : 'white',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.8 : 1,
-        transition: 'background-color 0.3s ease',
-        borderColor: type === 'default' ? colors.$17 : '',
-        paddingTop: isMiddleScreen ? '0.5rem' : '0.5rem',
-        paddingBottom: isMiddleScreen ? '0.5rem' : '0.5rem',
-        paddingLeft: isMiddleScreen ? '1rem' : '0.75rem',
-        paddingRight: isMiddleScreen ? '1rem' : '0.75rem',
-        ...style,
-      }}
-      size={size}
+      style={getButtonStyle()}
+      size={size === 'semi-large' ? 'middle' : size}
       theme={{
         backgroundColor: type === 'default' && disabled ? 'transparent' : '',
         hoverBackgroundColor:

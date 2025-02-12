@@ -8,8 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useMediaQuery } from 'react-responsive';
-
 import { Text } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
@@ -24,20 +22,14 @@ const RequiredOptionalLabel = (props: Props) => {
 
   const { required, withoutOptionalText } = props;
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-
   return (
     <>
       {required ? (
-        <Text style={{ fontSize: isSmallScreen ? '0.6rem' : '0.65rem' }}>
-          ({t('required')})
-        </Text>
+        <Text className="text-xs-mid">({t('required')})</Text>
       ) : (
         <>
           {Boolean(!withoutOptionalText) && (
-            <Text style={{ fontSize: isSmallScreen ? '0.6rem' : '0.65rem' }}>
-              ({t('optional')})
-            </Text>
+            <Text className="text-xs-mid">({t('optional')})</Text>
           )}
         </>
       )}

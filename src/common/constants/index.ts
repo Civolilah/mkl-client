@@ -26,3 +26,5 @@ export {
 } from './errors/errors';
 
 export { INITIAL_LABEL_CATEGORY } from './label-category/label-category';
+
+export { INITIAL_LABEL } from './label/label';

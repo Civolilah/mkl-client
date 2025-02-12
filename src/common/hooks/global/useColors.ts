@@ -15,7 +15,7 @@ const COLORS = {
   $4: '#2E6CBD', // Profile icon color
   $5: '#a0a0a0', // Text grayed out color
   $6: '#ffffff', // Navigation bar background color
-  $7: '#d9ecff', // Navigation bar item hover background color
+  $7: '#d9ecff', // Navigation bar active item background color
   $8: '#000000', // Navigation bar item hover color (#1E90FF)
   $9: '#19b69c', // Navigation bar icon hover color
   $10: '#505050', // Navigation bar icon color
@@ -37,6 +37,8 @@ const COLORS = {
   $27: '#e6e6e6', // Selected option background color,
   $28: '#000000', // Selected option text color,
   $29: '#ffffff', // Selector background color
+  $30: '#ebf5ff', // Navigation bar hover item background color
+  $31: '#2bdbc0', // Navigation bar hover item icon color
 };
 
 const useColors = () => {
