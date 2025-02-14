@@ -184,7 +184,7 @@
     "updated_label": "Successfully updated label.",
     "deleted_label": "Successfully deleted label.",
     "e_store": "E-Store",
-    "category_name_placeholder": "e.g., Clothes, Electronics, Furniture, Books, etc.",
+    "category_name_placeholder": "e.g., Clothes, Shoes, Electronics, Books, Toys, Jewelry etc.",
     "category_name_required": "Category name is required.",
     "category_name_max_length": "Category name must be at most 200 characters long.",
     "category_name_already_exists": "Category with this name already exists.",
@@ -194,5 +194,17 @@
     "created_category": "Successfully created category.",
     "updated_category": "Successfully updated category.",
     "deleted_category": "Successfully deleted category.",
-    "edit_category": "Edit Category"
+    "edit_category": "Edit Category",
+    "settings": "Settings",
+    "created_supplier": "Successfully created supplier.",
+    "updated_supplier": "Successfully updated supplier.",
+    "deleted_supplier": "Successfully deleted supplier.",
+    "edit_supplier": "Edit Supplier",
+    "supplier_name_required": "Supplier name is required.",
+    "supplier_name_max_length": "Supplier name must be at most 200 characters long.",
+    "supplier_name_already_exists": "Supplier with this name already exists.",
+    "no_supplier_changes": "No updates to this supplier yet - everything's up to date!",
+    "no_permission_to_edit_supplier": "You do not have permission to edit this supplier.",
+    "no_permission_to_create_supplier": "You do not have permission to create this supplier.",
+    "supplier_name_placeholder": "e.g. Clothing Supplier, Electronics Supplier, Book Supplier, etc."
 }

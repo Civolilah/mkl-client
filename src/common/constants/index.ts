@@ -8,8 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export { tt } from './global/global';
-
 export { INITIAL_STATUS } from './status/status';
 
 export { INITIAL_SUBSIDIARY } from './subsidiary/subsidiary';
@@ -30,3 +28,7 @@ export { INITIAL_LABEL_CATEGORY } from './label-category/label-category';
 export { INITIAL_LABEL } from './label/label';
 
 export { INITIAL_CATEGORY } from './category/category';
+
+export { INITIAL_SUPPLIER } from './supplier/supplier';
+
+export { COMPONENTS_FONT_SIZE } from './global/global';

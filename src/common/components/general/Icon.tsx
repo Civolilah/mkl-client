@@ -55,6 +55,7 @@ import {
   MdRefresh,
   MdSave,
   MdSecurity,
+  MdSettings,
   MdWarehouse,
 } from 'react-icons/md';
 import {
@@ -129,7 +130,8 @@ export type IconName =
   | 'security'
   | 'password'
   | 'brand'
-  | 'shopCart';
+  | 'shopCart'
+  | 'settings';
 
 type Props = {
   className?: string;
@@ -270,6 +272,8 @@ const Icon = (props: Props) => {
       return generateIconElement(FaAward);
     case 'shopCart':
       return generateIconElement(AiOutlineShoppingCart);
+    case 'settings':
+      return generateIconElement(MdSettings);
 
     default:
       return <></>;

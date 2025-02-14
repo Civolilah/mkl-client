@@ -22,6 +22,7 @@ import labelCategoryRoutes from './label-category/routes';
 import productRoutes from './product/routes';
 import statusRoutes from './status/routes';
 import subsidiaryRoutes from './subsidiary/routes';
+import supplierRoutes from './supplier/routes';
 
 const IndexPage = lazy(() => import('@pages/index'));
 const Dashboard = lazy(() => import('@pages/dashboard/Dashboard'));
@@ -39,8 +40,7 @@ export const routes = (
 
       {productRoutes}
 
-      {statusRoutes}
-
+      {supplierRoutes}
       {subsidiaryRoutes}
 
       {categoryRoutes}
@@ -50,6 +50,8 @@ export const routes = (
       {labelCategoryRoutes}
 
       {employeeRoutes}
+
+      {statusRoutes}
     </Route>
 
     <Route path="unauthorized" element={<Unauthorized />} />

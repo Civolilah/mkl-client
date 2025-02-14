@@ -8,4 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export const COMPONENTS_FONT_SIZE = '0.85rem';
+import { Supplier } from '@interfaces/index';
+
+export const INITIAL_SUPPLIER: Supplier = {
+  name: '',
+};

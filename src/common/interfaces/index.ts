@@ -24,3 +24,5 @@ export type { LabelCategory } from '@interfaces/label-category/label-category';
 export type { Category } from '@interfaces/category/category';
 
 export type { Label } from '@interfaces/label/label';
+
+export type { Supplier } from '@interfaces/supplier/supplier';

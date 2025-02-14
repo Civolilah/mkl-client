@@ -10,6 +10,7 @@
 
 import { CSSProperties, ReactNode } from 'react';
 
+import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Button as BaseButton } from 'antd';
 import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
@@ -21,7 +22,7 @@ import Box from './Box';
 
 const semiLargeButtonStyle = {
   height: '2.25rem',
-  fontSize: '0.89rem',
+  fontSize: COMPONENTS_FONT_SIZE,
   padding: '0.5rem 0.6875rem',
 };
 

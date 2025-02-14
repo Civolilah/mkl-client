@@ -18,6 +18,7 @@ import {
   LabelCategory,
   Status,
   Subsidiary,
+  Supplier,
   User,
 } from '@interfaces/index';
 
@@ -37,7 +38,8 @@ export type Resource =
   | Status
   | LabelCategory
   | Label
-  | Category;
+  | Category
+  | Supplier;
 
 export type ResourceType =
   | 'subsidiary'
@@ -45,7 +47,8 @@ export type ResourceType =
   | 'status'
   | 'label'
   | 'label_category'
-  | 'category';
+  | 'category'
+  | 'supplier';
 
 type CustomActions = (resource: Resource) => MenuProps['items'];
 

@@ -10,6 +10,7 @@
 
 import { KeyboardEvent, useEffect, useState } from 'react';
 
+import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Input } from 'antd';
 import { useDebounce } from 'react-use';
 
@@ -22,7 +23,7 @@ import {
 
 const semiLargeInputStyle = {
   padding: '0.5rem 0.6875rem',
-  fontSize: '0.89rem',
+  fontSize: COMPONENTS_FONT_SIZE,
   lineHeight: '1.6',
   height: '2.25rem',
 };

@@ -129,7 +129,7 @@ const LanguageSwitcher = () => {
         >
           {icon.en}
 
-          <Text className="text-xs">English</Text>
+          <Text className="text-xs-plus">English</Text>
         </Box>
       ),
       key: 'en',
@@ -144,7 +144,7 @@ const LanguageSwitcher = () => {
         >
           {icon.tr}
 
-          <Text className="text-xs">Türkçe</Text>
+          <Text className="text-xs-plus">Türkçe</Text>
         </Box>
       ),
       key: 'tr',
@@ -159,7 +159,7 @@ const LanguageSwitcher = () => {
         >
           {icon.bs}
 
-          <Text className="text-xs">Bosanski</Text>
+          <Text className="text-xs-plus">Bosanski</Text>
         </Box>
       ),
       key: 'bs',
@@ -177,7 +177,7 @@ const LanguageSwitcher = () => {
         <Box className="flex items-center space-x-3">
           {icon[i18n.language as Languages]}
 
-          <Text className="text-xs font-medium">
+          <Text className="text-xs-plus font-medium">
             {LANGUAGE_ALIASES[i18n.language as Languages]}
           </Text>
         </Box>

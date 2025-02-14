@@ -10,6 +10,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Select } from 'antd';
 import Fuse from 'fuse.js';
 
@@ -26,7 +27,7 @@ import { useFetchEntity } from '@hooks/index';
 const semiLargeSelectStyle = {
   height: '2.25rem',
   width: '100%',
-  fontSize: '0.89rem',
+  fontSize: COMPONENTS_FONT_SIZE,
 };
 
 type Props = {
