@@ -9,6 +9,7 @@
  */
 
 import { useAtomValue } from 'jotai';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
@@ -47,6 +48,7 @@ const Header = (props: Props) => {
   const navItems = useNavItems();
 
   const logout = useLogout();
+  const navigate = useNavigate();
 
   const userCompanyDetails = useAtomValue(userCompanyAtom);
 
@@ -81,6 +83,21 @@ const Header = (props: Props) => {
                     {userCompanyDetails?.email}
                   </Text>
                 </Box>
+
+                <StyledBox
+                  className="flex w-full items-center space-x-5 cursor-pointer px-4 py-2 border-t"
+                  onClick={() => navigate('/settings/profile')}
+                  theme={{
+                    hoverBackgroundColor: colors.$19,
+                    borderColor: colors.$1,
+                  }}
+                >
+                  <Box>
+                    <Icon name="person" size="1.325rem" />
+                  </Box>
+
+                  <Text className="mb-0.5">{t('profile')}</Text>
+                </StyledBox>
 
                 <StyledBox
                   className="flex w-full items-center space-x-5 cursor-pointer px-4 py-2 border-t"

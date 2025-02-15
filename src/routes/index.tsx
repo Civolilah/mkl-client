@@ -15,6 +15,7 @@ import { Route, Routes } from 'react-router';
 import { PrivateRoute } from '@components/index';
 
 import authenticationRoutes from './authentication/routes';
+import brandRoutes from './brand/routes';
 import categoryRoutes from './category/routes';
 import employeeRoutes from './employee/routes';
 import labelRoutes from './label/routes';
@@ -40,7 +41,10 @@ export const routes = (
 
       {productRoutes}
 
+      {brandRoutes}
+
       {supplierRoutes}
+
       {subsidiaryRoutes}
 
       {categoryRoutes}

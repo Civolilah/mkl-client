@@ -36,7 +36,10 @@ export type Permission =
   | 'edit_category'
   | 'create_supplier'
   | 'view_supplier'
-  | 'edit_supplier';
+  | 'edit_supplier'
+  | 'create_brand'
+  | 'view_brand'
+  | 'edit_brand';
 
 const useHasPermission = () => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);

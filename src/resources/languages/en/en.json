@@ -206,5 +206,16 @@
     "no_supplier_changes": "No updates to this supplier yet - everything's up to date!",
     "no_permission_to_edit_supplier": "You do not have permission to edit this supplier.",
     "no_permission_to_create_supplier": "You do not have permission to create this supplier.",
-    "supplier_name_placeholder": "e.g. Clothing Supplier, Electronics Supplier, Book Supplier, etc."
+    "supplier_name_placeholder": "e.g. Clothing Supplier, Electronics Supplier, Book Supplier, etc.",
+    "brand_name_required": "Brand name is required.",
+    "brand_name_max_length": "Brand name must be at most 200 characters long.",
+    "brand_name_already_exists": "Brand with this name already exists.",
+    "no_brand_changes": "No updates to this brand yet - everything's up to date!",
+    "no_permission_to_edit_brand": "You do not have permission to edit this brand.",
+    "no_permission_to_create_brand": "You do not have permission to create this brand.",
+    "brand_name_placeholder": "e.g. Adidas, Apple, Samsung, Maybelline, IKEA, etc.",
+    "created_brand": "Successfully created brand.",
+    "updated_brand": "Successfully updated brand.",
+    "deleted_brand": "Successfully deleted brand.",
+    "brand": "Brand"
 }

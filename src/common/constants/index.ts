@@ -31,4 +31,6 @@ export { INITIAL_CATEGORY } from './category/category';
 
 export { INITIAL_SUPPLIER } from './supplier/supplier';
 
+export { INITIAL_BRAND } from './brand/brand';
+
 export { COMPONENTS_FONT_SIZE } from './global/global';

@@ -26,3 +26,5 @@ export type { Category } from '@interfaces/category/category';
 export type { Label } from '@interfaces/label/label';
 
 export type { Supplier } from '@interfaces/supplier/supplier';
+
+export type { Brand } from '@interfaces/brand/brand';
