@@ -17,6 +17,7 @@ import {
   Category,
   Label,
   LabelCategory,
+  Product,
   Status,
   Subsidiary,
   Supplier,
@@ -41,7 +42,8 @@ export type Resource =
   | Label
   | Category
   | Supplier
-  | Brand;
+  | Brand
+  | Product;
 
 export type ResourceType =
   | 'subsidiary'
@@ -51,7 +53,8 @@ export type ResourceType =
   | 'label_category'
   | 'category'
   | 'supplier'
-  | 'brand';
+  | 'brand'
+  | 'product';
 
 type CustomActions = (resource: Resource) => MenuProps['items'];
 

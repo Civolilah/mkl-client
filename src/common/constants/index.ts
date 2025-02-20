@@ -23,6 +23,8 @@ export {
   NOT_FOUND_ERROR,
 } from './errors/errors';
 
+export { INITIAL_PRODUCT } from './product/product';
+
 export { INITIAL_LABEL_CATEGORY } from './label-category/label-category';
 
 export { INITIAL_LABEL } from './label/label';

@@ -8,27 +8,58 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Default } from '@components/index';
-import { BreadcrumbItem } from '@components/layout/Default';
+import { useState } from 'react';
 
-import { useTranslation } from '@hooks/index';
+import { Product } from '@interfaces/index';
+
+import { Box, Default, RefreshDataElement, Table } from '@components/index';
+
+import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
+
+import useColumns from './common/hooks/useColumns';
 
 const Products = () => {
   const t = useTranslation();
 
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      title: t('products'),
-      href: '/products',
-    },
-    {
-      title: t('products'),
-    },
-  ];
+  const hasPermission = useHasPermission();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const { refresh } = useFetchEntity<Product>({
+    queryKey: '/api/products',
+    setEntities: setProducts,
+    setIsLoading,
+    listQuery: true,
+    enableByPermission:
+      hasPermission('create_product') ||
+      hasPermission('view_product') ||
+      hasPermission('edit_product'),
+  });
+
+  const columns = useColumns({
+    refresh,
+  });
 
   return (
-    <Default breadcrumbs={breadcrumbs} title={t('products')}>
-      {t('prevedeno')}
+    <Default
+      title={t('products')}
+      footer={
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement isLoading={isLoading} refresh={refresh} />
+        </Box>
+      }
+    >
+      <Table<Product>
+        columns={columns}
+        data={products}
+        isDataLoading={isLoading}
+        enableFiltering
+        filteringProps={['name']}
+        creationRoute="/products/new"
+        creationButtonLabel={t('new_product')}
+        filterFieldPlaceHolder={t('search_by_name')}
+      />
     </Default>
   );
 };

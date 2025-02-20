@@ -18,16 +18,18 @@ import {
   Box,
   ErrorMessageElement,
   Label,
-  RefreshDataElement,
   RequiredOptionalLabel,
 } from '@components/index';
-
-import { useFetchEntity } from '@hooks/index';
 
 const semiLargeSelectStyle = {
   height: '2.25rem',
   width: '100%',
   fontSize: COMPONENTS_FONT_SIZE,
+};
+
+type Option = {
+  label: string;
+  value: string;
 };
 
 type Props = {
@@ -42,18 +44,11 @@ type Props = {
   labelKey?: string;
   valueKey?: string;
   onClear?: () => void;
-  endpoint: string;
-  enableByPermission: boolean;
+  options: Option[];
   size?: 'large' | 'middle' | 'small' | 'semi-large';
-  withoutRefreshData?: boolean;
 };
 
-type Option = {
-  label: string;
-  value: string;
-};
-
-const SelectDataField = (props: Props) => {
+const SelectStaticField = (props: Props) => {
   const {
     label,
     required,
@@ -63,31 +58,12 @@ const SelectDataField = (props: Props) => {
     onChange,
     placeholder,
     errorMessage,
-    labelKey,
-    valueKey,
     onClear,
-    endpoint,
-    enableByPermission,
     size = 'semi-large',
-    withoutRefreshData,
+    options,
   } = props;
 
-  const [options, setOptions] = useState<Option[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
-
-  const { refresh } = useFetchEntity({
-    queryKey: endpoint,
-    setEntities: setOptions,
-    setIsLoading,
-    listQuery: true,
-    formatRecords: (records) =>
-      records.map((record) => ({
-        label: record[labelKey as keyof Option],
-        value: record[(valueKey || 'id') as keyof Option],
-      })),
-    enableByPermission,
-  });
+  const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
 
   const handleSearch = (value: string) => {
     if (!value) {
@@ -120,8 +96,6 @@ const SelectDataField = (props: Props) => {
 
   useEffect(() => {
     return () => {
-      setOptions([]);
-      setIsLoading(false);
       setFilteredOptions([]);
     };
   }, []);
@@ -138,51 +112,41 @@ const SelectDataField = (props: Props) => {
         </Box>
       )}
 
-      <Box className="flex items-center w-full space-x-3">
-        {mode === 'multiple' && (
-          <Select
-            mode={mode}
-            size={size === 'semi-large' ? 'middle' : size}
-            style={semiLargeSelectStyle}
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            options={filteredOptions}
-            disabled={isLoading}
-            loading={isLoading}
-            filterOption={false}
-            onSearch={handleSearch}
-            onClear={onClear}
-            allowClear={Boolean(onClear)}
-          />
-        )}
+      {mode === 'multiple' && (
+        <Select
+          mode={mode}
+          size={size === 'semi-large' ? 'middle' : size}
+          style={semiLargeSelectStyle}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          options={filteredOptions}
+          filterOption={false}
+          onSearch={handleSearch}
+          onClear={onClear}
+          allowClear={Boolean(onClear)}
+        />
+      )}
 
-        {mode === 'single' && (
-          <Select
-            size={size === 'semi-large' ? 'middle' : size}
-            style={semiLargeSelectStyle}
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            options={filteredOptions}
-            disabled={isLoading}
-            loading={isLoading}
-            onSearch={handleSearch}
-            filterOption={false}
-            showSearch
-            onClear={onClear}
-            allowClear={Boolean(onClear)}
-          />
-        )}
-
-        {!withoutRefreshData && (
-          <RefreshDataElement isLoading={isLoading} refresh={refresh} />
-        )}
-      </Box>
+      {mode === 'single' && (
+        <Select
+          size={size === 'semi-large' ? 'middle' : size}
+          style={semiLargeSelectStyle}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          options={filteredOptions}
+          onSearch={handleSearch}
+          filterOption={false}
+          showSearch
+          onClear={onClear}
+          allowClear={Boolean(onClear)}
+        />
+      )}
 
       <ErrorMessageElement errorMessage={errorMessage} />
     </Box>
   );
 };
 
-export default SelectDataField;
+export default SelectStaticField;

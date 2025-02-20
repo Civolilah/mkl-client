@@ -60,3 +60,5 @@ export { default as ErrorMessageElement } from '@components/input-fields/ErrorMe
 export { default as InformationLabel } from '@components/general/InformationLabel';
 export { default as RequiredOptionalLabel } from '@components/general/RequiredOptionalLabel';
 export { default as HelpLabel } from '@components/general/HelpLabel';
+export { default as NumberField } from '@components/input-fields/NumberField';
+export { default as SelectStaticField } from '@components/input-fields/SelectStaticField';

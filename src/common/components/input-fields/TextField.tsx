@@ -12,6 +12,7 @@ import { KeyboardEvent, useEffect, useState } from 'react';
 
 import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Input } from 'antd';
+import { omit } from 'lodash';
 import { useDebounce } from 'react-use';
 
 import {
@@ -20,6 +21,8 @@ import {
   Label,
   RequiredOptionalLabel,
 } from '@components/index';
+
+const { TextArea } = Input;
 
 const semiLargeInputStyle = {
   padding: '0.5rem 0.6875rem',
@@ -31,7 +34,7 @@ const semiLargeInputStyle = {
 type Props = {
   maxLength?: number;
   size?: 'large' | 'middle' | 'small' | 'semi-large';
-  type?: 'text' | 'password' | 'email';
+  type?: 'text' | 'password' | 'email' | 'textarea';
   label?: string;
   value: string;
   required?: boolean;
@@ -81,10 +84,17 @@ const TextField = (props: Props) => {
     setCurrentValue(value);
   }, [value]);
 
-  const getInputStyle = () => {
+  const getInputStyle = (fieldType?: 'textarea') => {
+    if (fieldType === 'textarea') {
+      const updatedSemiLargeInputStyle = omit(semiLargeInputStyle, ['height']);
+
+      return { ...updatedSemiLargeInputStyle, boxShadow: 'none' };
+    }
+
     if (size === 'semi-large') {
       return { ...semiLargeInputStyle, boxShadow: 'none' };
     }
+
     return { boxShadow: 'none' };
   };
 
@@ -101,12 +111,14 @@ const TextField = (props: Props) => {
         </Box>
       )}
 
-      {type !== 'password' && (
+      {type !== 'password' && type !== 'textarea' && (
         <Input
           className="rounded-none"
           type={type}
           value={currentValue}
-          onChange={(event) => setCurrentValue(event.target.value)}
+          onChange={(event) =>
+            !changeOnBlur && setCurrentValue(event.target.value)
+          }
           onBlur={(event) =>
             changeOnBlur && onValueChange?.(event.target.value)
           }
@@ -132,7 +144,9 @@ const TextField = (props: Props) => {
           type={type}
           value={currentValue}
           placeholder={placeHolder}
-          onChange={(event) => setCurrentValue(event.target.value)}
+          onChange={(event) =>
+            !changeOnBlur && setCurrentValue(event.target.value)
+          }
           onBlur={(event) =>
             changeOnBlur && onValueChange?.(event.target.value)
           }
@@ -147,6 +161,25 @@ const TextField = (props: Props) => {
             }
           }}
           style={getInputStyle()}
+        />
+      )}
+
+      {type === 'textarea' && (
+        <TextArea
+          rows={4}
+          className="rounded-none"
+          value={currentValue}
+          placeholder={placeHolder}
+          onChange={(event) =>
+            !changeOnBlur && setCurrentValue(event.target.value)
+          }
+          onBlur={(event) =>
+            changeOnBlur && onValueChange?.(event.target.value)
+          }
+          maxLength={maxLength}
+          disabled={disabled}
+          size={size === 'semi-large' ? 'middle' : size}
+          style={getInputStyle('textarea')}
         />
       )}
 

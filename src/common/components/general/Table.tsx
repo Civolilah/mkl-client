@@ -37,7 +37,8 @@ type CreationRoute =
   | '/labels/new'
   | '/categories/new'
   | '/suppliers/new'
-  | '/brands/new';
+  | '/brands/new'
+  | '/products/new';
 
 export type EntityColumnType<EntityType> = {
   title: string;

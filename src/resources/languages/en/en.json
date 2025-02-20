@@ -217,5 +217,21 @@
     "created_brand": "Successfully created brand.",
     "updated_brand": "Successfully updated brand.",
     "deleted_brand": "Successfully deleted brand.",
-    "brand": "Brand"
+    "brand": "Brand",
+    "save_product_to_add_images": "Save product to add images.",
+    "images": "Images",
+    "description": "Description",
+    "group_quantity_by": "Group quantity by",
+    "quantity": "Quantity",
+    "price_by_item": "Price by item",
+    "no_quantity_records": "No quantity records.",
+    "add_quantity": "Add quantity",
+    "label_and_color": "Label and color",
+    "default": "Default",
+    "select_label": "Select label",
+    "product_name_placeholder": "e.g., Iphone 16, Adidas Shoes, Car Phone Holder, etc.",
+    "product_notes": "Product notes",
+    "add_color_quantity": "Add color quantity",
+    "select_brand": "Select brand",
+    "label_and_variant": "Label and variant"
 }

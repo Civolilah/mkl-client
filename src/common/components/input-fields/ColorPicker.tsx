@@ -10,6 +10,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import classNames from 'classnames';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 import { useDebounce } from 'react-use';
 import styled from 'styled-components';
@@ -51,6 +52,7 @@ const Div = styled.div`
 `;
 
 type Props = {
+  className?: string;
   label?: string;
   value: string;
   required?: boolean;
@@ -59,6 +61,8 @@ type Props = {
   onValueChange: (value: string) => void;
   errorMessage?: string;
   withoutOptionalText?: boolean;
+  width?: 'full';
+  productQuantityPreview?: boolean;
 };
 
 const ColorPicker = (props: Props) => {
@@ -75,6 +79,8 @@ const ColorPicker = (props: Props) => {
     required,
     errorMessage,
     withoutOptionalText,
+    width,
+    productQuantityPreview,
   } = props;
 
   const [color, setColor] = useState<string>(value);
@@ -94,7 +100,14 @@ const ColorPicker = (props: Props) => {
 
   return (
     <>
-      <Box className="flex flex-col justify-center items-start space-y-2">
+      <Box
+        className={classNames(
+          'flex flex-col justify-center items-start space-y-1',
+          {
+            'w-full': width === 'full',
+          }
+        )}
+      >
         {label && (
           <Box className="flex items-center space-x-1">
             <Label>{label}</Label>
@@ -107,7 +120,10 @@ const ColorPicker = (props: Props) => {
         )}
 
         <Div
-          className="cursor-pointer mt-2"
+          className={classNames('cursor-pointer mt-2', {
+            'w-full': width === 'full',
+            'hover:opacity-75': productQuantityPreview,
+          })}
           onClick={() => setIsModalOpen(true)}
           theme={{ borderColor: colors.$1, hoverBorderColor: accentColor }}
         >
@@ -121,21 +137,40 @@ const ColorPicker = (props: Props) => {
               <Text className="text-sm">{t('transparent')}</Text>
             </Box>
           ) : (
-            <Box className="flex items-center space-x-4 px-1.5 py-1">
-              <Box
-                className="border"
-                style={{
-                  width: '1.625rem',
-                  height: '1.625rem',
-                  backgroundColor: color,
-                  borderColor: colors.$1,
-                }}
-              />
+            <>
+              {productQuantityPreview ? (
+                <Box
+                  style={{
+                    width: '7rem',
+                    height: '2.25rem',
+                    backgroundColor: color,
+                  }}
+                />
+              ) : (
+                <Box
+                  className={classNames(
+                    'flex items-center space-x-4 px-1.5 py-1',
+                    {
+                      'flex justify-between w-full': width === 'full',
+                    }
+                  )}
+                >
+                  <Box
+                    className="border"
+                    style={{
+                      width: '1.625rem',
+                      height: '1.625rem',
+                      backgroundColor: color,
+                      borderColor: colors.$1,
+                    }}
+                  />
 
-              <CopyToClipboard text={color} iconSize="1rem">
-                <Text className="text-xs-plus">{color}</Text>
-              </CopyToClipboard>
-            </Box>
+                  <CopyToClipboard text={color} iconSize="1rem">
+                    <Text className="text-xs-plus">{color}</Text>
+                  </CopyToClipboard>
+                </Box>
+              )}
+            </>
           )}
         </Div>
 
