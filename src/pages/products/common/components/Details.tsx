@@ -8,10 +8,10 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { cloneDeep } from 'lodash';
+import classNames from 'classnames';
+import { cloneDeep, get } from 'lodash';
 
 import { Product, ValidationErrors } from '@interfaces/index';
-import { QuantityByGroup } from '@interfaces/product/product';
 
 import {
   Box,
@@ -19,6 +19,7 @@ import {
   Card,
   ColorPicker,
   Icon,
+  InformationLabel,
   Label,
   NumberField,
   RefreshDataElement,
@@ -26,21 +27,15 @@ import {
   SelectStaticField,
   Text,
   TextField,
+  Toggle,
 } from '@components/index';
 
 import { useAccentColor, useHasPermission, useTranslation } from '@hooks/index';
 
-type QuantityGroup =
-  | 'default'
-  | 'color'
-  | 'label'
-  | 'label_and_color'
-  | 'label_and_variant';
-
-type QuantityGroupOption = {
-  label: string;
-  value: QuantityGroup;
-};
+import useBlankQuantityByGroup from '../hooks/useBlankQuantityByGroup';
+import useQuantityGroupOptions, {
+  QuantityGroup,
+} from '../hooks/useQuantityGroupOptions';
 
 export type ProductProps = {
   product: Product | undefined;
@@ -50,51 +45,21 @@ export type ProductProps = {
   onRefresh?: () => void;
   handleChange: (
     field: keyof Product,
-    value: string | number | boolean | Product['quantity_by_group']
+    value: string | number | boolean | Product['quantity_by_group'] | string[]
   ) => void;
 };
 
 const Details = (props: ProductProps) => {
   const t = useTranslation();
 
-  const accentColor = useAccentColor();
-
-  const hasPermission = useHasPermission();
-
   const { product, errors, editPage, isLoading, onRefresh, handleChange } =
     props;
 
-  const quantityGroupOptions: QuantityGroupOption[] = [
-    { label: t('default'), value: 'default' },
-    { label: t('color'), value: 'color' },
-    { label: t('label'), value: 'label' },
-    {
-      label: t('label_and_color'),
-      value: 'label_and_color',
-    },
-    {
-      label: t('label_and_variant'),
-      value: 'label_and_variant',
-    },
-  ];
+  const accentColor = useAccentColor();
+  const blankQuantityByGroup = useBlankQuantityByGroup();
+  const quantityGroupOptions = useQuantityGroupOptions();
 
-  const blankQuantityByGroup: Record<QuantityGroup, QuantityByGroup[]> = {
-    color: [{ color: accentColor, quantity: 1 }],
-    label: [{ quantity: 1, label_id: '' }],
-    label_and_color: [
-      {
-        label_id: '',
-        quantity_by_color: [{ color: accentColor, quantity: 1 }],
-      },
-    ],
-    label_and_variant: [
-      {
-        label_id: '',
-        label_and_variant: [{ variant: '', quantity: 1 }],
-      },
-    ],
-    default: [],
-  };
+  const hasPermission = useHasPermission();
 
   const addBlankQuantityByGroup = (
     quantityGroup: QuantityGroup,
@@ -180,12 +145,25 @@ const Details = (props: ProductProps) => {
               min={0}
               required
               label={t('price_by_item')}
-              value={product?.price || 0}
-              onValueChange={(value) => handleChange('price', value)}
+              value={product?.price_by_item || 0}
+              onValueChange={(value) => handleChange('price_by_item', value)}
               addonAfter="KM"
+              errorMessage={
+                errors?.['price_by_item'] && t(errors['price_by_item'])
+              }
             />
           </Box>
         </Box>
+
+        <TextField
+          maxLength={500}
+          label={t('product_key')}
+          placeHolder={t('product_key_placeholder')}
+          value={product?.product_key || ''}
+          onValueChange={(value) => handleChange('product_key', value)}
+          changeOnBlur
+          errorMessage={errors?.product_key && t(errors.product_key)}
+        />
 
         <SelectStaticField
           mode="single"
@@ -216,8 +194,17 @@ const Details = (props: ProductProps) => {
             required
             min={0}
             label={t('quantity')}
-            value={product?.quantity || 0}
-            onValueChange={(value) => handleChange('quantity', value)}
+            value={get(product, 'quantity_by_group.0.quantity', 0)}
+            onValueChange={(value) =>
+              handleChange(
+                'quantity_by_group.0.quantity' as keyof Product,
+                value
+              )
+            }
+            errorMessage={
+              errors?.['quantity_by_group.0.quantity'] &&
+              t(errors['quantity_by_group.0.quantity'])
+            }
           />
         )}
 
@@ -247,9 +234,17 @@ const Details = (props: ProductProps) => {
                   }
                   productQuantityPreview
                   withoutOptionalText
+                  errorMessage={
+                    errors?.[`quantity_by_group.${index}.color`] &&
+                    t(errors[`quantity_by_group.${index}.color`])
+                  }
                 />
 
-                <Box className="flex items-center space-x-5 w-1/2">
+                <Box
+                  className={classNames('flex items-center w-1/2', {
+                    'space-x-5': product?.quantity_by_group.length > 1,
+                  })}
+                >
                   <NumberField
                     required
                     min={0}
@@ -262,19 +257,25 @@ const Details = (props: ProductProps) => {
                       )
                     }
                     withoutOptionalText
+                    errorMessage={
+                      errors?.[`quantity_by_group.${index}.quantity`] &&
+                      t(errors[`quantity_by_group.${index}.quantity`])
+                    }
                   />
 
-                  <Box
-                    className="flex items-center cursor-pointer hover:opacity-75"
-                    onClick={() => deleteQuantityByGroup(index)}
-                    style={{ marginTop: '1.35rem' }}
-                  >
-                    <Icon
-                      name="delete"
-                      className="text-red-500"
-                      size="1.35rem"
-                    />
-                  </Box>
+                  {product?.quantity_by_group.length > 1 && (
+                    <Box
+                      className="flex items-center cursor-pointer hover:opacity-75"
+                      onClick={() => deleteQuantityByGroup(index)}
+                      style={{ marginTop: '1.35rem' }}
+                    >
+                      <Icon
+                        name="delete"
+                        className="text-red-500"
+                        size="1.35rem"
+                      />
+                    </Box>
+                  )}
                 </Box>
               </Box>
             ))}
@@ -288,7 +289,7 @@ const Details = (props: ProductProps) => {
           </Box>
         )}
 
-        {product?.quantity_group === 'label' && (
+        {product?.quantity_group === 'labels' && (
           <Box className="flex flex-col space-y-4 w-full">
             {!product.quantity_by_group.length && (
               <Text className="text-sm text-center">
@@ -303,40 +304,48 @@ const Details = (props: ProductProps) => {
               >
                 <Box className="w-5/12">
                   <SelectDataField
-                    mode="single"
                     required
-                    label={t('label')}
-                    placeholder={t('select_label')}
+                    label={t('labels')}
+                    placeholder={t('select_labels')}
                     valueKey="id"
                     labelKey="name"
                     endpoint="/api/labels?selector=true"
+                    maxTagTextLength={20}
+                    maxTagCount={1}
                     enableByPermission={
                       hasPermission('create_label') ||
                       hasPermission('view_label') ||
                       hasPermission('edit_label')
                     }
+                    formatLabel={(label) =>
+                      `${label.name} (${label.label_category?.name})`
+                    }
                     withoutRefreshData
-                    value={item.label_id ? [item.label_id] : []}
+                    value={item.label_ids ? item.label_ids : []}
                     onChange={(value) =>
                       handleChange(
-                        `quantity_by_group.${index}.label_id` as keyof Product,
-                        value as string
+                        `quantity_by_group.${index}.label_ids` as keyof Product,
+                        value
                       )
                     }
                     onClear={() =>
                       handleChange(
-                        `quantity_by_group.${index}.label_id` as keyof Product,
-                        ''
+                        `quantity_by_group.${index}.label_ids` as keyof Product,
+                        []
                       )
                     }
                     errorMessage={
-                      errors?.[`quantity_by_group.${index}.label_id`] &&
-                      t(errors[`quantity_by_group.${index}.label_id`])
+                      errors?.[`quantity_by_group.${index}.label_ids`] &&
+                      t(errors[`quantity_by_group.${index}.label_ids`])
                     }
                   />
                 </Box>
 
-                <Box className="flex items-center space-x-5 w-1/2">
+                <Box
+                  className={classNames('flex items-center w-1/2', {
+                    'space-x-5': product?.quantity_by_group.length > 1,
+                  })}
+                >
                   <NumberField
                     min={0}
                     required
@@ -355,31 +364,33 @@ const Details = (props: ProductProps) => {
                     }
                   />
 
-                  <Box
-                    className="flex items-center cursor-pointer hover:opacity-75"
-                    onClick={() => deleteQuantityByGroup(index)}
-                    style={{ marginTop: '1.35rem' }}
-                  >
-                    <Icon
-                      name="delete"
-                      className="text-red-500"
-                      size="1.35rem"
-                    />
-                  </Box>
+                  {product?.quantity_by_group.length > 1 && (
+                    <Box
+                      className="flex items-center cursor-pointer hover:opacity-75"
+                      onClick={() => deleteQuantityByGroup(index)}
+                      style={{ marginTop: '1.35rem' }}
+                    >
+                      <Icon
+                        name="delete"
+                        className="text-red-500"
+                        size="1.35rem"
+                      />
+                    </Box>
+                  )}
                 </Box>
               </Box>
             ))}
 
             <Button
               type="primary"
-              onClick={() => addBlankQuantityByGroup('label')}
+              onClick={() => addBlankQuantityByGroup('labels')}
             >
               {t('add_quantity')}
             </Button>
           </Box>
         )}
 
-        {product?.quantity_group === 'label_and_color' && (
+        {product?.quantity_group === 'labels_and_color' && (
           <Box className="flex flex-col space-y-4 w-full">
             {!product.quantity_by_group.length && (
               <Text className="text-sm text-center">
@@ -390,39 +401,48 @@ const Details = (props: ProductProps) => {
             {product?.quantity_by_group?.map((item, index) => (
               <Box
                 key={index}
-                className="flex items-center justify-between space-x-6 w-full"
+                className={classNames(
+                  'flex items-center justify-between space-x-6 w-full',
+                  {
+                    'space-x-6': product?.quantity_by_group.length > 1,
+                  }
+                )}
               >
                 <Box className="w-5/12">
                   <SelectDataField
                     required
-                    mode="single"
-                    label={t('label')}
-                    placeholder={t('select_label')}
+                    label={t('labels')}
+                    placeholder={t('select_labels')}
                     valueKey="id"
                     labelKey="name"
                     endpoint="/api/labels?selector=true"
+                    maxTagTextLength={10}
+                    maxTagCount={1}
+                    formatLabel={(label) =>
+                      `${label.name} (${label.label_category?.name})`
+                    }
                     enableByPermission={
                       hasPermission('create_label') ||
                       hasPermission('view_label') ||
                       hasPermission('edit_label')
                     }
                     withoutRefreshData
-                    value={item.label_id ? [item.label_id] : []}
+                    value={item.label_ids ? item.label_ids : []}
                     onChange={(value) =>
                       handleChange(
-                        `quantity_by_group.${index}.label_id` as keyof Product,
-                        value as string
+                        `quantity_by_group.${index}.label_ids` as keyof Product,
+                        value
                       )
                     }
                     onClear={() =>
                       handleChange(
-                        `quantity_by_group.${index}.label_id` as keyof Product,
-                        ''
+                        `quantity_by_group.${index}.label_ids` as keyof Product,
+                        []
                       )
                     }
                     errorMessage={
-                      errors?.[`quantity_by_group.${index}.label_id`] &&
-                      t(errors[`quantity_by_group.${index}.label_id`])
+                      errors?.[`quantity_by_group.${index}.label_ids`] &&
+                      t(errors[`quantity_by_group.${index}.label_ids`])
                     }
                   />
                 </Box>
@@ -452,9 +472,27 @@ const Details = (props: ProductProps) => {
                               )
                             }
                             productQuantityPreview
+                            errorMessage={
+                              errors?.[
+                                `quantity_by_group.${index}.quantity_by_color.${quantityByColorIndex}.color`
+                              ] &&
+                              t(
+                                errors[
+                                  `quantity_by_group.${index}.quantity_by_color.${quantityByColorIndex}.color`
+                                ]
+                              )
+                            }
                           />
 
-                          <Box className="flex items-center space-x-5 flex-1">
+                          <Box
+                            className={classNames(
+                              'flex items-center space-x-5 flex-1',
+                              {
+                                'space-x-5':
+                                  (item.quantity_by_color?.length || 0) > 1,
+                              }
+                            )}
+                          >
                             <Box className="flex-1">
                               <NumberField
                                 required
@@ -481,18 +519,20 @@ const Details = (props: ProductProps) => {
                               />
                             </Box>
 
-                            <Box
-                              className="flex items-center space-x-5 cursor-pointer hover:opacity-75"
-                              style={{ marginTop: '1.35rem' }}
-                              onClick={() =>
-                                deleteQuantityByColor(
-                                  quantityByColorIndex,
-                                  index
-                                )
-                              }
-                            >
-                              <Icon name="close" size="1.35rem" />
-                            </Box>
+                            {(item.quantity_by_color?.length || 0) > 1 && (
+                              <Box
+                                className="flex items-center space-x-5 cursor-pointer hover:opacity-75"
+                                style={{ marginTop: '1.35rem' }}
+                                onClick={() =>
+                                  deleteQuantityByColor(
+                                    quantityByColorIndex,
+                                    index
+                                  )
+                                }
+                              >
+                                <Icon name="close" size="1.35rem" />
+                              </Box>
+                            )}
                           </Box>
                         </Box>
                       )
@@ -502,7 +542,7 @@ const Details = (props: ProductProps) => {
                       className="w-full"
                       type="primary"
                       onClick={() =>
-                        addBlankQuantityByGroup('label_and_color', true, index)
+                        addBlankQuantityByGroup('labels_and_color', true, index)
                       }
                     >
                       {t('add_color_quantity')}
@@ -510,19 +550,21 @@ const Details = (props: ProductProps) => {
                   </Box>
                 </Box>
 
-                <Box
-                  className="flex items-center cursor-pointer hover:opacity-75"
-                  onClick={() => deleteQuantityByGroup(index)}
-                  style={{ marginTop: '1.35rem' }}
-                >
-                  <Icon name="delete" size="1.35rem" />
-                </Box>
+                {product?.quantity_by_group.length > 1 && (
+                  <Box
+                    className="flex items-center cursor-pointer hover:opacity-75"
+                    onClick={() => deleteQuantityByGroup(index)}
+                    style={{ marginTop: '1.35rem' }}
+                  >
+                    <Icon name="delete" size="1.35rem" />
+                  </Box>
+                )}
               </Box>
             ))}
 
             <Button
               type="primary"
-              onClick={() => addBlankQuantityByGroup('label_and_color')}
+              onClick={() => addBlankQuantityByGroup('labels_and_color')}
             >
               {t('add_quantity')}
             </Button>
@@ -567,24 +609,59 @@ const Details = (props: ProductProps) => {
           errorMessage={errors?.category_id && t(errors.category_id)}
         />
 
-        <SelectDataField
-          mode="single"
-          label={t('status')}
-          placeholder={t('select_status')}
-          valueKey="id"
-          labelKey="name"
-          endpoint="/api/statuses?selector=true"
-          enableByPermission={
-            hasPermission('create_status') ||
-            hasPermission('view_status') ||
-            hasPermission('edit_status')
-          }
-          withoutRefreshData
-          value={product?.status_id ? [product?.status_id] : []}
-          onChange={(value) => handleChange('status_id', value as string)}
-          onClear={() => handleChange('status_id', '')}
-          errorMessage={errors?.status_id && t(errors.status_id)}
-        />
+        <Box className="flex flex-col space-y-2 w-full">
+          <SelectDataField
+            label={t('subsidiaries')}
+            placeholder={t('select_subsidiaries')}
+            valueKey="id"
+            labelKey="name"
+            endpoint="/api/subsidiaries?selector=true"
+            enableByPermission={
+              hasPermission('create_subsidiary') ||
+              hasPermission('view_subsidiary') ||
+              hasPermission('edit_subsidiary')
+            }
+            withoutRefreshData
+            value={product?.subsidiaries ? product?.subsidiaries : []}
+            onChange={(value) => handleChange('subsidiaries', value as string)}
+            onClear={() => handleChange('subsidiaries', '')}
+            errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
+          />
+
+          <InformationLabel text={t('subsidiaries_assigning_on_product')} />
+        </Box>
+
+        <Box className="flex items-center space-x-10">
+          <Label>{t('status_by_quantity')}</Label>
+
+          <Toggle
+            checked={Boolean(product?.is_status_by_quantity)}
+            onChange={(value) => handleChange('is_status_by_quantity', value)}
+          />
+        </Box>
+
+        {product?.is_status_by_quantity ? (
+          <>Status by quantity</>
+        ) : (
+          <SelectDataField
+            mode="single"
+            label={t('status')}
+            placeholder={t('select_status')}
+            valueKey="id"
+            labelKey="name"
+            endpoint="/api/statuses?selector=true"
+            enableByPermission={
+              hasPermission('create_status') ||
+              hasPermission('view_status') ||
+              hasPermission('edit_status')
+            }
+            withoutRefreshData
+            value={product?.status_id ? [product?.status_id] : []}
+            onChange={(value) => handleChange('status_id', value as string)}
+            onClear={() => handleChange('status_id', '')}
+            errorMessage={errors?.status_id && t(errors.status_id)}
+          />
+        )}
 
         <TextField
           type="textarea"
@@ -592,6 +669,7 @@ const Details = (props: ProductProps) => {
           placeHolder={t('product_notes')}
           value={product?.description || ''}
           onValueChange={(value) => handleChange('description', value)}
+          maxLength={2000}
         />
 
         <Box className="flex flex-col space-y-2 w-full">

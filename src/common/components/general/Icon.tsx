@@ -52,6 +52,7 @@ import {
   MdOutlineKeyboardDoubleArrowRight,
   MdOutlineMenu,
   MdOutlineShoppingCart,
+  MdQrCode,
   MdRefresh,
   MdSave,
   MdSecurity,
@@ -131,7 +132,8 @@ export type IconName =
   | 'password'
   | 'brand'
   | 'shopCart'
-  | 'settings';
+  | 'settings'
+  | 'qrCode';
 
 type Props = {
   className?: string;
@@ -274,6 +276,8 @@ const Icon = (props: Props) => {
       return generateIconElement(AiOutlineShoppingCart);
     case 'settings':
       return generateIconElement(MdSettings);
+    case 'qrCode':
+      return generateIconElement(MdQrCode);
 
     default:
       return <></>;

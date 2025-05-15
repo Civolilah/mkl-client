@@ -189,6 +189,108 @@ const Footer = ({
 
   return (
     <Box className="flex justify-between items-center w-full relative">
+      <Box className="flex items-center justify-center space-x-2">
+        <Text className="text-xs-plus font-medium">{t('total')}</Text>
+
+        <Text className="text-xs-plus">{total}.</Text>
+      </Box>
+
+      <Box className="flex items-center space-x-2">
+        <Box className="flex items-center shadow-sm">
+          <PaginationArrowBox
+            className={classNames('relative border-l border-t border-b', {
+              'opacity-50 cursor-not-allowed': currentPage === 1,
+              'cursor-pointer': currentPage !== 1,
+            })}
+            onClick={() => currentPage !== 1 && setCurrentPage(1)}
+            theme={{
+              backgroundColor: colors.$23,
+              hoverBgColor: currentPage === 1 ? colors.$21 : colors.$22,
+            }}
+            style={{
+              borderColor: colors.$1,
+              height: '1.925rem',
+              width: '1.925rem',
+            }}
+          >
+            <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Icon name="doubleArrowBack" size="1.2rem" />
+            </Box>
+          </PaginationArrowBox>
+
+          <PaginationArrowBox
+            className={classNames('relative border', {
+              'opacity-50 cursor-not-allowed': currentPage === 1,
+              'cursor-pointer': currentPage !== 1,
+            })}
+            onClick={() => currentPage !== 1 && setCurrentPage(currentPage - 1)}
+            theme={{
+              backgroundColor: colors.$23,
+              hoverBgColor: currentPage === 1 ? colors.$21 : colors.$22,
+            }}
+            style={{
+              borderColor: colors.$1,
+              height: '1.925rem',
+              width: '1.925rem',
+            }}
+          >
+            <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Icon name="arrowBack" size="1.2rem" />
+            </Box>
+          </PaginationArrowBox>
+        </Box>
+
+        <Box className="flex items-center shadow-sm">
+          <PaginationArrowBox
+            className={classNames('relative border', {
+              'opacity-50 cursor-not-allowed': currentPage === numberOfPages,
+              'cursor-pointer': currentPage !== numberOfPages,
+            })}
+            onClick={() =>
+              currentPage !== numberOfPages && setCurrentPage(currentPage + 1)
+            }
+            theme={{
+              backgroundColor: colors.$23,
+              hoverBgColor:
+                currentPage === numberOfPages ? colors.$21 : colors.$22,
+            }}
+            style={{
+              borderColor: colors.$1,
+              height: '1.925rem',
+              width: '1.925rem',
+            }}
+          >
+            <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Icon name="arrowForward" size="1.2rem" />
+            </Box>
+          </PaginationArrowBox>
+
+          <PaginationArrowBox
+            className={classNames('relative border-t border-b border-r', {
+              'opacity-50 cursor-not-allowed': currentPage === numberOfPages,
+              'cursor-pointer': currentPage !== numberOfPages,
+            })}
+            onClick={() =>
+              currentPage !== numberOfPages && setCurrentPage(numberOfPages)
+            }
+            theme={{
+              backgroundColor: colors.$23,
+              hoverBgColor:
+                currentPage === numberOfPages ? colors.$21 : colors.$22,
+            }}
+            style={{
+              borderColor: colors.$1,
+              height: '1.925rem',
+              width: '1.925rem',
+            }}
+          >
+            <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Icon name="doubleArrowForward" size="1.2rem" />
+            </Box>
+          </PaginationArrowBox>
+        </Box>
+      </Box>
+
       <Dropdown menu={{ items: actions }}>
         <Box
           className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap w-full"
@@ -201,104 +303,6 @@ const Footer = ({
           <Icon name="arrowDown" size="1.2rem" style={{ color: colors.$10 }} />
         </Box>
       </Dropdown>
-
-      <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center space-x-2">
-        <Text className="text-xs-plus font-medium">{t('total')}</Text>
-
-        <Text className="text-xs-plus">{total}.</Text>
-      </Box>
-
-      <Box className="flex items-center">
-        <PaginationArrowBox
-          className={classNames('relative border-l border-t border-b', {
-            'opacity-50 cursor-not-allowed': currentPage === 1,
-            'cursor-pointer': currentPage !== 1,
-          })}
-          onClick={() => currentPage !== 1 && setCurrentPage(1)}
-          theme={{
-            backgroundColor: colors.$23,
-            hoverBgColor: currentPage === 1 ? colors.$21 : colors.$22,
-          }}
-          style={{
-            borderColor: colors.$1,
-            height: '1.925rem',
-            width: '1.925rem',
-          }}
-        >
-          <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Icon name="doubleArrowBack" size="1.2rem" />
-          </Box>
-        </PaginationArrowBox>
-
-        <PaginationArrowBox
-          className={classNames('relative border', {
-            'opacity-50 cursor-not-allowed': currentPage === 1,
-            'cursor-pointer': currentPage !== 1,
-          })}
-          onClick={() => currentPage !== 1 && setCurrentPage(currentPage - 1)}
-          theme={{
-            backgroundColor: colors.$23,
-            hoverBgColor: currentPage === 1 ? colors.$21 : colors.$22,
-          }}
-          style={{
-            borderColor: colors.$1,
-            height: '1.925rem',
-            width: '1.925rem',
-          }}
-        >
-          <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Icon name="arrowBack" size="1.2rem" />
-          </Box>
-        </PaginationArrowBox>
-
-        <PaginationArrowBox
-          className={classNames('relative border-t border-b border-r', {
-            'opacity-50 cursor-not-allowed': currentPage === numberOfPages,
-            'cursor-pointer': currentPage !== numberOfPages,
-          })}
-          onClick={() =>
-            currentPage !== numberOfPages && setCurrentPage(currentPage + 1)
-          }
-          theme={{
-            backgroundColor: colors.$23,
-            hoverBgColor:
-              currentPage === numberOfPages ? colors.$21 : colors.$22,
-          }}
-          style={{
-            borderColor: colors.$1,
-            height: '1.925rem',
-            width: '1.925rem',
-          }}
-        >
-          <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Icon name="arrowForward" size="1.2rem" />
-          </Box>
-        </PaginationArrowBox>
-
-        <PaginationArrowBox
-          className={classNames('relative border-t border-b border-r', {
-            'opacity-50 cursor-not-allowed': currentPage === numberOfPages,
-            'cursor-pointer': currentPage !== numberOfPages,
-          })}
-          onClick={() =>
-            currentPage !== numberOfPages && setCurrentPage(numberOfPages)
-          }
-          theme={{
-            backgroundColor: colors.$23,
-            hoverBgColor:
-              currentPage === numberOfPages ? colors.$21 : colors.$22,
-          }}
-          style={{
-            borderColor: colors.$1,
-            height: '1.925rem',
-            width: '1.925rem',
-          }}
-        >
-          <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Icon name="doubleArrowForward" size="1.2rem" />
-          </Box>
-        </PaginationArrowBox>
-      </Box>
     </Box>
   );
 };

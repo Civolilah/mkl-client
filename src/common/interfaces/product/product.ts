@@ -13,28 +13,25 @@ type QuantityByColor = {
   quantity: number;
 };
 
-type QuantityByVariant = {
-  variant: string;
-  quantity: number;
-};
-
 export type QuantityByGroup = {
   color?: string;
   quantity?: number;
-  label_id?: string;
+  label_ids?: string[];
   quantity_by_color?: QuantityByColor[] | undefined;
-  label_and_variant?: QuantityByVariant[] | undefined;
 };
 
 export type Product = {
   id?: string;
   name: string;
-  quantity?: number;
-  price?: number;
+  product_key?: string;
+  price_by_item?: number;
   quantity_group: string;
   quantity_by_group: QuantityByGroup[];
   is_status_by_quantity: boolean;
   status_by_quantity: string;
   description?: string;
   brand_id?: string;
+  category_id?: string;
+  status_id?: string;
+  subsidiaries?: string[];
 };

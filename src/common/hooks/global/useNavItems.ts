@@ -38,7 +38,7 @@ const useNavItems = () => {
       label: 'Dashboard',
       iconName: 'dashboard',
       href: '/dashboard',
-      visible: true,
+      visible: hasPermission('view_dashboard'),
       iconSize: '1.05rem',
     },
     {
@@ -46,13 +46,16 @@ const useNavItems = () => {
       label: 'products',
       iconName: 'product',
       href: '/products',
-      visible: true,
+      visible:
+        hasPermission('create_product') ||
+        hasPermission('view_product') ||
+        hasPermission('edit_product'),
       iconSize: '1.2rem',
       rightIcon: {
         name: 'add',
         href: '/products/new',
         tooltipText: 'new_product',
-        visible: true,
+        visible: hasPermission('create_product'),
       },
     },
     {
@@ -60,7 +63,7 @@ const useNavItems = () => {
       label: 'import',
       iconName: 'import',
       href: '/import',
-      visible: true,
+      visible: hasPermission('import_products'),
       iconSize: '1.15rem',
     },
     {
@@ -68,7 +71,7 @@ const useNavItems = () => {
       label: 'store',
       iconName: 'store',
       href: '/store',
-      visible: true,
+      visible: hasPermission('view_store'),
       iconSize: '1.05rem',
     },
     {
@@ -76,7 +79,7 @@ const useNavItems = () => {
       label: 'export',
       iconName: 'export',
       href: '/export',
-      visible: true,
+      visible: hasPermission('export_products'),
       iconSize: '1.15rem',
     },
     {
@@ -85,12 +88,15 @@ const useNavItems = () => {
       iconName: 'brand',
       href: '/brands',
       iconSize: '1.1rem',
-      visible: true,
+      visible:
+        hasPermission('create_brand') ||
+        hasPermission('view_brand') ||
+        hasPermission('edit_brand'),
       rightIcon: {
         name: 'add',
         href: '/brands/new',
         tooltipText: 'new_brand',
-        visible: true,
+        visible: hasPermission('create_brand'),
       },
     },
     {
@@ -99,12 +105,15 @@ const useNavItems = () => {
       iconName: 'truck',
       href: '/suppliers',
       iconSize: '1rem',
-      visible: true,
+      visible:
+        hasPermission('create_supplier') ||
+        hasPermission('view_supplier') ||
+        hasPermission('edit_supplier'),
       rightIcon: {
         name: 'add',
         href: '/suppliers/new',
         tooltipText: 'new_supplier',
-        visible: true,
+        visible: hasPermission('create_supplier'),
       },
     },
     {
@@ -212,7 +221,7 @@ const useNavItems = () => {
       iconName: 'shopCart',
       href: '/e_store',
       iconSize: '1.2rem',
-      visible: true,
+      visible: hasPermission('admin'),
     },
     {
       key: 'settings',

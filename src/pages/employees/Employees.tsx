@@ -43,7 +43,11 @@ const Employees = () => {
       title={t('employees')}
       footer={
         <Box className="flex w-full items-center justify-end">
-          <RefreshDataElement isLoading={isLoading} refresh={refresh} />
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
         </Box>
       }
     >

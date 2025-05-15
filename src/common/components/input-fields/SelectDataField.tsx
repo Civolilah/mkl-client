@@ -14,21 +14,26 @@ import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Select } from 'antd';
 import Fuse from 'fuse.js';
 
+import { Label as LabelType } from '@interfaces/index';
+
 import {
   Box,
   ErrorMessageElement,
   Label,
   RefreshDataElement,
   RequiredOptionalLabel,
+  Tooltip,
 } from '@components/index';
 
 import { useFetchEntity } from '@hooks/index';
 
 const semiLargeSelectStyle = {
-  height: '2.25rem',
+  minHeight: '2.25rem',
   width: '100%',
   fontSize: COMPONENTS_FONT_SIZE,
 };
+
+type Entity = LabelType;
 
 type Props = {
   label?: string;
@@ -46,6 +51,9 @@ type Props = {
   enableByPermission: boolean;
   size?: 'large' | 'middle' | 'small' | 'semi-large';
   withoutRefreshData?: boolean;
+  formatLabel?: (entity: Entity) => string;
+  maxTagTextLength?: number;
+  maxTagCount?: number;
 };
 
 type Option = {
@@ -70,6 +78,9 @@ const SelectDataField = (props: Props) => {
     enableByPermission,
     size = 'semi-large',
     withoutRefreshData,
+    formatLabel,
+    maxTagTextLength,
+    maxTagCount,
   } = props;
 
   const [options, setOptions] = useState<Option[]>([]);
@@ -83,7 +94,9 @@ const SelectDataField = (props: Props) => {
     listQuery: true,
     formatRecords: (records) =>
       records.map((record) => ({
-        label: record[labelKey as keyof Option],
+        label: formatLabel
+          ? formatLabel(record as unknown as Entity)
+          : record[labelKey as keyof Option],
         value: record[(valueKey || 'id') as keyof Option],
       })),
     enableByPermission,
@@ -150,10 +163,29 @@ const SelectDataField = (props: Props) => {
             options={filteredOptions}
             disabled={isLoading}
             loading={isLoading}
+            maxTagTextLength={maxTagTextLength}
+            maxTagCount={maxTagCount}
             filterOption={false}
             onSearch={handleSearch}
             onClear={onClear}
             allowClear={Boolean(onClear)}
+            maxTagPlaceholder={(omittedValues) =>
+              maxTagTextLength ? (
+                <Tooltip
+                  text={
+                    <Box className="flex flex-col">
+                      {omittedValues.map(({ label }, index) => (
+                        <span key={index} className="truncate">
+                          {label}
+                        </span>
+                      ))}
+                    </Box>
+                  }
+                >
+                  <span>{`+ ${omittedValues.length} ...`}</span>
+                </Tooltip>
+              ) : undefined
+            }
           />
         )}
 

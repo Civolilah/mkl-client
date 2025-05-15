@@ -18,17 +18,19 @@ type Props = {
   isLoading: boolean;
   refresh: () => void;
   iconSize?: string;
+  tooltipPlacement?: 'left' | 'right' | 'top' | 'bottom';
 };
 
 const RefreshDataElement = ({
   isLoading,
   refresh,
   iconSize = '1.25rem',
+  tooltipPlacement = 'top',
 }: Props) => {
   const t = useTranslation();
 
   return (
-    <Tooltip text={t('refresh_data')}>
+    <Tooltip text={t('refresh_data')} placement={tooltipPlacement}>
       <div
         className={classNames({
           'cursor-not-allowed': isLoading,

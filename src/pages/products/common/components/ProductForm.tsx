@@ -73,7 +73,7 @@ const ProductForm = (props: Props) => {
   }, [activeTab]);
 
   return (
-    <Box className="flex w-full self-start md:w-3/4">
+    <Box className="flex w-full self-start xl:w-3/4">
       <StaticTabs
         tabs={tabs}
         type="card"

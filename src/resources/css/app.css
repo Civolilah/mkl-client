@@ -12,6 +12,7 @@ td::before {
 
 .ant-select-selector {
   box-shadow: none !important;
+  min-height: 2.25rem !important;
 }
 
 .ant-input-number-wrapper {

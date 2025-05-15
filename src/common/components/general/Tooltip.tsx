@@ -20,10 +20,10 @@ import Box from './Box';
 type Props = {
   href?: string;
   className?: string;
-  text?: string;
+  text?: string | ReactNode;
   children: ReactNode;
   trigger?: ('hover' | 'click')[];
-  placement?: 'bottom' | 'right';
+  placement?: 'bottom' | 'right' | 'left' | 'top';
   withoutArrow?: boolean;
 };
 

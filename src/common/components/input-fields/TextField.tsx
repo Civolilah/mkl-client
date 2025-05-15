@@ -116,9 +116,7 @@ const TextField = (props: Props) => {
           className="rounded-none"
           type={type}
           value={currentValue}
-          onChange={(event) =>
-            !changeOnBlur && setCurrentValue(event.target.value)
-          }
+          onChange={(event) => setCurrentValue(event.target.value)}
           onBlur={(event) =>
             changeOnBlur && onValueChange?.(event.target.value)
           }
@@ -144,9 +142,7 @@ const TextField = (props: Props) => {
           type={type}
           value={currentValue}
           placeholder={placeHolder}
-          onChange={(event) =>
-            !changeOnBlur && setCurrentValue(event.target.value)
-          }
+          onChange={(event) => setCurrentValue(event.target.value)}
           onBlur={(event) =>
             changeOnBlur && onValueChange?.(event.target.value)
           }
@@ -170,9 +166,7 @@ const TextField = (props: Props) => {
           className="rounded-none"
           value={currentValue}
           placeholder={placeHolder}
-          onChange={(event) =>
-            !changeOnBlur && setCurrentValue(event.target.value)
-          }
+          onChange={(event) => setCurrentValue(event.target.value)}
           onBlur={(event) =>
             changeOnBlur && onValueChange?.(event.target.value)
           }

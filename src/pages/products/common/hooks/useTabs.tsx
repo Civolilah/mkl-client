@@ -15,6 +15,7 @@ import { useTranslation } from '@hooks/index';
 
 import Details, { ProductProps } from '../components/Details';
 import EStoreDetails from '../components/EStoreDetails';
+import QRCode from '../components/QRCode';
 
 const useTabs = (params: ProductProps) => {
   const t = useTranslation();
@@ -36,6 +37,28 @@ const useTabs = (params: ProductProps) => {
       ),
       children: (
         <Details
+          product={product}
+          editPage={editPage}
+          isLoading={isLoading}
+          onRefresh={onRefresh}
+          errors={errors}
+          handleChange={handleChange}
+        />
+      ),
+    },
+    {
+      key: 'qr_code',
+      label: (
+        <Box className="flex item-center space-x-3">
+          <Box className="mt-0.5">
+            <Icon name="qrCode" size="1rem" />
+          </Box>
+
+          <Text className="text-xs-plus">{t('qr_code')}</Text>
+        </Box>
+      ),
+      children: (
+        <QRCode
           product={product}
           editPage={editPage}
           isLoading={isLoading}

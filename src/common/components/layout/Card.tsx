@@ -55,7 +55,7 @@ const Card = (props: Props) => {
   return (
     <Box className="flex w-full h-full justify-center items-start">
       <CardBase
-        className={classNames(className)}
+        className={classNames('shadow-sm', className)}
         style={{
           borderColor: colors.$1,
           borderRadius: 0,

@@ -28,6 +28,7 @@ const useTheme = () => {
         colorBgContainerDisabled: accentColor,
       },
       Input: { hoverBorderColor: accentColor },
+      InputNumber: { hoverBorderColor: accentColor },
       Select: {
         optionSelectedBg: colors.$27,
         optionSelectedColor: colors.$28,
