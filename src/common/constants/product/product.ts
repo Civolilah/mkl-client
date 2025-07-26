@@ -12,8 +12,9 @@ import { Product } from '@interfaces/index';
 
 export const INITIAL_PRODUCT: Product = {
   name: '',
-  quantity_group: 'default',
-  quantity_by_group: [],
+  inventory_group: 'default',
+  inventory_by_variant: [],
   is_status_by_quantity: false,
   status_by_quantity: '',
+  unlimited_default_quantity: false,
 };

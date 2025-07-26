@@ -21,6 +21,8 @@ import { useAuthenticated } from '@hooks/index';
 
 import LoadingScreen from './LoadingScreen';
 
+export type CompanyPlan = 'free' | 'basic' | 'pro' | 'advanced' | 'enterprise';
+
 export type UserCompanyDetails = {
   id: string;
   first_name: string;
@@ -43,6 +45,7 @@ export type UserCompanyDetails = {
   };
   company: {
     name: string;
+    plan: CompanyPlan;
   };
 };
 

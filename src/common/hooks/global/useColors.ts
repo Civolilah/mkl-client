@@ -39,6 +39,10 @@ const COLORS = {
   $29: '#ffffff', // Selector background color
   $30: '#ebf5ff', // Navigation bar hover item background color
   $31: '#2bdbc0', // Navigation bar hover item icon color
+  $32: '#3b82f6', // Image uploader active border
+  $33: '#eff6ff', // Image uploader active background
+  $34: '#6B7280', // Images uploader text color
+  $35: '#e5e7eb', // Divider color
 };
 
 const useColors = () => {

@@ -62,3 +62,8 @@ export { default as RequiredOptionalLabel } from '@components/general/RequiredOp
 export { default as HelpLabel } from '@components/general/HelpLabel';
 export { default as NumberField } from '@components/input-fields/NumberField';
 export { default as SelectStaticField } from '@components/input-fields/SelectStaticField';
+export { default as SubsidiariesSelector } from '@components/selectors/SubsidiariesSelector';
+export { default as BrandSelector } from '@components/selectors/BrandSelector';
+export { default as LabelCategoriesSelector } from '@components/selectors/LabelCategoriesSelector';
+export { default as LabelsSelector } from '@components/selectors/LabelsSelector';
+export { default as Divider } from '@components/general/Divider';

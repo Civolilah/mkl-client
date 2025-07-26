@@ -25,6 +25,7 @@ import {
   FaCheckCircle,
   FaClipboardCheck,
   FaFacebook,
+  FaFileImage,
   FaInstagram,
   FaStore,
   FaTag,
@@ -32,6 +33,7 @@ import {
   FaTruck,
   FaUsers,
 } from 'react-icons/fa';
+import { GoDotFill } from 'react-icons/go';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { IoInformationCircleOutline } from 'react-icons/io5';
 import {
@@ -133,7 +135,9 @@ export type IconName =
   | 'brand'
   | 'shopCart'
   | 'settings'
-  | 'qrCode';
+  | 'qrCode'
+  | 'dotFill'
+  | 'image';
 
 type Props = {
   className?: string;
@@ -278,6 +282,10 @@ const Icon = (props: Props) => {
       return generateIconElement(MdSettings);
     case 'qrCode':
       return generateIconElement(MdQrCode);
+    case 'dotFill':
+      return generateIconElement(GoDotFill);
+    case 'image':
+      return generateIconElement(FaFileImage);
 
     default:
       return <></>;

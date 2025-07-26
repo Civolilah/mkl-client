@@ -8,16 +8,15 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-type QuantityByColor = {
-  color: string;
-  quantity: number;
-};
-
-export type QuantityByGroup = {
-  color?: string;
+export type InventoryByVariant = {
+  label_category_id?: string;
   quantity?: number;
   label_ids?: string[];
-  quantity_by_color?: QuantityByColor[] | undefined;
+  price: number;
+  width?: number;
+  height?: number;
+  length?: number;
+  weight?: number;
 };
 
 export type Product = {
@@ -25,8 +24,8 @@ export type Product = {
   name: string;
   product_key?: string;
   price_by_item?: number;
-  quantity_group: string;
-  quantity_by_group: QuantityByGroup[];
+  inventory_group: string;
+  inventory_by_variant: InventoryByVariant[];
   is_status_by_quantity: boolean;
   status_by_quantity: string;
   description?: string;
@@ -34,4 +33,5 @@ export type Product = {
   category_id?: string;
   status_id?: string;
   subsidiaries?: string[];
+  unlimited_default_quantity: boolean;
 };

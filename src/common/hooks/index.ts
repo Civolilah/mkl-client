@@ -23,3 +23,5 @@ export { default as useFetchEntity } from '@hooks/global/useFetchEntity';
 export { default as useFormatUnixTime } from '@hooks/date-time/useFormatUnixTime';
 export { default as useChangeUserCompanyProperty } from '@hooks/global/useChangeUserCompanyProperty';
 export { default as useCanEditEntity } from '@hooks/global/useCanEditEntity';
+export { default as useImageLimitByPlan } from '@hooks/global/useImageLimitByPlan';
+export { default as useCompanyPlan } from '@hooks/global/useCompanyPlan';

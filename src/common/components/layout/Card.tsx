@@ -68,7 +68,7 @@ const Card = (props: Props) => {
       >
         <Box className="flex flex-col">
           <Box
-            className="flex items-center justify-between border-b px-5 py-2.5"
+            className="flex items-center justify-between border-b px-5 py-3.5"
             style={{ borderColor: colors.$1 }}
           >
             <Text className="text-base md:text-lg-mid font-medium">

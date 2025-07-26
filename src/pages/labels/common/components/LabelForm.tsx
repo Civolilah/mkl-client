@@ -36,16 +36,64 @@ type Props = {
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
+  onlyFields?: boolean;
 };
 
 const LabelForm = (props: Props) => {
   const t = useTranslation();
 
-  const { label, setLabel, errors, editPage, isLoading, onRefresh } = props;
+  const {
+    label,
+    setLabel,
+    errors,
+    editPage,
+    isLoading,
+    onRefresh,
+    onlyFields,
+  } = props;
 
   const hasPermission = useHasPermission();
 
   const handleChange = useHandleChange({ setLabel });
+
+  if (onlyFields) {
+    return (
+      <>
+        <TextField
+          required
+          label={t('name')}
+          placeHolder={t('label_name_placeholder')}
+          value={label?.name || ''}
+          onValueChange={(value) => handleChange('name', value)}
+          changeOnBlur
+          errorMessage={errors?.name && t(errors.name)}
+        />
+
+        <SelectDataField
+          mode="single"
+          required
+          label={t('label_category')}
+          placeholder={t('select_label_category')}
+          valueKey="id"
+          labelKey="name"
+          endpoint="/api/label_categories?selector=true"
+          enableByPermission={
+            hasPermission('create_label_category') ||
+            hasPermission('view_label_category') ||
+            hasPermission('edit_label_category')
+          }
+          value={label?.label_category_id ? [label?.label_category_id] : []}
+          onChange={(value) =>
+            handleChange('label_category_id', value as string)
+          }
+          onClear={() => handleChange('label_category_id', '')}
+          errorMessage={
+            errors?.label_category_id && t(errors.label_category_id)
+          }
+        />
+      </>
+    );
+  }
 
   return (
     <Card

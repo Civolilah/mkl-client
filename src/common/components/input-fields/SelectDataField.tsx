@@ -8,11 +8,12 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Select } from 'antd';
 import Fuse from 'fuse.js';
+import { cloneDeep } from 'lodash';
 
 import { Label as LabelType } from '@interfaces/index';
 
@@ -54,11 +55,15 @@ type Props = {
   formatLabel?: (entity: Entity) => string;
   maxTagTextLength?: number;
   maxTagCount?: number;
+  actionButton?: ReactNode;
+  additionalOptions?: Option[];
+  exclude?: string[];
 };
 
-type Option = {
+export type Option = {
   label: string;
   value: string;
+  newOption?: boolean;
 };
 
 const SelectDataField = (props: Props) => {
@@ -81,10 +86,14 @@ const SelectDataField = (props: Props) => {
     formatLabel,
     maxTagTextLength,
     maxTagCount,
+    actionButton,
+    additionalOptions,
+    exclude = [],
   } = props;
 
   const [options, setOptions] = useState<Option[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
 
   const { refresh } = useFetchEntity({
@@ -96,8 +105,8 @@ const SelectDataField = (props: Props) => {
       records.map((record) => ({
         label: formatLabel
           ? formatLabel(record as unknown as Entity)
-          : record[labelKey as keyof Option],
-        value: record[(valueKey || 'id') as keyof Option],
+          : String(record[labelKey as keyof typeof record] || ''),
+        value: String(record[(valueKey || 'id') as keyof typeof record] || ''),
       })),
     enableByPermission,
   });
@@ -128,8 +137,8 @@ const SelectDataField = (props: Props) => {
   };
 
   useEffect(() => {
-    setFilteredOptions(options);
-  }, [options]);
+    setFilteredOptions(cloneDeep(options));
+  }, [options, additionalOptions]);
 
   useEffect(() => {
     return () => {
@@ -154,13 +163,17 @@ const SelectDataField = (props: Props) => {
       <Box className="flex items-center w-full space-x-3">
         {mode === 'multiple' && (
           <Select
+            open={isDropdownOpen}
+            onDropdownVisibleChange={(open) => setIsDropdownOpen(open)}
             mode={mode}
             size={size === 'semi-large' ? 'middle' : size}
             style={semiLargeSelectStyle}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
-            options={filteredOptions}
+            options={filteredOptions.filter(
+              (option) => !exclude.includes(option.value)
+            )}
             disabled={isLoading}
             loading={isLoading}
             maxTagTextLength={maxTagTextLength}
@@ -186,23 +199,57 @@ const SelectDataField = (props: Props) => {
                 </Tooltip>
               ) : undefined
             }
+            dropdownRender={(menu) =>
+              actionButton ? (
+                <div className="flex flex-col space-y-1">
+                  {actionButton}
+
+                  {menu}
+                </div>
+              ) : (
+                menu
+              )
+            }
           />
         )}
 
         {mode === 'single' && (
           <Select
+            open={isDropdownOpen}
+            onDropdownVisibleChange={(open) => setIsDropdownOpen(open)}
             size={size === 'semi-large' ? 'middle' : size}
             style={semiLargeSelectStyle}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
-            options={filteredOptions}
+            options={filteredOptions.filter(
+              (option) => !exclude.includes(option.value)
+            )}
             disabled={isLoading}
             loading={isLoading}
             onSearch={handleSearch}
             filterOption={false}
             showSearch
             onClear={onClear}
+            dropdownRender={(menu) =>
+              actionButton ? (
+                <Box className="flex flex-col space-y-1 w-full">
+                  <Box
+                    className="w-full flex-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    {actionButton}
+                  </Box>
+
+                  {menu}
+                </Box>
+              ) : (
+                menu
+              )
+            }
             allowClear={Boolean(onClear)}
           />
         )}

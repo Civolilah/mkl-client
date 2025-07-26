@@ -8,6 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { CSSProperties } from 'react';
+
 import ImageBase from 'antd/es/image';
 
 type Props = {
@@ -17,10 +19,12 @@ type Props = {
   height?: number;
   preview?: boolean;
   className?: string;
+  loading?: 'lazy' | 'eager';
+  style?: CSSProperties;
 };
 
 const Image = (props: Props) => {
-  const { src, width, alt, preview, height, className } = props;
+  const { src, width, alt, preview, height, className, loading, style } = props;
 
   return (
     <ImageBase
@@ -30,6 +34,8 @@ const Image = (props: Props) => {
       preview={preview}
       width={width}
       height={height}
+      loading={loading}
+      style={style}
     />
   );
 };
