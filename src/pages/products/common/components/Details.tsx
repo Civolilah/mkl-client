@@ -8,6 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { useState } from 'react';
+
 import { Product, ValidationErrors } from '@interfaces/index';
 
 import { Box } from '@components/index';
@@ -42,6 +44,8 @@ const Details = ({
   onRefresh,
   handleChange,
 }: ProductProps) => {
+  const [currentImages, setCurrentImages] = useState<string[]>([]);
+
   return (
     <Box className="flex flex-col space-y-4">
       <DetailsCard
@@ -60,6 +64,7 @@ const Details = ({
         product={product}
         errors={errors}
         handleChange={handleChange}
+        images={currentImages}
       />
 
       <ImagesCard
@@ -69,6 +74,7 @@ const Details = ({
         product={product}
         errors={errors}
         handleChange={handleChange}
+        setCurrentImages={setCurrentImages}
       />
 
       <AdditionalDetailsCard

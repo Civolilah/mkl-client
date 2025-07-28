@@ -108,7 +108,7 @@ const Default = (props: Props) => {
                 style={{
                   borderColor: colors.$1,
                   backgroundColor: colors.$6,
-                  height: '3.25rem',
+                  height: '3.5rem',
                 }}
               >
                 <Box className="flex-1 hidden sm:flex">
@@ -140,7 +140,7 @@ const Default = (props: Props) => {
                             className="flex items-center space-x-1 md:space-x-2"
                           >
                             <Text
-                              className={classNames('text-xs-plus', {
+                              className={classNames('text-sm', {
                                 'cursor-pointer hover:underline':
                                   index !== breadcrumbs.length - 1,
                               })}

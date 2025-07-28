@@ -9,6 +9,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { Dispatch, SetStateAction } from 'react';
+
 import { Product, ValidationErrors } from '@interfaces/index';
 
 import { Box, Card, RefreshDataElement } from '@components/index';
@@ -32,6 +34,7 @@ type Props = {
       | Product['inventory_by_variant']
       | string[]
   ) => void;
+  setCurrentImages?: Dispatch<SetStateAction<string[]>>;
 };
 
 const ImagesCard = ({
@@ -41,6 +44,7 @@ const ImagesCard = ({
   product,
   errors,
   handleChange,
+  setCurrentImages,
 }: Props) => {
   const t = useTranslation();
 
@@ -56,7 +60,7 @@ const ImagesCard = ({
       }
     >
       <Box className="pt-2">
-        <ImageUploader />
+        <ImageUploader setCurrentImages={setCurrentImages} />
       </Box>
     </Card>
   );

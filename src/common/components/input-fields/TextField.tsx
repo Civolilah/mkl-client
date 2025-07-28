@@ -12,7 +12,6 @@ import { KeyboardEvent, useEffect, useState } from 'react';
 
 import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Input } from 'antd';
-import { omit } from 'lodash';
 import { useDebounce } from 'react-use';
 
 import {
@@ -61,7 +60,7 @@ const TextField = (props: Props) => {
     required = false,
     disabled = false,
     maxLength,
-    size = 'semi-large',
+    size = 'large',
     debounce,
     withoutOptionalText,
     autoComplete,
@@ -86,9 +85,7 @@ const TextField = (props: Props) => {
 
   const getInputStyle = (fieldType?: 'textarea') => {
     if (fieldType === 'textarea') {
-      const updatedSemiLargeInputStyle = omit(semiLargeInputStyle, ['height']);
-
-      return { ...updatedSemiLargeInputStyle, boxShadow: 'none' };
+      return { boxShadow: 'none' };
     }
 
     if (size === 'semi-large') {

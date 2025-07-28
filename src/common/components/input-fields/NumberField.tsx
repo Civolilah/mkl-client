@@ -51,7 +51,7 @@ const NumberField = (props: Props) => {
     disabled = false,
     min,
     max,
-    size = 'semi-large',
+    size = 'large',
     debounce,
     withoutOptionalText,
     addonAfter,

@@ -83,7 +83,7 @@ const SelectDataField = (props: Props) => {
     onClear,
     endpoint,
     enableByPermission,
-    size = 'semi-large',
+    size = 'large',
     withoutRefreshData,
     formatLabel,
     maxTagTextLength,

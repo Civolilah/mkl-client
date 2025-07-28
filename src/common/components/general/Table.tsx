@@ -443,7 +443,6 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
         {creationRoute && (
           <Button
             onClick={() => navigate(creationRoute)}
-            smallText
             disabled={isDataLoading}
           >
             {creationButtonLabel}

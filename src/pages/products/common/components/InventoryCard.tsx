@@ -79,6 +79,7 @@ type Props = {
       | Product['inventory_by_variant']
       | string[]
   ) => void;
+  images?: string[];
 };
 
 const InventoryCard = ({
@@ -88,6 +89,7 @@ const InventoryCard = ({
   product,
   errors,
   handleChange,
+  images,
 }: Props) => {
   const t = useTranslation();
 
@@ -199,11 +201,11 @@ const InventoryCard = ({
   ) => {
     const updatedCombinations = cloneDeep(variantCombinations);
 
-    set(updatedCombinations, `inventory_by_variant.${index}.${field}`, value);
+    set(updatedCombinations, `${index}.${field}`, value);
 
     setVariantCombinations(updatedCombinations);
 
-    //handleChange('inventory_by_variant', updatedCombinations);
+    // handleChange('variant_combinations', updatedCombinations);
   };
 
   const handleAddVariant = (labelCategoryId: string) => {
@@ -328,23 +330,21 @@ const InventoryCard = ({
               </Box>
             ) : (
               <>
-                <Box className="max-w-[20rem]">
-                  <LabelCategoriesSelector
-                    label={t('options')}
-                    placeholder={t('select_options')}
-                    value={[]}
-                    onChange={(value) => handleAddVariant(value?.[0])}
-                    withActionButton
-                    exclude={product?.inventory_by_variant?.map(
-                      (variant) => variant.label_category_id as string
-                    )}
-                    additionalOptions={labelCategoriesAdditionalOptions}
-                  />
-                </Box>
+                <LabelCategoriesSelector
+                  label={t('options')}
+                  placeholder={t('select_options')}
+                  value={[]}
+                  onChange={(value) => handleAddVariant(value?.[0])}
+                  withActionButton
+                  exclude={product?.inventory_by_variant?.map(
+                    (variant) => variant.label_category_id as string
+                  )}
+                  additionalOptions={labelCategoriesAdditionalOptions}
+                />
 
                 {Boolean(product.inventory_by_variant.length) && (
                   <Box className="flex flex-col w-full">
-                    <Box className="flex flex-col w-full pt-6">
+                    <Box className="flex flex-col w-full pt-2">
                       {product.inventory_by_variant.map((variant, index) => (
                         <Box
                           key={index}
@@ -386,6 +386,7 @@ const InventoryCard = ({
                                       ]
                                     )
                                   }
+                                  images={images}
                                 />
                               </Box>
                             ) : (
@@ -420,7 +421,7 @@ const InventoryCard = ({
 
                     <Box className="flex flex-col space-y-4 w-full">
                       <Text className="font-medium text-lg">
-                        {t('variant_combinations')}
+                        {t('quantity_by_variant')}
                       </Text>
 
                       {variantCombinations.length > 0 ? (
@@ -428,113 +429,164 @@ const InventoryCard = ({
                           {variantCombinations.map((combination, index) => (
                             <Box
                               key={index}
-                              className="flex flex-col gap-y-6 border px-4 py-6"
+                              className="border overflow-hidden rounded-t-lg"
                               style={{
-                                border: `1px solid ${colors.$1}`,
-                                backgroundColor: colors.$36,
+                                borderColor: colors.$1,
                               }}
                             >
-                              <Box className="flex items-center space-x-2">
-                                <Box>
-                                  <Icon name="package" size="1.3rem" />
-                                </Box>
+                              <Box
+                                className="px-4 py-3 border-b"
+                                style={{
+                                  borderColor: colors.$1,
+                                }}
+                              >
+                                <Box className="flex items-center flex-wrap gap-2">
+                                  {combination.labels.map(
+                                    (label, combinationLabelIndex) => {
+                                      const isColor =
+                                        colorString.get.rgb(label.labelId) !==
+                                        null;
 
-                                <Box className="flex items-center space-x-2">
-                                  {combination.labels.map((label, index) => {
-                                    const isColor =
-                                      colorString.get.rgb(label.labelId) !==
-                                      null;
+                                      if (isColor) {
+                                        return (
+                                          <Box
+                                            key={combinationLabelIndex}
+                                            className="flex items-center gap-1"
+                                          >
+                                            {combinationLabelIndex > 0 && (
+                                              <Box>
+                                                <Icon
+                                                  name="dotFill"
+                                                  size="0.9rem"
+                                                />
+                                              </Box>
+                                            )}
 
-                                    if (isColor) {
+                                            <Box
+                                              className="rounded-full shadow-sm p-2"
+                                              style={{
+                                                width: '1.4rem',
+                                                height: '1.4rem',
+                                                backgroundColor: label.labelId,
+                                              }}
+                                            >
+                                              {getLabelName(label.labelId)}
+                                            </Box>
+                                          </Box>
+                                        );
+                                      }
+
                                       return (
                                         <Box
-                                          key={index}
-                                          className="rounded-full"
-                                          style={{
-                                            width: '1.5rem',
-                                            height: '1.5rem',
-                                            backgroundColor: label.labelId,
-                                          }}
-                                        />
+                                          key={combinationLabelIndex}
+                                          className="flex items-center gap-x-2"
+                                        >
+                                          {combinationLabelIndex > 0 && (
+                                            <Box>
+                                              <Icon
+                                                name="dotFill"
+                                                size="0.9rem"
+                                              />
+                                            </Box>
+                                          )}
+
+                                          <Box
+                                            className="px-2 py-1 rounded-md text-sm font-medium"
+                                            style={{
+                                              backgroundColor: colors.$1,
+                                            }}
+                                          >
+                                            {getLabelName(label.labelId)}
+                                          </Box>
+                                        </Box>
                                       );
                                     }
-
-                                    return (
-                                      <Text key={index}>
-                                        {getLabelName(label.labelId)}
-                                      </Text>
-                                    );
-                                  })}
+                                  )}
                                 </Box>
                               </Box>
 
-                              <Box className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 items-end gap-4">
-                                <Box className="flex flex-col space-y-1">
-                                  <Box className="flex items-center space-x-2">
-                                    <Label>{t('unlimited_quantity')}</Label>
-
-                                    <Toggle
-                                      checked={combination.unlimited}
-                                      onChange={(value) => {
-                                        handleCombinationChange(
-                                          index,
-                                          'unlimited',
-                                          value
-                                        );
-
-                                        setTimeout(() => {
+                              <Box
+                                className="p-4"
+                                style={{ backgroundColor: colors.$36 }}
+                              >
+                                <Box className="grid grid-cols-1 md:grid-cols-3 items-end gap-4">
+                                  <Box className="flex flex-col space-y-1">
+                                    <Box className="flex items-center space-x-2">
+                                      <Label>{t('unlimited_quantity')}</Label>
+                                      <Toggle
+                                        checked={combination.unlimited}
+                                        onChange={(value) => {
                                           if (value) {
-                                            handleCombinationChange(
-                                              index,
-                                              'quantity',
+                                            const updatedCombinations =
+                                              cloneDeep(variantCombinations);
+                                            set(
+                                              updatedCombinations,
+                                              `${index}.unlimited`,
+                                              true
+                                            );
+                                            set(
+                                              updatedCombinations,
+                                              `${index}.quantity`,
                                               0
                                             );
+                                            setVariantCombinations(
+                                              updatedCombinations
+                                            );
+                                          } else {
+                                            handleCombinationChange(
+                                              index,
+                                              'unlimited',
+                                              false
+                                            );
                                           }
-                                        }, 100);
-                                      }}
+                                        }}
+                                      />
+                                    </Box>
+
+                                    <NumberField
+                                      label={t('quantity')}
+                                      placeHolder={t('enter_quantity')}
+                                      value={combination.quantity}
+                                      onValueChange={(value) =>
+                                        handleCombinationChange(
+                                          index,
+                                          'quantity',
+                                          value
+                                        )
+                                      }
+                                      min={0}
+                                      disabled={combination.unlimited}
+                                      disablePlaceholderValue={
+                                        disablingNumberFieldSymbol
+                                      }
+                                      withoutOptionalText
                                     />
                                   </Box>
 
                                   <NumberField
-                                    label={t('quantity')}
-                                    placeHolder={t('enter_quantity')}
-                                    value={combination.quantity}
+                                    label={t('price')}
+                                    placeHolder={t('enter_price')}
+                                    value={combination.price}
                                     onValueChange={(value) =>
                                       handleCombinationChange(
                                         index,
-                                        'quantity',
+                                        'price',
                                         value
                                       )
                                     }
+                                    addonAfter={currencySymbol}
                                     min={0}
-                                    disabled={combination.unlimited}
                                     withoutOptionalText
                                   />
+
+                                  <DimensionsModal
+                                    selectedCombinationIndex={index}
+                                    handleCombinationChange={
+                                      handleCombinationChange
+                                    }
+                                    variantCombinations={variantCombinations}
+                                  />
                                 </Box>
-
-                                <NumberField
-                                  label={t('price')}
-                                  placeHolder={t('enter_price')}
-                                  value={combination.price}
-                                  onValueChange={(value) =>
-                                    handleCombinationChange(
-                                      index,
-                                      'price',
-                                      value
-                                    )
-                                  }
-                                  addonAfter={currencySymbol}
-                                  min={0}
-                                  withoutOptionalText
-                                />
-
-                                <DimensionsModal
-                                  selectedCombinationIndex={index}
-                                  handleCombinationChange={
-                                    handleCombinationChange
-                                  }
-                                  variantCombinations={variantCombinations}
-                                />
                               </Box>
                             </Box>
                           ))}

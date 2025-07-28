@@ -16,9 +16,10 @@ type Props = {
   colors: string[];
   handleChange: (value: string[]) => void;
   addColor: () => void;
+  images?: string[];
 };
 
-const ColorSelector = ({ colors, handleChange, addColor }: Props) => {
+const ColorSelector = ({ colors, handleChange, addColor, images }: Props) => {
   const handleColorChange = (value: string, index: number) => {
     const updatedColors = cloneDeep(colors);
     set(updatedColors, index, value);
@@ -36,6 +37,7 @@ const ColorSelector = ({ colors, handleChange, addColor }: Props) => {
               handleChange(handleColorChange(value, index))
             }
             productQuantityPreview
+            images={images}
           />
         ))}
       </Box>

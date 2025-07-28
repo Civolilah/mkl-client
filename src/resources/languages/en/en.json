@@ -264,5 +264,10 @@
     "variants": "Variants",
     "select_variants": "Select variants",
     "no_options_added": "No options added.",
-    "no_colors_added": "No colors added."
+    "no_colors_added": "No colors added.",
+    "quantity_by_variant": "Quantity by variant",
+    "pick_color": "Pick color",
+    "select_image": "Select image",
+    "click_on_image_to_pick_color": "Click on image to pick color!",
+    "pick_from_image": "Pick from image"
 }

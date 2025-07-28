@@ -35,6 +35,7 @@ import {
   FaUsers,
   FaWeight,
 } from 'react-icons/fa';
+import { FaEyeDropper } from 'react-icons/fa6';
 import { GoDotFill } from 'react-icons/go';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { IoInformationCircleOutline } from 'react-icons/io5';
@@ -142,7 +143,8 @@ export type IconName =
   | 'image'
   | 'ruler'
   | 'weight'
-  | 'package';
+  | 'package'
+  | 'eyeDropper';
 
 type Props = {
   className?: string;
@@ -297,6 +299,9 @@ const Icon = (props: Props) => {
       return generateIconElement(FaWeight);
     case 'package':
       return generateIconElement(BiPackage);
+    case 'eyeDropper':
+      return generateIconElement(FaEyeDropper);
+
     default:
       return <></>;
   }

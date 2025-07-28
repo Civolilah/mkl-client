@@ -29,10 +29,7 @@ const InformationLabel = (props: Props) => {
         <Icon name="information" size="1.3rem" />
       </Box>
 
-      <Text
-        className="text-xs md:text-xs-mid font-light"
-        style={{ color: colors.$16 }}
-      >
+      <Text className="text-sm font-light" style={{ color: colors.$16 }}>
         {text}
       </Text>
     </Box>

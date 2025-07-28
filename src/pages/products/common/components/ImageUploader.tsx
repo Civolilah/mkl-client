@@ -8,7 +8,15 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useCallback, useState, useEffect, useMemo, ReactNode } from 'react';
+import {
+  useCallback,
+  useState,
+  useEffect,
+  useMemo,
+  ReactNode,
+  SetStateAction,
+  Dispatch,
+} from 'react';
 
 import classNames from 'classnames';
 import { FileRejection, useDropzone } from 'react-dropzone';
@@ -43,6 +51,7 @@ export interface ImageUploaderProps {
   acceptedFileTypes?: string[];
   maxFileSize?: number;
   disabled?: boolean;
+  setCurrentImages?: Dispatch<SetStateAction<string[]>>;
 }
 
 const StyledBox = styled.div`
@@ -71,6 +80,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
     acceptedFileTypes = ['.jpeg', '.jpg', '.gif', '.webp'],
     maxFileSize = 10 * 1024 * 1024,
     disabled = false,
+    setCurrentImages,
   } = props;
 
   const [uploadErrors, setUploadErrors] = useState<ReactNode[]>([]);
@@ -134,6 +144,10 @@ const ImageUploader = (props: ImageUploaderProps) => {
 
       const newImages = [...images, ...imageFiles];
       setImages(newImages);
+
+      if (setCurrentImages) {
+        setCurrentImages(newImages.map((image) => image.preview || ''));
+      }
 
       if (onImagesChange) {
         onImagesChange(newImages);

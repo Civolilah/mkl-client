@@ -12,26 +12,11 @@ td::before {
 
 .ant-select-selector {
   box-shadow: none !important;
-  min-height: 2.25rem !important;
-}
-
-.ant-input-number-wrapper {
-  height: 100% !important;
-}
-
-.ant-input-number-input-wrap {
-  height: 100% !important;
 }
 
 .ant-input-number {
-  height: 2.25rem !important;
   box-shadow: none !important;
-  font-size: 0.85rem !important;
   width: 100% !important;
-}
-
-.ant-input-number-input {
-  height: 100% !important;
 }
 
 .ant-select-selector:hover {

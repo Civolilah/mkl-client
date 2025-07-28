@@ -44,6 +44,8 @@ const COLORS = {
   $34: '#6B7280', // Images uploader text color
   $35: '#e5e7eb', // Divider color
   $36: '#f9fafb', // Variant combination background color
+  $37: '#000000', // Absolute black hover color
+  $38: '#ffffff', // Absolute white hover color
 };
 
 const useColors = () => {

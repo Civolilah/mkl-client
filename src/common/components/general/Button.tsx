@@ -37,7 +37,6 @@ type Props = {
   size?: 'large' | 'middle' | 'small' | 'semi-large';
   style?: CSSProperties;
   icon?: ReactNode;
-  smallText?: boolean;
 };
 
 const StyledBaseButton = styled(BaseButton)`
@@ -53,13 +52,12 @@ const Button = (props: Props) => {
     disabled,
     onClick,
     children,
-    size = 'semi-large',
+    size = 'large',
     type = 'primary',
     style,
     disabledWithLoadingIcon,
     className,
     icon,
-    smallText,
   } = props;
 
   const colors = useColors();
@@ -96,10 +94,9 @@ const Button = (props: Props) => {
   return (
     <StyledBaseButton
       className={classNames(
-        'transition-none rounded-none shadow-sm text-sm',
+        'transition-none rounded-none shadow-sm text-base',
         {
           'border-none': type !== 'default',
-          'text-sm': smallText,
         },
         className
       )}
