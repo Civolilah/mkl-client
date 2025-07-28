@@ -17,7 +17,7 @@ import {
 
 import { IconType } from 'react-icons';
 import { AiOutlineCodeSandbox, AiOutlineShoppingCart } from 'react-icons/ai';
-import { BiImport, BiWorld } from 'react-icons/bi';
+import { BiImport, BiPackage, BiWorld } from 'react-icons/bi';
 import { BsBookmarkStarFill } from 'react-icons/bs';
 import { CiLogout } from 'react-icons/ci';
 import {
@@ -27,11 +27,13 @@ import {
   FaFacebook,
   FaFileImage,
   FaInstagram,
+  FaRuler,
   FaStore,
   FaTag,
   FaTags,
   FaTruck,
   FaUsers,
+  FaWeight,
 } from 'react-icons/fa';
 import { GoDotFill } from 'react-icons/go';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
@@ -137,7 +139,10 @@ export type IconName =
   | 'settings'
   | 'qrCode'
   | 'dotFill'
-  | 'image';
+  | 'image'
+  | 'ruler'
+  | 'weight'
+  | 'package';
 
 type Props = {
   className?: string;
@@ -286,7 +291,12 @@ const Icon = (props: Props) => {
       return generateIconElement(GoDotFill);
     case 'image':
       return generateIconElement(FaFileImage);
-
+    case 'ruler':
+      return generateIconElement(FaRuler);
+    case 'weight':
+      return generateIconElement(FaWeight);
+    case 'package':
+      return generateIconElement(BiPackage);
     default:
       return <></>;
   }

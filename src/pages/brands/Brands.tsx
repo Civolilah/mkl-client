@@ -27,7 +27,8 @@ const Brands = () => {
   const [brands, setBrands] = useState<Brand[]>([]);
 
   const { refresh } = useFetchEntity<Brand>({
-    queryKey: '/api/brands',
+    queryIdentifiers: ['/api/brands'],
+    endpoint: '/api/brands',
     setEntities: setBrands,
     setIsLoading,
     listQuery: true,

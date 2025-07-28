@@ -57,7 +57,8 @@ const Edit = () => {
   const [initialResponse, setInitialResponse] = useState<Status | undefined>();
 
   const { refresh } = useFetchEntity<Status>({
-    queryKey: '/api/statuses',
+    queryIdentifiers: ['/api/statuses'],
+    endpoint: '/api/statuses',
     setEntity: setStatus,
     setIsLoading,
     setInitialResponse,

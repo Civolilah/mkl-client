@@ -37,6 +37,8 @@ type Props = {
   isLoading?: boolean;
   onRefresh?: () => void;
   onlyFields?: boolean;
+  disableLabelCategorySelector?: boolean;
+  withoutLabelCategorySelectorRefreshData?: boolean;
 };
 
 const LabelForm = (props: Props) => {
@@ -50,6 +52,8 @@ const LabelForm = (props: Props) => {
     isLoading,
     onRefresh,
     onlyFields,
+    disableLabelCategorySelector,
+    withoutLabelCategorySelectorRefreshData,
   } = props;
 
   const hasPermission = useHasPermission();
@@ -70,6 +74,7 @@ const LabelForm = (props: Props) => {
         />
 
         <SelectDataField
+          queryIdentifiers={['/api/label_categories']}
           mode="single"
           required
           label={t('label_category')}
@@ -90,6 +95,8 @@ const LabelForm = (props: Props) => {
           errorMessage={
             errors?.label_category_id && t(errors.label_category_id)
           }
+          disabled={disableLabelCategorySelector}
+          withoutRefreshData={withoutLabelCategorySelectorRefreshData}
         />
       </>
     );
@@ -121,6 +128,7 @@ const LabelForm = (props: Props) => {
         />
 
         <SelectDataField
+          queryIdentifiers={['/api/labels', 'selector']}
           mode="single"
           required
           label={t('label_category')}

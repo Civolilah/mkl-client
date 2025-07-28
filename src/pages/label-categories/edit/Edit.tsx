@@ -61,7 +61,8 @@ const Edit = () => {
   >();
 
   const { refresh } = useFetchEntity<LabelCategory>({
-    queryKey: '/api/label_categories',
+    queryIdentifiers: ['/api/label_categories'],
+    endpoint: '/api/label_categories',
     setEntity: setLabelCategory,
     setIsLoading,
     setInitialResponse,

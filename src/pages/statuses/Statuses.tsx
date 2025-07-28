@@ -27,7 +27,8 @@ const Statuses = () => {
   const [statuses, setStatuses] = useState<Status[]>([]);
 
   const { refresh } = useFetchEntity<Status>({
-    queryKey: '/api/statuses',
+    queryIdentifiers: ['/api/statuses'],
+    endpoint: '/api/statuses',
     setEntities: setStatuses,
     setIsLoading,
     listQuery: true,

@@ -67,3 +67,4 @@ export { default as BrandSelector } from '@components/selectors/BrandSelector';
 export { default as LabelCategoriesSelector } from '@components/selectors/LabelCategoriesSelector';
 export { default as LabelsSelector } from '@components/selectors/LabelsSelector';
 export { default as Divider } from '@components/general/Divider';
+export { default as CategoriesSelector } from '@components/selectors/CategoriesSelector';

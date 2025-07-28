@@ -59,7 +59,8 @@ const Edit = () => {
   >();
 
   const { refresh } = useFetchEntity<Supplier>({
-    queryKey: '/api/suppliers',
+    queryIdentifiers: ['/api/suppliers'],
+    endpoint: '/api/suppliers',
     setEntity: setSupplier,
     setIsLoading,
     setInitialResponse,

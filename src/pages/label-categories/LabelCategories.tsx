@@ -27,7 +27,8 @@ const LabelCategories = () => {
   const [labelCategories, setLabelCategories] = useState<LabelCategory[]>([]);
 
   const { refresh } = useFetchEntity<LabelCategory>({
-    queryKey: '/api/label_categories',
+    queryIdentifiers: ['/api/label_categories'],
+    endpoint: '/api/label_categories',
     setEntities: setLabelCategories,
     setIsLoading,
     listQuery: true,

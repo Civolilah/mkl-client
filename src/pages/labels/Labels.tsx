@@ -27,7 +27,8 @@ const Labels = () => {
   const [labels, setLabels] = useState<Label[]>([]);
 
   const { refresh } = useFetchEntity<Label>({
-    queryKey: '/api/labels',
+    queryIdentifiers: ['/api/labels'],
+    endpoint: '/api/labels',
     setEntities: setLabels,
     setIsLoading,
     listQuery: true,

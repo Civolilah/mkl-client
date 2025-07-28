@@ -27,7 +27,8 @@ const Subsidiaries = () => {
   const [subsidiaries, setSubsidiaries] = useState<Subsidiary[]>([]);
 
   const { refresh } = useFetchEntity<Subsidiary>({
-    queryKey: '/api/subsidiaries',
+    queryIdentifiers: ['/api/subsidiaries'],
+    endpoint: '/api/subsidiaries',
     setEntities: setSubsidiaries,
     setIsLoading,
     listQuery: true,

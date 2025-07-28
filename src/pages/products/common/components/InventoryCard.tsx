@@ -1,0 +1,573 @@
+/**
+ * MKL (https://mkl.ba).
+ *
+ * @link https://github.com/mkl source repository
+ *
+ * @copyright Copyright (c) 2024. MKL (https://mkl.ba)
+ *
+ * @license https://www.elastic.co/licensing/elastic-license
+ */
+
+import { useEffect, useState } from 'react';
+
+import colorString from 'color-string';
+import { cloneDeep, get, set } from 'lodash';
+
+import { LabelCategory, Product, ValidationErrors } from '@interfaces/index';
+import { Label as LabelType } from '@interfaces/index';
+
+import {
+  Box,
+  Card,
+  Divider,
+  Icon,
+  Label,
+  LabelCategoriesSelector,
+  LabelsSelector,
+  NumberField,
+  RefreshDataElement,
+  SelectStaticField,
+  Spinner,
+  Text,
+  Toggle,
+} from '@components/index';
+
+import {
+  useAccentColor,
+  useColors,
+  useCurrencySymbol,
+  useDisablingNumberFieldSymbol,
+  useFetchEntity,
+  useHasPermission,
+  useTranslation,
+} from '@hooks/index';
+
+import ColorSelector from './ColorSelector';
+import DimensionsModal from './DimensionsModal';
+import useInventoryGroupOptions from '../hooks/useInventoryGroupOptions';
+import useLabelCategoriesAdditionalOptions from '../hooks/useLabelCategoriesAdditionalOptions';
+
+type VariantLabel = {
+  categoryId: string;
+  labelId: string;
+};
+
+export type VariantCombination = {
+  id: string;
+  labels: VariantLabel[];
+  quantity: number;
+  price: number;
+  unlimited: boolean;
+  weight?: number;
+  height?: number;
+  width?: number;
+  length?: number;
+};
+
+type Props = {
+  isLoading?: boolean;
+  editPage?: boolean;
+  onRefresh?: () => void;
+  product: Product | undefined;
+  errors: ValidationErrors;
+  handleChange: (
+    field: keyof Product,
+    value:
+      | string
+      | number
+      | boolean
+      | Product['inventory_by_variant']
+      | string[]
+  ) => void;
+};
+
+const InventoryCard = ({
+  isLoading,
+  editPage,
+  onRefresh,
+  product,
+  errors,
+  handleChange,
+}: Props) => {
+  const t = useTranslation();
+
+  const hasPermission = useHasPermission();
+
+  const colors = useColors();
+  const accentColor = useAccentColor();
+  const { currencySymbol } = useCurrencySymbol();
+  const inventoryGroupOptions = useInventoryGroupOptions();
+  const labelCategoriesAdditionalOptions =
+    useLabelCategoriesAdditionalOptions();
+  const { disablingNumberFieldSymbol } = useDisablingNumberFieldSymbol();
+
+  const [labelCategories, setLabelCategories] = useState<LabelCategory[]>([]);
+  const [isLoadingLabelCategories, setIsLoadingLabelCategories] =
+    useState<boolean>(false);
+
+  const [labels, setLabels] = useState<LabelType[]>([]);
+  const [isLoadingLabels, setIsLoadingLabels] = useState<boolean>(false);
+
+  const [variantCombinations, setVariantCombinations] = useState<
+    VariantCombination[]
+  >([]);
+
+  useFetchEntity({
+    queryIdentifiers: ['/api/label_categories', 'selector'],
+    endpoint: '/api/label_categories?selector=true',
+    setEntities: setLabelCategories,
+    setIsLoading: setIsLoadingLabelCategories,
+    listQuery: true,
+    enableByPermission:
+      hasPermission('view_label_category') ||
+      hasPermission('create_label_category') ||
+      hasPermission('edit_label_category'),
+  });
+
+  useFetchEntity({
+    queryIdentifiers: ['/api/labels', 'selector'],
+    endpoint: '/api/labels?selector=true',
+    setEntities: setLabels,
+    setIsLoading: setIsLoadingLabels,
+    listQuery: true,
+    enableByPermission:
+      hasPermission('view_label') ||
+      hasPermission('create_label') ||
+      hasPermission('edit_label'),
+  });
+
+  const generateVariantCombinations = (
+    variants: Product['inventory_by_variant']
+  ): VariantCombination[] => {
+    if (!variants || variants.length === 0) return [];
+
+    const variantOptionsWithLabels = variants
+      .filter((variant) => variant.label_ids && variant.label_ids.length > 0)
+      .map((variant) => ({
+        categoryId: variant.label_category_id,
+        labelIds: variant.label_ids || [],
+      }));
+
+    if (variantOptionsWithLabels.length === 0) return [];
+
+    const combinations: VariantCombination[] = [];
+
+    const generateCombos = (
+      currentCombo: Array<{ categoryId: string; labelId: string }>,
+      remainingVariants: typeof variantOptionsWithLabels
+    ) => {
+      if (remainingVariants.length === 0) {
+        const id = currentCombo.map((c) => c.labelId).join('-');
+        combinations.push({
+          id,
+          labels: [...currentCombo],
+          quantity: 1,
+          price: 0,
+          unlimited: false,
+          weight: undefined,
+          height: undefined,
+          width: undefined,
+          length: undefined,
+        });
+        return;
+      }
+
+      const [currentVariant, ...rest] = remainingVariants;
+      currentVariant.labelIds.forEach((labelId) => {
+        generateCombos(
+          [
+            ...currentCombo,
+            { categoryId: currentVariant.categoryId as string, labelId },
+          ],
+          rest
+        );
+      });
+    };
+
+    generateCombos([], variantOptionsWithLabels);
+    return combinations;
+  };
+
+  const getLabelName = (labelId: string) => {
+    return labels.find((label) => label.id === labelId)?.name;
+  };
+
+  const handleCombinationChange = (
+    index: number,
+    field: string,
+    value: number | boolean
+  ) => {
+    const updatedCombinations = cloneDeep(variantCombinations);
+
+    set(updatedCombinations, `inventory_by_variant.${index}.${field}`, value);
+
+    setVariantCombinations(updatedCombinations);
+
+    //handleChange('inventory_by_variant', updatedCombinations);
+  };
+
+  const handleAddVariant = (labelCategoryId: string) => {
+    handleChange('inventory_by_variant', [
+      ...(product?.inventory_by_variant || []),
+      {
+        label_category_id: labelCategoryId,
+        quantity: 1,
+        label_ids: [],
+        price: 0,
+        weight: undefined,
+        width: undefined,
+        height: undefined,
+        length: undefined,
+      },
+    ]);
+  };
+
+  const getVariantLabel = (labelCategoryId: string) => {
+    if (labelCategoryId === 'color') {
+      return t('color');
+    }
+
+    return labelCategories.find(
+      (labelCategory) => labelCategory.id === labelCategoryId
+    )?.name;
+  };
+
+  useEffect(() => {
+    if (product?.inventory_by_variant) {
+      setVariantCombinations(
+        generateVariantCombinations(product.inventory_by_variant)
+      );
+    }
+  }, [product?.inventory_by_variant]);
+
+  return (
+    <Card
+      title={t('inventory')}
+      className="w-full"
+      isLoading={isLoading}
+      topRight={
+        editPage && onRefresh && typeof isLoading === 'boolean' ? (
+          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
+        ) : undefined
+      }
+    >
+      <Box className="flex flex-col space-y-4 pb-2">
+        <SelectStaticField
+          mode="single"
+          required
+          label={t('group_inventory_by')}
+          options={inventoryGroupOptions}
+          value={product?.inventory_group ? [product?.inventory_group] : []}
+          onChange={(value) => {
+            handleChange('inventory_group', value as string);
+
+            setTimeout(() => {
+              handleChange('inventory_by_variant', []);
+            }, 50);
+          }}
+        />
+
+        {product?.inventory_group === 'default' && (
+          <>
+            <Box className="flex items-center space-x-10">
+              <Label>{t('unlimited_quantity')}</Label>
+
+              <Toggle
+                checked={Boolean(product?.unlimited_default_quantity)}
+                onChange={(value) => {
+                  handleChange('unlimited_default_quantity', value);
+
+                  if (value) {
+                    handleChange(
+                      'inventory_by_group.0.quantity' as keyof Product,
+                      0
+                    );
+                  }
+                }}
+              />
+            </Box>
+
+            <NumberField
+              required
+              min={0}
+              label={t('quantity')}
+              value={get(product, 'inventory_by_group.0.quantity', 0)}
+              onValueChange={(value) =>
+                handleChange(
+                  'inventory_by_group.0.quantity' as keyof Product,
+                  value
+                )
+              }
+              disabled={Boolean(product?.unlimited_default_quantity)}
+              disablePlaceholderValue={disablingNumberFieldSymbol}
+              errorMessage={
+                errors?.['inventory_by_group.0.quantity'] &&
+                t(errors['inventory_by_group.0.quantity'])
+              }
+            />
+
+            <NumberField
+              min={0}
+              required
+              label={t('price_by_item')}
+              value={product?.price_by_item || 0}
+              onValueChange={(value) => handleChange('price_by_item', value)}
+              addonAfter={currencySymbol}
+              errorMessage={
+                errors?.['price_by_item'] && t(errors['price_by_item'])
+              }
+            />
+          </>
+        )}
+
+        {product?.inventory_group === 'variant' && (
+          <Box className="flex flex-col space-y-4 w-full">
+            {isLoadingLabelCategories || isLoadingLabels ? (
+              <Box className="flex items-center justify-center pt-5">
+                <Spinner />
+              </Box>
+            ) : (
+              <>
+                <Box className="max-w-[20rem]">
+                  <LabelCategoriesSelector
+                    label={t('options')}
+                    placeholder={t('select_options')}
+                    value={[]}
+                    onChange={(value) => handleAddVariant(value?.[0])}
+                    withActionButton
+                    exclude={product?.inventory_by_variant?.map(
+                      (variant) => variant.label_category_id as string
+                    )}
+                    additionalOptions={labelCategoriesAdditionalOptions}
+                  />
+                </Box>
+
+                {Boolean(product.inventory_by_variant.length) && (
+                  <Box className="flex flex-col w-full">
+                    <Box className="flex flex-col w-full pt-6">
+                      {product.inventory_by_variant.map((variant, index) => (
+                        <Box
+                          key={index}
+                          className="flex items-center justify-between max-w-[40rem] py-3"
+                        >
+                          <Box className="flex items-center space-x-2">
+                            <Icon name="dotFill" size="1.1rem" />
+
+                            <Text>
+                              {getVariantLabel(
+                                variant.label_category_id as string
+                              )}
+                            </Text>
+                          </Box>
+
+                          <Box className="flex items-center space-x-2 w-[20rem]">
+                            {variant.label_category_id === 'color' ? (
+                              <Box className="flex items-center gap-x-2">
+                                {!(variant.label_ids || []).length && (
+                                  <Text className="whitespace-nowrap text-sm-mid">
+                                    {t('no_colors_added')}
+                                  </Text>
+                                )}
+
+                                <ColorSelector
+                                  colors={variant.label_ids || []}
+                                  handleChange={(value) =>
+                                    handleChange(
+                                      `inventory_by_variant.${index}.label_ids` as keyof Product,
+                                      value
+                                    )
+                                  }
+                                  addColor={() =>
+                                    handleChange(
+                                      `inventory_by_variant.${index}.label_ids` as keyof Product,
+                                      [
+                                        ...(variant.label_ids || []),
+                                        accentColor,
+                                      ]
+                                    )
+                                  }
+                                />
+                              </Box>
+                            ) : (
+                              <LabelsSelector
+                                label={t('variants')}
+                                placeholder={t('select_variants')}
+                                value={variant.label_ids || []}
+                                onChange={(value) =>
+                                  handleChange(
+                                    `inventory_by_variant.${index}.label_ids` as keyof Product,
+                                    value
+                                  )
+                                }
+                                withActionButton
+                                withoutOptionalText
+                                labelCategoryId={variant.label_category_id}
+                                withoutLabelCategorySelectorRefreshData
+                                disableLabelCategorySelector
+                              />
+                            )}
+                          </Box>
+                        </Box>
+                      ))}
+                    </Box>
+
+                    <Divider
+                      style={{
+                        marginTop: '1.25rem',
+                        marginBottom: '1.25rem',
+                      }}
+                    />
+
+                    <Box className="flex flex-col space-y-4 w-full">
+                      <Text className="font-medium text-lg">
+                        {t('variant_combinations')}
+                      </Text>
+
+                      {variantCombinations.length > 0 ? (
+                        <Box className="flex flex-col space-y-4">
+                          {variantCombinations.map((combination, index) => (
+                            <Box
+                              key={index}
+                              className="flex flex-col gap-y-6 border px-4 py-6"
+                              style={{
+                                border: `1px solid ${colors.$1}`,
+                                backgroundColor: colors.$36,
+                              }}
+                            >
+                              <Box className="flex items-center space-x-2">
+                                <Box>
+                                  <Icon name="package" size="1.3rem" />
+                                </Box>
+
+                                <Box className="flex items-center space-x-2">
+                                  {combination.labels.map((label, index) => {
+                                    const isColor =
+                                      colorString.get.rgb(label.labelId) !==
+                                      null;
+
+                                    if (isColor) {
+                                      return (
+                                        <Box
+                                          key={index}
+                                          className="rounded-full"
+                                          style={{
+                                            width: '1.5rem',
+                                            height: '1.5rem',
+                                            backgroundColor: label.labelId,
+                                          }}
+                                        />
+                                      );
+                                    }
+
+                                    return (
+                                      <Text key={index}>
+                                        {getLabelName(label.labelId)}
+                                      </Text>
+                                    );
+                                  })}
+                                </Box>
+                              </Box>
+
+                              <Box className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 items-end gap-4">
+                                <Box className="flex flex-col space-y-1">
+                                  <Box className="flex items-center space-x-2">
+                                    <Label>{t('unlimited_quantity')}</Label>
+
+                                    <Toggle
+                                      checked={combination.unlimited}
+                                      onChange={(value) => {
+                                        handleCombinationChange(
+                                          index,
+                                          'unlimited',
+                                          value
+                                        );
+
+                                        setTimeout(() => {
+                                          if (value) {
+                                            handleCombinationChange(
+                                              index,
+                                              'quantity',
+                                              0
+                                            );
+                                          }
+                                        }, 100);
+                                      }}
+                                    />
+                                  </Box>
+
+                                  <NumberField
+                                    label={t('quantity')}
+                                    placeHolder={t('enter_quantity')}
+                                    value={combination.quantity}
+                                    onValueChange={(value) =>
+                                      handleCombinationChange(
+                                        index,
+                                        'quantity',
+                                        value
+                                      )
+                                    }
+                                    min={0}
+                                    disabled={combination.unlimited}
+                                    withoutOptionalText
+                                  />
+                                </Box>
+
+                                <NumberField
+                                  label={t('price')}
+                                  placeHolder={t('enter_price')}
+                                  value={combination.price}
+                                  onValueChange={(value) =>
+                                    handleCombinationChange(
+                                      index,
+                                      'price',
+                                      value
+                                    )
+                                  }
+                                  addonAfter={currencySymbol}
+                                  min={0}
+                                  withoutOptionalText
+                                />
+
+                                <DimensionsModal
+                                  selectedCombinationIndex={index}
+                                  handleCombinationChange={
+                                    handleCombinationChange
+                                  }
+                                  variantCombinations={variantCombinations}
+                                />
+                              </Box>
+                            </Box>
+                          ))}
+                        </Box>
+                      ) : (
+                        <Box className="text-center py-8 text-gray-500">
+                          <Icon
+                            name="package"
+                            size="2rem"
+                            className="mx-auto mb-2 opacity-50"
+                          />
+                          <Text>{t('no_combinations_available')}</Text>
+                          <Text className="text-sm">
+                            {t('add_variants_to_generate_combinations')}
+                          </Text>
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
+                )}
+
+                {!product.inventory_by_variant.length && (
+                  <Text className="text-sm text-center pt-5">
+                    {t('no_options_added')}
+                  </Text>
+                )}
+              </>
+            )}
+          </Box>
+        )}
+      </Box>
+    </Card>
+  );
+};
+
+export default InventoryCard;

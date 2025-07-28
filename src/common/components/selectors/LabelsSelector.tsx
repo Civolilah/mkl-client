@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { INITIAL_LABEL, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, useToast } from '@helpers/index';
@@ -36,6 +36,8 @@ type Props = {
   additionalOptions?: Option[];
   withoutOptionalText?: boolean;
   labelCategoryId?: string;
+  disableLabelCategorySelector?: boolean;
+  withoutLabelCategorySelectorRefreshData?: boolean;
 };
 
 const LabelCategoriesSelector = (props: Props) => {
@@ -56,6 +58,8 @@ const LabelCategoriesSelector = (props: Props) => {
     additionalOptions,
     withoutOptionalText,
     labelCategoryId,
+    disableLabelCategorySelector,
+    withoutLabelCategorySelectorRefreshData,
   } = props;
 
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -68,6 +72,7 @@ const LabelCategoriesSelector = (props: Props) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setLabelPayload(INITIAL_LABEL);
+    setErrors({});
   };
 
   const handleOpenModal = () => {
@@ -111,10 +116,22 @@ const LabelCategoriesSelector = (props: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (labelCategoryId && isModalOpen) {
+      setLabelPayload(
+        (current) =>
+          current && {
+            ...current,
+            label_category_id: labelCategoryId,
+          }
+      );
+    }
+  }, [labelCategoryId, isModalOpen]);
+
   return (
     <>
       <Modal
-        title={t('new_label_category')}
+        title={t('new_label')}
         visible={isModalOpen}
         onClose={handleCloseModal}
         disableClosing={isFormBusy}
@@ -126,6 +143,10 @@ const LabelCategoriesSelector = (props: Props) => {
             setLabel={setLabelPayload}
             errors={errors}
             onlyFields
+            disableLabelCategorySelector={disableLabelCategorySelector}
+            withoutLabelCategorySelectorRefreshData={
+              withoutLabelCategorySelectorRefreshData
+            }
           />
 
           <Button
@@ -140,6 +161,11 @@ const LabelCategoriesSelector = (props: Props) => {
       </Modal>
 
       <SelectDataField
+        queryIdentifiers={
+          labelCategoryId
+            ? ['/api/labels', 'selector', labelCategoryId]
+            : ['/api/labels', 'selector']
+        }
         label={label}
         placeholder={placeholder}
         valueKey="id"

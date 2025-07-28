@@ -11,13 +11,14 @@
 
 import { Dispatch, SetStateAction, useEffect } from 'react';
 
-import { endpoint, request } from '@helpers/index';
+import { endpoint as endpointHelper, request } from '@helpers/index';
 import { cloneDeep } from 'lodash';
 import { useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 type Params<T> = {
-  queryKey: string;
+  queryIdentifiers: string[];
+  endpoint: string;
   setEntity?: Dispatch<SetStateAction<T | undefined>>;
   setEntities?: Dispatch<SetStateAction<T[]>>;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
@@ -29,7 +30,8 @@ type Params<T> = {
 
 const useFetchEntity = <T>(params: Params<T>) => {
   const {
-    queryKey,
+    queryIdentifiers,
+    endpoint,
     setEntity,
     setIsLoading,
     setInitialResponse,
@@ -47,13 +49,13 @@ const useFetchEntity = <T>(params: Params<T>) => {
     isLoading,
     refetch,
   } = useQuery(
-    listQuery ? [queryKey] : [queryKey, id],
+    listQuery ? queryIdentifiers : [...queryIdentifiers, id],
     ({ signal }) =>
       request(
         'GET',
         listQuery
-          ? queryKey
-          : endpoint(`${queryKey}/:id`, {
+          ? endpoint
+          : endpointHelper(`${endpoint}/:id`, {
               id: id as string,
             }),
         {},
@@ -120,7 +122,7 @@ const useFetchEntity = <T>(params: Params<T>) => {
   }, [entityResponse, isLoading]);
 
   useEffect(() => {
-    queryClient.invalidateQueries(queryKey);
+    queryClient.invalidateQueries(queryIdentifiers);
   }, []);
 
   return { refresh: handleRefresh };

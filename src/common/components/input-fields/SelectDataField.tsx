@@ -58,6 +58,8 @@ type Props = {
   actionButton?: ReactNode;
   additionalOptions?: Option[];
   exclude?: string[];
+  disabled?: boolean;
+  queryIdentifiers: string[];
 };
 
 export type Option = {
@@ -89,6 +91,8 @@ const SelectDataField = (props: Props) => {
     actionButton,
     additionalOptions,
     exclude = [],
+    disabled,
+    queryIdentifiers,
   } = props;
 
   const [options, setOptions] = useState<Option[]>([]);
@@ -97,7 +101,8 @@ const SelectDataField = (props: Props) => {
   const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
 
   const { refresh } = useFetchEntity({
-    queryKey: endpoint,
+    queryIdentifiers,
+    endpoint,
     setEntities: setOptions,
     setIsLoading,
     listQuery: true,
@@ -137,7 +142,7 @@ const SelectDataField = (props: Props) => {
   };
 
   useEffect(() => {
-    setFilteredOptions(cloneDeep(options));
+    setFilteredOptions(cloneDeep([...(additionalOptions || []), ...options]));
   }, [options, additionalOptions]);
 
   useEffect(() => {
@@ -174,7 +179,7 @@ const SelectDataField = (props: Props) => {
             options={filteredOptions.filter(
               (option) => !exclude.includes(option.value)
             )}
-            disabled={isLoading}
+            disabled={disabled || isLoading}
             loading={isLoading}
             maxTagTextLength={maxTagTextLength}
             maxTagCount={maxTagCount}
@@ -225,7 +230,7 @@ const SelectDataField = (props: Props) => {
             options={filteredOptions.filter(
               (option) => !exclude.includes(option.value)
             )}
-            disabled={isLoading}
+            disabled={disabled || isLoading}
             loading={isLoading}
             onSearch={handleSearch}
             filterOption={false}

@@ -25,14 +25,39 @@ type Props = {
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
+  onlyFields?: boolean;
 };
 
 const BrandForm = (props: Props) => {
   const t = useTranslation();
 
-  const { brand, setBrand, errors, editPage, isLoading, onRefresh } = props;
+  const {
+    brand,
+    setBrand,
+    errors,
+    editPage,
+    isLoading,
+    onRefresh,
+    onlyFields,
+  } = props;
 
   const handleChange = useHandleChange({ setBrand });
+
+  if (onlyFields) {
+    return (
+      <>
+        <TextField
+          required
+          label={t('name')}
+          placeHolder={t('brand_name_placeholder')}
+          value={brand?.name || ''}
+          onValueChange={(value) => handleChange('name', value)}
+          changeOnBlur
+          errorMessage={errors?.name && t(errors.name)}
+        />
+      </>
+    );
+  }
 
   return (
     <Card

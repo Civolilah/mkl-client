@@ -43,6 +43,7 @@ const COLORS = {
   $33: '#eff6ff', // Image uploader active background
   $34: '#6B7280', // Images uploader text color
   $35: '#e5e7eb', // Divider color
+  $36: '#f9fafb', // Variant combination background color
 };
 
 const useColors = () => {

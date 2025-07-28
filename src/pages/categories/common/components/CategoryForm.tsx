@@ -25,15 +25,39 @@ type Props = {
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
+  onlyFields?: boolean;
 };
 
 const CategoryForm = (props: Props) => {
   const t = useTranslation();
 
-  const { category, setCategory, errors, editPage, isLoading, onRefresh } =
-    props;
+  const {
+    category,
+    setCategory,
+    errors,
+    editPage,
+    isLoading,
+    onRefresh,
+    onlyFields,
+  } = props;
 
   const handleChange = useHandleChange({ setCategory });
+
+  if (onlyFields) {
+    return (
+      <>
+        <TextField
+          required
+          label={t('name')}
+          placeHolder={t('category_name_placeholder')}
+          value={category?.name || ''}
+          onValueChange={(value) => handleChange('name', value)}
+          changeOnBlur
+          errorMessage={errors?.name && t(errors.name)}
+        />
+      </>
+    );
+  }
 
   return (
     <Card

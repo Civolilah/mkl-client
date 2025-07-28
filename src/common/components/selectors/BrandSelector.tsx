@@ -10,16 +10,18 @@
 
 import { useState } from 'react';
 
-import { v4 as uuidv4 } from 'uuid';
+import { INITIAL_BRAND, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
+import { request, useToast } from '@helpers/index';
 
-import { Brand } from '@interfaces/index';
+import BrandForm from '@pages/brands/common/components/BrandForm';
+import { validateBrand } from '@pages/brands/common/helpers/helpers';
 
-import { Box, Button, Modal, TextField } from '@components/index';
-import SelectDataField, {
-  Option,
-} from '@components/input-fields/SelectDataField';
+import { Brand, ValidationErrors } from '@interfaces/index';
 
-import { useHasPermission, useTranslation } from '@hooks/index';
+import { Box, Button, Modal } from '@components/index';
+import SelectDataField from '@components/input-fields/SelectDataField';
+
+import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 
 type Props = {
   label?: string;
@@ -30,11 +32,15 @@ type Props = {
   errorMessage: string;
   withActionButton?: boolean;
   mode?: 'single' | 'multiple';
+  onBrandCreated?: (brandId: string) => void;
 };
 
 const BrandSelector = (props: Props) => {
   const t = useTranslation();
 
+  const toast = useToast();
+
+  const refetch = useRefetch();
   const hasPermission = useHasPermission();
 
   const {
@@ -46,53 +52,95 @@ const BrandSelector = (props: Props) => {
     placeholder,
     withActionButton,
     mode = 'multiple',
+    onBrandCreated,
   } = props;
 
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [brandPayload, setBrandPayload] = useState<Brand>({
-    name: '',
-  });
-
-  const [brandOptions, setBrandOptions] = useState<Option[]>([]);
+  const [brandPayload, setBrandPayload] = useState<Brand | undefined>(
+    INITIAL_BRAND
+  );
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleCreateBrand = () => {
-    setBrandOptions([
-      { label: brandPayload.name, value: uuidv4(), newOption: true },
-    ]);
-    setBrandPayload({ name: '' });
+  const handleCloseModal = () => {
+    setBrandPayload(INITIAL_BRAND);
     setIsModalOpen(false);
   };
 
-  const handleClose = () => {
-    setBrandPayload({ name: '' });
-    setBrandOptions([]);
-    setIsModalOpen(false);
+  const handleCreateBrand = async () => {
+    if (!brandPayload) {
+      return;
+    }
+
+    if (!isFormBusy) {
+      setErrors({});
+
+      const validationErrors = await validateBrand(brandPayload);
+
+      if (validationErrors) {
+        setErrors(validationErrors);
+        return;
+      }
+
+      toast.loading();
+
+      setIsFormBusy(true);
+
+      request('POST', '/api/brands', brandPayload)
+        .then((response) => {
+          toast.success('created_brand');
+
+          refetch(['brands']);
+
+          setTimeout(() => {
+            onBrandCreated?.(response.data.id);
+          }, 100);
+
+          handleCloseModal();
+        })
+        .catch((error) => {
+          if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
+            toast.dismiss();
+            setErrors(error.response.data.errors);
+          }
+        })
+        .finally(() => setIsFormBusy(false));
+    }
   };
 
   return (
     <>
-      <Modal title={t('new_brand')} visible={isModalOpen} onClose={handleClose}>
+      <Modal
+        title={t('new_brand')}
+        visible={isModalOpen}
+        onClose={handleCloseModal}
+        disableClosing={isFormBusy}
+      >
         <Box className="flex flex-col space-y-6 w-full">
-          <TextField
-            label={t('name')}
-            placeHolder={t('brand_name_placeholder')}
-            value={brandPayload.name}
-            onValueChange={(value) =>
-              setBrandPayload((current) => ({ ...current, name: value }))
-            }
+          <BrandForm
+            brand={brandPayload}
+            setBrand={setBrandPayload}
+            errors={errors}
+            onlyFields
           />
 
-          <Button type="primary" onClick={handleCreateBrand}>
+          <Button
+            type="primary"
+            onClick={handleCreateBrand}
+            disabled={isFormBusy}
+            disabledWithLoadingIcon={isFormBusy}
+          >
             {t('done')}
           </Button>
         </Box>
       </Modal>
 
       <SelectDataField
+        queryIdentifiers={['/api/brands', 'selector']}
         mode={mode}
         label={label}
         placeholder={placeholder}
@@ -120,7 +168,6 @@ const BrandSelector = (props: Props) => {
             </Button>
           ) : undefined
         }
-        additionalOptions={brandOptions}
       />
     </>
   );

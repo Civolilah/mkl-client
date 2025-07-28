@@ -27,7 +27,8 @@ const Employees = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { refresh } = useFetchEntity<User>({
-    queryKey: '/api/users',
+    queryIdentifiers: ['/api/users'],
+    endpoint: '/api/users',
     setEntities: setUsers,
     setIsLoading,
     listQuery: true,

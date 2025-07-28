@@ -27,7 +27,8 @@ const Suppliers = () => {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
 
   const { refresh } = useFetchEntity<Supplier>({
-    queryKey: '/api/suppliers',
+    queryIdentifiers: ['/api/suppliers'],
+    endpoint: '/api/suppliers',
     setEntities: setSuppliers,
     setIsLoading,
     listQuery: true,

@@ -36,6 +36,8 @@ type Props = {
   debounce?: number;
   withoutOptionalText?: boolean;
   addonAfter?: ReactNode;
+  addonBefore?: ReactNode;
+  disablePlaceholderValue?: string;
 };
 
 const NumberField = (props: Props) => {
@@ -53,6 +55,7 @@ const NumberField = (props: Props) => {
     debounce,
     withoutOptionalText,
     addonAfter,
+    disablePlaceholderValue,
   } = props;
 
   const [currentValue, setCurrentValue] = useState<number>(value);
@@ -88,6 +91,13 @@ const NumberField = (props: Props) => {
         className="shadow-none"
         rootClassName="shadow-none"
         value={currentValue}
+        formatter={(value) => {
+          if (disablePlaceholderValue && disabled) {
+            return disablePlaceholderValue;
+          }
+
+          return String(value || '');
+        }}
         placeholder={placeHolder}
         size={size === 'semi-large' ? 'middle' : size}
         onChange={(value) => setCurrentValue(value || 0)}

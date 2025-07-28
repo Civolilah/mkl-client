@@ -57,7 +57,8 @@ const Edit = () => {
   const [initialResponse, setInitialResponse] = useState<Label | undefined>();
 
   const { refresh } = useFetchEntity<Label>({
-    queryKey: '/api/labels',
+    queryIdentifiers: ['/api/labels'],
+    endpoint: '/api/labels',
     setEntity: setLabel,
     setIsLoading,
     setInitialResponse,

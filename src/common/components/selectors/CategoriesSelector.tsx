@@ -11,40 +11,39 @@
 import { useState } from 'react';
 
 import {
-  INITIAL_LABEL_CATEGORY,
+  INITIAL_CATEGORY,
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
 import { request, useToast } from '@helpers/index';
 
-import LabelCategoryForm from '@pages/label-categories/common/components/LabelCategoryForm';
-import { validateLabelCategory } from '@pages/label-categories/common/helpers/helpers';
+import CategoryForm from '@pages/categories/common/components/CategoryForm';
+import { validateCategory } from '@pages/categories/common/helpers/helpers';
 
-import { LabelCategory, ValidationErrors } from '@interfaces/index';
+import { Category, ValidationErrors } from '@interfaces/index';
 
 import { Box, Button, Modal } from '@components/index';
-import SelectDataField, {
-  Option,
-} from '@components/input-fields/SelectDataField';
+import SelectDataField from '@components/input-fields/SelectDataField';
 
-import { useHasPermission, useTranslation } from '@hooks/index';
+import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 
 type Props = {
   label?: string;
   placeholder?: string;
   value: string[];
   onChange: (value: string | string[]) => void;
-  onClear?: () => void;
-  errorMessage?: string;
+  onClear: () => void;
+  errorMessage: string;
   withActionButton?: boolean;
-  additionalOptions?: Option[];
-  exclude?: string[];
+  mode?: 'single' | 'multiple';
+  onCategoryCreated?: (categoryId: string) => void;
 };
 
-const LabelCategoriesSelector = (props: Props) => {
+const CategoriesSelector = (props: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const hasPermission = useHasPermission();
 
   const {
@@ -55,36 +54,35 @@ const LabelCategoriesSelector = (props: Props) => {
     label,
     placeholder,
     withActionButton,
-    additionalOptions,
-    exclude = [],
+    mode = 'multiple',
+    onCategoryCreated,
   } = props;
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [labelCategoryPayload, setLabelCategoryPayload] = useState<
-    LabelCategory | undefined
-  >(INITIAL_LABEL_CATEGORY);
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setLabelCategoryPayload(INITIAL_LABEL_CATEGORY);
-  };
+  const [categoryPayload, setCategoryPayload] = useState<Category | undefined>(
+    INITIAL_CATEGORY
+  );
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleCreateLabelCategory = async () => {
-    if (!labelCategoryPayload) {
+  const handleCloseModal = () => {
+    setCategoryPayload(INITIAL_CATEGORY);
+    setIsModalOpen(false);
+  };
+
+  const handleCreateBrand = async () => {
+    if (!categoryPayload) {
       return;
     }
 
     if (!isFormBusy) {
       setErrors({});
 
-      const validationErrors =
-        await validateLabelCategory(labelCategoryPayload);
+      const validationErrors = await validateCategory(categoryPayload);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -95,11 +93,15 @@ const LabelCategoriesSelector = (props: Props) => {
 
       setIsFormBusy(true);
 
-      request('POST', '/api/label_categories', labelCategoryPayload)
+      request('POST', '/api/categories', categoryPayload)
         .then((response) => {
           toast.success('created_category');
 
-          onChange([response.data.id]);
+          refetch(['categories']);
+
+          setTimeout(() => {
+            onCategoryCreated?.(response.data.id);
+          }, 100);
 
           handleCloseModal();
         })
@@ -116,23 +118,22 @@ const LabelCategoriesSelector = (props: Props) => {
   return (
     <>
       <Modal
-        title={t('new_label_category')}
+        title={t('new_brand')}
         visible={isModalOpen}
         onClose={handleCloseModal}
         disableClosing={isFormBusy}
-        size="small"
       >
-        <Box className="flex flex-col space-y-4 w-full">
-          <LabelCategoryForm
-            labelCategory={labelCategoryPayload}
-            setLabelCategory={setLabelCategoryPayload}
+        <Box className="flex flex-col space-y-6 w-full">
+          <CategoryForm
+            category={categoryPayload}
+            setCategory={setCategoryPayload}
             errors={errors}
             onlyFields
           />
 
           <Button
             type="primary"
-            onClick={handleCreateLabelCategory}
+            onClick={handleCreateBrand}
             disabled={isFormBusy}
             disabledWithLoadingIcon={isFormBusy}
           >
@@ -142,16 +143,17 @@ const LabelCategoriesSelector = (props: Props) => {
       </Modal>
 
       <SelectDataField
-        queryIdentifiers={['/api/label_categories', 'selector']}
+        queryIdentifiers={['/api/categories', 'selector']}
+        mode={mode}
         label={label}
         placeholder={placeholder}
         valueKey="id"
         labelKey="name"
-        endpoint="/api/label_categories?selector=true"
+        endpoint="/api/categories?selector=true"
         enableByPermission={
-          hasPermission('create_label_category') ||
-          hasPermission('view_label_category') ||
-          hasPermission('edit_label_category')
+          hasPermission('create_category') ||
+          hasPermission('view_category') ||
+          hasPermission('edit_category')
         }
         withoutRefreshData
         value={value}
@@ -160,16 +162,18 @@ const LabelCategoriesSelector = (props: Props) => {
         errorMessage={errorMessage}
         actionButton={
           withActionButton ? (
-            <Button type="primary" onClick={handleOpenModal}>
-              {t('new_label_category')}
+            <Button
+              className="w-full"
+              type="primary"
+              onClick={() => setTimeout(handleOpenModal, 200)}
+            >
+              {t('new_category')}
             </Button>
           ) : undefined
         }
-        additionalOptions={additionalOptions}
-        exclude={exclude}
       />
     </>
   );
 };
 
-export default LabelCategoriesSelector;
+export default CategoriesSelector;

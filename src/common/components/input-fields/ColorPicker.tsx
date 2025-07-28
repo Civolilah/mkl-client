@@ -101,12 +101,10 @@ const ColorPicker = (props: Props) => {
   return (
     <>
       <Box
-        className={classNames(
-          'flex flex-col justify-center items-start space-y-1',
-          {
-            'w-full': width === 'full',
-          }
-        )}
+        className={classNames('flex flex-col justify-center items-start', {
+          'w-full': width === 'full',
+          'space-y-1': label,
+        })}
       >
         {label && (
           <Box className="flex items-center space-x-1">
@@ -120,9 +118,10 @@ const ColorPicker = (props: Props) => {
         )}
 
         <Div
-          className={classNames('cursor-pointer mt-2', {
+          className={classNames('cursor-pointer', {
             'w-full': width === 'full',
             'hover:opacity-75': productQuantityPreview,
+            'mt-2': label,
           })}
           onClick={() => setIsModalOpen(true)}
           theme={{ borderColor: colors.$1, hoverBorderColor: accentColor }}
@@ -141,7 +140,7 @@ const ColorPicker = (props: Props) => {
               {productQuantityPreview ? (
                 <Box
                   style={{
-                    width: '7rem',
+                    width: '3rem',
                     height: '2.25rem',
                     backgroundColor: color,
                   }}

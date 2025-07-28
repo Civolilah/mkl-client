@@ -27,7 +27,8 @@ const Products = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   const { refresh } = useFetchEntity<Product>({
-    queryKey: '/api/products',
+    queryIdentifiers: ['/api/products'],
+    endpoint: '/api/products',
     setEntities: setProducts,
     setIsLoading,
     listQuery: true,

@@ -263,5 +263,6 @@
     "select_options": "Select options",
     "variants": "Variants",
     "select_variants": "Select variants",
-    "no_options_added": "No options added."
+    "no_options_added": "No options added.",
+    "no_colors_added": "No colors added."
 }

@@ -1,0 +1,70 @@
+/**
+ * MKL (https://mkl.ba).
+ *
+ * @link https://github.com/mkl source repository
+ *
+ * @copyright Copyright (c) 2024. MKL (https://mkl.ba)
+ *
+ * @license https://www.elastic.co/licensing/elastic-license
+ */
+
+import { useQueryClient } from 'react-query';
+
+type RefetchEntity =
+  | 'brands'
+  | 'labels'
+  | 'label_categories'
+  | 'products'
+  | 'categories';
+
+type Endpoint =
+  | '/api/brands'
+  | '/api/labels'
+  | '/api/label_categories'
+  | '/api/products'
+  | '/api/categories';
+
+type RefetchObject = {
+  mainEndpoint: Endpoint;
+  dependencies: Endpoint[];
+};
+
+const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
+  brands: {
+    mainEndpoint: '/api/brands',
+    dependencies: [],
+  },
+  labels: {
+    mainEndpoint: '/api/labels',
+    dependencies: [],
+  },
+  label_categories: {
+    mainEndpoint: '/api/label_categories',
+    dependencies: [],
+  },
+  products: {
+    mainEndpoint: '/api/products',
+    dependencies: [],
+  },
+  categories: {
+    mainEndpoint: '/api/categories',
+    dependencies: [],
+  },
+};
+
+const useRefetch = () => {
+  const queryClient = useQueryClient();
+
+  return (refetchEntity: RefetchEntity[]) => {
+    refetchEntity.forEach((entity) => {
+      const { mainEndpoint, dependencies } = REFETCH_DEPENDENCIES[entity];
+      queryClient.invalidateQueries([mainEndpoint]);
+
+      dependencies.forEach((dependency) => {
+        queryClient.invalidateQueries([dependency]);
+      });
+    });
+  };
+};
+
+export default useRefetch;

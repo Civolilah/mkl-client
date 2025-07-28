@@ -59,7 +59,8 @@ const Edit = () => {
   >();
 
   const { refresh } = useFetchEntity<Subsidiary>({
-    queryKey: '/api/categories',
+    queryIdentifiers: ['/api/categories'],
+    endpoint: '/api/categories',
     setEntity: setCategory,
     setIsLoading,
     setInitialResponse,
