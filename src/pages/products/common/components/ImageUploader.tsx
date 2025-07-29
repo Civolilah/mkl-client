@@ -78,7 +78,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
     initialImages = [],
     className = '',
     acceptedFileTypes = ['.jpeg', '.jpg', '.gif', '.webp'],
-    maxFileSize = 10 * 1024 * 1024,
+    maxFileSize = 100 * 1024 * 1024,
     disabled = false,
     setCurrentImages,
   } = props;

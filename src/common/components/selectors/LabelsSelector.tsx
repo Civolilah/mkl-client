@@ -135,7 +135,7 @@ const LabelCategoriesSelector = (props: Props) => {
         visible={isModalOpen}
         onClose={handleCloseModal}
         disableClosing={isFormBusy}
-        size="small"
+        size="regular"
       >
         <Box className="flex flex-col space-y-4 w-full">
           <LabelForm

@@ -23,7 +23,7 @@ import {
 type Props = {
   min?: number;
   max?: number;
-  size?: 'large' | 'middle' | 'small' | 'semi-large';
+  size?: 'large' | 'middle' | 'small';
   type?: 'text' | 'password' | 'email' | 'textarea';
   label?: string;
   value: number;
@@ -38,6 +38,7 @@ type Props = {
   addonAfter?: ReactNode;
   addonBefore?: ReactNode;
   disablePlaceholderValue?: string;
+  falsyValuePlaceholder?: string;
 };
 
 const NumberField = (props: Props) => {
@@ -56,6 +57,7 @@ const NumberField = (props: Props) => {
     withoutOptionalText,
     addonAfter,
     disablePlaceholderValue,
+    falsyValuePlaceholder,
   } = props;
 
   const [currentValue, setCurrentValue] = useState<number>(value);
@@ -96,10 +98,19 @@ const NumberField = (props: Props) => {
             return disablePlaceholderValue;
           }
 
+          if (falsyValuePlaceholder && (!value || String(value) === '0')) {
+            return '';
+          }
+
           return String(value || '');
         }}
-        placeholder={placeHolder}
-        size={size === 'semi-large' ? 'middle' : size}
+        placeholder={
+          (!currentValue || String(currentValue) === '0') &&
+          falsyValuePlaceholder
+            ? falsyValuePlaceholder
+            : placeHolder
+        }
+        size={size}
         onChange={(value) => setCurrentValue(value || 0)}
         disabled={disabled}
         addonAfter={addonAfter}

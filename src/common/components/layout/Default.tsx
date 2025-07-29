@@ -225,7 +225,7 @@ const Default = (props: Props) => {
                           <Button
                             type="primary"
                             onClick={onSaveClick}
-                            icon={<Icon name="save" size="1rem" />}
+                            icon={<Icon name="save" size="1.175rem" />}
                             disabled={disabledSaveButton}
                             disabledWithLoadingIcon={
                               disabledSaveButtonWithLoadingIcon

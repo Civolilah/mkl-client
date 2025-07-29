@@ -10,9 +10,20 @@
 
 import { useState } from 'react';
 
-import { Box, Button, Icon, Modal, NumberField, Text } from '@components/index';
+import {
+  Box,
+  Button,
+  Icon,
+  Modal,
+  NumberField,
+  TextField,
+} from '@components/index';
 
-import { useTranslation } from '@hooks/index';
+import {
+  useNumberFieldSymbols,
+  useSymbols,
+  useTranslation,
+} from '@hooks/index';
 
 import { VariantCombination } from './InventoryCard';
 
@@ -33,88 +44,160 @@ const DimensionsModal = ({
 }: Props) => {
   const t = useTranslation();
 
+  const { falsyValuePlaceholder } = useNumberFieldSymbols();
+  const { weightSymbol, dimensionSymbol, diameterSymbol } = useSymbols();
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleDone = () => {
+    setIsModalOpen(false);
+  };
+
+  const formatDimensions = (
+    combination: VariantCombination,
+    weightSymbol: string,
+    dimensionSymbol: string
+  ) => {
+    const parts = [];
+
+    parts.push(
+      `${combination.weight || `${falsyValuePlaceholder} `}${weightSymbol}`
+    );
+
+    parts.push(
+      `${combination.height || `${falsyValuePlaceholder} `}${dimensionSymbol}`
+    );
+
+    parts.push(
+      `${combination.width || falsyValuePlaceholder}${dimensionSymbol}`
+    );
+
+    parts.push(
+      `${combination.length || `${falsyValuePlaceholder} `}${dimensionSymbol}`
+    );
+
+    parts.push(
+      `⌀ ${combination.diameter || `${falsyValuePlaceholder} `}${diameterSymbol}`
+    );
+
+    return parts.length > 0 ? parts.join(', ') : '--';
+  };
 
   return (
     <>
-      <Button
-        type="default"
+      <TextField
+        value={
+          selectedCombinationIndex !== null
+            ? formatDimensions(
+                variantCombinations[selectedCombinationIndex],
+                weightSymbol,
+                dimensionSymbol
+              )
+            : '--'
+        }
         onClick={() => setIsModalOpen(true)}
-        className="flex items-center space-x-2"
-      >
-        <Box>
-          <Icon name="ruler" size="1rem" />
-        </Box>
-
-        <Text>{t('set_dimensions')}</Text>
-      </Button>
+        addonAfter={<Icon name="ruler" size="1rem" />}
+        readOnly
+      />
 
       <Modal
         title={t('dimensions')}
         visible={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        size="small"
       >
         {selectedCombinationIndex !== null && (
-          <Box className="flex flex-col space-y-4 pt-4">
-            <NumberField
-              label={t('weight')}
-              placeHolder={t('enter_weight')}
-              value={variantCombinations[selectedCombinationIndex]?.weight || 0}
-              onValueChange={(value) =>
-                handleCombinationChange(
-                  selectedCombinationIndex,
-                  'weight',
-                  value
-                )
-              }
-              addonAfter="kg"
-              min={0}
-            />
+          <Box className="flex flex-col space-y-6 w-full">
+            <Box className="flex flex-col space-y-4 w-full">
+              <NumberField
+                label={t('weight')}
+                value={
+                  variantCombinations[selectedCombinationIndex]?.weight || 0
+                }
+                onValueChange={(value) =>
+                  handleCombinationChange(
+                    selectedCombinationIndex,
+                    'weight',
+                    value
+                  )
+                }
+                addonAfter={weightSymbol}
+                falsyValuePlaceholder={falsyValuePlaceholder}
+                min={0}
+              />
 
-            <NumberField
-              label={t('height')}
-              placeHolder={t('enter_height')}
-              value={variantCombinations[selectedCombinationIndex]?.height || 0}
-              onValueChange={(value) =>
-                handleCombinationChange(
-                  selectedCombinationIndex,
-                  'height',
-                  value
-                )
-              }
-              addonAfter="cm"
-              min={0}
-            />
+              <NumberField
+                label={t('height')}
+                value={
+                  variantCombinations[selectedCombinationIndex]?.height || 0
+                }
+                onValueChange={(value) =>
+                  handleCombinationChange(
+                    selectedCombinationIndex,
+                    'height',
+                    value
+                  )
+                }
+                addonAfter={dimensionSymbol}
+                falsyValuePlaceholder={falsyValuePlaceholder}
+                min={0}
+              />
 
-            <NumberField
-              label={t('width')}
-              placeHolder={t('enter_width')}
-              value={variantCombinations[selectedCombinationIndex]?.width || 0}
-              onValueChange={(value) =>
-                handleCombinationChange(
-                  selectedCombinationIndex,
-                  'width',
-                  value
-                )
-              }
-              addonAfter="cm"
-              min={0}
-            />
+              <NumberField
+                label={t('width')}
+                value={
+                  variantCombinations[selectedCombinationIndex]?.width || 0
+                }
+                onValueChange={(value) =>
+                  handleCombinationChange(
+                    selectedCombinationIndex,
+                    'width',
+                    value
+                  )
+                }
+                addonAfter={dimensionSymbol}
+                falsyValuePlaceholder={falsyValuePlaceholder}
+                min={0}
+              />
 
-            <NumberField
-              label={t('length')}
-              placeHolder={t('enter_length')}
-              value={variantCombinations[selectedCombinationIndex]?.length || 0}
-              onValueChange={(value) =>
-                handleCombinationChange(
-                  selectedCombinationIndex,
-                  'length',
-                  value
-                )
-              }
-              addonAfter="cm"
-              min={0}
-            />
+              <NumberField
+                label={t('length')}
+                value={
+                  variantCombinations[selectedCombinationIndex]?.length || 0
+                }
+                onValueChange={(value) =>
+                  handleCombinationChange(
+                    selectedCombinationIndex,
+                    'length',
+                    value
+                  )
+                }
+                addonAfter={dimensionSymbol}
+                falsyValuePlaceholder={falsyValuePlaceholder}
+                min={0}
+              />
+
+              <NumberField
+                label={t('diameter')}
+                value={
+                  variantCombinations[selectedCombinationIndex]?.diameter || 0
+                }
+                onValueChange={(value) =>
+                  handleCombinationChange(
+                    selectedCombinationIndex,
+                    'diameter',
+                    value
+                  )
+                }
+                addonAfter={diameterSymbol}
+                falsyValuePlaceholder={falsyValuePlaceholder}
+                min={0}
+              />
+            </Box>
+
+            <Button type="primary" onClick={handleDone}>
+              {t('done')}
+            </Button>
           </Box>
         )}
       </Modal>

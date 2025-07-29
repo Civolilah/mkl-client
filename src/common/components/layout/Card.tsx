@@ -71,9 +71,7 @@ const Card = (props: Props) => {
             className="flex items-center justify-between border-b px-5 py-3.5"
             style={{ borderColor: colors.$1 }}
           >
-            <Text className="text-base md:text-lg-mid font-medium">
-              {title}
-            </Text>
+            <Text className="text-base md:text-lg font-medium">{title}</Text>
 
             {topRight}
           </Box>

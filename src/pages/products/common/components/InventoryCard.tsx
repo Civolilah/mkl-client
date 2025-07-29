@@ -32,11 +32,11 @@ import {
   Toggle,
 } from '@components/index';
 
+import useSymbols from '@hooks/global/useSymbols';
 import {
   useAccentColor,
   useColors,
-  useCurrencySymbol,
-  useDisablingNumberFieldSymbol,
+  useNumberFieldSymbols,
   useFetchEntity,
   useHasPermission,
   useTranslation,
@@ -62,6 +62,7 @@ export type VariantCombination = {
   height?: number;
   width?: number;
   length?: number;
+  diameter?: number;
 };
 
 type Props = {
@@ -97,11 +98,11 @@ const InventoryCard = ({
 
   const colors = useColors();
   const accentColor = useAccentColor();
-  const { currencySymbol } = useCurrencySymbol();
+  const { currencySymbol } = useSymbols();
   const inventoryGroupOptions = useInventoryGroupOptions();
   const labelCategoriesAdditionalOptions =
     useLabelCategoriesAdditionalOptions();
-  const { disablingNumberFieldSymbol } = useDisablingNumberFieldSymbol();
+  const { disablingNumberFieldSymbol } = useNumberFieldSymbols();
 
   const [labelCategories, setLabelCategories] = useState<LabelCategory[]>([]);
   const [isLoadingLabelCategories, setIsLoadingLabelCategories] =
@@ -351,9 +352,9 @@ const InventoryCard = ({
                           className="flex items-center justify-between max-w-[40rem] py-3"
                         >
                           <Box className="flex items-center space-x-2">
-                            <Icon name="dotFill" size="1.1rem" />
+                            <Icon name="dotFill" size="1.15rem" />
 
-                            <Text>
+                            <Text className="text-base">
                               {getVariantLabel(
                                 variant.label_category_id as string
                               )}
@@ -364,7 +365,7 @@ const InventoryCard = ({
                             {variant.label_category_id === 'color' ? (
                               <Box className="flex items-center gap-x-2">
                                 {!(variant.label_ids || []).length && (
-                                  <Text className="whitespace-nowrap text-sm-mid">
+                                  <Text className="whitespace-nowrap text-sm">
                                     {t('no_colors_added')}
                                   </Text>
                                 )}
@@ -412,19 +413,21 @@ const InventoryCard = ({
                       ))}
                     </Box>
 
-                    <Divider
-                      style={{
-                        marginTop: '1.25rem',
-                        marginBottom: '1.25rem',
-                      }}
-                    />
+                    {Boolean(variantCombinations.length) && (
+                      <Divider
+                        style={{
+                          marginTop: '1.25rem',
+                          marginBottom: '1.25rem',
+                        }}
+                      />
+                    )}
 
-                    <Box className="flex flex-col space-y-4 w-full">
-                      <Text className="font-medium text-lg">
-                        {t('quantity_by_variant')}
-                      </Text>
+                    {Boolean(variantCombinations.length) && (
+                      <Box className="flex flex-col space-y-4 w-full">
+                        <Text className="font-medium text-lg">
+                          {t('quantity_by_variant')}
+                        </Text>
 
-                      {variantCombinations.length > 0 ? (
                         <Box className="flex flex-col space-y-4">
                           {variantCombinations.map((combination, index) => (
                             <Box
@@ -457,7 +460,7 @@ const InventoryCard = ({
                                               <Box>
                                                 <Icon
                                                   name="dotFill"
-                                                  size="0.9rem"
+                                                  size="1rem"
                                                 />
                                               </Box>
                                             )}
@@ -485,7 +488,7 @@ const InventoryCard = ({
                                             <Box>
                                               <Icon
                                                 name="dotFill"
-                                                size="0.9rem"
+                                                size="1rem"
                                               />
                                             </Box>
                                           )}
@@ -591,20 +594,8 @@ const InventoryCard = ({
                             </Box>
                           ))}
                         </Box>
-                      ) : (
-                        <Box className="text-center py-8 text-gray-500">
-                          <Icon
-                            name="package"
-                            size="2rem"
-                            className="mx-auto mb-2 opacity-50"
-                          />
-                          <Text>{t('no_combinations_available')}</Text>
-                          <Text className="text-sm">
-                            {t('add_variants_to_generate_combinations')}
-                          </Text>
-                        </Box>
-                      )}
-                    </Box>
+                      </Box>
+                    )}
                   </Box>
                 )}
 

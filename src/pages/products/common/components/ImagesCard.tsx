@@ -59,7 +59,7 @@ const ImagesCard = ({
         ) : undefined
       }
     >
-      <Box className="pt-2">
+      <Box className="py-2">
         <ImageUploader setCurrentImages={setCurrentImages} />
       </Box>
     </Card>

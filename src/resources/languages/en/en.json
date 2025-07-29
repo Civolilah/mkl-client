@@ -269,5 +269,11 @@
     "pick_color": "Pick color",
     "select_image": "Select image",
     "click_on_image_to_pick_color": "Click on image to pick color!",
-    "pick_from_image": "Pick from image"
+    "pick_from_image": "Pick from image",
+    "dimensions": "Dimensions",
+    "weight": "Weight",
+    "height": "Height",
+    "width": "Width",
+    "length": "Length",
+    "diameter": "Diameter"
 }

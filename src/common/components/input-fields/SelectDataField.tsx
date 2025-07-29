@@ -10,7 +10,6 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 
-import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Select } from 'antd';
 import Fuse from 'fuse.js';
 import { cloneDeep } from 'lodash';
@@ -28,12 +27,6 @@ import {
 
 import { useFetchEntity } from '@hooks/index';
 
-const semiLargeSelectStyle = {
-  minHeight: '2.25rem',
-  width: '100%',
-  fontSize: COMPONENTS_FONT_SIZE,
-};
-
 type Entity = LabelType;
 
 type Props = {
@@ -50,7 +43,7 @@ type Props = {
   onClear?: () => void;
   endpoint: string;
   enableByPermission: boolean;
-  size?: 'large' | 'middle' | 'small' | 'semi-large';
+  size?: 'large' | 'middle' | 'small';
   withoutRefreshData?: boolean;
   formatLabel?: (entity: Entity) => string;
   maxTagTextLength?: number;
@@ -168,11 +161,11 @@ const SelectDataField = (props: Props) => {
       <Box className="flex items-center w-full space-x-3">
         {mode === 'multiple' && (
           <Select
+            className="w-full"
             open={isDropdownOpen}
             onDropdownVisibleChange={(open) => setIsDropdownOpen(open)}
             mode={mode}
-            size={size === 'semi-large' ? 'middle' : size}
-            style={semiLargeSelectStyle}
+            size={size}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
@@ -206,11 +199,20 @@ const SelectDataField = (props: Props) => {
             }
             dropdownRender={(menu) =>
               actionButton ? (
-                <div className="flex flex-col space-y-1">
-                  {actionButton}
+                <Box className="flex flex-col space-y-1 w-full">
+                  <Box
+                    className="w-full flex-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    {actionButton}
+                  </Box>
 
                   {menu}
-                </div>
+                </Box>
               ) : (
                 menu
               )
@@ -220,10 +222,10 @@ const SelectDataField = (props: Props) => {
 
         {mode === 'single' && (
           <Select
+            className="w-full"
             open={isDropdownOpen}
             onDropdownVisibleChange={(open) => setIsDropdownOpen(open)}
-            size={size === 'semi-large' ? 'middle' : size}
-            style={semiLargeSelectStyle}
+            size={size}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
@@ -243,6 +245,7 @@ const SelectDataField = (props: Props) => {
                     className="w-full flex-1"
                     onClick={(e) => {
                       e.stopPropagation();
+                      e.preventDefault();
                       setIsDropdownOpen(false);
                     }}
                   >

@@ -10,7 +10,6 @@
 
 import { CSSProperties, ReactNode } from 'react';
 
-import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Button as BaseButton } from 'antd';
 import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
@@ -20,9 +19,8 @@ import { useAccentColor, useColors } from '@hooks/index';
 
 import Box from './Box';
 
-const semiLargeButtonStyle = {
-  height: '2.25rem',
-  fontSize: COMPONENTS_FONT_SIZE,
+const largeButtonStyle = {
+  height: '2.5rem',
   padding: '0.5rem 0.6875rem',
 };
 
@@ -65,9 +63,9 @@ const Button = (props: Props) => {
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
   const getButtonStyle = () => {
-    if (size === 'semi-large') {
+    if (size === 'large') {
       return {
-        ...semiLargeButtonStyle,
+        ...largeButtonStyle,
         color: type === 'default' ? 'black' : 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.8 : 1,

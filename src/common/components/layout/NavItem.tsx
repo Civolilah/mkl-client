@@ -100,7 +100,9 @@ const NavItem = (props: Props) => {
               </IconWrapper>
             </Box>
 
-            {!isMiniSideBar && <Text className="text-sm">{t(item.label)}</Text>}
+            {!isMiniSideBar && (
+              <Text className="text-xs-mid">{t(item.label)}</Text>
+            )}
           </Box>
 
           {Boolean(
@@ -118,7 +120,7 @@ const NavItem = (props: Props) => {
                   border: `1px solid ${accentColor}`,
                 }}
               >
-                <Icon name={item.rightIcon!.name} size="0.85rem" />
+                <Icon name={item.rightIcon!.name} size="0.875rem" />
               </div>
             </Tooltip>
           )}

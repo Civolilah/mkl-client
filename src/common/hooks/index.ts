@@ -26,5 +26,5 @@ export { default as useCanEditEntity } from '@hooks/global/useCanEditEntity';
 export { default as useImageLimitByPlan } from '@hooks/global/useImageLimitByPlan';
 export { default as useCompanyPlan } from '@hooks/global/useCompanyPlan';
 export { default as useRefetch } from '@hooks/global/useRefetch';
-export { default as useCurrencySymbol } from '@hooks/global/useCurrencySymbol';
-export { default as useDisablingNumberFieldSymbol } from '@hooks/global/useDisablingNumberFieldSymbol';
+export { default as useSymbols } from '@hooks/global/useSymbols';
+export { default as useNumberFieldSymbols } from '@hooks/global/useNumberFieldSymbols';

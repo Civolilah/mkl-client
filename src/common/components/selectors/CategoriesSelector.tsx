@@ -74,7 +74,7 @@ const CategoriesSelector = (props: Props) => {
     setIsModalOpen(false);
   };
 
-  const handleCreateBrand = async () => {
+  const handleCreateCategory = async () => {
     if (!categoryPayload) {
       return;
     }
@@ -118,7 +118,7 @@ const CategoriesSelector = (props: Props) => {
   return (
     <>
       <Modal
-        title={t('new_brand')}
+        title={t('new_category')}
         visible={isModalOpen}
         onClose={handleCloseModal}
         disableClosing={isFormBusy}
@@ -133,7 +133,7 @@ const CategoriesSelector = (props: Props) => {
 
           <Button
             type="primary"
-            onClick={handleCreateBrand}
+            onClick={handleCreateCategory}
             disabled={isFormBusy}
             disabledWithLoadingIcon={isFormBusy}
           >

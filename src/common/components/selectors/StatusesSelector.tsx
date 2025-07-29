@@ -10,41 +10,37 @@
 
 import { useState } from 'react';
 
-import {
-  INITIAL_LABEL_CATEGORY,
-  VALIDATION_ERROR_STATUS_CODE,
-} from '@constants/index';
+import { INITIAL_STATUS, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, useToast } from '@helpers/index';
 
-import LabelCategoryForm from '@pages/label-categories/common/components/LabelCategoryForm';
-import { validateLabelCategory } from '@pages/label-categories/common/helpers/helpers';
+import StatusForm from '@pages/statuses/common/components/Form';
+import { validateStatus } from '@pages/statuses/common/helpers/helpers';
 
-import { LabelCategory, ValidationErrors } from '@interfaces/index';
+import { Status, ValidationErrors } from '@interfaces/index';
 
 import { Box, Button, Modal } from '@components/index';
-import SelectDataField, {
-  Option,
-} from '@components/input-fields/SelectDataField';
+import SelectDataField from '@components/input-fields/SelectDataField';
 
-import { useHasPermission, useTranslation } from '@hooks/index';
+import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 
 type Props = {
   label?: string;
   placeholder?: string;
   value: string[];
   onChange: (value: string | string[]) => void;
-  onClear?: () => void;
-  errorMessage?: string;
+  onClear: () => void;
+  errorMessage: string;
   withActionButton?: boolean;
-  additionalOptions?: Option[];
-  exclude?: string[];
+  mode?: 'single' | 'multiple';
+  onStatusCreated?: (statusId: string) => void;
 };
 
-const LabelCategoriesSelector = (props: Props) => {
+const StatusesSelector = (props: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const hasPermission = useHasPermission();
 
   const {
@@ -55,36 +51,35 @@ const LabelCategoriesSelector = (props: Props) => {
     label,
     placeholder,
     withActionButton,
-    additionalOptions,
-    exclude = [],
+    mode = 'multiple',
+    onStatusCreated,
   } = props;
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [labelCategoryPayload, setLabelCategoryPayload] = useState<
-    LabelCategory | undefined
-  >(INITIAL_LABEL_CATEGORY);
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setLabelCategoryPayload(INITIAL_LABEL_CATEGORY);
-  };
+  const [statusPayload, setStatusPayload] = useState<Status | undefined>(
+    INITIAL_STATUS
+  );
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleCreateLabelCategory = async () => {
-    if (!labelCategoryPayload) {
+  const handleCloseModal = () => {
+    setStatusPayload(INITIAL_STATUS);
+    setIsModalOpen(false);
+  };
+
+  const handleCreateStatus = async () => {
+    if (!statusPayload) {
       return;
     }
 
     if (!isFormBusy) {
       setErrors({});
 
-      const validationErrors =
-        await validateLabelCategory(labelCategoryPayload);
+      const validationErrors = await validateStatus(statusPayload);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -95,11 +90,15 @@ const LabelCategoriesSelector = (props: Props) => {
 
       setIsFormBusy(true);
 
-      request('POST', '/api/label_categories', labelCategoryPayload)
+      request('POST', '/api/statuses', statusPayload)
         .then((response) => {
-          toast.success('created_category');
+          toast.success('created_status');
 
-          onChange([response.data.id]);
+          refetch(['statuses']);
+
+          setTimeout(() => {
+            onStatusCreated?.(response.data.id);
+          }, 100);
 
           handleCloseModal();
         })
@@ -116,23 +115,22 @@ const LabelCategoriesSelector = (props: Props) => {
   return (
     <>
       <Modal
-        title={t('new_label_category')}
+        title={t('new_status')}
         visible={isModalOpen}
         onClose={handleCloseModal}
         disableClosing={isFormBusy}
-        size="regular"
       >
-        <Box className="flex flex-col space-y-4 w-full">
-          <LabelCategoryForm
-            labelCategory={labelCategoryPayload}
-            setLabelCategory={setLabelCategoryPayload}
+        <Box className="flex flex-col space-y-6 w-full">
+          <StatusForm
+            status={statusPayload}
+            setStatus={setStatusPayload}
             errors={errors}
             onlyFields
           />
 
           <Button
             type="primary"
-            onClick={handleCreateLabelCategory}
+            onClick={handleCreateStatus}
             disabled={isFormBusy}
             disabledWithLoadingIcon={isFormBusy}
           >
@@ -142,16 +140,17 @@ const LabelCategoriesSelector = (props: Props) => {
       </Modal>
 
       <SelectDataField
-        queryIdentifiers={['/api/label_categories', 'selector']}
+        queryIdentifiers={['/api/statuses', 'selector']}
+        mode={mode}
         label={label}
         placeholder={placeholder}
         valueKey="id"
         labelKey="name"
-        endpoint="/api/label_categories?selector=true"
+        endpoint="/api/statuses?selector=true"
         enableByPermission={
-          hasPermission('create_label_category') ||
-          hasPermission('view_label_category') ||
-          hasPermission('edit_label_category')
+          hasPermission('create_status') ||
+          hasPermission('view_status') ||
+          hasPermission('edit_status')
         }
         withoutRefreshData
         value={value}
@@ -165,15 +164,13 @@ const LabelCategoriesSelector = (props: Props) => {
               type="primary"
               onClick={() => setTimeout(handleOpenModal, 200)}
             >
-              {t('new_label_category')}
+              {t('new_status')}
             </Button>
           ) : undefined
         }
-        additionalOptions={additionalOptions}
-        exclude={exclude}
       />
     </>
   );
 };
 
-export default LabelCategoriesSelector;
+export default StatusesSelector;

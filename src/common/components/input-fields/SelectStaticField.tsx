@@ -10,7 +10,6 @@
 
 import { useEffect, useState } from 'react';
 
-import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Select } from 'antd';
 import Fuse from 'fuse.js';
 
@@ -20,12 +19,6 @@ import {
   Label,
   RequiredOptionalLabel,
 } from '@components/index';
-
-const semiLargeSelectStyle = {
-  height: '2.25rem',
-  width: '100%',
-  fontSize: COMPONENTS_FONT_SIZE,
-};
 
 type Option = {
   label: string;
@@ -45,7 +38,7 @@ type Props = {
   valueKey?: string;
   onClear?: () => void;
   options: Option[];
-  size?: 'large' | 'middle' | 'small' | 'semi-large';
+  size?: 'large' | 'middle' | 'small';
 };
 
 const SelectStaticField = (props: Props) => {
@@ -59,7 +52,7 @@ const SelectStaticField = (props: Props) => {
     placeholder,
     errorMessage,
     onClear,
-    size = 'semi-large',
+    size = 'large',
     options,
   } = props;
 
@@ -114,9 +107,9 @@ const SelectStaticField = (props: Props) => {
 
       {mode === 'multiple' && (
         <Select
+          className="w-full"
           mode={mode}
-          size={size === 'semi-large' ? 'middle' : size}
-          style={semiLargeSelectStyle}
+          size={size}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -130,8 +123,8 @@ const SelectStaticField = (props: Props) => {
 
       {mode === 'single' && (
         <Select
-          size={size === 'semi-large' ? 'middle' : size}
-          style={semiLargeSelectStyle}
+          className="w-full"
+          size={size}
           placeholder={placeholder}
           value={value}
           onChange={onChange}

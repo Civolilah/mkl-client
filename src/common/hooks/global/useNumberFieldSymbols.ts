@@ -8,10 +8,11 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-const useDisablingNumberFieldSymbol = () => {
+const useNumberFieldSymbols = () => {
+  const falsyValuePlaceholder = '--';
   const disablingNumberFieldSymbol = '--';
 
-  return { disablingNumberFieldSymbol };
+  return { disablingNumberFieldSymbol, falsyValuePlaceholder };
 };
 
-export default useDisablingNumberFieldSymbol;
+export default useNumberFieldSymbols;

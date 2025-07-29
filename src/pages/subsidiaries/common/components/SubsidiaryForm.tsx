@@ -25,15 +25,39 @@ type Props = {
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
+  onlyFields?: boolean;
 };
 
 const SubsidiaryForm = (props: Props) => {
   const t = useTranslation();
 
-  const { subsidiary, setSubsidiary, errors, editPage, isLoading, onRefresh } =
-    props;
+  const {
+    subsidiary,
+    setSubsidiary,
+    errors,
+    editPage,
+    isLoading,
+    onRefresh,
+    onlyFields,
+  } = props;
 
   const handleChange = useHandleChange({ setSubsidiary });
+
+  if (onlyFields) {
+    return (
+      <>
+        <TextField
+          required
+          label={t('name')}
+          placeHolder={t('subsidiary_name_placeholder')}
+          value={subsidiary?.name || ''}
+          onValueChange={(value) => handleChange('name', value)}
+          changeOnBlur
+          errorMessage={errors?.name && t(errors.name)}
+        />
+      </>
+    );
+  }
 
   return (
     <Card

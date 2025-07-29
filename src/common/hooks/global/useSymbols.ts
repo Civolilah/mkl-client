@@ -8,10 +8,18 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-const useCurrencySymbol = () => {
+const useSymbols = () => {
   const currencySymbol = 'KM';
+  const weightSymbol = 'kg';
+  const dimensionSymbol = 'cm';
+  const diameterSymbol = 'mm';
 
-  return { currencySymbol };
+  return {
+    currencySymbol,
+    weightSymbol,
+    dimensionSymbol,
+    diameterSymbol,
+  };
 };
 
-export default useCurrencySymbol;
+export default useSymbols;

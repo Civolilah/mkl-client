@@ -16,12 +16,12 @@ import {
   InformationLabel,
   Label,
   RefreshDataElement,
-  SelectDataField,
+  StatusesSelector,
   SubsidiariesSelector,
   Toggle,
 } from '@components/index';
 
-import { useHasPermission, useTranslation } from '@hooks/index';
+import { useTranslation } from '@hooks/index';
 
 type Props = {
   isLoading?: boolean;
@@ -50,11 +50,9 @@ const AdditionalDetailsCard = ({
 }: Props) => {
   const t = useTranslation();
 
-  const hasPermission = useHasPermission();
-
   return (
     <Card
-      title={t('details')}
+      title={t('additional_details')}
       className="w-full"
       isLoading={isLoading}
       topRight={
@@ -88,26 +86,16 @@ const AdditionalDetailsCard = ({
         </Box>
 
         {product?.is_status_by_quantity ? (
-          <>Status by quantity</>
+          <>asmdasdm</>
         ) : (
-          <SelectDataField
-            queryIdentifiers={['/api/statuses', 'selector']}
-            mode="single"
+          <StatusesSelector
             label={t('status')}
             placeholder={t('select_status')}
-            valueKey="id"
-            labelKey="name"
-            endpoint="/api/statuses?selector=true"
-            enableByPermission={
-              hasPermission('create_status') ||
-              hasPermission('view_status') ||
-              hasPermission('edit_status')
-            }
-            withoutRefreshData
             value={product?.status_id ? [product?.status_id] : []}
             onChange={(value) => handleChange('status_id', value as string)}
             onClear={() => handleChange('status_id', '')}
             errorMessage={errors?.status_id && t(errors.status_id)}
+            withActionButton
           />
         )}
       </Box>

@@ -68,3 +68,4 @@ export { default as LabelCategoriesSelector } from '@components/selectors/LabelC
 export { default as LabelsSelector } from '@components/selectors/LabelsSelector';
 export { default as Divider } from '@components/general/Divider';
 export { default as CategoriesSelector } from '@components/selectors/CategoriesSelector';
+export { default as StatusesSelector } from '@components/selectors/StatusesSelector';

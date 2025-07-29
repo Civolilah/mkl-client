@@ -25,11 +25,11 @@ const RequiredOptionalLabel = (props: Props) => {
   return (
     <>
       {required ? (
-        <Text className="text-xs-mid">({t('required')})</Text>
+        <Text className="text-xs">({t('required')})</Text>
       ) : (
         <>
           {Boolean(!withoutOptionalText) && (
-            <Text className="text-xs-mid">({t('optional')})</Text>
+            <Text className="text-xs">({t('optional')})</Text>
           )}
         </>
       )}

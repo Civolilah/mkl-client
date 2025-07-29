@@ -8,9 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { KeyboardEvent, useEffect, useState } from 'react';
+import { KeyboardEvent, ReactNode, useEffect, useState } from 'react';
 
-import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { Input } from 'antd';
 import { useDebounce } from 'react-use';
 
@@ -22,13 +21,6 @@ import {
 } from '@components/index';
 
 const { TextArea } = Input;
-
-const semiLargeInputStyle = {
-  padding: '0.5rem 0.6875rem',
-  fontSize: COMPONENTS_FONT_SIZE,
-  lineHeight: '1.6',
-  height: '2.25rem',
-};
 
 type Props = {
   maxLength?: number;
@@ -46,6 +38,9 @@ type Props = {
   withoutOptionalText?: boolean;
   autoComplete?: 'email';
   changeOnBlur?: boolean;
+  readOnly?: boolean;
+  onClick?: () => void;
+  addonAfter?: ReactNode;
 };
 
 const TextField = (props: Props) => {
@@ -65,6 +60,9 @@ const TextField = (props: Props) => {
     withoutOptionalText,
     autoComplete,
     changeOnBlur = false,
+    readOnly = false,
+    onClick,
+    addonAfter,
   } = props;
 
   const [currentValue, setCurrentValue] = useState<string>(value);
@@ -88,8 +86,8 @@ const TextField = (props: Props) => {
       return { boxShadow: 'none' };
     }
 
-    if (size === 'semi-large') {
-      return { ...semiLargeInputStyle, boxShadow: 'none' };
+    if (size === 'large') {
+      return { boxShadow: 'none' };
     }
 
     return { boxShadow: 'none' };
@@ -110,7 +108,7 @@ const TextField = (props: Props) => {
 
       {type !== 'password' && type !== 'textarea' && (
         <Input
-          className="rounded-none"
+          className="rounded-none text-base"
           type={type}
           value={currentValue}
           onChange={(event) => setCurrentValue(event.target.value)}
@@ -130,12 +128,15 @@ const TextField = (props: Props) => {
           size={size === 'semi-large' ? 'middle' : size}
           style={getInputStyle()}
           autoComplete={autoComplete}
+          readOnly={readOnly}
+          onClick={onClick}
+          addonAfter={addonAfter}
         />
       )}
 
       {type === 'password' && (
         <Input.Password
-          className="rounded-none"
+          className="rounded-none text-sm"
           type={type}
           value={currentValue}
           placeholder={placeHolder}
@@ -154,6 +155,9 @@ const TextField = (props: Props) => {
             }
           }}
           style={getInputStyle()}
+          readOnly={readOnly}
+          onClick={onClick}
+          addonAfter={addonAfter}
         />
       )}
 
@@ -171,6 +175,8 @@ const TextField = (props: Props) => {
           disabled={disabled}
           size={size === 'semi-large' ? 'middle' : size}
           style={getInputStyle('textarea')}
+          readOnly={readOnly}
+          onClick={onClick}
         />
       )}
 

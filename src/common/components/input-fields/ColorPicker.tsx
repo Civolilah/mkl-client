@@ -220,7 +220,7 @@ const ImageColorPicker = ({
               }}
             />
 
-            <Text className="text-xs-plus">{selectedColor}</Text>
+            <Text className="text-xs">{selectedColor}</Text>
           </Box>
         )}
       </Box>
@@ -432,7 +432,7 @@ const ColorPicker = ({
                 <Box
                   style={{
                     width: '3rem',
-                    height: '2.25rem',
+                    height: '2.375rem',
                     backgroundColor: color,
                   }}
                 />
@@ -456,7 +456,7 @@ const ColorPicker = ({
                   />
 
                   <CopyToClipboard text={color} iconSize="1rem">
-                    <Text className="text-xs-plus">{color}</Text>
+                    <Text className="text-xs">{color}</Text>
                   </CopyToClipboard>
                 </Box>
               )}

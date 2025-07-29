@@ -39,7 +39,7 @@ const useNavItems = () => {
       iconName: 'dashboard',
       href: '/dashboard',
       visible: hasPermission('view_dashboard'),
-      iconSize: '1.05rem',
+      iconSize: '1.129rem',
     },
     {
       key: 'products',
@@ -50,7 +50,7 @@ const useNavItems = () => {
         hasPermission('create_product') ||
         hasPermission('view_product') ||
         hasPermission('edit_product'),
-      iconSize: '1.2rem',
+      iconSize: '1.29rem',
       rightIcon: {
         name: 'add',
         href: '/products/new',
@@ -64,7 +64,7 @@ const useNavItems = () => {
       iconName: 'import',
       href: '/import',
       visible: hasPermission('import_products'),
-      iconSize: '1.15rem',
+      iconSize: '1.236rem',
     },
     {
       key: 'store',
@@ -72,7 +72,7 @@ const useNavItems = () => {
       iconName: 'store',
       href: '/store',
       visible: hasPermission('view_store'),
-      iconSize: '1.05rem',
+      iconSize: '1.129rem',
     },
     {
       key: 'export',
@@ -80,14 +80,14 @@ const useNavItems = () => {
       iconName: 'export',
       href: '/export',
       visible: hasPermission('export_products'),
-      iconSize: '1.15rem',
+      iconSize: '1.236rem',
     },
     {
       key: 'brands',
       label: 'brands',
       iconName: 'brand',
       href: '/brands',
-      iconSize: '1.1rem',
+      iconSize: '1.183rem',
       visible:
         hasPermission('create_brand') ||
         hasPermission('view_brand') ||
@@ -104,7 +104,7 @@ const useNavItems = () => {
       label: 'suppliers',
       iconName: 'truck',
       href: '/suppliers',
-      iconSize: '1rem',
+      iconSize: '1.075rem',
       visible:
         hasPermission('create_supplier') ||
         hasPermission('view_supplier') ||
@@ -121,7 +121,7 @@ const useNavItems = () => {
       label: 'subsidiaries',
       iconName: 'subsidiary',
       href: '/subsidiaries',
-      iconSize: '0.95rem',
+      iconSize: '1.021rem',
       visible:
         hasPermission('create_subsidiary') ||
         hasPermission('view_subsidiary') ||
@@ -138,7 +138,7 @@ const useNavItems = () => {
       label: 'categories',
       iconName: 'category',
       href: '/categories',
-      iconSize: '1.05rem',
+      iconSize: '1.129rem',
       visible:
         hasPermission('create_category') ||
         hasPermission('view_category') ||
@@ -159,7 +159,7 @@ const useNavItems = () => {
         hasPermission('create_label') ||
         hasPermission('view_label') ||
         hasPermission('edit_label'),
-      iconSize: '0.9rem',
+      iconSize: '0.968rem',
       rightIcon: {
         name: 'add',
         href: '/labels/new',
@@ -176,7 +176,7 @@ const useNavItems = () => {
         hasPermission('create_label_category') ||
         hasPermission('view_label_category') ||
         hasPermission('edit_label_category'),
-      iconSize: '1.05rem',
+      iconSize: '1.129rem',
       rightIcon: {
         name: 'add',
         href: '/label_categories/new',
@@ -190,7 +190,7 @@ const useNavItems = () => {
       iconName: 'employees',
       href: '/employees',
       visible: hasPermission('admin'),
-      iconSize: '1.05rem',
+      iconSize: '1.129rem',
       rightIcon: {
         name: 'add',
         href: '/employees/new',
@@ -207,7 +207,7 @@ const useNavItems = () => {
         hasPermission('create_status') ||
         hasPermission('view_status') ||
         hasPermission('edit_status'),
-      iconSize: '1.05rem',
+      iconSize: '1.129rem',
       rightIcon: {
         name: 'add',
         href: '/statuses/new',
@@ -215,20 +215,20 @@ const useNavItems = () => {
         visible: hasPermission('create_status'),
       },
     },
-    {
-      key: 'e_store',
-      label: 'e_store',
-      iconName: 'shopCart',
-      href: '/e_store',
-      iconSize: '1.2rem',
-      visible: hasPermission('admin'),
-    },
+    // {
+    //   key: 'e_store',
+    //   label: 'e_store',
+    //   iconName: 'shopCart',
+    //   href: '/e_store',
+    //   iconSize: '1.29rem',
+    //   visible: hasPermission('admin'),
+    // },
     {
       key: 'settings',
       label: 'settings',
       iconName: 'settings',
       href: '/settings',
-      iconSize: '1.175rem',
+      iconSize: '1.263rem',
       visible: true,
     },
 
@@ -237,7 +237,7 @@ const useNavItems = () => {
     //   label: 'Reports',
     //   iconName: 'barChart',
     //   href: '/reports',
-    //   iconSize: '1.25rem',
+    //   iconSize: '1.344rem',
     //   visible: true,
     // },
   ];

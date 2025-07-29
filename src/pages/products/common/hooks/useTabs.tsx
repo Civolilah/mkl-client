@@ -32,7 +32,7 @@ const useTabs = (params: ProductProps) => {
             <Icon name="product" size="1rem" />
           </Box>
 
-          <Text className="text-xs-plus">{t('details')}</Text>
+          <Text className="text-xs">{t('details')}</Text>
         </Box>
       ),
       children: (
@@ -54,7 +54,7 @@ const useTabs = (params: ProductProps) => {
             <Icon name="qrCode" size="1rem" />
           </Box>
 
-          <Text className="text-xs-plus">{t('qr_code')}</Text>
+          <Text className="text-xs">{t('qr_code')}</Text>
         </Box>
       ),
       children: (
@@ -76,7 +76,7 @@ const useTabs = (params: ProductProps) => {
             <Icon name="shopCart" size="1rem" />
           </Box>
 
-          <Text className="text-xs-plus">{t('e_store')}</Text>
+          <Text className="text-xs">{t('e_store')}</Text>
         </Box>
       ),
       children: (

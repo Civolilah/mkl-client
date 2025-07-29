@@ -38,7 +38,7 @@ const useTabs = (params: EmployeeProps) => {
             <Icon name="person" size="1rem" />
           </Box>
 
-          <Text className="text-xs-plus">{t('details')}</Text>
+          <Text className="text-xs">{t('details')}</Text>
         </Box>
       ),
       children: (
@@ -61,7 +61,7 @@ const useTabs = (params: EmployeeProps) => {
             <Icon name="security" size="1rem" />
           </Box>
 
-          <Text className="text-xs-plus">{t('permissions')}</Text>
+          <Text className="text-xs">{t('permissions')}</Text>
         </Box>
       ),
       children: (

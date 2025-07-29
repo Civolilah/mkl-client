@@ -19,6 +19,10 @@ td::before {
   width: 100% !important;
 }
 
+.ant-input {
+  box-shadow: none !important;
+}
+
 .ant-select-selector:hover {
   border-color: #34495e !important;
 }

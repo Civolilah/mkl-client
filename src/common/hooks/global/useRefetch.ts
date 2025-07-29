@@ -15,14 +15,16 @@ type RefetchEntity =
   | 'labels'
   | 'label_categories'
   | 'products'
-  | 'categories';
+  | 'categories'
+  | 'statuses';
 
 type Endpoint =
   | '/api/brands'
   | '/api/labels'
   | '/api/label_categories'
   | '/api/products'
-  | '/api/categories';
+  | '/api/categories'
+  | '/api/statuses';
 
 type RefetchObject = {
   mainEndpoint: Endpoint;
@@ -48,6 +50,10 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   },
   categories: {
     mainEndpoint: '/api/categories',
+    dependencies: [],
+  },
+  statuses: {
+    mainEndpoint: '/api/statuses',
     dependencies: [],
   },
 };

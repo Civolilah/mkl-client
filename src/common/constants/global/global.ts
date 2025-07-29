@@ -8,4 +8,4 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export const COMPONENTS_FONT_SIZE = '0.91rem';
+export const COMPONENTS_FONT_SIZE = '0.875rem';

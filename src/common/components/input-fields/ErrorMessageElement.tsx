@@ -23,7 +23,7 @@ const ErrorMessageElement = ({ errorMessage }: Props) => {
             <Icon name="error" size="1.15rem" style={{ color: '#dc2626' }} />
           </Box>
 
-          <Text className="break-words text-xs-plus">{errorMessage}</Text>
+          <Text className="break-words text-xs">{errorMessage}</Text>
         </Box>
       )}
     </>

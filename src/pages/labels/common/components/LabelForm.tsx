@@ -156,7 +156,7 @@ const LabelForm = (props: Props) => {
             text={reactStringReplace(t('label_helper'), ':label', () => (
               <Text
                 key="labelBolded"
-                className="text-xs md:text-xs-mid font-bold lowercase"
+                className="text-xs md:text-xs font-bold lowercase"
               >
                 {t('label')}
               </Text>

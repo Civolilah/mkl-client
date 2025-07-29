@@ -162,25 +162,25 @@ const Footer = ({
 
   const actions: MenuProps['items'] = [
     {
-      label: <Box className="px-2 py-1 text-xs-plus">10</Box>,
+      label: <Box className="px-2 py-1 text-xs">10</Box>,
       onClick: () => setPerPage(10),
       key: '10',
       disabled: perPage === 10,
     },
     {
-      label: <Box className="px-2 py-1 text-xs-plus">20</Box>,
+      label: <Box className="px-2 py-1 text-xs">20</Box>,
       onClick: () => setPerPage(20),
       key: '20',
       disabled: perPage === 20,
     },
     {
-      label: <Box className="px-2 py-1 text-xs-plus">50</Box>,
+      label: <Box className="px-2 py-1 text-xs">50</Box>,
       onClick: () => setPerPage(50),
       key: '50',
       disabled: perPage === 50,
     },
     {
-      label: <Box className="px-2 py-1 text-xs-plus">100</Box>,
+      label: <Box className="px-2 py-1 text-xs">100</Box>,
       onClick: () => setPerPage(100),
       key: '100',
       disabled: perPage === 100,
@@ -190,9 +190,9 @@ const Footer = ({
   return (
     <Box className="flex justify-between items-center w-full relative">
       <Box className="flex items-center justify-center space-x-2">
-        <Text className="text-xs-plus font-medium">{t('total')}</Text>
+        <Text className="text-xs font-medium">{t('total')}</Text>
 
-        <Text className="text-xs-plus">{total}.</Text>
+        <Text className="text-xs">{total}.</Text>
       </Box>
 
       <Box className="flex items-center space-x-2">
@@ -296,9 +296,7 @@ const Footer = ({
           className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap w-full"
           style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
         >
-          <Text className="text-xs-plus font-medium">
-            {t(perPage.toString())}
-          </Text>
+          <Text className="text-xs font-medium">{t(perPage.toString())}</Text>
 
           <Icon name="arrowDown" size="1.2rem" style={{ color: colors.$10 }} />
         </Box>

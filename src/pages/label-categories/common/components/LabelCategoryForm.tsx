@@ -102,7 +102,7 @@ const LabelCategoryForm = (props: Props) => {
               () => (
                 <Text
                   key="labelCategoryBolded"
-                  className="text-xs md:text-xs-mid font-bold lowercase"
+                  className="text-xs md:text-xs font-bold lowercase"
                 >
                   {t('label_category')}
                 </Text>

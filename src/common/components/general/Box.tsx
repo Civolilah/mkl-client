@@ -15,16 +15,29 @@ type Props = {
   children?: ReactNode;
   style?: CSSProperties;
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
+  onMouseDown?: (event: MouseEvent<HTMLDivElement>) => void;
 };
 
 const Box = (props: Props) => {
-  const { children, className, style, onClick } = props;
+  const { children, className, style, onClick, onMouseDown } = props;
 
   if (!children)
-    return <div className={className} style={style} onClick={onClick} />;
+    return (
+      <div
+        className={className}
+        style={style}
+        onClick={onClick}
+        onMouseDown={onMouseDown}
+      />
+    );
 
   return (
-    <div className={className} style={style} onClick={onClick}>
+    <div
+      className={className}
+      style={style}
+      onClick={onClick}
+      onMouseDown={onMouseDown}
+    >
       {children}
     </div>
   );
