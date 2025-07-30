@@ -33,12 +33,12 @@ const useTabs = (params: EmployeeProps) => {
     {
       key: 'details',
       label: (
-        <Box className="flex item-center space-x-3">
-          <Box className="mt-0.5">
-            <Icon name="person" size="1rem" />
+        <Box className="flex item-center space-x-2 px-5 py-0.5">
+          <Box>
+            <Icon name="person" size="1.3rem" />
           </Box>
 
-          <Text className="text-xs">{t('details')}</Text>
+          <Text className="text-sm">{t('details')}</Text>
         </Box>
       ),
       children: (
@@ -56,12 +56,12 @@ const useTabs = (params: EmployeeProps) => {
     {
       key: 'permissions',
       label: (
-        <Box className="flex item-center space-x-3">
-          <Box className="mt-0.5">
-            <Icon name="security" size="1rem" />
+        <Box className="flex item-center space-x-2 px-5 py-0.5">
+          <Box>
+            <Icon name="security" size="1.25rem" />
           </Box>
 
-          <Text className="text-xs">{t('permissions')}</Text>
+          <Text className="text-sm">{t('permissions')}</Text>
         </Box>
       ),
       children: (

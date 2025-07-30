@@ -8,9 +8,10 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 import TooltipBase from 'antd/es/tooltip';
+import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 
 import { useAccentColor } from '@hooks/index';
@@ -25,12 +26,21 @@ type Props = {
   trigger?: ('hover' | 'click')[];
   placement?: 'bottom' | 'right' | 'left' | 'top';
   withoutArrow?: boolean;
+  overlayClassName?: string;
+  overlayInnerStyle?: CSSProperties;
 };
 
-const Tooltip = (props: Props) => {
-  const { className, children, text, href, trigger, placement, withoutArrow } =
-    props;
-
+const Tooltip = ({
+  className,
+  children,
+  text,
+  href,
+  trigger,
+  placement,
+  withoutArrow,
+  overlayClassName,
+  overlayInnerStyle,
+}: Props) => {
   const accentColor = useAccentColor();
 
   const navigate = useNavigate();
@@ -44,15 +54,17 @@ const Tooltip = (props: Props) => {
         }}
       >
         <TooltipBase
-          className={className}
+          className={classNames('text-xs', className)}
           title={text}
           trigger={['hover']}
           mouseEnterDelay={0}
           overlayInnerStyle={{
             padding: '0.35rem',
-            fontSize: '0.71rem',
+            lineHeight: '1.15rem',
             borderRadius: 0,
+            ...overlayInnerStyle,
           }}
+          overlayClassName={overlayClassName}
           color={accentColor}
           placement={placement}
           arrow={!withoutArrow}
@@ -65,15 +77,17 @@ const Tooltip = (props: Props) => {
 
   return (
     <TooltipBase
-      className={className}
+      className={classNames('text-xs', className)}
       title={text}
       trigger={trigger ?? ['hover']}
       mouseEnterDelay={0}
       overlayInnerStyle={{
         padding: '0.35rem',
-        fontSize: '0.71rem',
+        lineHeight: '1.15rem',
         borderRadius: 0,
+        ...overlayInnerStyle,
       }}
+      overlayClassName={overlayClassName}
       mouseLeaveDelay={0}
       color={accentColor}
       placement={placement}

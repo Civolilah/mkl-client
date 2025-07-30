@@ -21,7 +21,7 @@ const useTheme = () => {
       colorPrimaryHover: '#2E6CBD',
       borderRadius: 0,
       colorBgContainer: colors.$26,
-      fontFamily: 'Open Sans, system-ui, -apple-system, sans-serif',
+      fontFamily: 'Roboto, system-ui, -apple-system, sans-serif',
     },
     components: {
       Button: {

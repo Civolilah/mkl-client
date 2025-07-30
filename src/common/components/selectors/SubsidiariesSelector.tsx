@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 
 import {
   INITIAL_SUBSIDIARY,
@@ -38,26 +38,28 @@ type Props = {
   withActionButton?: boolean;
   additionalOptions?: Option[];
   withoutOptionalText?: boolean;
+  afterSelectorLabel?: ReactNode;
+  tooltipOverlayInnerStyle?: CSSProperties;
 };
 
-const SubsidiariesSelector = (props: Props) => {
+const SubsidiariesSelector = ({
+  value,
+  onChange,
+  onClear,
+  errorMessage,
+  label,
+  placeholder,
+  withActionButton,
+  additionalOptions,
+  withoutOptionalText,
+  afterSelectorLabel,
+  tooltipOverlayInnerStyle,
+}: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
 
   const hasPermission = useHasPermission();
-
-  const {
-    value,
-    onChange,
-    onClear,
-    errorMessage,
-    label,
-    placeholder,
-    withActionButton,
-    additionalOptions,
-    withoutOptionalText,
-  } = props;
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
@@ -171,6 +173,8 @@ const SubsidiariesSelector = (props: Props) => {
         }
         additionalOptions={additionalOptions}
         withoutOptionalText={withoutOptionalText}
+        afterLabel={afterSelectorLabel}
+        tooltipOverlayInnerStyle={tooltipOverlayInnerStyle}
       />
     </>
   );

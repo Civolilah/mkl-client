@@ -8,20 +8,34 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
-import { Text, Box, Icon } from '@components/index';
+import { Text, Box, Icon, Tooltip } from '@components/index';
 
 import { useColors } from '@hooks/index';
 
 type Props = {
   text: string | ReactNode;
+  onlyTooltip?: boolean;
+  tooltipOverlayInnerStyle?: CSSProperties;
 };
 
-const InformationLabel = (props: Props) => {
-  const { text } = props;
-
+const InformationLabel = ({
+  text,
+  onlyTooltip,
+  tooltipOverlayInnerStyle,
+}: Props) => {
   const colors = useColors();
+
+  if (onlyTooltip) {
+    return (
+      <Tooltip text={text} overlayInnerStyle={tooltipOverlayInnerStyle}>
+        <div className="cursor-pointer">
+          <Icon name="information" size="1.5rem" />
+        </div>
+      </Tooltip>
+    );
+  }
 
   return (
     <Box className="flex items-center space-x-2">

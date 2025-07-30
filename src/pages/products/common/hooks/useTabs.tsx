@@ -26,9 +26,9 @@ const useTabs = (params: ProductProps) => {
     {
       key: 'details',
       label: (
-        <Box className="flex item-center space-x-3">
-          <Box className="mt-0.5">
-            <Icon name="product" size="1.2rem" />
+        <Box className="flex item-center space-x-2 px-5 py-0.5">
+          <Box>
+            <Icon name="product" size="1.3rem" />
           </Box>
 
           <Text className="text-sm">{t('details')}</Text>
@@ -48,8 +48,8 @@ const useTabs = (params: ProductProps) => {
     {
       key: 'qr_code',
       label: (
-        <Box className="flex item-center space-x-3">
-          <Box className="mt-0.5">
+        <Box className="flex item-center space-x-2 px-5 py-0.5">
+          <Box>
             <Icon name="qrCode" size="1.2rem" />
           </Box>
 

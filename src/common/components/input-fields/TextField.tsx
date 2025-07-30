@@ -81,18 +81,6 @@ const TextField = (props: Props) => {
     setCurrentValue(value);
   }, [value]);
 
-  const getInputStyle = (fieldType?: 'textarea') => {
-    if (fieldType === 'textarea') {
-      return { boxShadow: 'none' };
-    }
-
-    if (size === 'large') {
-      return { boxShadow: 'none' };
-    }
-
-    return { boxShadow: 'none' };
-  };
-
   return (
     <Box className="flex flex-col space-y-1 w-full">
       {label && (
@@ -108,7 +96,7 @@ const TextField = (props: Props) => {
 
       {type !== 'password' && type !== 'textarea' && (
         <Input
-          className="rounded-none text-base"
+          className="rounded-none text-sm-plus"
           type={type}
           value={currentValue}
           onChange={(event) => setCurrentValue(event.target.value)}
@@ -126,7 +114,10 @@ const TextField = (props: Props) => {
           }}
           disabled={disabled}
           size={size}
-          style={getInputStyle()}
+          style={{
+            height: '2.5rem',
+            boxShadow: 'none',
+          }}
           autoComplete={autoComplete}
           readOnly={readOnly}
           onClick={onClick}
@@ -136,7 +127,7 @@ const TextField = (props: Props) => {
 
       {type === 'password' && (
         <Input.Password
-          className="rounded-none text-base"
+          className="rounded-none text-sm-plus"
           type={type}
           value={currentValue}
           placeholder={placeHolder}
@@ -154,7 +145,10 @@ const TextField = (props: Props) => {
               onPressEnter?.(event);
             }
           }}
-          style={getInputStyle()}
+          style={{
+            height: '2.5rem',
+            boxShadow: 'none',
+          }}
           readOnly={readOnly}
           onClick={onClick}
           addonAfter={addonAfter}
@@ -164,7 +158,7 @@ const TextField = (props: Props) => {
       {type === 'textarea' && (
         <TextArea
           rows={4}
-          className="rounded-none"
+          className="rounded-none text-sm-plus"
           value={currentValue}
           placeholder={placeHolder}
           onChange={(event) => setCurrentValue(event.target.value)}
@@ -174,7 +168,10 @@ const TextField = (props: Props) => {
           maxLength={maxLength}
           disabled={disabled}
           size={size}
-          style={getInputStyle('textarea')}
+          style={{
+            fontSize: '0.875rem',
+            boxShadow: 'none',
+          }}
           readOnly={readOnly}
           onClick={onClick}
         />

@@ -4,10 +4,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Open Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Roboto', 'system-ui', '-apple-system', 'sans-serif'],
       },
       fontSize: {
-        'xs-mid': '0.83rem',
+        'xs-mid': '0.85rem',
+        'sm-plus': '0.9125rem',
       },
     },
   },

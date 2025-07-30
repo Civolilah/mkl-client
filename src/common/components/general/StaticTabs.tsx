@@ -25,24 +25,21 @@ type Props = {
   setActiveTab?: Dispatch<SetStateAction<string>>;
 };
 
-const StaticTabs = (props: Props) => {
-  const {
-    tabs,
-    type = 'line',
-    defaultActiveKey,
-    activeTab,
-    setActiveTab,
-  } = props;
-
+const StaticTabs = ({
+  tabs,
+  defaultActiveKey,
+  activeTab,
+  setActiveTab,
+}: Props) => {
   return (
     <Tabs
       items={tabs}
-      type={type}
+      type="line"
       defaultActiveKey={defaultActiveKey}
       style={{ width: '100%' }}
       activeKey={activeTab}
       onChange={(activeKey) => setActiveTab?.(activeKey)}
-      size="middle"
+      size="small"
     />
   );
 };

@@ -8,6 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { useMediaQuery } from 'react-responsive';
+
 import { Product, ValidationErrors } from '@interfaces/index';
 
 import {
@@ -50,6 +52,8 @@ const AdditionalDetailsCard = ({
 }: Props) => {
   const t = useTranslation();
 
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+
   return (
     <Card
       title={t('additional_details')}
@@ -61,7 +65,7 @@ const AdditionalDetailsCard = ({
         ) : undefined
       }
     >
-      <Box className="flex flex-col space-y-6 pb-2">
+      <Box className="flex flex-col space-y-4 pb-2">
         <Box className="flex flex-col space-y-2 w-full">
           <SubsidiariesSelector
             label={t('subsidiaries')}
@@ -71,9 +75,19 @@ const AdditionalDetailsCard = ({
             onClear={() => handleChange('subsidiaries', '')}
             errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
             withActionButton
+            afterSelectorLabel={
+              <Box className="pl-1.5">
+                <InformationLabel
+                  text={t('subsidiaries_assigning_on_product')}
+                  onlyTooltip
+                  tooltipOverlayInnerStyle={{
+                    width: isSmallScreen ? undefined : '42rem',
+                    textAlign: 'center',
+                  }}
+                />
+              </Box>
+            }
           />
-
-          <InformationLabel text={t('subsidiaries_assigning_on_product')} />
         </Box>
 
         <Box className="flex items-center space-x-10">

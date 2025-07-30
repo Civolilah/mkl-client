@@ -120,7 +120,7 @@ const NavItem = (props: Props) => {
                   border: `1px solid ${accentColor}`,
                 }}
               >
-                <Icon name={item.rightIcon!.name} size="0.875rem" />
+                <Icon name={item.rightIcon!.name} size="0.95rem" />
               </div>
             </Tooltip>
           )}

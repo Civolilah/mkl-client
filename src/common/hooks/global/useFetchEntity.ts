@@ -16,6 +16,8 @@ import { cloneDeep } from 'lodash';
 import { useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
+import { useCompanyPlan } from '@hooks/index';
+
 type Params<T> = {
   queryIdentifiers: string[];
   endpoint: string;
@@ -28,21 +30,21 @@ type Params<T> = {
   enableByPermission: boolean;
 };
 
-const useFetchEntity = <T>(params: Params<T>) => {
-  const {
-    queryIdentifiers,
-    endpoint,
-    setEntity,
-    setIsLoading,
-    setInitialResponse,
-    setEntities,
-    listQuery,
-    formatRecords,
-    enableByPermission,
-  } = params;
-
+const useFetchEntity = <T>({
+  queryIdentifiers,
+  endpoint,
+  setEntity,
+  setIsLoading,
+  setInitialResponse,
+  setEntities,
+  listQuery,
+  formatRecords,
+  enableByPermission,
+}: Params<T>) => {
   const { id } = useParams();
   const queryClient = useQueryClient();
+
+  const { companyPlan } = useCompanyPlan();
 
   const {
     data: entityResponse,
@@ -122,7 +124,9 @@ const useFetchEntity = <T>(params: Params<T>) => {
   }, [entityResponse, isLoading]);
 
   useEffect(() => {
-    queryClient.invalidateQueries(queryIdentifiers);
+    if (companyPlan !== 'free' && companyPlan !== 'basic') {
+      queryClient.invalidateQueries(queryIdentifiers);
+    }
   }, []);
 
   return { refresh: handleRefresh };

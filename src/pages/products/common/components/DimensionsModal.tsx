@@ -10,6 +10,8 @@
 
 import { useState } from 'react';
 
+import { QuantityByVariant } from '@interfaces/index';
+
 import {
   Box,
   Button,
@@ -25,8 +27,6 @@ import {
   useTranslation,
 } from '@hooks/index';
 
-import { VariantCombination } from './InventoryCard';
-
 type Props = {
   selectedCombinationIndex: number | null;
   handleCombinationChange: (
@@ -34,7 +34,7 @@ type Props = {
     field: string,
     value: number | boolean
   ) => void;
-  variantCombinations: VariantCombination[];
+  variantCombinations: QuantityByVariant[];
 };
 
 const DimensionsModal = ({
@@ -54,7 +54,7 @@ const DimensionsModal = ({
   };
 
   const formatDimensions = (
-    combination: VariantCombination,
+    combination: QuantityByVariant,
     weightSymbol: string,
     dimensionSymbol: string
   ) => {

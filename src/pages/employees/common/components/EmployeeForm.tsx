@@ -85,7 +85,6 @@ const EmployeeForm = (props: Props) => {
     <Box className="flex w-full self-start md:w-3/4 xl:w-2/3">
       <StaticTabs
         tabs={tabs}
-        type="card"
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />

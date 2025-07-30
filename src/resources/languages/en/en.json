@@ -275,5 +275,6 @@
     "height": "Height",
     "width": "Width",
     "length": "Length",
-    "diameter": "Diameter"
+    "diameter": "Diameter",
+    "set_as_default": "Set as default"
 }

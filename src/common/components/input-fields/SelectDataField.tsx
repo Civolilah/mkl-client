@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode, useEffect, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 
 import { Select } from 'antd';
 import Fuse from 'fuse.js';
@@ -53,6 +53,8 @@ type Props = {
   exclude?: string[];
   disabled?: boolean;
   queryIdentifiers: string[];
+  afterLabel?: ReactNode;
+  tooltipOverlayInnerStyle?: CSSProperties;
 };
 
 export type Option = {
@@ -61,33 +63,32 @@ export type Option = {
   newOption?: boolean;
 };
 
-const SelectDataField = (props: Props) => {
-  const {
-    label,
-    required,
-    withoutOptionalText,
-    value,
-    mode = 'multiple',
-    onChange,
-    placeholder,
-    errorMessage,
-    labelKey,
-    valueKey,
-    onClear,
-    endpoint,
-    enableByPermission,
-    size = 'large',
-    withoutRefreshData,
-    formatLabel,
-    maxTagTextLength,
-    maxTagCount,
-    actionButton,
-    additionalOptions,
-    exclude = [],
-    disabled,
-    queryIdentifiers,
-  } = props;
-
+const SelectDataField = ({
+  label,
+  required,
+  withoutOptionalText,
+  value,
+  mode = 'multiple',
+  onChange,
+  placeholder,
+  errorMessage,
+  labelKey,
+  valueKey,
+  onClear,
+  endpoint,
+  enableByPermission,
+  size = 'large',
+  withoutRefreshData,
+  formatLabel,
+  maxTagTextLength,
+  maxTagCount,
+  actionButton,
+  additionalOptions,
+  exclude = [],
+  disabled,
+  queryIdentifiers,
+  afterLabel,
+}: Props) => {
   const [options, setOptions] = useState<Option[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -155,6 +156,8 @@ const SelectDataField = (props: Props) => {
             required={Boolean(required)}
             withoutOptionalText={withoutOptionalText}
           />
+
+          {afterLabel}
         </Box>
       )}
 
@@ -180,6 +183,11 @@ const SelectDataField = (props: Props) => {
             onSearch={handleSearch}
             onClear={onClear}
             allowClear={Boolean(onClear)}
+            style={{
+              height: '2.5rem',
+              fontSize: '0.875rem',
+              boxShadow: 'none',
+            }}
             maxTagPlaceholder={(omittedValues) =>
               maxTagTextLength ? (
                 <Tooltip
@@ -238,6 +246,11 @@ const SelectDataField = (props: Props) => {
             filterOption={false}
             showSearch
             onClear={onClear}
+            style={{
+              height: '2.5rem',
+              fontSize: '0.875rem',
+              boxShadow: 'none',
+            }}
             dropdownRender={(menu) =>
               actionButton ? (
                 <Box className="flex flex-col space-y-1 w-full">

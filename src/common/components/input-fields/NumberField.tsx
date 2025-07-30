@@ -114,6 +114,11 @@ const NumberField = (props: Props) => {
         onChange={(value) => setCurrentValue(value || 0)}
         disabled={disabled}
         addonAfter={addonAfter}
+        style={{
+          height: '2.5rem',
+          fontSize: '0.875rem',
+          boxShadow: 'none',
+        }}
       />
 
       <ErrorMessageElement errorMessage={errorMessage} />

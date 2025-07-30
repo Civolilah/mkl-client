@@ -95,8 +95,7 @@ const Button = (props: Props) => {
         'transition-none rounded-none shadow-sm',
         {
           'border-none': type !== 'default',
-          'text-base': size === 'large',
-          'text-sm': size === 'middle',
+          'text-sm-plus': size === 'large',
         },
         className
       )}
