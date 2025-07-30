@@ -32,7 +32,7 @@ type Props = {
   disabledWithLoadingIcon?: boolean;
   onClick?: () => void;
   children: ReactNode;
-  size?: 'large' | 'middle' | 'small' | 'semi-large';
+  size?: 'large' | 'middle' | 'small';
   style?: CSSProperties;
   icon?: ReactNode;
 };
@@ -92,9 +92,11 @@ const Button = (props: Props) => {
   return (
     <StyledBaseButton
       className={classNames(
-        'transition-none rounded-none shadow-sm text-base',
+        'transition-none rounded-none shadow-sm',
         {
           'border-none': type !== 'default',
+          'text-base': size === 'large',
+          'text-sm': size === 'middle',
         },
         className
       )}
@@ -104,7 +106,7 @@ const Button = (props: Props) => {
       loading={disabled && disabledWithLoadingIcon}
       onClick={onClick}
       style={getButtonStyle()}
-      size={size === 'semi-large' ? 'middle' : size}
+      size={size}
       theme={{
         backgroundColor: type === 'default' && disabled ? 'transparent' : '',
         hoverBackgroundColor:

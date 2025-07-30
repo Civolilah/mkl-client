@@ -17,7 +17,7 @@ import {
   Card,
   InformationLabel,
   RefreshDataElement,
-  SelectDataField,
+  SubsidiariesSelector,
   TextField,
 } from '@components/index';
 
@@ -92,17 +92,14 @@ const Details = (props: EmployeeProps) => {
         />
 
         <Box className="flex flex-col space-y-2 w-full">
-          <SelectDataField
+          <SubsidiariesSelector
             label={t('subsidiaries')}
             placeholder={t('select_subsidiaries')}
-            valueKey="id"
-            labelKey="name"
-            endpoint="/api/subsidiaries?selector=true"
-            enableByPermission
             value={employee?.subsidiaries || []}
             onChange={(value) => handleChange('subsidiaries', value)}
             onClear={() => handleChange('subsidiaries', [])}
             errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
+            withActionButton
           />
 
           <InformationLabel text={t('subsidiary_assigning')} />

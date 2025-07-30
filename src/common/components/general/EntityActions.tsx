@@ -45,11 +45,11 @@ const EntityActions = (props: Props) => {
           }
         )}
         theme={{ backgroundColor: colors.$18 }}
-        style={{ borderColor: colors.$1, height: '2.25rem' }}
+        style={{ borderColor: colors.$1, height: '2.5rem' }}
       >
-        <Text className="text-sm">{t('actions')}</Text>
+        <Text className="text-base">{t('actions')}</Text>
 
-        <Icon name="arrowDown" size="1.2rem" />
+        <Icon name="arrowDown" size="1.5rem" />
       </StyledBox>
     </Dropdown>
   );

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * MKL (https://mkl.ba).
  *
@@ -41,8 +40,6 @@ const ImagesCard = ({
   isLoading,
   editPage,
   onRefresh,
-  product,
-  errors,
   handleChange,
   setCurrentImages,
 }: Props) => {
@@ -60,7 +57,12 @@ const ImagesCard = ({
       }
     >
       <Box className="py-2">
-        <ImageUploader setCurrentImages={setCurrentImages} />
+        <ImageUploader
+          setCurrentImages={setCurrentImages}
+          onDefaultImageIndexChange={(index) =>
+            handleChange('default_image_id', index)
+          }
+        />
       </Box>
     </Card>
   );

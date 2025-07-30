@@ -25,7 +25,14 @@ import { useNavigate } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 import styled from 'styled-components';
 
-import { Box, Button, Icon, Image, Text } from '@components/index';
+import {
+  Box,
+  Button,
+  ErrorMessageElement,
+  Icon,
+  Image,
+  Text,
+} from '@components/index';
 
 import {
   useColors,
@@ -52,19 +59,29 @@ export interface ImageUploaderProps {
   maxFileSize?: number;
   disabled?: boolean;
   setCurrentImages?: Dispatch<SetStateAction<string[]>>;
+  onDefaultImageIndexChange?: (index: number) => void;
 }
 
 const StyledBox = styled.div`
-  border: 2px dashed ${(props) => props.theme.borderColor};
-  background-color: ${(props) => props.theme.backgroundColor};
+  border: 1px dashed ${({ theme }) => theme.borderColor};
+  background-color: ${({ theme }) => theme.backgroundColor};
 
   &:hover {
-    border-color: ${(props) => props.theme.hoverBorderColor};
-    background-color: ${(props) => props.theme.hoverBackgroundColor};
+    border-color: ${({ theme }) => theme.hoverBorderColor};
+    background-color: ${({ theme }) => theme.hoverBackgroundColor};
   }
 `;
 
-const ImageUploader = (props: ImageUploaderProps) => {
+const ImageUploader = ({
+  onImagesChange,
+  initialImages = [],
+  className = '',
+  acceptedFileTypes = ['.jpeg', '.jpg', '.gif', '.webp'],
+  maxFileSize = 100 * 1024 * 1024,
+  disabled = false,
+  setCurrentImages,
+  onDefaultImageIndexChange,
+}: ImageUploaderProps) => {
   const t = useTranslation();
 
   const colors = useColors();
@@ -73,18 +90,9 @@ const ImageUploader = (props: ImageUploaderProps) => {
   const { companyPlan } = useCompanyPlan();
   const { imagesNumberLimit } = useImageLimitByPlan();
 
-  const {
-    onImagesChange,
-    initialImages = [],
-    className = '',
-    acceptedFileTypes = ['.jpeg', '.jpg', '.gif', '.webp'],
-    maxFileSize = 100 * 1024 * 1024,
-    disabled = false,
-    setCurrentImages,
-  } = props;
-
-  const [uploadErrors, setUploadErrors] = useState<ReactNode[]>([]);
   const [images, setImages] = useState<ImageFile[]>(initialImages);
+  const [uploadErrors, setUploadErrors] = useState<ReactNode[]>([]);
+  const [defaultImageIndex, setDefaultImageIndex] = useState<number>(0);
 
   const isMaxReached = useMemo(() => {
     return images.length >= imagesNumberLimit;
@@ -204,9 +212,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
       {uploadErrors.length > 0 && (
         <Box className="mb-4 p-3 bg-red-50 border border-red-200">
           {uploadErrors.map((error, index) => (
-            <Text key={index} className="text-red-600 text-sm">
-              {error}
-            </Text>
+            <ErrorMessageElement errorMessage={error as string} key={index} />
           ))}
         </Box>
       )}
@@ -215,7 +221,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
         <StyledBox
           {...getRootProps()}
           className={classNames(
-            'flex flex-col items-center justify-center px-6 gap-y-3 text-center transition-colors h-[10rem]',
+            'flex flex-col items-center justify-center px-6 gap-y-3 text-center transition-colors h-[11rem]',
             {
               'cursor-not-allowed': isDropzoneDisabled,
               'cursor-pointer': !isDropzoneDisabled,
@@ -246,7 +252,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
           >
             <Icon
               name="image"
-              size={37}
+              size="2.75rem"
               style={{
                 color: colors.$34,
               }}
@@ -258,6 +264,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
           ) : (
             <Box className="flex flex-col items-center justify-center">
               <Text
+                className="text-base"
                 style={{
                   color: isDropzoneDisabled ? colors.$34 : colors.$24,
                 }}
@@ -265,7 +272,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
                 {t('drag_drop_or_click_to_upload')}
               </Text>
 
-              <Text className="text-xs" style={{ color: colors.$34 }}>
+              <Text className="text-sm" style={{ color: colors.$34 }}>
                 {t('max_file_size')}: {Math.round(maxFileSize / (1024 * 1024))}
                 MB
               </Text>
@@ -283,50 +290,89 @@ const ImageUploader = (props: ImageUploaderProps) => {
             }
           )}
         >
-          {images.map((image) => (
-            <Box key={image.id} className="relative group h-full">
-              <Image
-                src={image.preview || image.url || ''}
-                loading="lazy"
-                preview
-              />
-
+          {images.map((image, index) => (
+            <Box key={image.id} className="h-full flex flex-col space-y-2">
               <Box
-                className={classNames(
-                  'absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300',
-                  {
-                    'cursor-pointer': !disabled,
-                    'cursor-not-allowed': disabled,
-                  }
-                )}
-                onClick={(event) => {
-                  event.stopPropagation();
-
-                  if (!disabled) {
-                    removeImage(image.id);
-                  }
+                className="relative group border-2"
+                style={{
+                  lineHeight: 0,
+                  borderColor:
+                    defaultImageIndex === index ? '#3b82f6' : colors.$1,
                 }}
               >
-                <Icon name="close" size={16} />
-              </Box>
+                <Image
+                  className="block"
+                  src={image.preview || image.url || ''}
+                  loading="lazy"
+                  preview
+                />
 
-              {image.isNew && (
-                <Box className="absolute top-1 left-1 bg-green-500 text-white text-xs px-2 py-1">
-                  {t('new')}
-                </Box>
-              )}
-
-              {image.name && (
                 <Box
-                  className="w-full absolute bottom-0 left-0 text-xs p-1 truncate"
-                  style={{
-                    color: colors.$24,
-                    backgroundColor: `${colors.$25}80`,
+                  className={classNames(
+                    'absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-lg transition-all duration-200',
+                    'opacity-0 group-hover:opacity-100 hover:bg-red-600 hover:scale-110',
+                    'focus:outline-none focus:ring-2 focus:ring-red-300 focus:opacity-100',
+                    {
+                      'cursor-pointer': !disabled,
+                      'cursor-not-allowed opacity-50': disabled,
+                    }
+                  )}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (!disabled) {
+                      removeImage(image.id);
+                    }
                   }}
                 >
-                  {image.name}
+                  <Icon name="close" size={16} />
                 </Box>
-              )}
+
+                {image.isNew && (
+                  <Box className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-md shadow-sm font-medium">
+                    {t('new')}
+                  </Box>
+                )}
+
+                {image.name && (
+                  <Box
+                    className="w-full absolute bottom-0 left-0 text-xs p-2 truncate backdrop-blur-sm"
+                    style={{
+                      color: colors.$24,
+                      backgroundColor: `${colors.$25}95`,
+                    }}
+                  >
+                    {image.name}
+                  </Box>
+                )}
+              </Box>
+
+              <Box className="flex-shrink-0">
+                {defaultImageIndex === index ? (
+                  <Button
+                    className="w-full"
+                    size="middle"
+                    type="default"
+                    disabled
+                    icon={<Icon name="star" size="1.25rem" />}
+                  >
+                    {t('default')}
+                  </Button>
+                ) : (
+                  <Button
+                    className="w-full"
+                    size="middle"
+                    type="default"
+                    disabled={disabled}
+                    onClick={() => {
+                      setDefaultImageIndex(index);
+                      onDefaultImageIndexChange?.(index);
+                    }}
+                    icon={<Icon name="emptyStar" size="1.25rem" />}
+                  >
+                    {t('set_as_default')}
+                  </Button>
+                )}
+              </Box>
             </Box>
           ))}
         </Box>

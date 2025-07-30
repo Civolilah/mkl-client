@@ -185,7 +185,7 @@ const LabelCategoriesSelector = (props: Props) => {
         errorMessage={errorMessage}
         actionButton={
           withActionButton ? (
-            <Button type="primary" onClick={handleOpenModal}>
+            <Button className="w-full" type="primary" onClick={handleOpenModal}>
               {t('new_label')}
             </Button>
           ) : undefined

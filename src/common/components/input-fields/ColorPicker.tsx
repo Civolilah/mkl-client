@@ -420,10 +420,10 @@ const ColorPicker = ({
         >
           {color === '' ? (
             <Box
-              className="flex items-center space-x-2 px-1.5 py-1"
+              className="flex items-center space-x-2.5 pl-2 pr-5 py-1"
               style={{ borderColor: colors.$1 }}
             >
-              <TransparentColorBox />
+              <TransparentColorBox size="1.875rem" />
               <Text className="text-sm">{t('transparent')}</Text>
             </Box>
           ) : (

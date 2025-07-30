@@ -13,7 +13,12 @@ import { useEffect, useState } from 'react';
 import colorString from 'color-string';
 import { cloneDeep, get, set } from 'lodash';
 
-import { LabelCategory, Product, ValidationErrors } from '@interfaces/index';
+import {
+  LabelCategory,
+  Product,
+  QuantityByVariant,
+  ValidationErrors,
+} from '@interfaces/index';
 import { Label as LabelType } from '@interfaces/index';
 
 import {
@@ -47,24 +52,6 @@ import DimensionsModal from './DimensionsModal';
 import useInventoryGroupOptions from '../hooks/useInventoryGroupOptions';
 import useLabelCategoriesAdditionalOptions from '../hooks/useLabelCategoriesAdditionalOptions';
 
-type VariantLabel = {
-  categoryId: string;
-  labelId: string;
-};
-
-export type VariantCombination = {
-  id: string;
-  labels: VariantLabel[];
-  quantity: number;
-  price: number;
-  unlimited: boolean;
-  weight?: number;
-  height?: number;
-  width?: number;
-  length?: number;
-  diameter?: number;
-};
-
 type Props = {
   isLoading?: boolean;
   editPage?: boolean;
@@ -79,6 +66,7 @@ type Props = {
       | boolean
       | Product['inventory_by_variant']
       | string[]
+      | Product['quantity_by_variant']
   ) => void;
   images?: string[];
 };
@@ -111,8 +99,8 @@ const InventoryCard = ({
   const [labels, setLabels] = useState<LabelType[]>([]);
   const [isLoadingLabels, setIsLoadingLabels] = useState<boolean>(false);
 
-  const [variantCombinations, setVariantCombinations] = useState<
-    VariantCombination[]
+  const [quantityByVariants, setQuantityByVariants] = useState<
+    QuantityByVariant[]
   >([]);
 
   useFetchEntity({
@@ -141,7 +129,7 @@ const InventoryCard = ({
 
   const generateVariantCombinations = (
     variants: Product['inventory_by_variant']
-  ): VariantCombination[] => {
+  ): QuantityByVariant[] => {
     if (!variants || variants.length === 0) return [];
 
     const variantOptionsWithLabels = variants
@@ -153,17 +141,15 @@ const InventoryCard = ({
 
     if (variantOptionsWithLabels.length === 0) return [];
 
-    const combinations: VariantCombination[] = [];
+    const combinations: QuantityByVariant[] = [];
 
     const generateCombos = (
       currentCombo: Array<{ categoryId: string; labelId: string }>,
       remainingVariants: typeof variantOptionsWithLabels
     ) => {
       if (remainingVariants.length === 0) {
-        const id = currentCombo.map((c) => c.labelId).join('-');
         combinations.push({
-          id,
-          labels: [...currentCombo],
+          labels: cloneDeep(currentCombo),
           quantity: 1,
           price: 0,
           unlimited: false,
@@ -171,7 +157,9 @@ const InventoryCard = ({
           height: undefined,
           width: undefined,
           length: undefined,
+          diameter: undefined,
         });
+
         return;
       }
 
@@ -188,6 +176,7 @@ const InventoryCard = ({
     };
 
     generateCombos([], variantOptionsWithLabels);
+
     return combinations;
   };
 
@@ -200,13 +189,13 @@ const InventoryCard = ({
     field: string,
     value: number | boolean
   ) => {
-    const updatedCombinations = cloneDeep(variantCombinations);
+    const updatedCombinations = cloneDeep(quantityByVariants);
 
     set(updatedCombinations, `${index}.${field}`, value);
 
-    setVariantCombinations(updatedCombinations);
+    setQuantityByVariants(updatedCombinations);
 
-    // handleChange('variant_combinations', updatedCombinations);
+    handleChange('quantity_by_variant', updatedCombinations);
   };
 
   const handleAddVariant = (labelCategoryId: string) => {
@@ -214,13 +203,7 @@ const InventoryCard = ({
       ...(product?.inventory_by_variant || []),
       {
         label_category_id: labelCategoryId,
-        quantity: 1,
         label_ids: [],
-        price: 0,
-        weight: undefined,
-        width: undefined,
-        height: undefined,
-        length: undefined,
       },
     ]);
   };
@@ -237,7 +220,7 @@ const InventoryCard = ({
 
   useEffect(() => {
     if (product?.inventory_by_variant) {
-      setVariantCombinations(
+      setQuantityByVariants(
         generateVariantCombinations(product.inventory_by_variant)
       );
     }
@@ -413,7 +396,7 @@ const InventoryCard = ({
                       ))}
                     </Box>
 
-                    {Boolean(variantCombinations.length) && (
+                    {Boolean(quantityByVariants.length) && (
                       <Divider
                         style={{
                           marginTop: '1.25rem',
@@ -422,14 +405,14 @@ const InventoryCard = ({
                       />
                     )}
 
-                    {Boolean(variantCombinations.length) && (
+                    {Boolean(quantityByVariants.length) && (
                       <Box className="flex flex-col space-y-4 w-full">
                         <Text className="font-medium text-lg">
                           {t('quantity_by_variant')}
                         </Text>
 
                         <Box className="flex flex-col space-y-4">
-                          {variantCombinations.map((combination, index) => (
+                          {quantityByVariants.map((combination, index) => (
                             <Box
                               key={index}
                               className="border overflow-hidden rounded-t-lg"
@@ -521,7 +504,7 @@ const InventoryCard = ({
                                         onChange={(value) => {
                                           if (value) {
                                             const updatedCombinations =
-                                              cloneDeep(variantCombinations);
+                                              cloneDeep(quantityByVariants);
                                             set(
                                               updatedCombinations,
                                               `${index}.unlimited`,
@@ -532,7 +515,7 @@ const InventoryCard = ({
                                               `${index}.quantity`,
                                               0
                                             );
-                                            setVariantCombinations(
+                                            setQuantityByVariants(
                                               updatedCombinations
                                             );
                                           } else {
@@ -587,7 +570,7 @@ const InventoryCard = ({
                                     handleCombinationChange={
                                       handleCombinationChange
                                     }
-                                    variantCombinations={variantCombinations}
+                                    variantCombinations={quantityByVariants}
                                   />
                                 </Box>
                               </Box>

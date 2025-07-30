@@ -29,4 +29,4 @@ export type { Supplier } from '@interfaces/supplier/supplier';
 
 export type { Brand } from '@interfaces/brand/brand';
 
-export type { Product } from '@interfaces/product/product';
+export type { Product, QuantityByVariant } from '@interfaces/product/product';

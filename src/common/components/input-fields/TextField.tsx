@@ -24,7 +24,7 @@ const { TextArea } = Input;
 
 type Props = {
   maxLength?: number;
-  size?: 'large' | 'middle' | 'small' | 'semi-large';
+  size?: 'large' | 'middle' | 'small';
   type?: 'text' | 'password' | 'email' | 'textarea';
   label?: string;
   value: string;
@@ -125,7 +125,7 @@ const TextField = (props: Props) => {
             }
           }}
           disabled={disabled}
-          size={size === 'semi-large' ? 'middle' : size}
+          size={size}
           style={getInputStyle()}
           autoComplete={autoComplete}
           readOnly={readOnly}
@@ -136,7 +136,7 @@ const TextField = (props: Props) => {
 
       {type === 'password' && (
         <Input.Password
-          className="rounded-none text-sm"
+          className="rounded-none text-base"
           type={type}
           value={currentValue}
           placeholder={placeHolder}
@@ -146,7 +146,7 @@ const TextField = (props: Props) => {
           }
           maxLength={maxLength}
           disabled={disabled}
-          size={size === 'semi-large' ? 'middle' : size}
+          size={size}
           onKeyDown={(event) => {
             event.stopPropagation();
 
@@ -173,7 +173,7 @@ const TextField = (props: Props) => {
           }
           maxLength={maxLength}
           disabled={disabled}
-          size={size === 'semi-large' ? 'middle' : size}
+          size={size}
           style={getInputStyle('textarea')}
           readOnly={readOnly}
           onClick={onClick}

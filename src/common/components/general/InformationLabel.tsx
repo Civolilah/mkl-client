@@ -26,7 +26,7 @@ const InformationLabel = (props: Props) => {
   return (
     <Box className="flex items-center space-x-2">
       <Box className="mt-0.5">
-        <Icon name="information" size="1.3rem" />
+        <Icon name="information" size="1.5rem" />
       </Box>
 
       <Text

@@ -57,11 +57,13 @@ import {
   MdOutlineKeyboardDoubleArrowRight,
   MdOutlineMenu,
   MdOutlineShoppingCart,
+  MdOutlineStar,
   MdQrCode,
   MdRefresh,
   MdSave,
   MdSecurity,
   MdSettings,
+  MdStarBorder,
   MdWarehouse,
 } from 'react-icons/md';
 import {
@@ -144,7 +146,9 @@ export type IconName =
   | 'ruler'
   | 'weight'
   | 'package'
-  | 'eyeDropper';
+  | 'eyeDropper'
+  | 'emptyStar'
+  | 'star';
 
 type Props = {
   className?: string;
@@ -301,6 +305,10 @@ const Icon = (props: Props) => {
       return generateIconElement(BiPackage);
     case 'eyeDropper':
       return generateIconElement(FaEyeDropper);
+    case 'star':
+      return generateIconElement(MdOutlineStar);
+    case 'emptyStar':
+      return generateIconElement(MdStarBorder);
 
     default:
       return <></>;
