@@ -33,6 +33,7 @@ export type ProductProps = {
       | boolean
       | Product['inventory_by_variant']
       | string[]
+      | Product['quantity_by_variant']
   ) => void;
 };
 

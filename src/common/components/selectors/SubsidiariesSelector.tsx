@@ -26,7 +26,7 @@ import SelectDataField, {
   Option,
 } from '@components/input-fields/SelectDataField';
 
-import { useHasPermission, useTranslation } from '@hooks/index';
+import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 
 type Props = {
   label?: string;
@@ -40,6 +40,7 @@ type Props = {
   withoutOptionalText?: boolean;
   afterSelectorLabel?: ReactNode;
   tooltipOverlayInnerStyle?: CSSProperties;
+  onCreatedSubsidiary?: (subsidiaryId: string) => void;
 };
 
 const SubsidiariesSelector = ({
@@ -54,11 +55,13 @@ const SubsidiariesSelector = ({
   withoutOptionalText,
   afterSelectorLabel,
   tooltipOverlayInnerStyle,
+  onCreatedSubsidiary,
 }: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const hasPermission = useHasPermission();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -101,7 +104,9 @@ const SubsidiariesSelector = ({
         .then((response) => {
           toast.success('created_subsidiary');
 
-          onChange([response.data.id]);
+          refetch(['subsidiaries']);
+
+          onCreatedSubsidiary?.(response.data.id);
 
           handleCloseModal();
         })

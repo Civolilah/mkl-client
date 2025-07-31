@@ -66,29 +66,33 @@ const AdditionalDetailsCard = ({
       }
     >
       <Box className="flex flex-col space-y-4 pb-2">
-        <Box className="flex flex-col space-y-2 w-full">
-          <SubsidiariesSelector
-            label={t('subsidiaries')}
-            placeholder={t('select_subsidiaries')}
-            value={product?.subsidiaries ? product?.subsidiaries : []}
-            onChange={(value) => handleChange('subsidiaries', value as string)}
-            onClear={() => handleChange('subsidiaries', '')}
-            errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
-            withActionButton
-            afterSelectorLabel={
-              <Box className="pl-1.5">
-                <InformationLabel
-                  text={t('subsidiaries_assigning_on_product')}
-                  onlyTooltip
-                  tooltipOverlayInnerStyle={{
-                    width: isSmallScreen ? undefined : '42rem',
-                    textAlign: 'center',
-                  }}
-                />
-              </Box>
-            }
-          />
-        </Box>
+        <SubsidiariesSelector
+          label={t('subsidiaries')}
+          placeholder={t('select_subsidiaries')}
+          value={product?.subsidiaries ? product?.subsidiaries : []}
+          onChange={(value) => handleChange('subsidiaries', value as string)}
+          onCreatedSubsidiary={(subsidiaryId) =>
+            handleChange('subsidiaries', [
+              ...(product?.subsidiaries || []),
+              subsidiaryId,
+            ])
+          }
+          onClear={() => handleChange('subsidiaries', '')}
+          errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
+          withActionButton
+          afterSelectorLabel={
+            <Box className="pl-1.5">
+              <InformationLabel
+                text={t('subsidiaries_assigning_on_product')}
+                onlyTooltip
+                tooltipOverlayInnerStyle={{
+                  width: isSmallScreen ? undefined : '42rem',
+                  textAlign: 'center',
+                }}
+              />
+            </Box>
+          }
+        />
 
         <Box className="flex items-center space-x-10">
           <Label>{t('status_by_quantity')}</Label>

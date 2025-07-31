@@ -19,7 +19,7 @@ import { Label, ValidationErrors } from '@interfaces/index';
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useTranslation } from '@hooks/index';
+import { useRefetch, useTranslation } from '@hooks/index';
 
 import LabelForm from '../common/components/LabelForm';
 import { validateLabel } from '../common/helpers/helpers';
@@ -39,6 +39,7 @@ const Create = () => {
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -67,6 +68,8 @@ const Create = () => {
       request('POST', '/api/labels', label)
         .then((response) => {
           toast.success('created_label');
+
+          refetch(['labels']);
 
           navigate(route('/labels/:id/edit', { id: response.data.id }));
         })

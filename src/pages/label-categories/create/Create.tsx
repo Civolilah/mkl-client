@@ -22,7 +22,7 @@ import { LabelCategory, ValidationErrors } from '@interfaces/index';
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useTranslation } from '@hooks/index';
+import { useRefetch, useTranslation } from '@hooks/index';
 
 import LabelCategoryForm from '../common/components/LabelCategoryForm';
 import { validateLabelCategory } from '../common/helpers/helpers';
@@ -42,6 +42,7 @@ const Create = () => {
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -72,6 +73,8 @@ const Create = () => {
       request('POST', '/api/label_categories', labelCategory)
         .then((response) => {
           toast.success('created_label_category');
+
+          refetch(['label_categories']);
 
           navigate(
             route('/label_categories/:id/edit', { id: response.data.id })

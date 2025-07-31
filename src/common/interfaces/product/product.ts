@@ -28,6 +28,7 @@ export type QuantityByVariant = {
   width?: number;
   length?: number;
   diameter?: number;
+  supplier_id?: string;
 };
 
 export type Product = {
@@ -47,4 +48,5 @@ export type Product = {
   unlimited_default_quantity: boolean;
   quantity_by_variant: QuantityByVariant[];
   default_image_id: number;
+  supplier_id?: string;
 };

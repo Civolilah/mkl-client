@@ -8,15 +8,18 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { INITIAL_LABEL, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
+import {
+  INITIAL_SUPPLIER,
+  VALIDATION_ERROR_STATUS_CODE,
+} from '@constants/index';
 import { request, useToast } from '@helpers/index';
 
-import LabelForm from '@pages/labels/common/components/LabelForm';
-import { validateLabel } from '@pages/labels/common/helpers/helpers';
+import SupplierForm from '@pages/suppliers/common/components/SupplierForm';
+import { validateSupplier } from '@pages/suppliers/common/helpers/helpers';
 
-import { Label, ValidationErrors } from '@interfaces/index';
+import { Supplier, ValidationErrors } from '@interfaces/index';
 
 import { Box, Button, Modal } from '@components/index';
 import SelectDataField, {
@@ -28,6 +31,7 @@ import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 type Props = {
   label?: string;
   placeholder?: string;
+  mode?: 'single' | 'multiple';
   value: string[];
   onChange: (value: string | string[]) => void;
   onClear?: () => void;
@@ -35,13 +39,11 @@ type Props = {
   withActionButton?: boolean;
   additionalOptions?: Option[];
   withoutOptionalText?: boolean;
-  labelCategoryId?: string;
-  disableLabelCategorySelector?: boolean;
-  withoutLabelCategorySelectorRefreshData?: boolean;
-  onCreatedLabel?: (labelId: string) => void;
+  onCreatedSupplier?: (supplierId: string) => void;
 };
 
-const LabelCategoriesSelector = ({
+const SuppliersSelector = ({
+  mode,
   value,
   onChange,
   onClear,
@@ -51,10 +53,7 @@ const LabelCategoriesSelector = ({
   withActionButton,
   additionalOptions,
   withoutOptionalText,
-  labelCategoryId,
-  disableLabelCategorySelector,
-  withoutLabelCategorySelectorRefreshData,
-  onCreatedLabel,
+  onCreatedSupplier,
 }: Props) => {
   const t = useTranslation();
 
@@ -66,13 +65,13 @@ const LabelCategoriesSelector = ({
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [labelPayload, setLabelPayload] = useState<Label | undefined>(
-    INITIAL_LABEL
+  const [supplierPayload, setSupplierPayload] = useState<Supplier | undefined>(
+    INITIAL_SUPPLIER
   );
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setLabelPayload(INITIAL_LABEL);
+    setSupplierPayload(INITIAL_SUPPLIER);
     setErrors({});
   };
 
@@ -80,15 +79,15 @@ const LabelCategoriesSelector = ({
     setIsModalOpen(true);
   };
 
-  const handleCreateLabel = async () => {
-    if (!labelPayload) {
+  const handleCreateSupplier = async () => {
+    if (!supplierPayload) {
       return;
     }
 
     if (!isFormBusy) {
       setErrors({});
 
-      const validationErrors = await validateLabel(labelPayload);
+      const validationErrors = await validateSupplier(supplierPayload);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -99,13 +98,13 @@ const LabelCategoriesSelector = ({
 
       setIsFormBusy(true);
 
-      request('POST', '/api/labels', labelPayload)
+      request('POST', '/api/suppliers', supplierPayload)
         .then((response) => {
-          toast.success('created_label');
+          toast.success('created_supplier');
 
-          refetch(['labels']);
+          refetch(['suppliers']);
 
-          onCreatedLabel?.(response.data.id);
+          onCreatedSupplier?.(response.data.id);
 
           handleCloseModal();
         })
@@ -119,42 +118,26 @@ const LabelCategoriesSelector = ({
     }
   };
 
-  useEffect(() => {
-    if (labelCategoryId && isModalOpen) {
-      setLabelPayload(
-        (current) =>
-          current && {
-            ...current,
-            label_category_id: labelCategoryId,
-          }
-      );
-    }
-  }, [labelCategoryId, isModalOpen]);
-
   return (
     <>
       <Modal
-        title={t('new_label')}
+        title={t('new_supplier')}
         visible={isModalOpen}
         onClose={handleCloseModal}
         disableClosing={isFormBusy}
         size="regular"
       >
         <Box className="flex flex-col space-y-4 w-full">
-          <LabelForm
-            label={labelPayload}
-            setLabel={setLabelPayload}
+          <SupplierForm
+            supplier={supplierPayload}
+            setSupplier={setSupplierPayload}
             errors={errors}
             onlyFields
-            disableLabelCategorySelector={disableLabelCategorySelector}
-            withoutLabelCategorySelectorRefreshData={
-              withoutLabelCategorySelectorRefreshData
-            }
           />
 
           <Button
             type="primary"
-            onClick={handleCreateLabel}
+            onClick={handleCreateSupplier}
             disabled={isFormBusy}
             disabledWithLoadingIcon={isFormBusy}
           >
@@ -164,22 +147,17 @@ const LabelCategoriesSelector = ({
       </Modal>
 
       <SelectDataField
-        queryIdentifiers={
-          labelCategoryId
-            ? ['/api/labels', 'selector', labelCategoryId]
-            : ['/api/labels', 'selector']
-        }
+        mode={mode}
+        queryIdentifiers={['/api/suppliers', 'selector']}
         label={label}
         placeholder={placeholder}
         valueKey="id"
         labelKey="name"
-        endpoint={`/api/labels?selector=true${
-          labelCategoryId ? `&label_category_id=${labelCategoryId}` : ''
-        }`}
+        endpoint="/api/suppliers?selector=true"
         enableByPermission={
-          hasPermission('create_label') ||
-          hasPermission('view_label') ||
-          hasPermission('edit_label')
+          hasPermission('create_supplier') ||
+          hasPermission('view_supplier') ||
+          hasPermission('edit_supplier')
         }
         withoutRefreshData
         value={value}
@@ -189,7 +167,7 @@ const LabelCategoriesSelector = ({
         actionButton={
           withActionButton ? (
             <Button className="w-full" type="primary" onClick={handleOpenModal}>
-              {t('new_label')}
+              {t('new_supplier')}
             </Button>
           ) : undefined
         }
@@ -200,4 +178,4 @@ const LabelCategoriesSelector = ({
   );
 };
 
-export default LabelCategoriesSelector;
+export default SuppliersSelector;

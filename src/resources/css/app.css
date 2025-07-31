@@ -20,8 +20,11 @@ td::before {
   box-shadow: none !important;
 }
 
+.ant-input-number-group-addon {
+  font-size: 0.9125rem !important;
+}
+
 .ant-input-number-input-wrap {
-  height: 2.5rem !important;
   font-size: 0.9125rem !important;
   box-shadow: none !important;
 }

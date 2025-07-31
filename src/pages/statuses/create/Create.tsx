@@ -19,7 +19,7 @@ import { Status, ValidationErrors } from '@interfaces/index';
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useTranslation } from '@hooks/index';
+import { useRefetch, useTranslation } from '@hooks/index';
 
 import Form from '../common/components/Form';
 import { validateStatus } from '../common/helpers/helpers';
@@ -39,6 +39,7 @@ const Create = () => {
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -67,6 +68,8 @@ const Create = () => {
       request('POST', '/api/statuses', status)
         .then((response) => {
           toast.success('created_status');
+
+          refetch(['statuses']);
 
           navigate(route('/statuses/:id/edit', { id: response.data.id }));
         })

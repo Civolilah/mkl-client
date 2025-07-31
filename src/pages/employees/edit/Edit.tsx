@@ -20,7 +20,12 @@ import { User, ValidationErrors } from '@interfaces/index';
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
+import {
+  useFetchEntity,
+  useHasPermission,
+  useRefetch,
+  useTranslation,
+} from '@hooks/index';
 
 import EmployeeForm from '../common/components/EmployeeForm';
 import { validateEmployee } from '../common/helpers/helpers';
@@ -42,6 +47,7 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
+  const refetch = useRefetch();
   const actions = useActions();
   const hasPermission = useHasPermission();
 
@@ -95,6 +101,8 @@ const Edit = () => {
                 password: '',
               }
           );
+
+          refetch(['users']);
 
           toast.success('updated_employee');
           setInitialResponse(cloneDeep(employee));

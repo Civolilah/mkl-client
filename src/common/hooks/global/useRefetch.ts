@@ -10,7 +10,7 @@
 
 import { useQueryClient } from 'react-query';
 
-type RefetchEntity =
+export type RefetchEntity =
   | 'brands'
   | 'labels'
   | 'label_categories'
@@ -18,7 +18,8 @@ type RefetchEntity =
   | 'categories'
   | 'statuses'
   | 'subsidiaries'
-  | 'employees';
+  | 'users'
+  | 'suppliers';
 
 type Endpoint =
   | '/api/brands'
@@ -28,7 +29,8 @@ type Endpoint =
   | '/api/categories'
   | '/api/statuses'
   | '/api/subsidiaries'
-  | '/api/employees';
+  | '/api/users'
+  | '/api/suppliers';
 
 type RefetchObject = {
   mainEndpoint: Endpoint;
@@ -38,15 +40,15 @@ type RefetchObject = {
 const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   brands: {
     mainEndpoint: '/api/brands',
-    dependencies: [],
+    dependencies: ['/api/products'],
   },
   labels: {
     mainEndpoint: '/api/labels',
-    dependencies: [],
+    dependencies: ['/api/label_categories', '/api/products'],
   },
   label_categories: {
     mainEndpoint: '/api/label_categories',
-    dependencies: [],
+    dependencies: ['/api/labels', '/api/products'],
   },
   products: {
     mainEndpoint: '/api/products',
@@ -62,11 +64,15 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   },
   subsidiaries: {
     mainEndpoint: '/api/subsidiaries',
-    dependencies: ['/api/products', '/api/employees'],
+    dependencies: ['/api/products', '/api/users'],
   },
-  employees: {
-    mainEndpoint: '/api/employees',
-    dependencies: [],
+  users: {
+    mainEndpoint: '/api/users',
+    dependencies: ['/api/subsidiaries'],
+  },
+  suppliers: {
+    mainEndpoint: '/api/suppliers',
+    dependencies: ['/api/products'],
   },
 };
 

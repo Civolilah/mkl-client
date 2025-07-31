@@ -97,6 +97,12 @@ const Details = (props: EmployeeProps) => {
             placeholder={t('select_subsidiaries')}
             value={employee?.subsidiaries || []}
             onChange={(value) => handleChange('subsidiaries', value)}
+            onCreatedSubsidiary={(subsidiaryId) =>
+              handleChange('subsidiaries', [
+                ...(employee?.subsidiaries || []),
+                subsidiaryId,
+              ])
+            }
             onClear={() => handleChange('subsidiaries', [])}
             errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
             withActionButton

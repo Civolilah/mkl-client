@@ -24,6 +24,7 @@ import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  useRefetch,
   useTranslation,
 } from '@hooks/index';
 
@@ -47,6 +48,7 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
+  const refetch = useRefetch();
   const actions = useActions();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
@@ -91,6 +93,9 @@ const Edit = () => {
       request('PATCH', endpoint('/api/labels/:id', { id }), label)
         .then(() => {
           toast.success('updated_label');
+
+          refetch(['labels']);
+
           setInitialResponse(cloneDeep(label));
         })
         .catch((error) => {

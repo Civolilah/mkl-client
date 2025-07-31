@@ -8,7 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { COMPONENTS_FONT_SIZE } from '@constants/index';
 import { toast, ToastOptions } from 'react-toastify';
 
 import { useTranslation } from '@hooks/index';
@@ -22,7 +21,7 @@ const toastOptions: ToastOptions = {
     minWidth: '20rem',
     maxWidth: 'fit-content',
     width: 'auto',
-    fontSize: COMPONENTS_FONT_SIZE,
+    fontSize: '0.875rem',
   },
 };
 

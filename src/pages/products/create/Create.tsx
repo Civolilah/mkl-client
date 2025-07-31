@@ -104,7 +104,12 @@ const Create = () => {
       disabledSaveButton={isFormBusy}
       disabledSaveButtonWithLoadingIcon={isFormBusy}
     >
-      <ProductForm product={product} setProduct={setProduct} errors={errors} />
+      <ProductForm
+        product={product}
+        setProduct={setProduct}
+        errors={errors}
+        isLoading={isFormBusy}
+      />
     </Default>
   );
 };

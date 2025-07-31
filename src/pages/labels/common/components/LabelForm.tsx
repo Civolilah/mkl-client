@@ -19,13 +19,13 @@ import {
   Box,
   Card,
   InformationLabel,
+  LabelCategoriesSelector,
   RefreshDataElement,
-  SelectDataField,
   Text,
   TextField,
 } from '@components/index';
 
-import { useHasPermission, useTranslation } from '@hooks/index';
+import { useTranslation } from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
 
@@ -56,8 +56,6 @@ const LabelForm = (props: Props) => {
     withoutLabelCategorySelectorRefreshData,
   } = props;
 
-  const hasPermission = useHasPermission();
-
   const handleChange = useHandleChange({ setLabel });
 
   if (onlyFields) {
@@ -73,25 +71,19 @@ const LabelForm = (props: Props) => {
           errorMessage={errors?.name && t(errors.name)}
         />
 
-        <SelectDataField
-          queryIdentifiers={['/api/label_categories']}
-          mode="single"
+        <LabelCategoriesSelector
           required
           label={t('label_category')}
           placeholder={t('select_label_category')}
-          valueKey="id"
-          labelKey="name"
-          endpoint="/api/label_categories?selector=true"
-          enableByPermission={
-            hasPermission('create_label_category') ||
-            hasPermission('view_label_category') ||
-            hasPermission('edit_label_category')
-          }
           value={label?.label_category_id ? [label?.label_category_id] : []}
           onChange={(value) =>
             handleChange('label_category_id', value as string)
           }
+          onCreatedLabelCategory={(labelCategoryId) =>
+            handleChange('label_category_id', labelCategoryId)
+          }
           onClear={() => handleChange('label_category_id', '')}
+          withActionButton
           errorMessage={
             errors?.label_category_id && t(errors.label_category_id)
           }
@@ -115,7 +107,7 @@ const LabelForm = (props: Props) => {
       paddingBottom={!editPage ? '0rem' : undefined}
     >
       <Box
-        className={classNames('flex flex-col space-y-7', { 'pb-2': editPage })}
+        className={classNames('flex flex-col space-y-4', { 'pb-2': editPage })}
       >
         <TextField
           required
@@ -127,41 +119,39 @@ const LabelForm = (props: Props) => {
           errorMessage={errors?.name && t(errors.name)}
         />
 
-        <SelectDataField
-          queryIdentifiers={['/api/labels', 'selector']}
-          mode="single"
+        <LabelCategoriesSelector
           required
           label={t('label_category')}
           placeholder={t('select_label_category')}
-          valueKey="id"
-          labelKey="name"
-          endpoint="/api/label_categories?selector=true"
-          enableByPermission={
-            hasPermission('create_label_category') ||
-            hasPermission('view_label_category') ||
-            hasPermission('edit_label_category')
-          }
           value={label?.label_category_id ? [label?.label_category_id] : []}
           onChange={(value) =>
             handleChange('label_category_id', value as string)
           }
+          onCreatedLabelCategory={(labelCategoryId) =>
+            handleChange('label_category_id', labelCategoryId)
+          }
           onClear={() => handleChange('label_category_id', '')}
+          withActionButton
           errorMessage={
             errors?.label_category_id && t(errors.label_category_id)
           }
+          disabled={disableLabelCategorySelector}
+          withoutRefreshData={withoutLabelCategorySelectorRefreshData}
         />
 
         {!editPage && (
-          <InformationLabel
-            text={reactStringReplace(t('label_helper'), ':label', () => (
-              <Text
-                key="labelBolded"
-                className="text-xs md:text-xs font-bold lowercase"
-              >
-                {t('label')}
-              </Text>
-            ))}
-          />
+          <Box className="pt-3">
+            <InformationLabel
+              text={reactStringReplace(t('label_helper'), ':label', () => (
+                <Text
+                  key="labelBolded"
+                  className="text-xs-mid font-bold lowercase"
+                >
+                  {t('label')}
+                </Text>
+              ))}
+            />
+          </Box>
         )}
       </Box>
     </Card>

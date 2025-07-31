@@ -32,6 +32,7 @@ import {
   DeleteAction,
 } from '@components/index';
 
+import { RefetchEntity } from '@hooks/global/useRefetch';
 import { useColors, useTranslation } from '@hooks/index';
 
 export type Resource =
@@ -59,6 +60,7 @@ export type ResourceType =
 type CustomActions = (resource: Resource) => MenuProps['items'];
 
 type Props = {
+  resourceQueryIdentifier: RefetchEntity;
   resourceName: string;
   editPageLink?: string;
   resource: Resource;
@@ -68,20 +70,19 @@ type Props = {
   customActions?: CustomActions;
 };
 
-const TableActionsDropdown = (props: Props) => {
+const TableActionsDropdown = ({
+  resource,
+  editPageLink,
+  deleteEndpoint,
+  resourceType,
+  refresh,
+  customActions,
+  resourceName,
+  resourceQueryIdentifier,
+}: Props) => {
   const t = useTranslation();
 
   const colors = useColors();
-
-  const {
-    resource,
-    editPageLink,
-    deleteEndpoint,
-    resourceType,
-    refresh,
-    customActions,
-    resourceName,
-  } = props;
 
   const navigate = useNavigate();
 
@@ -108,6 +109,7 @@ const TableActionsDropdown = (props: Props) => {
     {
       label: Boolean(deleteEndpoint && resourceType) && (
         <DeleteAction
+          resourceQueryIdentifier={resourceQueryIdentifier}
           resourceType={resourceType as ResourceType}
           deleteEndpoint={deleteEndpoint as string}
           refresh={refresh}

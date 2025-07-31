@@ -26,7 +26,7 @@ import SelectDataField, {
   Option,
 } from '@components/input-fields/SelectDataField';
 
-import { useHasPermission, useTranslation } from '@hooks/index';
+import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 
 type Props = {
   label?: string;
@@ -38,26 +38,33 @@ type Props = {
   withActionButton?: boolean;
   additionalOptions?: Option[];
   exclude?: string[];
+  onCreatedLabelCategory?: (labelCategoryId: string) => void;
+  withoutRefreshData?: boolean;
+  disabled?: boolean;
+  required?: boolean;
 };
 
-const LabelCategoriesSelector = (props: Props) => {
+const LabelCategoriesSelector = ({
+  value,
+  onChange,
+  onClear,
+  errorMessage,
+  label,
+  placeholder,
+  withActionButton,
+  additionalOptions,
+  exclude = [],
+  onCreatedLabelCategory,
+  withoutRefreshData,
+  disabled,
+  required,
+}: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const hasPermission = useHasPermission();
-
-  const {
-    value,
-    onChange,
-    onClear,
-    errorMessage,
-    label,
-    placeholder,
-    withActionButton,
-    additionalOptions,
-    exclude = [],
-  } = props;
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
@@ -99,7 +106,9 @@ const LabelCategoriesSelector = (props: Props) => {
         .then((response) => {
           toast.success('created_category');
 
-          onChange([response.data.id]);
+          refetch(['label_categories']);
+
+          onCreatedLabelCategory?.(response.data.id);
 
           handleCloseModal();
         })
@@ -153,7 +162,7 @@ const LabelCategoriesSelector = (props: Props) => {
           hasPermission('view_label_category') ||
           hasPermission('edit_label_category')
         }
-        withoutRefreshData
+        withoutRefreshData={withoutRefreshData}
         value={value}
         onChange={onChange}
         onClear={onClear}
@@ -171,6 +180,8 @@ const LabelCategoriesSelector = (props: Props) => {
         }
         additionalOptions={additionalOptions}
         exclude={exclude}
+        disabled={disabled}
+        required={required}
       />
     </>
   );

@@ -11,7 +11,7 @@
 import { useEffect, useState } from 'react';
 
 import colorString from 'color-string';
-import { cloneDeep, get, set } from 'lodash';
+import { cloneDeep, get, isEqual, set } from 'lodash';
 
 import {
   LabelCategory,
@@ -33,6 +33,7 @@ import {
   RefreshDataElement,
   SelectStaticField,
   Spinner,
+  SuppliersSelector,
   Text,
   Toggle,
 } from '@components/index';
@@ -99,6 +100,9 @@ const InventoryCard = ({
   const [labels, setLabels] = useState<LabelType[]>([]);
   const [isLoadingLabels, setIsLoadingLabels] = useState<boolean>(false);
 
+  const [lastInventoriesByVariant, setLastInventoriesByVariant] = useState<
+    Product['inventory_by_variant']
+  >(product?.inventory_by_variant || []);
   const [quantityByVariants, setQuantityByVariants] = useState<
     QuantityByVariant[]
   >([]);
@@ -116,8 +120,8 @@ const InventoryCard = ({
   });
 
   useFetchEntity({
-    queryIdentifiers: ['/api/labels', 'selector'],
-    endpoint: '/api/labels?selector=true',
+    queryIdentifiers: ['/api/labels'],
+    endpoint: '/api/labels',
     setEntities: setLabels,
     setIsLoading: setIsLoadingLabels,
     listQuery: true,
@@ -158,6 +162,7 @@ const InventoryCard = ({
           width: undefined,
           length: undefined,
           diameter: undefined,
+          supplier_id: undefined,
         });
 
         return;
@@ -181,13 +186,19 @@ const InventoryCard = ({
   };
 
   const getLabelName = (labelId: string) => {
-    return labels.find((label) => label.id === labelId)?.name;
+    const label = labels.find((label) => label.id === labelId);
+
+    if (!label) {
+      return labelId;
+    }
+
+    return `${label.name} (${label.label_category?.name})`;
   };
 
   const handleCombinationChange = (
     index: number,
     field: string,
-    value: number | boolean
+    value: string | number | boolean
   ) => {
     const updatedCombinations = cloneDeep(quantityByVariants);
 
@@ -200,7 +211,7 @@ const InventoryCard = ({
 
   const handleAddVariant = (labelCategoryId: string) => {
     handleChange('inventory_by_variant', [
-      ...(product?.inventory_by_variant || []),
+      ...(cloneDeep(product?.inventory_by_variant) || []),
       {
         label_category_id: labelCategoryId,
         label_ids: [],
@@ -219,7 +230,12 @@ const InventoryCard = ({
   };
 
   useEffect(() => {
-    if (product?.inventory_by_variant) {
+    if (
+      product?.inventory_by_variant &&
+      !isEqual(product.inventory_by_variant, lastInventoriesByVariant)
+    ) {
+      setLastInventoriesByVariant(cloneDeep(product.inventory_by_variant));
+
       setQuantityByVariants(
         generateVariantCombinations(product.inventory_by_variant)
       );
@@ -319,6 +335,9 @@ const InventoryCard = ({
                   placeholder={t('select_options')}
                   value={[]}
                   onChange={(value) => handleAddVariant(value?.[0])}
+                  onCreatedLabelCategory={(labelCategoryId) =>
+                    handleAddVariant(labelCategoryId)
+                  }
                   withActionButton
                   exclude={product?.inventory_by_variant?.map(
                     (variant) => variant.label_category_id as string
@@ -382,6 +401,12 @@ const InventoryCard = ({
                                   handleChange(
                                     `inventory_by_variant.${index}.label_ids` as keyof Product,
                                     value
+                                  )
+                                }
+                                onCreatedLabel={(labelId) =>
+                                  handleChange(
+                                    `inventory_by_variant.${index}.label_ids` as keyof Product,
+                                    [...(variant.label_ids || []), labelId]
                                   )
                                 }
                                 withActionButton
@@ -455,9 +480,7 @@ const InventoryCard = ({
                                                 height: '1.4rem',
                                                 backgroundColor: label.labelId,
                                               }}
-                                            >
-                                              {getLabelName(label.labelId)}
-                                            </Box>
+                                            />
                                           </Box>
                                         );
                                       }
@@ -495,7 +518,7 @@ const InventoryCard = ({
                                 className="p-4"
                                 style={{ backgroundColor: colors.$36 }}
                               >
-                                <Box className="grid grid-cols-1 md:grid-cols-3 items-end gap-4">
+                                <Box className="grid grid-cols-1 md:grid-cols-4 items-end gap-4">
                                   <Box className="flex flex-col space-y-1">
                                     <Box className="flex items-center space-x-2">
                                       <Label>{t('unlimited_quantity')}</Label>
@@ -571,6 +594,36 @@ const InventoryCard = ({
                                       handleCombinationChange
                                     }
                                     variantCombinations={quantityByVariants}
+                                  />
+
+                                  <SuppliersSelector
+                                    mode="single"
+                                    label={t('supplier')}
+                                    placeholder={t('select_supplier')}
+                                    value={
+                                      combination.supplier_id
+                                        ? [combination.supplier_id]
+                                        : []
+                                    }
+                                    onChange={(value) =>
+                                      handleCombinationChange(
+                                        index,
+                                        'supplier_id',
+                                        value as string
+                                      )
+                                    }
+                                    onClear={() =>
+                                      handleCombinationChange(
+                                        index,
+                                        'supplier_id',
+                                        ''
+                                      )
+                                    }
+                                    withActionButton
+                                    errorMessage={
+                                      errors?.supplier_id &&
+                                      t(errors.supplier_id)
+                                    }
                                   />
                                 </Box>
                               </Box>

@@ -31,6 +31,7 @@ const useActions = () => {
             editPageAction
             mainPageURL="/statuses"
             resourceName={currentResource.name}
+            resourceQueryIdentifier="statuses"
           />
         ),
         key: `delete-${id}`,

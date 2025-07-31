@@ -109,6 +109,7 @@ const useColumns = (props: Props) => {
           deleteEndpoint="/api/suppliers/:id"
           refresh={refresh}
           resourceName={resource.name}
+          resourceQueryIdentifier="suppliers"
         />
       ),
       fixed: 'right',

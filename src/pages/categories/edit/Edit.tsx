@@ -24,6 +24,7 @@ import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  useRefetch,
   useTranslation,
 } from '@hooks/index';
 
@@ -47,6 +48,7 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
+  const refetch = useRefetch();
   const actions = useActions();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
@@ -94,6 +96,8 @@ const Edit = () => {
         .then(() => {
           toast.success('updated_category');
           setInitialResponse(cloneDeep(category));
+
+          refetch(['categories']);
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {

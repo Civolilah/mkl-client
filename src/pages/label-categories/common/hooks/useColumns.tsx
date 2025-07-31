@@ -111,6 +111,7 @@ const useColumns = (props: Props) => {
           deleteEndpoint="/api/label_categories/:id"
           refresh={refresh}
           resourceName={resource.name}
+          resourceQueryIdentifier="label_categories"
         />
       ),
       fixed: 'right',

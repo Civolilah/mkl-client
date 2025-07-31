@@ -163,6 +163,7 @@ const useColumns = (props: Props) => {
                 (resource.last_name ? ' ' + resource.last_name : '')
               : resource.email
           }`}
+          resourceQueryIdentifier="users"
         />
       ),
       fixed: 'right',

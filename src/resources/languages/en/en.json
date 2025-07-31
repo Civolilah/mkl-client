@@ -276,5 +276,7 @@
     "width": "Width",
     "length": "Length",
     "diameter": "Diameter",
-    "set_as_default": "Set as default"
+    "set_as_default": "Set as default",
+    "select_supplier": "Select supplier",
+    "price": "Price"
 }

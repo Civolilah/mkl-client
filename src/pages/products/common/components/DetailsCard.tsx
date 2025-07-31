@@ -16,6 +16,7 @@ import {
   Card,
   CategoriesSelector,
   RefreshDataElement,
+  SuppliersSelector,
   TextField,
 } from '@components/index';
 
@@ -94,6 +95,17 @@ const DetailsCard = ({
           onClear={() => handleChange('category_id', '')}
           errorMessage={errors?.category_id && t(errors.category_id)}
           withActionButton
+        />
+
+        <SuppliersSelector
+          mode="single"
+          label={t('supplier')}
+          placeholder={t('select_supplier')}
+          value={product?.supplier_id ? [product?.supplier_id] : []}
+          onChange={(value) => handleChange('supplier_id', value as string)}
+          onClear={() => handleChange('supplier_id', '')}
+          withActionButton
+          errorMessage={errors?.supplier_id && t(errors.supplier_id)}
         />
 
         <TextField

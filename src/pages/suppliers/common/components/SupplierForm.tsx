@@ -25,15 +25,37 @@ type Props = {
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
+  onlyFields?: boolean;
 };
 
-const SupplierForm = (props: Props) => {
+const SupplierForm = ({
+  supplier,
+  setSupplier,
+  errors,
+  editPage,
+  isLoading,
+  onRefresh,
+  onlyFields,
+}: Props) => {
   const t = useTranslation();
 
-  const { supplier, setSupplier, errors, editPage, isLoading, onRefresh } =
-    props;
-
   const handleChange = useHandleChange({ setSupplier });
+
+  if (onlyFields) {
+    return (
+      <>
+        <TextField
+          required
+          label={t('name')}
+          placeHolder={t('supplier_name_placeholder')}
+          value={supplier?.name || ''}
+          onValueChange={(value) => handleChange('name', value)}
+          changeOnBlur
+          errorMessage={errors?.name && t(errors.name)}
+        />
+      </>
+    );
+  }
 
   return (
     <Card

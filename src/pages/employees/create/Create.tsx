@@ -22,7 +22,7 @@ import { User, ValidationErrors } from '@interfaces/index';
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useTranslation } from '@hooks/index';
+import { useRefetch, useTranslation } from '@hooks/index';
 
 import EmployeeForm from '../common/components/EmployeeForm';
 import { validateEmployee } from '../common/helpers/helpers';
@@ -42,6 +42,7 @@ const Create = () => {
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -72,6 +73,8 @@ const Create = () => {
       request('POST', '/api/users/add_employee', employee)
         .then((response) => {
           toast.success('created_employee');
+
+          refetch(['users']);
 
           navigate(route('/employees/:id/edit', { id: response.data.id }));
         })

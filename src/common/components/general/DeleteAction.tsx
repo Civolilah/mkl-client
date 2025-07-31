@@ -24,7 +24,8 @@ import {
   Text,
 } from '@components/index';
 
-import { useTranslation } from '@hooks/index';
+import { RefetchEntity } from '@hooks/global/useRefetch';
+import { useRefetch, useTranslation } from '@hooks/index';
 
 import { userCompanyAtom } from './PrivateRoute';
 import { ResourceType } from './TableActionsDropdown';
@@ -37,26 +38,27 @@ type Props = {
   refresh?: () => void;
   editPageAction?: boolean;
   mainPageURL?: string;
+  resourceQueryIdentifier: RefetchEntity;
 };
 
-const DeleteAction = (props: Props) => {
+const DeleteAction = ({
+  deleteEndpoint,
+  resourceType,
+  refresh,
+  resourceId,
+  editPageAction = false,
+  mainPageURL,
+  resourceName,
+  resourceQueryIdentifier,
+}: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
 
+  const refetch = useRefetch();
   const navigate = useNavigate();
 
   const userCompany = useAtomValue(userCompanyAtom);
-
-  const {
-    deleteEndpoint,
-    resourceType,
-    refresh,
-    resourceId,
-    editPageAction = false,
-    mainPageURL,
-    resourceName,
-  } = props;
 
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -90,6 +92,8 @@ const DeleteAction = (props: Props) => {
         .then(() => {
           toast.success(`deleted_${resourceType}`);
           refresh?.();
+
+          refetch([resourceQueryIdentifier]);
 
           if (editPageAction && mainPageURL) {
             navigate(mainPageURL);

@@ -24,6 +24,7 @@ import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  useRefetch,
   useTranslation,
 } from '@hooks/index';
 
@@ -48,6 +49,7 @@ const Edit = () => {
   const { id } = useParams();
 
   const actions = useActions();
+  const refetch = useRefetch();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
 
@@ -91,6 +93,9 @@ const Edit = () => {
       request('PATCH', endpoint('/api/brands/:id', { id }), brand)
         .then(() => {
           toast.success('updated_brand');
+
+          refetch(['brands']);
+
           setInitialResponse(cloneDeep(brand));
         })
         .catch((error) => {
