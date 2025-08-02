@@ -120,6 +120,7 @@ const LabelForm = (props: Props) => {
         />
 
         <LabelCategoriesSelector
+          mode="single"
           required
           label={t('label_category')}
           placeholder={t('select_label_category')}

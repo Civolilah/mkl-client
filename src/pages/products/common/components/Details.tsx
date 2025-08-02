@@ -8,9 +8,13 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-import { Product, ValidationErrors } from '@interfaces/index';
+import {
+  Product,
+  QuantityByVariant,
+  ValidationErrors,
+} from '@interfaces/index';
 
 import { Box } from '@components/index';
 
@@ -35,6 +39,8 @@ export type ProductProps = {
       | string[]
       | Product['quantity_by_variant']
   ) => void;
+  quantityByVariants: QuantityByVariant[];
+  setQuantityByVariants: Dispatch<SetStateAction<QuantityByVariant[]>>;
 };
 
 const Details = ({
@@ -44,6 +50,8 @@ const Details = ({
   isLoading,
   onRefresh,
   handleChange,
+  quantityByVariants,
+  setQuantityByVariants,
 }: ProductProps) => {
   const [currentImages, setCurrentImages] = useState<string[]>([]);
 
@@ -66,6 +74,8 @@ const Details = ({
         errors={errors}
         handleChange={handleChange}
         images={currentImages}
+        quantityByVariants={quantityByVariants}
+        setQuantityByVariants={setQuantityByVariants}
       />
 
       <ImagesCard
@@ -85,6 +95,7 @@ const Details = ({
         product={product}
         errors={errors}
         handleChange={handleChange}
+        quantityByVariants={quantityByVariants}
       />
     </Box>
   );

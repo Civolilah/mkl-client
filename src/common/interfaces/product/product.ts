@@ -31,6 +31,12 @@ export type QuantityByVariant = {
   supplier_id?: string;
 };
 
+export type StatusByQuantity = {
+  status_id: string;
+  quantity: number;
+  labels: QuantityLabel[];
+};
+
 export type Product = {
   id?: string;
   name: string;
@@ -39,7 +45,7 @@ export type Product = {
   inventory_group: string;
   inventory_by_variant: InventoryByVariant[];
   is_status_by_quantity: boolean;
-  status_by_quantity: string;
+  status_by_quantity: StatusByQuantity[];
   description?: string;
   brand_id?: string;
   category_id?: string;

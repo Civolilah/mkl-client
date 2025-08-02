@@ -68,7 +68,7 @@ const Card = (props: Props) => {
       >
         <Box className="flex flex-col">
           <Box
-            className="flex items-center justify-between border-b px-5 py-3.5"
+            className="flex items-center justify-between border-b px-3 md:px-5 py-3 md:py-3.5"
             style={{ borderColor: colors.$1 }}
           >
             <Text className="text-base md:text-lg font-medium">{title}</Text>
@@ -77,7 +77,10 @@ const Card = (props: Props) => {
           </Box>
 
           <Box
-            className={classNames('px-5 pt-5 pb-4', childrenParentClassName)}
+            className={classNames(
+              'px-3 md:px-5 pt-4 md:pt-5 pb-4',
+              childrenParentClassName
+            )}
             style={childrenParentStyle}
           >
             {children}

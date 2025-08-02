@@ -15,7 +15,7 @@ td::before {
 }
 
 .ant-select-selector {
-  height: 2.5rem !important;
+  min-height: 2.5rem !important;
   font-size: 0.9125rem !important;
   box-shadow: none !important;
 }

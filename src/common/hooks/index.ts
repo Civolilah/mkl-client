@@ -28,3 +28,4 @@ export { default as useCompanyPlan } from '@hooks/global/useCompanyPlan';
 export { default as useRefetch } from '@hooks/global/useRefetch';
 export { default as useSymbols } from '@hooks/global/useSymbols';
 export { default as useNumberFieldSymbols } from '@hooks/global/useNumberFieldSymbols';
+export { default as useFindLabel } from '@hooks/labels/useFindLabel';

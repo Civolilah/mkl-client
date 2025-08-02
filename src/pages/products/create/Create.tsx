@@ -15,9 +15,14 @@ import {
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { cloneDeep, isEqual } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
-import { Product, ValidationErrors } from '@interfaces/index';
+import {
+  Product,
+  QuantityByVariant,
+  ValidationErrors,
+} from '@interfaces/index';
 
 import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -26,6 +31,7 @@ import { useTranslation } from '@hooks/index';
 
 import ProductForm from '../common/components/ProductForm';
 import { validateProduct } from '../common/helpers/helpers';
+import useGenerateVariantCombinations from '../common/hooks/useGenerateVariantCombinations';
 
 const Create = () => {
   const t = useTranslation();
@@ -43,10 +49,17 @@ const Create = () => {
   const toast = useToast();
 
   const navigate = useNavigate();
+  const generateVariantCombinations = useGenerateVariantCombinations();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [product, setProduct] = useState<Product | undefined>(INITIAL_PRODUCT);
+  const [quantityByVariants, setQuantityByVariants] = useState<
+    QuantityByVariant[]
+  >([]);
+  const [lastInventoriesByVariant, setLastInventoriesByVariant] = useState<
+    Product['inventory_by_variant']
+  >(product?.inventory_by_variant || []);
 
   const handleSave = async () => {
     if (!product) {
@@ -84,6 +97,19 @@ const Create = () => {
   };
 
   useEffect(() => {
+    if (
+      product?.inventory_by_variant &&
+      !isEqual(product.inventory_by_variant, lastInventoriesByVariant)
+    ) {
+      setLastInventoriesByVariant(cloneDeep(product.inventory_by_variant));
+
+      setQuantityByVariants(
+        generateVariantCombinations(product.inventory_by_variant)
+      );
+    }
+  }, [product?.inventory_by_variant]);
+
+  useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
     }
@@ -109,6 +135,8 @@ const Create = () => {
         setProduct={setProduct}
         errors={errors}
         isLoading={isFormBusy}
+        quantityByVariants={quantityByVariants}
+        setQuantityByVariants={setQuantityByVariants}
       />
     </Default>
   );

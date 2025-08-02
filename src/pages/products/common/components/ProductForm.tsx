@@ -12,7 +12,11 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import { Product, ValidationErrors } from '@interfaces/index';
+import {
+  Product,
+  QuantityByVariant,
+  ValidationErrors,
+} from '@interfaces/index';
 
 import { Box, StaticTabs } from '@components/index';
 
@@ -26,11 +30,20 @@ type Props = {
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
+  quantityByVariants: QuantityByVariant[];
+  setQuantityByVariants: Dispatch<SetStateAction<QuantityByVariant[]>>;
 };
 
-const ProductForm = (props: Props) => {
-  const { product, errors, editPage, isLoading, onRefresh, setProduct } = props;
-
+const ProductForm = ({
+  product,
+  errors,
+  editPage,
+  isLoading,
+  onRefresh,
+  setProduct,
+  quantityByVariants,
+  setQuantityByVariants,
+}: Props) => {
   const handleChange = useHandleChange({ setProduct });
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -46,6 +59,8 @@ const ProductForm = (props: Props) => {
     onRefresh,
     errors,
     handleChange,
+    quantityByVariants,
+    setQuantityByVariants,
   });
 
   useEffect(() => {
@@ -73,7 +88,7 @@ const ProductForm = (props: Props) => {
   }, [activeTab]);
 
   return (
-    <Box className="flex w-full self-start xl:w-3/4">
+    <Box className="flex w-full self-start xl:w-5/6">
       <StaticTabs
         tabs={tabs}
         activeTab={activeTab}

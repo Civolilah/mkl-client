@@ -33,13 +33,14 @@ type Props = {
   placeholder?: string;
   mode?: 'single' | 'multiple';
   value: string[];
-  onChange: (value: string | string[]) => void;
+  onChange?: (value: string | string[]) => void;
   onClear?: () => void;
   errorMessage?: string;
   withActionButton?: boolean;
   additionalOptions?: Option[];
   withoutOptionalText?: boolean;
   onCreatedSupplier?: (supplierId: string) => void;
+  readOnly?: boolean;
 };
 
 const SuppliersSelector = ({
@@ -54,6 +55,7 @@ const SuppliersSelector = ({
   additionalOptions,
   withoutOptionalText,
   onCreatedSupplier,
+  readOnly,
 }: Props) => {
   const t = useTranslation();
 
@@ -173,6 +175,7 @@ const SuppliersSelector = ({
         }
         additionalOptions={additionalOptions}
         withoutOptionalText={withoutOptionalText}
+        readOnly={readOnly}
       />
     </>
   );

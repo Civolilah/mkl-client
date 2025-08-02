@@ -42,9 +42,11 @@ type Props = {
   withoutRefreshData?: boolean;
   disabled?: boolean;
   required?: boolean;
+  mode?: 'single' | 'multiple';
 };
 
 const LabelCategoriesSelector = ({
+  mode = 'single',
   value,
   onChange,
   onClear,
@@ -182,6 +184,7 @@ const LabelCategoriesSelector = ({
         exclude={exclude}
         disabled={disabled}
         required={required}
+        mode={mode}
       />
     </>
   );

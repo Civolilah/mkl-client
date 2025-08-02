@@ -284,7 +284,7 @@ const ImageUploader = ({
       {images.length > 0 && (
         <Box
           className={classNames(
-            'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4',
+            'grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4',
             {
               'mt-4': !(images.length >= imagesNumberLimit) && !disabled,
             }

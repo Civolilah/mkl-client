@@ -74,13 +74,13 @@ const MobileNavBar = (props: Props) => {
         open={open}
         closable={false}
         onClose={onClose}
-        width={isMiniSideBar ? '4.35rem' : '15rem'}
+        width={isMiniSideBar ? '4.35rem' : '75%'}
         rootStyle={{ padding: 0 }}
         styles={{ body: { padding: 0 } }}
       >
         <div className="h-full" style={{ backgroundColor: colors.$6 }}>
           <nav className="flex flex-col space-y-3 h-full">
-            <NavBarLogoSection mobileSideBar handleCloseSideBar={onClose} />
+            <NavBarLogoSection mobileSideBar />
 
             <div
               className={classNames(

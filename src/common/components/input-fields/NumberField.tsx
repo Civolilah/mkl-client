@@ -30,7 +30,7 @@ type Props = {
   required?: boolean;
   disabled?: boolean;
   placeHolder?: string;
-  onValueChange: (value: number) => void;
+  onValueChange?: (value: number) => void;
   errorMessage?: string;
   onPressEnter?: (event: KeyboardEvent<HTMLInputElement> | undefined) => void;
   debounce?: number;
@@ -39,32 +39,32 @@ type Props = {
   addonBefore?: ReactNode;
   disablePlaceholderValue?: string;
   falsyValuePlaceholder?: string;
+  readOnly?: boolean;
 };
 
-const NumberField = (props: Props) => {
-  const {
-    value,
-    onValueChange,
-    label,
-    placeHolder,
-    errorMessage,
-    required = false,
-    disabled = false,
-    min,
-    max,
-    size = 'large',
-    debounce,
-    withoutOptionalText,
-    addonAfter,
-    disablePlaceholderValue,
-    falsyValuePlaceholder,
-  } = props;
-
+const NumberField = ({
+  value,
+  onValueChange,
+  label,
+  placeHolder,
+  errorMessage,
+  required = false,
+  disabled = false,
+  min,
+  max,
+  size = 'large',
+  debounce,
+  withoutOptionalText,
+  addonAfter,
+  disablePlaceholderValue,
+  falsyValuePlaceholder,
+  readOnly = false,
+}: Props) => {
   const [currentValue, setCurrentValue] = useState<number>(value);
 
   useDebounce(
     () => {
-      onValueChange(currentValue);
+      onValueChange?.(currentValue);
     },
     debounce ?? 300,
     [currentValue]
@@ -119,6 +119,7 @@ const NumberField = (props: Props) => {
           fontSize: '0.875rem',
           boxShadow: 'none',
         }}
+        readOnly={readOnly}
       />
 
       <ErrorMessageElement errorMessage={errorMessage} />

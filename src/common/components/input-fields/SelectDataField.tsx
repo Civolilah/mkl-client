@@ -36,7 +36,7 @@ type Props = {
   mode?: 'multiple' | 'tags' | 'single';
   value: string[];
   placeholder?: string;
-  onChange: (value: string[] | string) => void;
+  onChange?: (value: string[] | string) => void;
   errorMessage?: string;
   labelKey?: string;
   valueKey?: string;
@@ -55,6 +55,7 @@ type Props = {
   queryIdentifiers: string[];
   afterLabel?: ReactNode;
   tooltipOverlayInnerStyle?: CSSProperties;
+  readOnly?: boolean;
 };
 
 export type Option = {
@@ -88,6 +89,7 @@ const SelectDataField = ({
   disabled,
   queryIdentifiers,
   afterLabel,
+  readOnly,
 }: Props) => {
   const [options, setOptions] = useState<Option[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -166,7 +168,9 @@ const SelectDataField = ({
           <Select
             className="w-full"
             open={isDropdownOpen}
-            onDropdownVisibleChange={(open) => setIsDropdownOpen(open)}
+            onDropdownVisibleChange={(open) =>
+              !readOnly && setIsDropdownOpen(open)
+            }
             mode={mode}
             size={size}
             placeholder={placeholder}
@@ -182,9 +186,10 @@ const SelectDataField = ({
             filterOption={false}
             onSearch={handleSearch}
             onClear={onClear}
+            showSearch={!readOnly}
             allowClear={Boolean(onClear)}
             style={{
-              height: '2.5rem',
+              minHeight: '2.5rem',
               fontSize: '0.875rem',
               boxShadow: 'none',
             }}
@@ -232,7 +237,9 @@ const SelectDataField = ({
           <Select
             className="w-full"
             open={isDropdownOpen}
-            onDropdownVisibleChange={(open) => setIsDropdownOpen(open)}
+            onDropdownVisibleChange={(open) =>
+              !readOnly && setIsDropdownOpen(open)
+            }
             size={size}
             placeholder={placeholder}
             value={value}
@@ -244,7 +251,7 @@ const SelectDataField = ({
             loading={isLoading}
             onSearch={handleSearch}
             filterOption={false}
-            showSearch
+            showSearch={!readOnly}
             onClear={onClear}
             style={{
               height: '2.5rem',

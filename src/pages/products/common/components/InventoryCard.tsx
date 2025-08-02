@@ -8,10 +8,10 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import colorString from 'color-string';
-import { cloneDeep, get, isEqual, set } from 'lodash';
+import { cloneDeep, get, set } from 'lodash';
 
 import {
   LabelCategory,
@@ -19,7 +19,6 @@ import {
   QuantityByVariant,
   ValidationErrors,
 } from '@interfaces/index';
-import { Label as LabelType } from '@interfaces/index';
 
 import {
   Box,
@@ -46,6 +45,7 @@ import {
   useFetchEntity,
   useHasPermission,
   useTranslation,
+  useFindLabel,
 } from '@hooks/index';
 
 import ColorSelector from './ColorSelector';
@@ -70,6 +70,8 @@ type Props = {
       | Product['quantity_by_variant']
   ) => void;
   images?: string[];
+  quantityByVariants: QuantityByVariant[];
+  setQuantityByVariants: Dispatch<SetStateAction<QuantityByVariant[]>>;
 };
 
 const InventoryCard = ({
@@ -80,10 +82,14 @@ const InventoryCard = ({
   errors,
   handleChange,
   images,
+  quantityByVariants,
+  setQuantityByVariants,
 }: Props) => {
   const t = useTranslation();
 
   const hasPermission = useHasPermission();
+
+  const { getLabelNameByLabelId, isLoadingLabels } = useFindLabel();
 
   const colors = useColors();
   const accentColor = useAccentColor();
@@ -97,16 +103,6 @@ const InventoryCard = ({
   const [isLoadingLabelCategories, setIsLoadingLabelCategories] =
     useState<boolean>(false);
 
-  const [labels, setLabels] = useState<LabelType[]>([]);
-  const [isLoadingLabels, setIsLoadingLabels] = useState<boolean>(false);
-
-  const [lastInventoriesByVariant, setLastInventoriesByVariant] = useState<
-    Product['inventory_by_variant']
-  >(product?.inventory_by_variant || []);
-  const [quantityByVariants, setQuantityByVariants] = useState<
-    QuantityByVariant[]
-  >([]);
-
   useFetchEntity({
     queryIdentifiers: ['/api/label_categories', 'selector'],
     endpoint: '/api/label_categories?selector=true',
@@ -118,82 +114,6 @@ const InventoryCard = ({
       hasPermission('create_label_category') ||
       hasPermission('edit_label_category'),
   });
-
-  useFetchEntity({
-    queryIdentifiers: ['/api/labels'],
-    endpoint: '/api/labels',
-    setEntities: setLabels,
-    setIsLoading: setIsLoadingLabels,
-    listQuery: true,
-    enableByPermission:
-      hasPermission('view_label') ||
-      hasPermission('create_label') ||
-      hasPermission('edit_label'),
-  });
-
-  const generateVariantCombinations = (
-    variants: Product['inventory_by_variant']
-  ): QuantityByVariant[] => {
-    if (!variants || variants.length === 0) return [];
-
-    const variantOptionsWithLabels = variants
-      .filter((variant) => variant.label_ids && variant.label_ids.length > 0)
-      .map((variant) => ({
-        categoryId: variant.label_category_id,
-        labelIds: variant.label_ids || [],
-      }));
-
-    if (variantOptionsWithLabels.length === 0) return [];
-
-    const combinations: QuantityByVariant[] = [];
-
-    const generateCombos = (
-      currentCombo: Array<{ categoryId: string; labelId: string }>,
-      remainingVariants: typeof variantOptionsWithLabels
-    ) => {
-      if (remainingVariants.length === 0) {
-        combinations.push({
-          labels: cloneDeep(currentCombo),
-          quantity: 1,
-          price: 0,
-          unlimited: false,
-          weight: undefined,
-          height: undefined,
-          width: undefined,
-          length: undefined,
-          diameter: undefined,
-          supplier_id: undefined,
-        });
-
-        return;
-      }
-
-      const [currentVariant, ...rest] = remainingVariants;
-      currentVariant.labelIds.forEach((labelId) => {
-        generateCombos(
-          [
-            ...currentCombo,
-            { categoryId: currentVariant.categoryId as string, labelId },
-          ],
-          rest
-        );
-      });
-    };
-
-    generateCombos([], variantOptionsWithLabels);
-
-    return combinations;
-  };
-
-  const getLabelName = (labelId: string) => {
-    const label = labels.find((label) => label.id === labelId);
-
-    if (!label) {
-      return labelId;
-    }
-
-    return `${label.name} (${label.label_category?.name})`;
-  };
 
   const handleCombinationChange = (
     index: number,
@@ -228,19 +148,6 @@ const InventoryCard = ({
       (labelCategory) => labelCategory.id === labelCategoryId
     )?.name;
   };
-
-  useEffect(() => {
-    if (
-      product?.inventory_by_variant &&
-      !isEqual(product.inventory_by_variant, lastInventoriesByVariant)
-    ) {
-      setLastInventoriesByVariant(cloneDeep(product.inventory_by_variant));
-
-      setQuantityByVariants(
-        generateVariantCombinations(product.inventory_by_variant)
-      );
-    }
-  }, [product?.inventory_by_variant]);
 
   return (
     <Card
@@ -346,12 +253,21 @@ const InventoryCard = ({
                 />
 
                 {Boolean(product.inventory_by_variant.length) && (
+                  <Divider
+                    style={{
+                      marginTop: '2rem',
+                      marginBottom: '0.15rem',
+                    }}
+                  />
+                )}
+
+                {Boolean(product.inventory_by_variant.length) && (
                   <Box className="flex flex-col w-full">
-                    <Box className="flex flex-col w-full pt-2">
+                    <Box className="flex flex-col w-full">
                       {product.inventory_by_variant.map((variant, index) => (
                         <Box
                           key={index}
-                          className="flex items-center justify-between max-w-[40rem] py-3"
+                          className="flex flex-col space-y-2 md:space-y-0 md:flex-row items-start md:items-center justify-between max-w-[40rem] py-3 gap-x-4"
                         >
                           <Box className="flex items-center space-x-2">
                             <Icon name="dotFill" size="1.15rem" />
@@ -433,7 +349,7 @@ const InventoryCard = ({
                     {Boolean(quantityByVariants.length) && (
                       <Box className="flex flex-col space-y-4 w-full">
                         <Text className="font-medium text-lg">
-                          {t('quantity_by_variant')}
+                          {t('quantity_by_variants')}
                         </Text>
 
                         <Box className="flex flex-col space-y-4">
@@ -505,7 +421,9 @@ const InventoryCard = ({
                                               backgroundColor: colors.$1,
                                             }}
                                           >
-                                            {getLabelName(label.labelId)}
+                                            {getLabelNameByLabelId(
+                                              label.labelId
+                                            )}
                                           </Box>
                                         </Box>
                                       );
@@ -573,6 +491,7 @@ const InventoryCard = ({
                                   </Box>
 
                                   <NumberField
+                                    required
                                     label={t('price')}
                                     placeHolder={t('enter_price')}
                                     value={combination.price}
@@ -585,15 +504,14 @@ const InventoryCard = ({
                                     }
                                     addonAfter={currencySymbol}
                                     min={0}
-                                    withoutOptionalText
                                   />
 
                                   <DimensionsModal
                                     selectedCombinationIndex={index}
-                                    handleCombinationChange={
-                                      handleCombinationChange
+                                    setQuantityByVariants={
+                                      setQuantityByVariants
                                     }
-                                    variantCombinations={quantityByVariants}
+                                    quantityByVariants={quantityByVariants}
                                   />
 
                                   <SuppliersSelector

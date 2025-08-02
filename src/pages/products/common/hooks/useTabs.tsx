@@ -16,11 +16,17 @@ import { useTranslation } from '@hooks/index';
 import Details, { ProductProps } from '../components/Details';
 import QRCode from '../components/QRCode';
 
-const useTabs = (params: ProductProps) => {
+const useTabs = ({
+  product,
+  editPage,
+  isLoading,
+  onRefresh,
+  errors,
+  handleChange,
+  quantityByVariants,
+  setQuantityByVariants,
+}: ProductProps) => {
   const t = useTranslation();
-
-  const { product, editPage, isLoading, onRefresh, errors, handleChange } =
-    params;
 
   const tabs = [
     {
@@ -42,6 +48,8 @@ const useTabs = (params: ProductProps) => {
           onRefresh={onRefresh}
           errors={errors}
           handleChange={handleChange}
+          quantityByVariants={quantityByVariants}
+          setQuantityByVariants={setQuantityByVariants}
         />
       ),
     },
@@ -64,6 +72,8 @@ const useTabs = (params: ProductProps) => {
           onRefresh={onRefresh}
           errors={errors}
           handleChange={handleChange}
+          quantityByVariants={quantityByVariants}
+          setQuantityByVariants={setQuantityByVariants}
         />
       ),
     },

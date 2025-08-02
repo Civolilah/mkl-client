@@ -14,14 +14,12 @@ import { Switch } from 'antd';
 
 type Props = {
   checked: boolean;
-  onChange: (value: boolean) => void;
+  onChange?: (value: boolean) => void;
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
 };
 
-const Toggle = (props: Props) => {
-  const { checked, onChange, disabled, size = 'medium' } = props;
-
+const Toggle = ({ checked, onChange, disabled, size = 'medium' }: Props) => {
   const getMediumStyles = (): CSSProperties => ({
     width: '2.5rem',
     height: '1.215rem',

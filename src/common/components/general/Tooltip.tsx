@@ -12,6 +12,7 @@ import { CSSProperties, ReactNode } from 'react';
 
 import TooltipBase from 'antd/es/tooltip';
 import classNames from 'classnames';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { useAccentColor } from '@hooks/index';
@@ -45,6 +46,8 @@ const Tooltip = ({
 
   const navigate = useNavigate();
 
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
   if (href) {
     return (
       <Box
@@ -56,7 +59,7 @@ const Tooltip = ({
         <TooltipBase
           className={classNames('text-xs', className)}
           title={text}
-          trigger={['hover']}
+          trigger={isLargeScreen ? (trigger ?? ['hover']) : ['click']}
           mouseEnterDelay={0}
           overlayInnerStyle={{
             padding: '0.35rem',
@@ -79,7 +82,7 @@ const Tooltip = ({
     <TooltipBase
       className={classNames('text-xs', className)}
       title={text}
-      trigger={trigger ?? ['hover']}
+      trigger={isLargeScreen ? (trigger ?? ['hover']) : ['click']}
       mouseEnterDelay={0}
       overlayInnerStyle={{
         padding: '0.35rem',

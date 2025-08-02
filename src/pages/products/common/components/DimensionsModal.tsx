@@ -8,7 +8,9 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+
+import { cloneDeep } from 'lodash';
 
 import { QuantityByVariant } from '@interfaces/index';
 
@@ -29,18 +31,24 @@ import {
 
 type Props = {
   selectedCombinationIndex: number | null;
-  handleCombinationChange: (
-    index: number,
-    field: string,
-    value: number | boolean
-  ) => void;
-  variantCombinations: QuantityByVariant[];
+  quantityByVariants: QuantityByVariant[];
+  readOnlyFields?: boolean;
+  setQuantityByVariants?: Dispatch<SetStateAction<QuantityByVariant[]>>;
+};
+
+type InitialValues = {
+  weight: number | undefined;
+  height: number | undefined;
+  width: number | undefined;
+  length: number | undefined;
+  diameter: number | undefined;
 };
 
 const DimensionsModal = ({
   selectedCombinationIndex,
-  handleCombinationChange,
-  variantCombinations,
+  quantityByVariants,
+  readOnlyFields,
+  setQuantityByVariants,
 }: Props) => {
   const t = useTranslation();
 
@@ -48,9 +56,41 @@ const DimensionsModal = ({
   const { weightSymbol, dimensionSymbol, diameterSymbol } = useSymbols();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [currentValues, setCurrentValues] = useState<InitialValues>({
+    weight: undefined,
+    height: undefined,
+    width: undefined,
+    length: undefined,
+    diameter: undefined,
+  });
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+
+    setCurrentValues({
+      weight: undefined,
+      height: undefined,
+      width: undefined,
+      length: undefined,
+      diameter: undefined,
+    });
+  };
 
   const handleDone = () => {
-    setIsModalOpen(false);
+    if (typeof selectedCombinationIndex === 'number') {
+      if (setQuantityByVariants && !readOnlyFields) {
+        const updatedQuantityByVariants = cloneDeep(quantityByVariants);
+
+        updatedQuantityByVariants[selectedCombinationIndex] = {
+          ...updatedQuantityByVariants[selectedCombinationIndex],
+          ...currentValues,
+        };
+
+        setQuantityByVariants(updatedQuantityByVariants);
+      }
+
+      handleClose();
+    }
   };
 
   const formatDimensions = (
@@ -83,13 +123,29 @@ const DimensionsModal = ({
     return parts.length > 0 ? parts.join(', ') : '--';
   };
 
+  useEffect(() => {
+    if (typeof selectedCombinationIndex === 'number' && isModalOpen) {
+      const { weight, height, width, length, diameter } =
+        quantityByVariants[selectedCombinationIndex];
+
+      setCurrentValues({
+        weight,
+        height,
+        width,
+        length,
+        diameter,
+      });
+    }
+  }, [quantityByVariants, selectedCombinationIndex, isModalOpen]);
+
   return (
     <>
       <TextField
+        label={t('dimensions')}
         value={
           selectedCombinationIndex !== null
             ? formatDimensions(
-                variantCombinations[selectedCombinationIndex],
+                quantityByVariants[selectedCombinationIndex],
                 weightSymbol,
                 dimensionSymbol
               )
@@ -98,12 +154,13 @@ const DimensionsModal = ({
         onClick={() => setIsModalOpen(true)}
         addonAfter={<Icon name="ruler" size="1rem" />}
         readOnly
+        withoutOptionalText
       />
 
       <Modal
         title={t('dimensions')}
         visible={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleClose}
         size="small"
       >
         {selectedCombinationIndex !== null && (
@@ -111,87 +168,77 @@ const DimensionsModal = ({
             <Box className="flex flex-col space-y-4 w-full">
               <NumberField
                 label={t('weight')}
-                value={
-                  variantCombinations[selectedCombinationIndex]?.weight || 0
-                }
+                value={currentValues.weight || 0}
                 onValueChange={(value) =>
-                  handleCombinationChange(
-                    selectedCombinationIndex,
-                    'weight',
-                    value
-                  )
+                  setCurrentValues((prev) => ({
+                    ...prev,
+                    weight: value,
+                  }))
                 }
                 addonAfter={weightSymbol}
                 falsyValuePlaceholder={falsyValuePlaceholder}
                 min={0}
+                readOnly={readOnlyFields}
               />
 
               <NumberField
                 label={t('height')}
-                value={
-                  variantCombinations[selectedCombinationIndex]?.height || 0
-                }
+                value={currentValues.height || 0}
                 onValueChange={(value) =>
-                  handleCombinationChange(
-                    selectedCombinationIndex,
-                    'height',
-                    value
-                  )
+                  setCurrentValues((prev) => ({
+                    ...prev,
+                    height: value,
+                  }))
                 }
                 addonAfter={dimensionSymbol}
                 falsyValuePlaceholder={falsyValuePlaceholder}
                 min={0}
+                readOnly={readOnlyFields}
               />
 
               <NumberField
                 label={t('width')}
-                value={
-                  variantCombinations[selectedCombinationIndex]?.width || 0
-                }
+                value={currentValues.width || 0}
                 onValueChange={(value) =>
-                  handleCombinationChange(
-                    selectedCombinationIndex,
-                    'width',
-                    value
-                  )
+                  setCurrentValues((prev) => ({
+                    ...prev,
+                    width: value,
+                  }))
                 }
                 addonAfter={dimensionSymbol}
                 falsyValuePlaceholder={falsyValuePlaceholder}
                 min={0}
+                readOnly={readOnlyFields}
               />
 
               <NumberField
                 label={t('length')}
-                value={
-                  variantCombinations[selectedCombinationIndex]?.length || 0
-                }
+                value={currentValues.length || 0}
                 onValueChange={(value) =>
-                  handleCombinationChange(
-                    selectedCombinationIndex,
-                    'length',
-                    value
-                  )
+                  setCurrentValues((prev) => ({
+                    ...prev,
+                    length: value,
+                  }))
                 }
                 addonAfter={dimensionSymbol}
                 falsyValuePlaceholder={falsyValuePlaceholder}
                 min={0}
+                readOnly={readOnlyFields}
               />
 
               <NumberField
                 label={t('diameter')}
-                value={
-                  variantCombinations[selectedCombinationIndex]?.diameter || 0
-                }
+                value={currentValues.diameter || 0}
                 onValueChange={(value) =>
-                  handleCombinationChange(
-                    selectedCombinationIndex,
-                    'diameter',
-                    value
-                  )
+                  setCurrentValues((prev) => ({
+                    ...prev,
+                    diameter: value,
+                  }))
                 }
                 addonAfter={diameterSymbol}
                 falsyValuePlaceholder={falsyValuePlaceholder}
                 min={0}
+                readOnly={readOnlyFields}
               />
             </Box>
 

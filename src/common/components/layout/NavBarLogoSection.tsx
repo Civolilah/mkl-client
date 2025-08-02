@@ -10,8 +10,6 @@
 
 import classNames from 'classnames';
 
-import { Icon } from '@components/index';
-
 import { useColors, useIsMiniSidebar } from '@hooks/index';
 
 type Props = {
@@ -20,7 +18,7 @@ type Props = {
 };
 
 const NavBarLogoSection = (props: Props) => {
-  const { mobileSideBar, handleCloseSideBar } = props;
+  const { mobileSideBar } = props;
 
   const colors = useColors();
 
@@ -37,7 +35,13 @@ const NavBarLogoSection = (props: Props) => {
       style={{
         height: '3.5rem',
         borderColor: colors.$1,
-        width: isMiniSideBar ? (mobileSideBar ? '4.35rem' : '4rem') : '15rem',
+        width: isMiniSideBar
+          ? mobileSideBar
+            ? '4.35rem'
+            : '4rem'
+          : mobileSideBar
+            ? '100%'
+            : '15rem',
       }}
     >
       <div className="flex w-full justify-between items-center">
@@ -51,20 +55,6 @@ const NavBarLogoSection = (props: Props) => {
               alt="The MKL Store Logo"
               style={{ objectFit: 'contain' }}
             />
-          </div>
-        )}
-
-        {mobileSideBar && handleCloseSideBar && (
-          <div
-            className={classNames(
-              'flex justify-center items-center cursor-pointer mt-1',
-              {
-                'w-full': isMiniSideBar,
-              }
-            )}
-            onClick={handleCloseSideBar}
-          >
-            <Icon name="close" size="1.3rem" style={{ color: colors.$10 }} />
           </div>
         )}
       </div>
