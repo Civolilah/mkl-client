@@ -35,6 +35,7 @@ import {
   SuppliersSelector,
   Text,
   Toggle,
+  Tooltip,
 } from '@components/index';
 
 import useSymbols from '@hooks/global/useSymbols';
@@ -182,15 +183,12 @@ const InventoryCard = ({
               <Label>{t('unlimited_quantity')}</Label>
 
               <Toggle
-                checked={Boolean(product?.unlimited_default_quantity)}
+                checked={Boolean(product?.unlimited_quantity)}
                 onChange={(value) => {
-                  handleChange('unlimited_default_quantity', value);
+                  handleChange('unlimited_quantity', value);
 
                   if (value) {
-                    handleChange(
-                      'inventory_by_group.0.quantity' as keyof Product,
-                      0
-                    );
+                    handleChange('quantity', 0);
                   }
                 }}
               />
@@ -200,19 +198,11 @@ const InventoryCard = ({
               required
               min={0}
               label={t('quantity')}
-              value={get(product, 'inventory_by_group.0.quantity', 0)}
-              onValueChange={(value) =>
-                handleChange(
-                  'inventory_by_group.0.quantity' as keyof Product,
-                  value
-                )
-              }
-              disabled={Boolean(product?.unlimited_default_quantity)}
+              value={get(product, 'quantity', 0)}
+              onValueChange={(value) => handleChange('quantity', value)}
+              disabled={Boolean(product?.unlimited_quantity)}
               disablePlaceholderValue={disablingNumberFieldSymbol}
-              errorMessage={
-                errors?.['inventory_by_group.0.quantity'] &&
-                t(errors['inventory_by_group.0.quantity'])
-              }
+              errorMessage={errors?.['quantity'] && t(errors['quantity'])}
             />
 
             <NumberField
@@ -241,7 +231,7 @@ const InventoryCard = ({
                   label={t('options')}
                   placeholder={t('select_options')}
                   value={[]}
-                  onChange={(value) => handleAddVariant(value?.[0])}
+                  onChange={(value) => handleAddVariant(value as string)}
                   onCreatedLabelCategory={(labelCategoryId) =>
                     handleAddVariant(labelCategoryId)
                   }
@@ -252,7 +242,7 @@ const InventoryCard = ({
                   additionalOptions={labelCategoriesAdditionalOptions}
                 />
 
-                {Boolean(product.inventory_by_variant.length) && (
+                {Boolean(product?.inventory_by_variant?.length) && (
                   <Divider
                     style={{
                       marginTop: '2rem',
@@ -261,10 +251,10 @@ const InventoryCard = ({
                   />
                 )}
 
-                {Boolean(product.inventory_by_variant.length) && (
+                {Boolean(product?.inventory_by_variant?.length) && (
                   <Box className="flex flex-col w-full">
                     <Box className="flex flex-col w-full">
-                      {product.inventory_by_variant.map((variant, index) => (
+                      {product?.inventory_by_variant?.map((variant, index) => (
                         <Box
                           key={index}
                           className="flex flex-col space-y-2 md:space-y-0 md:flex-row items-start md:items-center justify-between max-w-[40rem] py-3 gap-x-4"
@@ -325,6 +315,12 @@ const InventoryCard = ({
                                     [...(variant.label_ids || []), labelId]
                                   )
                                 }
+                                onClear={() =>
+                                  handleChange(
+                                    `inventory_by_variant.${index}.label_ids` as keyof Product,
+                                    []
+                                  )
+                                }
                                 withActionButton
                                 withoutOptionalText
                                 labelCategoryId={variant.label_category_id}
@@ -368,10 +364,10 @@ const InventoryCard = ({
                                 }}
                               >
                                 <Box className="flex items-center flex-wrap gap-2">
-                                  {combination.labels.map(
-                                    (label, combinationLabelIndex) => {
+                                  {combination.label_ids.map(
+                                    (currentLabelId, combinationLabelIndex) => {
                                       const isColor =
-                                        colorString.get.rgb(label.labelId) !==
+                                        colorString.get.rgb(currentLabelId) !==
                                         null;
 
                                       if (isColor) {
@@ -394,7 +390,7 @@ const InventoryCard = ({
                                               style={{
                                                 width: '1.4rem',
                                                 height: '1.4rem',
-                                                backgroundColor: label.labelId,
+                                                backgroundColor: currentLabelId,
                                               }}
                                             />
                                           </Box>
@@ -422,7 +418,7 @@ const InventoryCard = ({
                                             }}
                                           >
                                             {getLabelNameByLabelId(
-                                              label.labelId
+                                              currentLabelId
                                             )}
                                           </Box>
                                         </Box>
@@ -514,35 +510,50 @@ const InventoryCard = ({
                                     quantityByVariants={quantityByVariants}
                                   />
 
-                                  <SuppliersSelector
-                                    mode="single"
-                                    label={t('supplier')}
-                                    placeholder={t('select_supplier')}
-                                    value={
-                                      combination.supplier_id
-                                        ? [combination.supplier_id]
-                                        : []
-                                    }
-                                    onChange={(value) =>
-                                      handleCombinationChange(
-                                        index,
-                                        'supplier_id',
-                                        value as string
-                                      )
-                                    }
-                                    onClear={() =>
-                                      handleCombinationChange(
-                                        index,
-                                        'supplier_id',
-                                        ''
-                                      )
-                                    }
-                                    withActionButton
-                                    errorMessage={
-                                      errors?.supplier_id &&
-                                      t(errors.supplier_id)
-                                    }
-                                  />
+                                  {product?.supplier_id ? (
+                                    <Tooltip
+                                      text={t('supplier_selected_on_product')}
+                                    >
+                                      <div>
+                                        <SuppliersSelector
+                                          mode="single"
+                                          label={t('supplier')}
+                                          value={[product?.supplier_id]}
+                                          readOnly
+                                        />
+                                      </div>
+                                    </Tooltip>
+                                  ) : (
+                                    <SuppliersSelector
+                                      mode="single"
+                                      label={t('supplier')}
+                                      placeholder={t('select_supplier')}
+                                      value={
+                                        combination.supplier_id
+                                          ? [combination.supplier_id]
+                                          : []
+                                      }
+                                      onChange={(value) =>
+                                        handleCombinationChange(
+                                          index,
+                                          'supplier_id',
+                                          value as string
+                                        )
+                                      }
+                                      onClear={() =>
+                                        handleCombinationChange(
+                                          index,
+                                          'supplier_id',
+                                          ''
+                                        )
+                                      }
+                                      withActionButton
+                                      errorMessage={
+                                        errors?.supplier_id &&
+                                        t(errors.supplier_id)
+                                      }
+                                    />
+                                  )}
                                 </Box>
                               </Box>
                             </Box>
@@ -553,7 +564,7 @@ const InventoryCard = ({
                   </Box>
                 )}
 
-                {!product.inventory_by_variant.length && (
+                {!product?.inventory_by_variant?.length && (
                   <Text className="text-sm text-center pt-5">
                     {t('no_options_added')}
                   </Text>

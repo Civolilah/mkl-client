@@ -19,7 +19,6 @@ import React, {
 
 import classNames from 'classnames';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
-import { useDebounce } from 'react-use';
 import styled from 'styled-components';
 
 import {
@@ -359,14 +358,6 @@ const ColorPicker = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isImagePaletteOpen, setIsImagePaletteOpen] = useState<boolean>(false);
 
-  useDebounce(
-    () => {
-      onValueChange(color);
-    },
-    200,
-    [color]
-  );
-
   useEffect(() => {
     setColor(value);
   }, [value]);
@@ -385,6 +376,7 @@ const ColorPicker = ({
 
   const handleDone = () => {
     initialValue.current = color;
+    onValueChange(color);
     setTimeout(() => {
       setIsModalOpen(false);
     }, 25);

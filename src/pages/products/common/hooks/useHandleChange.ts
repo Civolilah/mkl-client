@@ -21,7 +21,14 @@ type Params = {
 const useHandleChange = ({ setProduct }: Params) => {
   return (
     property: keyof Product,
-    value: string | number | boolean | Product['inventory_by_group'] | string[]
+    value:
+      | string
+      | number
+      | boolean
+      | string[]
+      | File[]
+      | Product['inventory_by_variant']
+      | Product['quantity_by_variant']
   ) => {
     setProduct((currentProduct) => {
       if (!currentProduct) return currentProduct;

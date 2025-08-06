@@ -70,3 +70,4 @@ export { default as Divider } from '@components/general/Divider';
 export { default as CategoriesSelector } from '@components/selectors/CategoriesSelector';
 export { default as StatusesSelector } from '@components/selectors/StatusesSelector';
 export { default as SuppliersSelector } from '@components/selectors/SuppliersSelector';
+export { default as Avatar } from '@components/general/Avatar';

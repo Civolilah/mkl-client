@@ -16,7 +16,7 @@ export const INITIAL_PRODUCT: Product = {
   inventory_by_variant: [],
   is_status_by_quantity: false,
   status_by_quantity: [],
-  unlimited_default_quantity: false,
+  unlimited_quantity: false,
   quantity_by_variant: [],
   default_image_id: 0,
 };

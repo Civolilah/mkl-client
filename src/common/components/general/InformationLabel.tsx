@@ -18,12 +18,14 @@ type Props = {
   text: string | ReactNode;
   onlyTooltip?: boolean;
   tooltipOverlayInnerStyle?: CSSProperties;
+  iconSize?: string;
 };
 
 const InformationLabel = ({
   text,
   onlyTooltip,
   tooltipOverlayInnerStyle,
+  iconSize = '1.5rem',
 }: Props) => {
   const colors = useColors();
 
@@ -31,7 +33,7 @@ const InformationLabel = ({
     return (
       <Tooltip text={text} overlayInnerStyle={tooltipOverlayInnerStyle}>
         <div className="cursor-pointer">
-          <Icon name="information" size="1.5rem" />
+          <Icon name="information" size={iconSize} />
         </div>
       </Tooltip>
     );

@@ -40,6 +40,7 @@ type Props = {
   disablePlaceholderValue?: string;
   falsyValuePlaceholder?: string;
   readOnly?: boolean;
+  afterLabel?: ReactNode;
 };
 
 const NumberField = ({
@@ -59,6 +60,7 @@ const NumberField = ({
   disablePlaceholderValue,
   falsyValuePlaceholder,
   readOnly = false,
+  afterLabel,
 }: Props) => {
   const [currentValue, setCurrentValue] = useState<number>(value);
 
@@ -84,6 +86,8 @@ const NumberField = ({
             required={Boolean(required)}
             withoutOptionalText={withoutOptionalText}
           />
+
+          {afterLabel}
         </Box>
       )}
 

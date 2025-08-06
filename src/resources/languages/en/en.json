@@ -278,5 +278,9 @@
     "diameter": "Diameter",
     "set_as_default": "Set as default",
     "select_supplier": "Select supplier",
-    "price": "Price"
+    "price": "Price",
+    "supplier_selected_on_product": "This supplier is already assigned to this product.",
+    "quantity_to_assign": "Quantity to Assign",
+    "quantity_to_assign_tooltip": "Number of items to mark with selected status.",
+    "total_available": "Total available"
 }

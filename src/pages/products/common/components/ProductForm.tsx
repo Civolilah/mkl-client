@@ -32,6 +32,8 @@ type Props = {
   onRefresh?: () => void;
   quantityByVariants: QuantityByVariant[];
   setQuantityByVariants: Dispatch<SetStateAction<QuantityByVariant[]>>;
+  setCurrentImages?: Dispatch<SetStateAction<string[]>>;
+  currentImages?: string[];
 };
 
 const ProductForm = ({
@@ -43,6 +45,8 @@ const ProductForm = ({
   setProduct,
   quantityByVariants,
   setQuantityByVariants,
+  setCurrentImages,
+  currentImages,
 }: Props) => {
   const handleChange = useHandleChange({ setProduct });
 
@@ -61,6 +65,8 @@ const ProductForm = ({
     handleChange,
     quantityByVariants,
     setQuantityByVariants,
+    setCurrentImages,
+    currentImages,
   });
 
   useEffect(() => {

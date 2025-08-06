@@ -37,6 +37,7 @@ const MobileNavBar = (props: Props) => {
 
   const isMiniSideBar = useIsMiniSidebar();
 
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
   const showDrawer = () => {
@@ -74,7 +75,7 @@ const MobileNavBar = (props: Props) => {
         open={open}
         closable={false}
         onClose={onClose}
-        width={isMiniSideBar ? '4.35rem' : '75%'}
+        width={isMiniSideBar ? '4.35rem' : isSmallScreen ? '75%' : '17.5rem'}
         rootStyle={{ padding: 0 }}
         styles={{ body: { padding: 0 } }}
       >

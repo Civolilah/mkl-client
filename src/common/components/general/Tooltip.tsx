@@ -11,7 +11,6 @@
 import { CSSProperties, ReactNode } from 'react';
 
 import TooltipBase from 'antd/es/tooltip';
-import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,11 +56,12 @@ const Tooltip = ({
         }}
       >
         <TooltipBase
-          className={classNames('text-xs', className)}
+          className={className}
           title={text}
           trigger={isLargeScreen ? (trigger ?? ['hover']) : ['click']}
           mouseEnterDelay={0}
           overlayInnerStyle={{
+            fontSize: '0.75rem',
             padding: '0.35rem',
             lineHeight: '1.15rem',
             borderRadius: 0,
@@ -80,11 +80,12 @@ const Tooltip = ({
 
   return (
     <TooltipBase
-      className={classNames('text-xs', className)}
+      className={className}
       title={text}
       trigger={isLargeScreen ? (trigger ?? ['hover']) : ['click']}
       mouseEnterDelay={0}
       overlayInnerStyle={{
+        fontSize: '0.75rem',
         padding: '0.35rem',
         lineHeight: '1.15rem',
         borderRadius: 0,

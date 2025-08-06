@@ -31,6 +31,7 @@ import { useTranslation } from '@hooks/index';
 
 import ProductForm from '../common/components/ProductForm';
 import { validateProduct } from '../common/helpers/helpers';
+import useGenerateStatusVariantCombinations from '../common/hooks/useGenerateStatusVariantCombinations';
 import useGenerateVariantCombinations from '../common/hooks/useGenerateVariantCombinations';
 
 const Create = () => {
@@ -50,9 +51,12 @@ const Create = () => {
 
   const navigate = useNavigate();
   const generateVariantCombinations = useGenerateVariantCombinations();
+  const generateStatusVariantCombinations =
+    useGenerateStatusVariantCombinations();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
+  const [currentImages, setCurrentImages] = useState<string[]>([]);
   const [product, setProduct] = useState<Product | undefined>(INITIAL_PRODUCT);
   const [quantityByVariants, setQuantityByVariants] = useState<
     QuantityByVariant[]
@@ -60,6 +64,13 @@ const Create = () => {
   const [lastInventoriesByVariant, setLastInventoriesByVariant] = useState<
     Product['inventory_by_variant']
   >(product?.inventory_by_variant || []);
+
+  const cleanupPayload = (currentProduct: Product) => {
+    return {
+      ...currentProduct,
+      images: currentImages.map((image) => image),
+    };
+  };
 
   const handleSave = async () => {
     if (!product) {
@@ -80,7 +91,7 @@ const Create = () => {
 
       setIsFormBusy(true);
 
-      request('POST', '/api/products', product)
+      request('POST', '/api/products', cleanupPayload(product))
         .then((response) => {
           toast.success('created_product');
 
@@ -105,6 +116,18 @@ const Create = () => {
 
       setQuantityByVariants(
         generateVariantCombinations(product.inventory_by_variant)
+      );
+
+      const statusByQuantity = generateStatusVariantCombinations(
+        product.inventory_by_variant
+      );
+
+      setProduct(
+        (currentProduct) =>
+          currentProduct && {
+            ...currentProduct,
+            status_by_quantity: statusByQuantity,
+          }
       );
     }
   }, [product?.inventory_by_variant]);
@@ -137,6 +160,8 @@ const Create = () => {
         isLoading={isFormBusy}
         quantityByVariants={quantityByVariants}
         setQuantityByVariants={setQuantityByVariants}
+        setCurrentImages={setCurrentImages}
+        currentImages={currentImages}
       />
     </Default>
   );

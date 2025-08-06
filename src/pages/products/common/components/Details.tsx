@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import {
   Product,
@@ -38,9 +38,12 @@ export type ProductProps = {
       | Product['inventory_by_variant']
       | string[]
       | Product['quantity_by_variant']
+      | File[]
   ) => void;
   quantityByVariants: QuantityByVariant[];
   setQuantityByVariants: Dispatch<SetStateAction<QuantityByVariant[]>>;
+  setCurrentImages?: Dispatch<SetStateAction<string[]>>;
+  currentImages?: string[];
 };
 
 const Details = ({
@@ -52,9 +55,9 @@ const Details = ({
   handleChange,
   quantityByVariants,
   setQuantityByVariants,
+  setCurrentImages,
+  currentImages,
 }: ProductProps) => {
-  const [currentImages, setCurrentImages] = useState<string[]>([]);
-
   return (
     <Box className="flex flex-col space-y-4">
       <DetailsCard

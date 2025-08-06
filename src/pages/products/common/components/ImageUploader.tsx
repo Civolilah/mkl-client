@@ -8,15 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import {
-  useCallback,
-  useState,
-  useEffect,
-  useMemo,
-  ReactNode,
-  SetStateAction,
-  Dispatch,
-} from 'react';
+import { useCallback, useState, useEffect, useMemo, ReactNode } from 'react';
 
 import classNames from 'classnames';
 import { FileRejection, useDropzone } from 'react-dropzone';
@@ -58,7 +50,6 @@ export interface ImageUploaderProps {
   acceptedFileTypes?: string[];
   maxFileSize?: number;
   disabled?: boolean;
-  setCurrentImages?: Dispatch<SetStateAction<string[]>>;
   onDefaultImageIndexChange?: (index: number) => void;
 }
 
@@ -79,7 +70,6 @@ const ImageUploader = ({
   acceptedFileTypes = ['.jpeg', '.jpg', '.gif', '.webp'],
   maxFileSize = 100 * 1024 * 1024,
   disabled = false,
-  setCurrentImages,
   onDefaultImageIndexChange,
 }: ImageUploaderProps) => {
   const t = useTranslation();
@@ -152,10 +142,6 @@ const ImageUploader = ({
 
       const newImages = [...images, ...imageFiles];
       setImages(newImages);
-
-      if (setCurrentImages) {
-        setCurrentImages(newImages.map((image) => image.preview || ''));
-      }
 
       if (onImagesChange) {
         onImagesChange(newImages);

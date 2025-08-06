@@ -184,7 +184,7 @@ const SelectDataField = ({
             maxTagTextLength={maxTagTextLength}
             maxTagCount={maxTagCount}
             filterOption={false}
-            onSearch={handleSearch}
+            onSearch={!readOnly ? handleSearch : undefined}
             onClear={onClear}
             showSearch={!readOnly}
             allowClear={Boolean(onClear)}
@@ -249,7 +249,7 @@ const SelectDataField = ({
             )}
             disabled={disabled || isLoading}
             loading={isLoading}
-            onSearch={handleSearch}
+            onSearch={!readOnly ? handleSearch : undefined}
             filterOption={false}
             showSearch={!readOnly}
             onClear={onClear}

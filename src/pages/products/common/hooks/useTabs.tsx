@@ -25,6 +25,8 @@ const useTabs = ({
   handleChange,
   quantityByVariants,
   setQuantityByVariants,
+  setCurrentImages,
+  currentImages,
 }: ProductProps) => {
   const t = useTranslation();
 
@@ -50,6 +52,8 @@ const useTabs = ({
           handleChange={handleChange}
           quantityByVariants={quantityByVariants}
           setQuantityByVariants={setQuantityByVariants}
+          setCurrentImages={setCurrentImages}
+          currentImages={currentImages}
         />
       ),
     },

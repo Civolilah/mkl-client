@@ -32,12 +32,7 @@ import {
   Toggle,
 } from '@components/index';
 
-import {
-  useColors,
-  useFindLabel,
-  useNumberFieldSymbols,
-  useTranslation,
-} from '@hooks/index';
+import { useColors, useFindLabel, useTranslation } from '@hooks/index';
 
 type Props = {
   isLoading?: boolean;
@@ -69,7 +64,6 @@ const AdditionalDetailsCard = ({
   const t = useTranslation();
 
   const colors = useColors();
-  const { disablingNumberFieldSymbol } = useNumberFieldSymbols();
 
   const { getLabelNameByLabelId, isLoadingLabels } = useFindLabel();
 
@@ -107,9 +101,10 @@ const AdditionalDetailsCard = ({
                 text={t('subsidiaries_assigning_on_product')}
                 onlyTooltip
                 tooltipOverlayInnerStyle={{
-                  width: isSmallScreen ? undefined : '42rem',
+                  width: isSmallScreen ? undefined : '40rem',
                   textAlign: 'center',
                 }}
+                iconSize="1.35rem"
               />
             </Box>
           }
@@ -152,10 +147,11 @@ const AdditionalDetailsCard = ({
                             }}
                           >
                             <Box className="flex items-center flex-wrap gap-2">
-                              {combination.labels.map(
-                                (label, combinationLabelIndex) => {
+                              {combination.label_ids.map(
+                                (currentLabelId, combinationLabelIndex) => {
                                   const isColor =
-                                    colorString.get.rgb(label.labelId) !== null;
+                                    colorString.get.rgb(currentLabelId) !==
+                                    null;
 
                                   if (isColor) {
                                     return (
@@ -174,7 +170,7 @@ const AdditionalDetailsCard = ({
                                           style={{
                                             width: '1.4rem',
                                             height: '1.4rem',
-                                            backgroundColor: label.labelId,
+                                            backgroundColor: currentLabelId,
                                           }}
                                         />
                                       </Box>
@@ -198,7 +194,7 @@ const AdditionalDetailsCard = ({
                                           backgroundColor: colors.$1,
                                         }}
                                       >
-                                        {getLabelNameByLabelId(label.labelId)}
+                                        {getLabelNameByLabelId(currentLabelId)}
                                       </Box>
                                     </Box>
                                   );
@@ -213,17 +209,16 @@ const AdditionalDetailsCard = ({
                           >
                             <Box className="grid grid-cols-1 md:grid-cols-3 items-end gap-4">
                               {combination.unlimited ? (
-                                <Box className="flex flex-col space-y-2">
-                                  <Label>{t('entered_quantity')}</Label>
+                                <Box className="flex flex-col h-full">
+                                  <Label>{t('total_available')}</Label>
 
-                                  <Box className="flex items-center justify-start text-sm h-full md:pt-6 font-medium truncate">
+                                  <Box className="flex items-center justify-start text-sm h-full md:pt-1.5 font-medium truncate">
                                     {t('unlimited_quantity')}
                                   </Box>
                                 </Box>
                               ) : (
                                 <NumberField
-                                  label={t('entered_quantity')}
-                                  placeHolder={t('enter_quantity')}
+                                  label={t('total_available')}
                                   value={combination.quantity}
                                   withoutOptionalText
                                   readOnly
@@ -231,18 +226,43 @@ const AdditionalDetailsCard = ({
                               )}
 
                               <NumberField
-                                label={t('quantity')}
+                                label={t('quantity_to_assign')}
                                 placeHolder={t('enter_quantity')}
                                 value={
                                   product?.status_by_quantity[
                                     quantityByVariantIndex
                                   ]?.quantity ?? 0
                                 }
-                                disabled={combination.unlimited}
-                                disablePlaceholderValue={
-                                  disablingNumberFieldSymbol
+                                onValueChange={(value) =>
+                                  handleChange(
+                                    `status_by_quantity.${quantityByVariantIndex}.quantity` as keyof Product,
+                                    value || 0
+                                  )
                                 }
                                 withoutOptionalText
+                                min={0}
+                                max={
+                                  combination.quantity
+                                    ? combination.quantity
+                                    : undefined
+                                }
+                                afterLabel={
+                                  <InformationLabel
+                                    text={t('quantity_to_assign_tooltip')}
+                                    onlyTooltip
+                                    iconSize="1.35rem"
+                                  />
+                                }
+                                errorMessage={
+                                  errors[
+                                    `status_by_quantity.${quantityByVariantIndex}.quantity`
+                                  ] &&
+                                  t(
+                                    errors[
+                                      `status_by_quantity.${quantityByVariantIndex}.quantity`
+                                    ]
+                                  )
+                                }
                               />
 
                               <StatusesSelector
@@ -250,15 +270,39 @@ const AdditionalDetailsCard = ({
                                 label={t('status')}
                                 placeholder={t('select_status')}
                                 value={
-                                  product?.status_id ? [product?.status_id] : []
+                                  product?.status_by_quantity[
+                                    quantityByVariantIndex
+                                  ]?.status_id
+                                    ? [
+                                        product?.status_by_quantity[
+                                          quantityByVariantIndex
+                                        ]?.status_id,
+                                      ]
+                                    : []
                                 }
                                 onChange={(value) =>
-                                  handleChange('status_id', value as string)
+                                  handleChange(
+                                    `status_by_quantity.${quantityByVariantIndex}.status_id` as keyof Product,
+                                    value as string
+                                  )
                                 }
-                                onClear={() => handleChange('status_id', '')}
+                                onClear={() =>
+                                  handleChange(
+                                    `status_by_quantity.${quantityByVariantIndex}.status_id` as keyof Product,
+                                    ''
+                                  )
+                                }
                                 errorMessage={
-                                  errors?.status_id && t(errors.status_id)
+                                  errors[
+                                    `status_by_quantity.${quantityByVariantIndex}.status_id`
+                                  ] &&
+                                  t(
+                                    errors[
+                                      `status_by_quantity.${quantityByVariantIndex}.status_id`
+                                    ]
+                                  )
                                 }
+                                withActionButton
                               />
                             </Box>
                           </Box>

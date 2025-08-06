@@ -10,10 +10,10 @@
 
 import { cloneDeep } from 'lodash';
 
-import { Product, QuantityByVariant } from '@interfaces/product/product';
+import { Product, StatusByQuantity } from '@interfaces/product/product';
 
-const useGenerateVariantCombinations = () => {
-  return (variants: Product['inventory_by_variant']): QuantityByVariant[] => {
+const useGenerateStatusVariantCombinations = () => {
+  return (variants: Product['inventory_by_variant']): StatusByQuantity[] => {
     if (!variants || variants.length === 0) return [];
 
     const variantOptionsWithLabels = variants
@@ -25,7 +25,7 @@ const useGenerateVariantCombinations = () => {
 
     if (variantOptionsWithLabels.length === 0) return [];
 
-    const combinations: QuantityByVariant[] = [];
+    const combinations: StatusByQuantity[] = [];
 
     const generateCombos = (
       currentCombo: string[],
@@ -35,14 +35,7 @@ const useGenerateVariantCombinations = () => {
         combinations.push({
           label_ids: cloneDeep(currentCombo),
           quantity: 1,
-          price: 0,
-          unlimited: false,
-          weight: undefined,
-          height: undefined,
-          width: undefined,
-          length: undefined,
-          diameter: undefined,
-          supplier_id: undefined,
+          status_id: '',
         });
 
         return;
@@ -60,4 +53,4 @@ const useGenerateVariantCombinations = () => {
   };
 };
 
-export default useGenerateVariantCombinations;
+export default useGenerateStatusVariantCombinations;

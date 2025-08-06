@@ -8,18 +8,13 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-type QuantityLabel = {
-  categoryId: string;
-  labelId: string;
-};
-
 export type InventoryByVariant = {
   label_category_id?: string;
   label_ids?: string[];
 };
 
 export type QuantityByVariant = {
-  labels: QuantityLabel[];
+  label_ids: string[];
   quantity: number;
   price: number;
   unlimited: boolean;
@@ -34,7 +29,7 @@ export type QuantityByVariant = {
 export type StatusByQuantity = {
   status_id: string;
   quantity: number;
-  labels: QuantityLabel[];
+  label_ids: string[];
 };
 
 export type Product = {
@@ -43,7 +38,7 @@ export type Product = {
   product_key?: string;
   price_by_item?: number;
   inventory_group: string;
-  inventory_by_variant: InventoryByVariant[];
+  inventory_by_variant?: InventoryByVariant[];
   is_status_by_quantity: boolean;
   status_by_quantity: StatusByQuantity[];
   description?: string;
@@ -51,8 +46,11 @@ export type Product = {
   category_id?: string;
   status_id?: string;
   subsidiaries?: string[];
-  unlimited_default_quantity: boolean;
-  quantity_by_variant: QuantityByVariant[];
+  quantity_by_variant?: QuantityByVariant[];
   default_image_id: number;
   supplier_id?: string;
+  images?: File[];
+  quantity?: number;
+  price?: number;
+  unlimited_quantity?: boolean;
 };

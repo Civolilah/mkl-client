@@ -8,12 +8,17 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { useEffect, useState } from 'react';
+
+import { Drawer } from 'antd';
 import { useAtomValue } from 'jotai';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
 import {
+  Avatar,
   Box,
   Icon,
   MobileNavBar,
@@ -23,6 +28,7 @@ import {
 } from '@components/index';
 
 import {
+  useAccentColor,
   useColors,
   useLogout,
   useNavItems,
@@ -46,11 +52,27 @@ const Header = (props: Props) => {
 
   const colors = useColors();
   const navItems = useNavItems();
+  const accentColor = useAccentColor();
 
   const logout = useLogout();
   const navigate = useNavigate();
 
+  const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false);
+
   const userCompanyDetails = useAtomValue(userCompanyAtom);
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+  const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
+
+  const onClose = () => {
+    setIsDrawerOpened(false);
+  };
+
+  useEffect(() => {
+    if (isMiddleScreen && isDrawerOpened) {
+      onClose();
+    }
+  }, [isMiddleScreen]);
 
   return (
     <Box
@@ -75,64 +97,173 @@ const Header = (props: Props) => {
         </Text>
 
         <Box className="flex w-full justify-end">
-          <Popover
-            content={
-              <Box className="flex flex-col justify-center items-center min-w-60">
-                <Box className="py-3 px-1.5">
-                  <Text className="font-medium">
-                    {userCompanyDetails?.email}
-                  </Text>
-                </Box>
+          {isSmallScreen ? (
+            <>
+              <Avatar
+                className="cursor-pointer uppercase"
+                onClick={() => setIsDrawerOpened(true)}
+              >
+                {userCompanyDetails?.email?.[0]}
+              </Avatar>
 
-                <StyledBox
-                  className="flex w-full items-center space-x-5 cursor-pointer px-4 py-2 border-t"
-                  onClick={() => navigate('/settings/profile')}
-                  theme={{
-                    hoverBackgroundColor: colors.$19,
-                    borderColor: colors.$1,
-                  }}
-                >
-                  <Box>
-                    <Icon name="person" size="1.325rem" />
-                  </Box>
-
-                  <Text className="mb-0.5">{t('profile')}</Text>
-                </StyledBox>
-
-                <StyledBox
-                  className="flex w-full items-center space-x-5 cursor-pointer px-4 py-2 border-t"
-                  onClick={logout}
-                  theme={{
-                    hoverBackgroundColor: colors.$19,
-                    borderColor: colors.$1,
-                  }}
-                >
-                  <Box>
-                    <Icon
-                      name="logout"
-                      style={{ rotate: '180deg' }}
-                      size="1.325rem"
+              <Drawer
+                placement="bottom"
+                open={isDrawerOpened}
+                closable={false}
+                onClose={onClose}
+                width="100%"
+                height="auto"
+                rootStyle={{ padding: 0 }}
+                styles={{
+                  body: { padding: 0 },
+                }}
+              >
+                <Box className="relative flex flex-col w-full bg-white">
+                  <Box className="flex justify-center py-2">
+                    <Box
+                      className="w-10 h-1 rounded-full"
+                      style={{ backgroundColor: colors.$1 }}
                     />
                   </Box>
 
-                  <Text className="mb-0.5">{t('logout')}</Text>
-                </StyledBox>
-              </Box>
-            }
-          >
-            <Box
-              className="flex relative cursor-pointer"
-              style={{ width: '2.6rem' }}
-            >
-              <Box>
-                <Icon name="person" size="1.5rem" />
-              </Box>
+                  <Box className="flex flex-col items-center py-6 px-6 border-b border-gray-100">
+                    <Box
+                      className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
+                      style={{ backgroundColor: accentColor }}
+                    >
+                      <Text className="text-white text-3xl uppercase">
+                        {userCompanyDetails?.email?.[0]}
+                      </Text>
+                    </Box>
 
-              <Box className="absolute left-6" style={{ top: '0.2rem' }}>
-                <Icon name="arrowDown" size="1.3rem" />
-              </Box>
-            </Box>
-          </Popover>
+                    <Text className="font-medium text-lg text-center">
+                      {userCompanyDetails?.email}
+                    </Text>
+                  </Box>
+
+                  <Box className="flex flex-col w-full">
+                    <StyledBox
+                      className="flex w-full items-center space-x-4 cursor-pointer px-6 py-3.5 transition-colors duration-200"
+                      onClick={() => {
+                        setIsDrawerOpened(false);
+                        setTimeout(() => {
+                          navigate('/settings/profile');
+                        }, 100);
+                      }}
+                      theme={{
+                        hoverBackgroundColor: colors.$19,
+                      }}
+                    >
+                      <Box className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <Icon
+                          name="person"
+                          size="1.25rem"
+                          style={{ color: 'blue' }}
+                        />
+                      </Box>
+
+                      <Box className="flex-1">
+                        <Text className="font-medium text-base">
+                          {t('profile')}
+                        </Text>
+                      </Box>
+
+                      <Icon
+                        name="arrowForward"
+                        size="1.6rem"
+                        style={{ color: colors.$8 }}
+                      />
+                    </StyledBox>
+
+                    <StyledBox
+                      className="flex w-full items-center space-x-4 cursor-pointer px-6 py-3.5 transition-colors duration-200"
+                      onClick={() => {
+                        setIsDrawerOpened(false);
+                        setTimeout(() => {
+                          logout();
+                        }, 100);
+                      }}
+                      theme={{
+                        hoverBackgroundColor: colors.$19,
+                      }}
+                    >
+                      <Box className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                        <Icon
+                          name="logout"
+                          style={{ rotate: '180deg', color: '#ef4444' }}
+                          size="1.25rem"
+                        />
+                      </Box>
+
+                      <Box className="flex-1">
+                        <Text className="font-medium text-base text-red-600">
+                          {t('logout')}
+                        </Text>
+                      </Box>
+
+                      <Icon
+                        name="arrowForward"
+                        size="1.6rem"
+                        style={{ color: colors.$8 }}
+                      />
+                    </StyledBox>
+                  </Box>
+
+                  <Box className="h-3" />
+                </Box>
+              </Drawer>
+            </>
+          ) : (
+            <Popover
+              content={
+                <Box className="flex flex-col justify-center items-center min-w-60">
+                  <Box className="py-3 px-1.5">
+                    <Text className="font-medium">
+                      {userCompanyDetails?.email}
+                    </Text>
+                  </Box>
+
+                  <StyledBox
+                    className="flex w-full items-center space-x-5 cursor-pointer px-4 py-2 border-t"
+                    onClick={() => navigate('/settings/profile')}
+                    theme={{
+                      hoverBackgroundColor: colors.$19,
+                      borderColor: colors.$1,
+                    }}
+                  >
+                    <Box>
+                      <Icon name="person" size="1.325rem" />
+                    </Box>
+
+                    <Text className="mb-0.5">{t('profile')}</Text>
+                  </StyledBox>
+
+                  <StyledBox
+                    className="flex w-full items-center space-x-5 cursor-pointer px-4 py-2 border-t"
+                    onClick={logout}
+                    theme={{
+                      hoverBackgroundColor: colors.$19,
+                      borderColor: colors.$1,
+                    }}
+                  >
+                    <Box>
+                      <Icon
+                        name="logout"
+                        style={{ rotate: '180deg' }}
+                        size="1.325rem"
+                      />
+                    </Box>
+
+                    <Text className="mb-0.5">{t('logout')}</Text>
+                  </StyledBox>
+                </Box>
+              }
+            >
+              <Avatar className="cursor-pointer uppercase">
+                {userCompanyDetails?.email?.[0]}
+              </Avatar>
+            </Popover>
+          )}
         </Box>
       </Box>
     </Box>

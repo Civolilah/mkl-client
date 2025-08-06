@@ -32,6 +32,7 @@ type Props = {
       | boolean
       | Product['inventory_by_variant']
       | string[]
+      | File[]
   ) => void;
   setCurrentImages?: Dispatch<SetStateAction<string[]>>;
 };
@@ -58,10 +59,16 @@ const ImagesCard = ({
     >
       <Box className="py-2">
         <ImageUploader
-          setCurrentImages={setCurrentImages}
           onDefaultImageIndexChange={(index) =>
             handleChange('default_image_id', index)
           }
+          onImagesChange={(images) => {
+            handleChange(
+              'images',
+              images.map((image) => image.file as File)
+            );
+            setCurrentImages?.(images.map((image) => image.preview || ''));
+          }}
         />
       </Box>
     </Card>
