@@ -20,7 +20,6 @@ import {
   Box,
   Button,
   GoogleButton,
-  LanguageSwitcher,
   Link,
   Text,
   TextField,
@@ -96,7 +95,7 @@ const Login = () => {
 
   return (
     <Box
-      className="flex flex-col items-center justify-center min-h-screen min-w-screen space-y-16"
+      className="flex flex-col items-center justify-center min-h-screen min-w-screen"
       style={{
         backgroundColor: colors.$3,
       }}
@@ -106,10 +105,10 @@ const Login = () => {
         src="/images/logo.png"
         width={250}
         height={75}
-        alt="The MKL Store Logo"
+        alt="The ECOMKL Logo"
       />
 
-      <Box className="px-2 md:px-0 max-w-full w-[23rem]">
+      <Box className="px-2 md:px-0 max-w-full w-[23rem] pb-[4.7rem]">
         <Box
           className="flex flex-col border px-4 md:px-6 pb-6 pt-8 md:pb-8 md:pt-10 w-full"
           style={{
@@ -179,9 +178,9 @@ const Login = () => {
                 </Button>
 
                 <Box className="flex items-center justify-center w-full space-x-3">
-                  <Text className="text-xs">{t('dont_have_account')}</Text>
+                  <Text className="text-xs-mid">{t('dont_have_account')}</Text>
 
-                  <Link className="text-xs" to="/register">
+                  <Link className="text-xs-mid" to="/register">
                     {t('sign_up')}
                   </Link>
                 </Box>
@@ -197,7 +196,7 @@ const Login = () => {
                 />
 
                 <Box
-                  className="text-xs font-medium uppercase"
+                  className="text-xs-mid font-medium uppercase"
                   style={{
                     color: colors.$5,
                   }}
@@ -222,12 +221,6 @@ const Login = () => {
           </Box>
         </Box>
       </Box>
-
-      <div className="w-38">
-        <div className="w-full">
-          <LanguageSwitcher />
-        </div>
-      </div>
     </Box>
   );
 };

@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request } from '@helpers/index';
-import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
@@ -23,7 +22,6 @@ import {
   Captcha,
   GoogleButton,
   Icon,
-  LanguageSwitcher,
   Link,
   Modal,
   Spinner,
@@ -150,7 +148,7 @@ const Register = () => {
       </Modal>
 
       <Box
-        className="flex flex-col items-center justify-center min-h-screen min-w-screen space-y-16"
+        className="flex flex-col items-center justify-center min-h-screen min-w-screen"
         style={{
           backgroundColor: colors.$3,
         }}
@@ -158,20 +156,14 @@ const Register = () => {
         <img
           className="cursor-pointer"
           src="/images/logo.png"
-          width={195}
-          height={60}
-          alt="The MKL Store Logo"
+          width={250}
+          height={75}
+          alt="The ECOMKL Logo"
         />
 
-        <Box className="px-2 md:px-0 max-w-full w-[26.5rem]">
+        <Box className="px-2 md:px-0 max-w-full w-[24rem] pb-[4.7rem]">
           <Box
-            className={classNames(
-              'flex flex-col border px-4 sm:px-8 md:px-10 pt-10 w-full',
-              {
-                'pb-8': isAntiBotModalOpen,
-                'pb-12': !isAntiBotModalOpen,
-              }
-            )}
+            className="flex flex-col border px-4 md:px-6 pt-8 pb-6 md:pb-8 md:pt-10 w-full"
             style={{
               borderColor: colors.$1,
               boxShadow: `
@@ -276,9 +268,11 @@ const Register = () => {
                   </Button>
 
                   <Box className="flex items-center justify-center w-full space-x-3">
-                    <Text className="text-sm">{t('already_have_account')}</Text>
+                    <Text className="text-xs-mid">
+                      {t('already_have_account')}
+                    </Text>
 
-                    <Link className="text-sm" to="/login">
+                    <Link className="text-xs-mid" to="/login">
                       {t('sign_in')}
                     </Link>
                   </Box>
@@ -294,7 +288,7 @@ const Register = () => {
                   />
 
                   <Box
-                    className="text-sm font-medium uppercase"
+                    className="text-xs-mid font-medium uppercase"
                     style={{
                       color: colors.$5,
                     }}
@@ -321,12 +315,6 @@ const Register = () => {
                 )}
               </Box>
             </Box>
-          </Box>
-        </Box>
-
-        <Box className="w-38">
-          <Box className="w-full">
-            <LanguageSwitcher />
           </Box>
         </Box>
       </Box>
