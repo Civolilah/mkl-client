@@ -8,17 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-export type SupplierContact = {
-  id?: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-};
-
-export type Supplier = {
+export type Warehouse = {
   id?: string;
   name: string;
-  contacts: SupplierContact[];
-  currency_id?: string;
+  address: string;
 };

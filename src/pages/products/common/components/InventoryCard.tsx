@@ -10,6 +10,7 @@
 
 import { Dispatch, SetStateAction, useState } from 'react';
 
+import classNames from 'classnames';
 import colorString from 'color-string';
 import { cloneDeep, get, set } from 'lodash';
 
@@ -32,10 +33,8 @@ import {
   RefreshDataElement,
   SelectStaticField,
   Spinner,
-  SuppliersSelector,
   Text,
   Toggle,
-  Tooltip,
 } from '@components/index';
 
 import useSymbols from '@hooks/global/useSymbols';
@@ -140,6 +139,17 @@ const InventoryCard = ({
     ]);
   };
 
+  const handleRemoveVariant = (index: number) => {
+    let updatedInventoryByVariant =
+      cloneDeep(product?.inventory_by_variant) || [];
+
+    updatedInventoryByVariant = updatedInventoryByVariant.filter(
+      (_, i) => i !== index
+    );
+
+    handleChange('inventory_by_variant', updatedInventoryByVariant);
+  };
+
   const getVariantLabel = (labelCategoryId: string) => {
     if (labelCategoryId === 'color') {
       return t('color');
@@ -219,7 +229,7 @@ const InventoryCard = ({
           </>
         )}
 
-        {product?.inventory_group === 'variant' && (
+        {product?.inventory_group === 'variants' && (
           <Box className="flex flex-col space-y-4 w-full">
             {isLoadingLabelCategories || isLoadingLabels ? (
               <Box className="flex items-center justify-center pt-5">
@@ -259,7 +269,14 @@ const InventoryCard = ({
                           key={index}
                           className="flex flex-col space-y-2 md:space-y-0 md:flex-row items-start md:items-center justify-between max-w-[40rem] py-3 gap-x-4"
                         >
-                          <Box className="flex items-center space-x-2">
+                          <Box
+                            className={classNames(
+                              'flex items-center space-x-2',
+                              {
+                                'mt-5': variant.label_category_id !== 'color',
+                              }
+                            )}
+                          >
                             <Icon name="dotFill" size="1.15rem" />
 
                             <Text className="text-base">
@@ -269,65 +286,79 @@ const InventoryCard = ({
                             </Text>
                           </Box>
 
-                          <Box className="flex items-center space-x-2 w-[20rem]">
-                            {variant.label_category_id === 'color' ? (
-                              <Box className="flex items-center gap-x-2">
-                                {!(variant.label_ids || []).length && (
-                                  <Text className="whitespace-nowrap text-sm">
-                                    {t('no_colors_added')}
-                                  </Text>
-                                )}
+                          <Box className="flex items-center space-x-10">
+                            <Box className="flex items-center space-x-2 w-[20rem]">
+                              {variant.label_category_id === 'color' ? (
+                                <Box className="flex items-center gap-x-2">
+                                  {!(variant.label_ids || []).length && (
+                                    <Text className="whitespace-nowrap text-sm">
+                                      {t('no_colors_added')}
+                                    </Text>
+                                  )}
 
-                                <ColorSelector
-                                  colors={variant.label_ids || []}
-                                  handleChange={(value) =>
+                                  <ColorSelector
+                                    colors={variant.label_ids || []}
+                                    handleChange={(value) =>
+                                      handleChange(
+                                        `inventory_by_variant.${index}.label_ids` as keyof Product,
+                                        value
+                                      )
+                                    }
+                                    addColor={() =>
+                                      handleChange(
+                                        `inventory_by_variant.${index}.label_ids` as keyof Product,
+                                        [
+                                          ...(variant.label_ids || []),
+                                          accentColor,
+                                        ]
+                                      )
+                                    }
+                                    images={images}
+                                  />
+                                </Box>
+                              ) : (
+                                <LabelsSelector
+                                  label={t('variants')}
+                                  placeholder={t('select_variants')}
+                                  value={variant.label_ids || []}
+                                  onChange={(value) =>
                                     handleChange(
                                       `inventory_by_variant.${index}.label_ids` as keyof Product,
                                       value
                                     )
                                   }
-                                  addColor={() =>
+                                  onCreatedLabel={(labelId) =>
                                     handleChange(
                                       `inventory_by_variant.${index}.label_ids` as keyof Product,
-                                      [
-                                        ...(variant.label_ids || []),
-                                        accentColor,
-                                      ]
+                                      [...(variant.label_ids || []), labelId]
                                     )
                                   }
-                                  images={images}
+                                  onClear={() =>
+                                    handleChange(
+                                      `inventory_by_variant.${index}.label_ids` as keyof Product,
+                                      []
+                                    )
+                                  }
+                                  withActionButton
+                                  withoutOptionalText
+                                  labelCategoryId={variant.label_category_id}
+                                  withoutLabelCategorySelectorRefreshData
+                                  disableLabelCategorySelector
                                 />
-                              </Box>
-                            ) : (
-                              <LabelsSelector
-                                label={t('variants')}
-                                placeholder={t('select_variants')}
-                                value={variant.label_ids || []}
-                                onChange={(value) =>
-                                  handleChange(
-                                    `inventory_by_variant.${index}.label_ids` as keyof Product,
-                                    value
-                                  )
+                              )}
+                            </Box>
+
+                            <Box
+                              className={classNames(
+                                'cursor-pointer hover:opacity-75',
+                                {
+                                  'mt-5': variant.label_category_id !== 'color',
                                 }
-                                onCreatedLabel={(labelId) =>
-                                  handleChange(
-                                    `inventory_by_variant.${index}.label_ids` as keyof Product,
-                                    [...(variant.label_ids || []), labelId]
-                                  )
-                                }
-                                onClear={() =>
-                                  handleChange(
-                                    `inventory_by_variant.${index}.label_ids` as keyof Product,
-                                    []
-                                  )
-                                }
-                                withActionButton
-                                withoutOptionalText
-                                labelCategoryId={variant.label_category_id}
-                                withoutLabelCategorySelectorRefreshData
-                                disableLabelCategorySelector
-                              />
-                            )}
+                              )}
+                              onClick={() => handleRemoveVariant(index)}
+                            >
+                              <Icon name="delete" size="1.6rem" />
+                            </Box>
                           </Box>
                         </Box>
                       ))}
@@ -509,51 +540,6 @@ const InventoryCard = ({
                                     }
                                     quantityByVariants={quantityByVariants}
                                   />
-
-                                  {product?.supplier_id ? (
-                                    <Tooltip
-                                      text={t('supplier_selected_on_product')}
-                                    >
-                                      <div>
-                                        <SuppliersSelector
-                                          mode="single"
-                                          label={t('supplier')}
-                                          value={[product?.supplier_id]}
-                                          readOnly
-                                        />
-                                      </div>
-                                    </Tooltip>
-                                  ) : (
-                                    <SuppliersSelector
-                                      mode="single"
-                                      label={t('supplier')}
-                                      placeholder={t('select_supplier')}
-                                      value={
-                                        combination.supplier_id
-                                          ? [combination.supplier_id]
-                                          : []
-                                      }
-                                      onChange={(value) =>
-                                        handleCombinationChange(
-                                          index,
-                                          'supplier_id',
-                                          value as string
-                                        )
-                                      }
-                                      onClear={() =>
-                                        handleCombinationChange(
-                                          index,
-                                          'supplier_id',
-                                          ''
-                                        )
-                                      }
-                                      withActionButton
-                                      errorMessage={
-                                        errors?.supplier_id &&
-                                        t(errors.supplier_id)
-                                      }
-                                    />
-                                  )}
                                 </Box>
                               </Box>
                             </Box>

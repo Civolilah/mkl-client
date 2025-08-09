@@ -33,6 +33,7 @@ import {
   FaTags,
   FaTruck,
   FaUsers,
+  FaWarehouse,
   FaWeight,
 } from 'react-icons/fa';
 import { FaEyeDropper } from 'react-icons/fa6';
@@ -148,7 +149,8 @@ export type IconName =
   | 'package'
   | 'eyeDropper'
   | 'emptyStar'
-  | 'star';
+  | 'star'
+  | 'warehouse';
 
 type Props = {
   className?: string;
@@ -309,6 +311,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdOutlineStar);
     case 'emptyStar':
       return generateIconElement(MdStarBorder);
+    case 'warehouse':
+      return generateIconElement(FaWarehouse);
 
     default:
       return <></>;

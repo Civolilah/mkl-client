@@ -8,6 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { QuantityGroup } from '@pages/products/common/hooks/useInventoryGroupOptions';
+
 export type InventoryByVariant = {
   label_category_id?: string;
   label_ids?: string[];
@@ -37,7 +39,7 @@ export type Product = {
   name: string;
   product_key?: string;
   price_by_item?: number;
-  inventory_group: string;
+  inventory_group: QuantityGroup;
   inventory_by_variant?: InventoryByVariant[];
   is_status_by_quantity: boolean;
   status_by_quantity: StatusByQuantity[];
@@ -45,10 +47,11 @@ export type Product = {
   brand_id?: string;
   category_id?: string;
   status_id?: string;
-  subsidiaries?: string[];
+  subsidiaries_ids?: string[];
+  warehouses_ids?: string[];
   quantity_by_variant?: QuantityByVariant[];
   default_image_id: number;
-  supplier_id?: string;
+  supplier_ids?: string[];
   images?: File[];
   quantity?: number;
   price?: number;

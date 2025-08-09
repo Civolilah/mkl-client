@@ -24,6 +24,7 @@ import productRoutes from './product/routes';
 import statusRoutes from './status/routes';
 import subsidiaryRoutes from './subsidiary/routes';
 import supplierRoutes from './supplier/routes';
+import warehouseRoutes from './warehouse/routes';
 
 const IndexPage = lazy(() => import('@pages/index'));
 const Dashboard = lazy(() => import('@pages/dashboard/Dashboard'));
@@ -40,6 +41,8 @@ export const routes = (
       <Route path="/dashboard" element={<Dashboard />} />
 
       {productRoutes}
+
+      {warehouseRoutes}
 
       {brandRoutes}
 

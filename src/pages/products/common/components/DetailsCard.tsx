@@ -8,6 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { useMediaQuery } from 'react-responsive';
+
 import { Product, ValidationErrors } from '@interfaces/index';
 
 import {
@@ -15,9 +17,12 @@ import {
   BrandSelector,
   Card,
   CategoriesSelector,
+  InformationLabel,
   RefreshDataElement,
+  SubsidiariesSelector,
   SuppliersSelector,
   TextField,
+  WarehousesSelector,
 } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
@@ -48,6 +53,8 @@ const DetailsCard = ({
   handleChange,
 }: Props) => {
   const t = useTranslation();
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
     <Card
@@ -81,6 +88,7 @@ const DetailsCard = ({
           onClear={() => handleChange('brand_id', '')}
           errorMessage={errors?.brand_id && t(errors.brand_id)}
           withActionButton
+          withRefreshButton
         />
 
         <CategoriesSelector
@@ -95,17 +103,86 @@ const DetailsCard = ({
           onClear={() => handleChange('category_id', '')}
           errorMessage={errors?.category_id && t(errors.category_id)}
           withActionButton
+          withRefreshButton
         />
 
         <SuppliersSelector
-          mode="single"
           label={t('supplier')}
           placeholder={t('select_supplier')}
-          value={product?.supplier_id ? [product?.supplier_id] : []}
-          onChange={(value) => handleChange('supplier_id', value as string)}
-          onClear={() => handleChange('supplier_id', '')}
+          value={product?.supplier_ids ? product?.supplier_ids : []}
+          onChange={(value) => handleChange('supplier_ids', value as string)}
+          onCreatedSupplier={(supplierId) =>
+            handleChange('supplier_ids', [
+              ...(product?.supplier_ids || []),
+              supplierId,
+            ])
+          }
+          onClear={() => handleChange('supplier_ids', [])}
           withActionButton
-          errorMessage={errors?.supplier_id && t(errors.supplier_id)}
+          errorMessage={errors?.supplier_ids && t(errors.supplier_ids)}
+          withRefreshButton
+        />
+
+        <SubsidiariesSelector
+          label={t('subsidiaries')}
+          placeholder={t('select_subsidiaries')}
+          value={product?.subsidiaries_ids ? product?.subsidiaries_ids : []}
+          onChange={(value) =>
+            handleChange('subsidiaries_ids', value as string)
+          }
+          onCreatedSubsidiary={(subsidiaryId) =>
+            handleChange('subsidiaries_ids', [
+              ...(product?.subsidiaries_ids || []),
+              subsidiaryId,
+            ])
+          }
+          onClear={() => handleChange('subsidiaries_ids', [])}
+          errorMessage={errors?.subsidiaries_ids && t(errors.subsidiaries_ids)}
+          withActionButton
+          afterSelectorLabel={
+            <Box className="pl-1.5">
+              <InformationLabel
+                text={t('subsidiaries_assigning_on_product')}
+                onlyTooltip
+                tooltipOverlayInnerStyle={{
+                  width: isSmallScreen ? undefined : '40rem',
+                  textAlign: 'center',
+                }}
+                iconSize="1.35rem"
+              />
+            </Box>
+          }
+          withRefreshButton
+        />
+
+        <WarehousesSelector
+          label={t('warehouses')}
+          placeholder={t('select_warehouses')}
+          value={product?.warehouses_ids ? product?.warehouses_ids : []}
+          onChange={(value) => handleChange('warehouses_ids', value as string)}
+          onCreatedWarehouse={(warehouseId) =>
+            handleChange('warehouses_ids', [
+              ...(product?.warehouses_ids || []),
+              warehouseId,
+            ])
+          }
+          onClear={() => handleChange('warehouses_ids', [])}
+          errorMessage={errors?.warehouses_ids && t(errors.warehouses_ids)}
+          withActionButton
+          afterSelectorLabel={
+            <Box className="pl-1.5">
+              <InformationLabel
+                text={t('warehouses_assigning_on_product')}
+                onlyTooltip
+                tooltipOverlayInnerStyle={{
+                  width: isSmallScreen ? undefined : '40rem',
+                  textAlign: 'center',
+                }}
+                iconSize="1.35rem"
+              />
+            </Box>
+          }
+          withRefreshButton
         />
 
         <TextField

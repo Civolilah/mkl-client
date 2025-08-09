@@ -8,8 +8,17 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Supplier } from '@interfaces/index';
+import { Supplier, SupplierContact } from '@interfaces/index';
+
+export const BLANK_SUPPLIER_CONTACT: SupplierContact = {
+  first_name: '',
+  last_name: '',
+  email: '',
+  phone: '',
+};
 
 export const INITIAL_SUPPLIER: Supplier = {
   name: '',
+  contacts: [],
+  currency_id: '',
 };

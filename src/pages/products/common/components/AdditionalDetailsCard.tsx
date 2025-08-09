@@ -9,7 +9,6 @@
  */
 
 import colorString from 'color-string';
-import { useMediaQuery } from 'react-responsive';
 
 import {
   Product,
@@ -27,7 +26,6 @@ import {
   RefreshDataElement,
   Spinner,
   StatusesSelector,
-  SubsidiariesSelector,
   Text,
   Toggle,
 } from '@components/index';
@@ -67,8 +65,6 @@ const AdditionalDetailsCard = ({
 
   const { getLabelNameByLabelId, isLoadingLabels } = useFindLabel();
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-
   return (
     <Card
       title={t('additional_details')}
@@ -81,35 +77,6 @@ const AdditionalDetailsCard = ({
       }
     >
       <Box className="flex flex-col space-y-4 pb-2">
-        <SubsidiariesSelector
-          label={t('subsidiaries')}
-          placeholder={t('select_subsidiaries')}
-          value={product?.subsidiaries ? product?.subsidiaries : []}
-          onChange={(value) => handleChange('subsidiaries', value as string)}
-          onCreatedSubsidiary={(subsidiaryId) =>
-            handleChange('subsidiaries', [
-              ...(product?.subsidiaries || []),
-              subsidiaryId,
-            ])
-          }
-          onClear={() => handleChange('subsidiaries', '')}
-          errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
-          withActionButton
-          afterSelectorLabel={
-            <Box className="pl-1.5">
-              <InformationLabel
-                text={t('subsidiaries_assigning_on_product')}
-                onlyTooltip
-                tooltipOverlayInnerStyle={{
-                  width: isSmallScreen ? undefined : '40rem',
-                  textAlign: 'center',
-                }}
-                iconSize="1.35rem"
-              />
-            </Box>
-          }
-        />
-
         <Box className="flex items-center space-x-10">
           <Label>{t('status_by_quantity')}</Label>
 
@@ -286,6 +253,12 @@ const AdditionalDetailsCard = ({
                                     value as string
                                   )
                                 }
+                                onStatusCreated={(statusId) =>
+                                  handleChange(
+                                    `status_by_quantity.${quantityByVariantIndex}.status_id` as keyof Product,
+                                    statusId
+                                  )
+                                }
                                 onClear={() =>
                                   handleChange(
                                     `status_by_quantity.${quantityByVariantIndex}.status_id` as keyof Product,
@@ -320,11 +293,13 @@ const AdditionalDetailsCard = ({
           </>
         ) : (
           <StatusesSelector
+            mode="single"
             label={t('status')}
             placeholder={t('select_status')}
             value={product?.status_id ? [product?.status_id] : []}
             onChange={(value) => handleChange('status_id', value as string)}
             onClear={() => handleChange('status_id', '')}
+            onStatusCreated={(statusId) => handleChange('status_id', statusId)}
             errorMessage={errors?.status_id && t(errors.status_id)}
             withActionButton
           />

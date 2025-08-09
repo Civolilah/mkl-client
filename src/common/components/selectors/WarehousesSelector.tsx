@@ -8,21 +8,23 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 
 import {
-  INITIAL_CATEGORY,
+  INITIAL_WAREHOUSE,
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
 import { request, useToast } from '@helpers/index';
 
-import CategoryForm from '@pages/categories/common/components/CategoryForm';
-import { validateCategory } from '@pages/categories/common/helpers/helpers';
+import WarehouseForm from '@pages/warehouses/common/components/WarehouseForm';
+import { validateWarehouse } from '@pages/warehouses/common/helpers/helpers';
 
-import { Category, ValidationErrors } from '@interfaces/index';
+import { ValidationErrors, Warehouse } from '@interfaces/index';
 
 import { Box, Button, Modal } from '@components/index';
-import SelectDataField from '@components/input-fields/SelectDataField';
+import SelectDataField, {
+  Option,
+} from '@components/input-fields/SelectDataField';
 
 import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 
@@ -31,15 +33,18 @@ type Props = {
   placeholder?: string;
   value: string[];
   onChange: (value: string | string[]) => void;
-  onClear: () => void;
-  errorMessage: string;
+  onClear?: () => void;
+  errorMessage?: string;
   withActionButton?: boolean;
-  mode?: 'single' | 'multiple';
-  onCategoryCreated?: (categoryId: string) => void;
+  additionalOptions?: Option[];
+  withoutOptionalText?: boolean;
+  afterSelectorLabel?: ReactNode;
+  tooltipOverlayInnerStyle?: CSSProperties;
+  onCreatedWarehouse?: (warehouseId: string) => void;
   withRefreshButton?: boolean;
 };
 
-const CategoriesSelector = ({
+const WarehousesSelector = ({
   value,
   onChange,
   onClear,
@@ -47,8 +52,11 @@ const CategoriesSelector = ({
   label,
   placeholder,
   withActionButton,
-  mode = 'multiple',
-  onCategoryCreated,
+  additionalOptions,
+  withoutOptionalText,
+  afterSelectorLabel,
+  tooltipOverlayInnerStyle,
+  onCreatedWarehouse,
   withRefreshButton,
 }: Props) => {
   const t = useTranslation();
@@ -61,28 +69,29 @@ const CategoriesSelector = ({
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [categoryPayload, setCategoryPayload] = useState<Category | undefined>(
-    INITIAL_CATEGORY
-  );
+  const [warehousePayload, setWarehousePayload] = useState<
+    Warehouse | undefined
+  >(INITIAL_WAREHOUSE);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setWarehousePayload(INITIAL_WAREHOUSE);
+    setErrors({});
+  };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setCategoryPayload(INITIAL_CATEGORY);
-    setIsModalOpen(false);
-  };
-
-  const handleCreateCategory = async () => {
-    if (!categoryPayload) {
+  const handleCreateWarehouse = async () => {
+    if (!warehousePayload) {
       return;
     }
 
     if (!isFormBusy) {
       setErrors({});
 
-      const validationErrors = await validateCategory(categoryPayload);
+      const validationErrors = await validateWarehouse(warehousePayload);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -93,15 +102,13 @@ const CategoriesSelector = ({
 
       setIsFormBusy(true);
 
-      request('POST', '/api/categories', categoryPayload)
+      request('POST', '/api/warehouses', warehousePayload)
         .then((response) => {
-          toast.success('created_category');
+          toast.success('created_warehouse');
 
-          refetch(['categories']);
+          refetch(['warehouses']);
 
-          setTimeout(() => {
-            onCategoryCreated?.(response.data.id);
-          }, 100);
+          onCreatedWarehouse?.(response.data.id);
 
           handleCloseModal();
         })
@@ -118,22 +125,23 @@ const CategoriesSelector = ({
   return (
     <>
       <Modal
-        title={t('new_category')}
+        title={t('new_warehouse')}
         visible={isModalOpen}
         onClose={handleCloseModal}
         disableClosing={isFormBusy}
+        size="regular"
       >
-        <Box className="flex flex-col space-y-6 w-full">
-          <CategoryForm
-            category={categoryPayload}
-            setCategory={setCategoryPayload}
+        <Box className="flex flex-col space-y-4 w-full">
+          <WarehouseForm
+            warehouse={warehousePayload}
+            setWarehouse={setWarehousePayload}
             errors={errors}
             onlyFields
           />
 
           <Button
             type="primary"
-            onClick={handleCreateCategory}
+            onClick={handleCreateWarehouse}
             disabled={isFormBusy}
             disabledWithLoadingIcon={isFormBusy}
           >
@@ -143,17 +151,16 @@ const CategoriesSelector = ({
       </Modal>
 
       <SelectDataField
-        queryIdentifiers={['/api/categories', 'selector']}
-        mode={mode}
+        queryIdentifiers={['/api/warehouses', 'selector']}
         label={label}
         placeholder={placeholder}
         valueKey="id"
         labelKey="name"
-        endpoint="/api/categories?selector=true"
+        endpoint="/api/warehouses?selector=true"
         enableByPermission={
-          hasPermission('create_category') ||
-          hasPermission('view_category') ||
-          hasPermission('edit_category')
+          hasPermission('create_warehouse') ||
+          hasPermission('view_warehouse') ||
+          hasPermission('edit_warehouse')
         }
         withoutRefreshData={!withRefreshButton}
         value={value}
@@ -167,13 +174,17 @@ const CategoriesSelector = ({
               type="primary"
               onClick={() => setTimeout(handleOpenModal, 200)}
             >
-              {t('new_category')}
+              {t('new_warehouse')}
             </Button>
           ) : undefined
         }
+        additionalOptions={additionalOptions}
+        withoutOptionalText={withoutOptionalText}
+        afterLabel={afterSelectorLabel}
+        tooltipOverlayInnerStyle={tooltipOverlayInnerStyle}
       />
     </>
   );
 };
 
-export default CategoriesSelector;
+export default WarehousesSelector;

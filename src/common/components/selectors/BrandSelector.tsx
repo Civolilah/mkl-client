@@ -33,27 +33,27 @@ type Props = {
   withActionButton?: boolean;
   mode?: 'single' | 'multiple';
   onBrandCreated?: (brandId: string) => void;
+  withRefreshButton?: boolean;
 };
 
-const BrandSelector = (props: Props) => {
+const BrandSelector = ({
+  value,
+  onChange,
+  onClear,
+  errorMessage,
+  label,
+  placeholder,
+  withActionButton,
+  mode = 'multiple',
+  onBrandCreated,
+  withRefreshButton,
+}: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
 
   const refetch = useRefetch();
   const hasPermission = useHasPermission();
-
-  const {
-    value,
-    onChange,
-    onClear,
-    errorMessage,
-    label,
-    placeholder,
-    withActionButton,
-    mode = 'multiple',
-    onBrandCreated,
-  } = props;
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
@@ -152,7 +152,7 @@ const BrandSelector = (props: Props) => {
           hasPermission('view_brand') ||
           hasPermission('edit_brand')
         }
-        withoutRefreshData
+        withoutRefreshData={!withRefreshButton}
         value={value}
         onChange={onChange}
         onClear={onClear}

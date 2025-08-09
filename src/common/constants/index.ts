@@ -31,8 +31,10 @@ export { INITIAL_LABEL } from './label/label';
 
 export { INITIAL_CATEGORY } from './category/category';
 
-export { INITIAL_SUPPLIER } from './supplier/supplier';
+export { INITIAL_SUPPLIER, BLANK_SUPPLIER_CONTACT } from './supplier/supplier';
 
 export { INITIAL_BRAND } from './brand/brand';
 
 export { COMPONENTS_FONT_SIZE } from './global/global';
+
+export { INITIAL_WAREHOUSE } from './warehouse/warehouse';

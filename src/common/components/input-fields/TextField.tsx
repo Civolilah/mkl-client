@@ -23,9 +23,10 @@ import {
 const { TextArea } = Input;
 
 type Props = {
+  id?: string;
   maxLength?: number;
   size?: 'large' | 'middle' | 'small';
-  type?: 'text' | 'password' | 'email' | 'textarea';
+  type?: 'text' | 'password' | 'email' | 'textarea' | 'tel';
   label?: string;
   value: string;
   required?: boolean;
@@ -45,6 +46,7 @@ type Props = {
 
 const TextField = (props: Props) => {
   const {
+    id,
     value,
     onValueChange,
     label,
@@ -97,6 +99,7 @@ const TextField = (props: Props) => {
       {type !== 'password' && type !== 'textarea' && (
         <Input
           className="rounded-none text-sm-plus"
+          id={id}
           type={type}
           value={currentValue}
           onChange={(event) => setCurrentValue(event.target.value)}
@@ -128,6 +131,7 @@ const TextField = (props: Props) => {
       {type === 'password' && (
         <Input.Password
           className="rounded-none text-sm-plus"
+          id={id}
           type={type}
           value={currentValue}
           placeholder={placeHolder}
@@ -157,6 +161,7 @@ const TextField = (props: Props) => {
 
       {type === 'textarea' && (
         <TextArea
+          id={id}
           rows={4}
           className="rounded-none text-sm-plus"
           value={currentValue}

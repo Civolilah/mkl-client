@@ -22,6 +22,7 @@ import {
   Subsidiary,
   Supplier,
   User,
+  Warehouse,
 } from '@interfaces/index';
 
 import {
@@ -44,7 +45,8 @@ export type Resource =
   | Category
   | Supplier
   | Brand
-  | Product;
+  | Product
+  | Warehouse;
 
 export type ResourceType =
   | 'subsidiary'
@@ -55,7 +57,8 @@ export type ResourceType =
   | 'category'
   | 'supplier'
   | 'brand'
-  | 'product';
+  | 'product'
+  | 'warehouse';
 
 type CustomActions = (resource: Resource) => MenuProps['items'];
 

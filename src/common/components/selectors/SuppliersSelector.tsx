@@ -41,6 +41,7 @@ type Props = {
   withoutOptionalText?: boolean;
   onCreatedSupplier?: (supplierId: string) => void;
   readOnly?: boolean;
+  withRefreshButton?: boolean;
 };
 
 const SuppliersSelector = ({
@@ -56,6 +57,7 @@ const SuppliersSelector = ({
   withoutOptionalText,
   onCreatedSupplier,
   readOnly,
+  withRefreshButton,
 }: Props) => {
   const t = useTranslation();
 
@@ -161,7 +163,7 @@ const SuppliersSelector = ({
           hasPermission('view_supplier') ||
           hasPermission('edit_supplier')
         }
-        withoutRefreshData
+        withoutRefreshData={!withRefreshButton}
         value={value}
         onChange={onChange}
         onClear={onClear}

@@ -41,6 +41,7 @@ type Props = {
   afterSelectorLabel?: ReactNode;
   tooltipOverlayInnerStyle?: CSSProperties;
   onCreatedSubsidiary?: (subsidiaryId: string) => void;
+  withRefreshButton?: boolean;
 };
 
 const SubsidiariesSelector = ({
@@ -56,6 +57,7 @@ const SubsidiariesSelector = ({
   afterSelectorLabel,
   tooltipOverlayInnerStyle,
   onCreatedSubsidiary,
+  withRefreshButton,
 }: Props) => {
   const t = useTranslation();
 
@@ -160,7 +162,7 @@ const SubsidiariesSelector = ({
           hasPermission('view_subsidiary') ||
           hasPermission('edit_subsidiary')
         }
-        withoutRefreshData
+        withoutRefreshData={!withRefreshButton}
         value={value}
         onChange={onChange}
         onClear={onClear}

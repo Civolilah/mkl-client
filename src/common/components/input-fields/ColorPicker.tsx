@@ -38,7 +38,12 @@ import {
   TransparentColorBox,
 } from '@components/index';
 
-import { useAccentColor, useColors, useTranslation } from '@hooks/index';
+import {
+  useAccentColor,
+  useColors,
+  useFetchEntity,
+  useTranslation,
+} from '@hooks/index';
 
 const HexColorInputStyled = styled(HexColorInput)`
   border: 1px solid ${(props) => props.theme.borderColor};
@@ -354,9 +359,25 @@ const ColorPicker = ({
 
   const initialValue = useRef<string>(value);
 
+  const [paletteColors, setPaletteColors] = useState<string[]>([]);
+
+  const [isLoadingPaletteColors, setIsLoadingPaletteColors] =
+    useState<boolean>(false);
+
+  const [isPaletteModalOpen, setIsPaletteModalOpen] = useState<boolean>(false);
+
   const [color, setColor] = useState<string>(value);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isImagePaletteOpen, setIsImagePaletteOpen] = useState<boolean>(false);
+
+  useFetchEntity({
+    queryIdentifiers: ['/api/colors'],
+    endpoint: '/api/colors',
+    setEntities: setPaletteColors,
+    setIsLoading: setIsLoadingPaletteColors,
+    listQuery: true,
+    enableByPermission: true,
+  });
 
   useEffect(() => {
     setColor(value);
@@ -365,6 +386,10 @@ const ColorPicker = ({
   const handleImageColorSelect = (selectedColor: string) => {
     setColor(selectedColor);
     setIsImagePaletteOpen(false);
+  };
+
+  const handlePaletteModalClose = () => {
+    setIsPaletteModalOpen(false);
   };
 
   const handleModalClose = () => {
@@ -460,6 +485,19 @@ const ColorPicker = ({
       </Box>
 
       <Modal
+        title={t('select_color')}
+        size="small"
+        visible={isPaletteModalOpen}
+        onClose={handlePaletteModalClose}
+      >
+        <Box className="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-96 overflow-y-auto">
+          {paletteColors.map((color, index) => (
+            <Box key={index} className="w-full h-10 bg-gray-200" />
+          ))}
+        </Box>
+      </Modal>
+
+      <Modal
         title={t('color')}
         size="small"
         visible={isModalOpen}
@@ -469,10 +507,28 @@ const ColorPicker = ({
           <Box className="flex flex-col w-full items-center justify-center space-y-3">
             <Box className="flex w-full flex-col space-y-1">
               <Box
-                className="cursor-pointer self-end"
-                onClick={() => setColor('')}
+                className={classNames('flex items-center', {
+                  'justify-end':
+                    !isLoadingPaletteColors && !paletteColors.length,
+                  'justify-between':
+                    !isLoadingPaletteColors && paletteColors.length,
+                })}
               >
-                <TransparentColorBox size="1.875rem" />
+                {Boolean(!isLoadingPaletteColors && paletteColors.length) && (
+                  <Button
+                    type="default"
+                    size="middle"
+                    onClick={() => setIsPaletteModalOpen(true)}
+                  >
+                    {t('my_palette')}
+                  </Button>
+                )}
+
+                {isLoadingPaletteColors && <Spinner />}
+
+                <Box className="cursor-pointer" onClick={() => setColor('')}>
+                  <TransparentColorBox size="1.875rem" />
+                </Box>
               </Box>
 
               <HexColorPicker

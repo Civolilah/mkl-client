@@ -83,6 +83,23 @@ const useNavItems = () => {
       iconSize: '1.236rem',
     },
     {
+      key: 'warehouses',
+      label: 'warehouses',
+      iconName: 'warehouse',
+      href: '/warehouses',
+      iconSize: '1.1rem',
+      visible:
+        hasPermission('create_warehouse') ||
+        hasPermission('view_warehouse') ||
+        hasPermission('edit_warehouse'),
+      rightIcon: {
+        name: 'add',
+        href: '/warehouses/new',
+        tooltipText: 'new_warehouse',
+        visible: hasPermission('create_warehouse'),
+      },
+    },
+    {
       key: 'brands',
       label: 'brands',
       iconName: 'brand',

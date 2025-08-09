@@ -164,7 +164,10 @@ const App = () => {
             <Button
               type="primary"
               className="w-full"
-              onClick={() => navigate('/products/new')}
+              onClick={() => {
+                navigate('/products/new');
+                setIsWelcomeModalOpen(false);
+              }}
             >
               {t('add_product')}
             </Button>
