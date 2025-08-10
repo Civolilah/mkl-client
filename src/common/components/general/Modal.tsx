@@ -81,7 +81,10 @@ const Modal = (props: Props) => {
           display: 'none',
           padding: '0',
         },
-        content: { padding: '0px', borderRadius: '0px' },
+        content: {
+          padding: '0px',
+          borderRadius: '0px',
+        },
       }}
       centered
       keyboard={false}

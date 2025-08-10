@@ -63,7 +63,7 @@ export { default as HelpLabel } from '@components/general/HelpLabel';
 export { default as NumberField } from '@components/input-fields/NumberField';
 export { default as SelectStaticField } from '@components/input-fields/SelectStaticField';
 export { default as SubsidiariesSelector } from '@components/selectors/SubsidiariesSelector';
-export { default as BrandSelector } from '@components/selectors/BrandSelector';
+export { default as BrandsSelector } from '@components/selectors/BrandsSelector';
 export { default as LabelCategoriesSelector } from '@components/selectors/LabelCategoriesSelector';
 export { default as LabelsSelector } from '@components/selectors/LabelsSelector';
 export { default as Divider } from '@components/general/Divider';
@@ -73,3 +73,6 @@ export { default as SuppliersSelector } from '@components/selectors/SuppliersSel
 export { default as Avatar } from '@components/general/Avatar';
 export { default as CurrenciesSelector } from '@components/selectors/CurrenciesSelector';
 export { default as WarehousesSelector } from '@components/selectors/WarehousesSelector';
+export { default as QuantityUnitsSelector } from '@components/selectors/QuantityUnitsSelector';
+export { default as FeedbackModal } from '@components/general/FeedbackModal';
+export { default as MarkdownEditor } from '@components/input-fields/MarkdownEditor';

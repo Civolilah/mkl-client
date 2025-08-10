@@ -8,10 +8,12 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { useState } from 'react';
+
 import { request } from '@helpers/index';
 import classNames from 'classnames';
 
-import { Box, Icon, Tooltip } from '@components/index';
+import { Box, FeedbackModal, Icon, Tooltip } from '@components/index';
 
 import {
   useAccentColor,
@@ -30,6 +32,9 @@ const NavBarIconsBox = () => {
 
   const handleChangeUserCompanyDetails = useHandleChangeUserCompanyDetails();
 
+  const [feedbackModalVisible, setFeedbackModalVisible] =
+    useState<boolean>(false);
+
   const handleClick = () => {
     request('POST', '/api/users/toggle_sidebar', {
       value: !isMiniSideBar,
@@ -42,51 +47,79 @@ const NavBarIconsBox = () => {
   };
 
   return (
-    <Box
-      className="flex py-3 border-t items-center justify-center relative"
-      style={{ borderColor: colors.$1, height: '2.85rem' }}
-    >
+    <>
+      <FeedbackModal
+        visible={feedbackModalVisible}
+        onClose={() => setFeedbackModalVisible(false)}
+      />
+
       <Box
-        className="flex space-x-5 items-center justify-center"
-        style={{ color: accentColor }}
+        className="flex py-3 border-t items-center justify-center relative"
+        style={{ borderColor: colors.$1, height: '2.85rem' }}
       >
-        {!isMiniSideBar && (
-          <Tooltip text={t('contact_us')}>
-            <div className="cursor-pointer">
-              <Icon name="email" size="1.375rem" />
-            </div>
-          </Tooltip>
-        )}
-
-        {!isMiniSideBar && (
-          <Tooltip text={t('about_us')}>
-            <div className="cursor-pointer">
-              <Icon name="information" size="1.425rem" />
-            </div>
-          </Tooltip>
-        )}
-
         <Box
-          className={classNames('absolute', {
-            'right-2.5': !isMiniSideBar,
-            'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2': isMiniSideBar,
-          })}
+          className="flex space-x-5 items-center justify-center"
+          style={{ color: accentColor }}
         >
-          <Tooltip
-            text={isMiniSideBar ? t('maximize_sidebar') : t('minimize_sidebar')}
-            trigger={['hover', 'click']}
+          {!isMiniSideBar && (
+            <Tooltip text={t('contact_us')}>
+              <div className="cursor-pointer">
+                <Icon name="email" size="1.375rem" />
+              </div>
+            </Tooltip>
+          )}
+
+          {!isMiniSideBar && (
+            <Tooltip text={t('about_us')}>
+              <div className="cursor-pointer">
+                <Icon name="information" size="1.425rem" />
+              </div>
+            </Tooltip>
+          )}
+
+          {!isMiniSideBar && (
+            <Tooltip text={t('feedback_bugs_features')}>
+              <div
+                className="cursor-pointer"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setFeedbackModalVisible(true);
+                }}
+              >
+                <Icon name="feedback" size="1.3rem" />
+              </div>
+            </Tooltip>
+          )}
+
+          <Box
+            className={classNames('absolute', {
+              'right-2.5': !isMiniSideBar,
+              'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2':
+                isMiniSideBar,
+            })}
           >
-            <div className="cursor-pointer">
-              {isMiniSideBar ? (
-                <Icon name="arrowForward" size="1.8rem" onClick={handleClick} />
-              ) : (
-                <Icon name="arrowBack" size="1.8rem" onClick={handleClick} />
-              )}
-            </div>
-          </Tooltip>
+            <Tooltip
+              text={
+                isMiniSideBar ? t('maximize_sidebar') : t('minimize_sidebar')
+              }
+              trigger={['hover', 'click']}
+            >
+              <div className="cursor-pointer">
+                {isMiniSideBar ? (
+                  <Icon
+                    name="arrowForward"
+                    size="1.8rem"
+                    onClick={handleClick}
+                  />
+                ) : (
+                  <Icon name="arrowBack" size="1.8rem" onClick={handleClick} />
+                )}
+              </div>
+            </Tooltip>
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

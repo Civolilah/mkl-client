@@ -10,6 +10,8 @@
 
 import { Dispatch, SetStateAction } from 'react';
 
+import { useMediaQuery } from 'react-responsive';
+
 import { User } from '@interfaces/index';
 
 import {
@@ -19,6 +21,7 @@ import {
   RefreshDataElement,
   SubsidiariesSelector,
   TextField,
+  WarehousesSelector,
 } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
@@ -33,11 +36,17 @@ export type EmployeeProps = {
   setEmployee: Dispatch<SetStateAction<User | undefined>>;
 };
 
-const Details = (props: EmployeeProps) => {
+const Details = ({
+  editPage,
+  isLoading,
+  onRefresh,
+  errors,
+  handleChange,
+  employee,
+}: EmployeeProps) => {
   const t = useTranslation();
 
-  const { editPage, isLoading, onRefresh, errors, handleChange, employee } =
-    props;
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
     <Card
@@ -81,6 +90,15 @@ const Details = (props: EmployeeProps) => {
         />
 
         <TextField
+          type="tel"
+          label={t('phone')}
+          placeHolder={t('phone_placeholder')}
+          value={employee?.phone || ''}
+          onValueChange={(value) => handleChange('phone', value)}
+          changeOnBlur
+        />
+
+        <TextField
           required={!editPage}
           type="password"
           label={t(editPage ? 'new_password' : 'password')}
@@ -91,25 +109,65 @@ const Details = (props: EmployeeProps) => {
           errorMessage={errors?.password && t(errors.password)}
         />
 
-        <Box className="flex flex-col space-y-2 w-full">
-          <SubsidiariesSelector
-            label={t('subsidiaries')}
-            placeholder={t('select_subsidiaries')}
-            value={employee?.subsidiaries || []}
-            onChange={(value) => handleChange('subsidiaries', value)}
-            onCreatedSubsidiary={(subsidiaryId) =>
-              handleChange('subsidiaries', [
-                ...(employee?.subsidiaries || []),
-                subsidiaryId,
-              ])
-            }
-            onClear={() => handleChange('subsidiaries', [])}
-            errorMessage={errors?.subsidiaries && t(errors.subsidiaries)}
-            withActionButton
-          />
+        <SubsidiariesSelector
+          label={t('subsidiaries')}
+          placeholder={t('select_subsidiaries')}
+          value={employee?.subsidiaries_ids || []}
+          onChange={(value) => handleChange('subsidiaries_ids', value)}
+          onCreatedSubsidiary={(subsidiaryId) =>
+            handleChange('subsidiaries_ids', [
+              ...(employee?.subsidiaries_ids || []),
+              subsidiaryId,
+            ])
+          }
+          onClear={() => handleChange('subsidiaries_ids', [])}
+          errorMessage={errors?.subsidiaries_ids && t(errors.subsidiaries_ids)}
+          withActionButton
+          afterSelectorLabel={
+            <Box className="pl-1.5">
+              <InformationLabel
+                text={t('subsidiary_assigning')}
+                onlyTooltip
+                tooltipOverlayInnerStyle={{
+                  width: isSmallScreen ? undefined : '40rem',
+                  textAlign: 'center',
+                }}
+                iconSize="1.35rem"
+              />
+            </Box>
+          }
+          withRefreshButton
+        />
 
-          <InformationLabel text={t('subsidiary_assigning')} />
-        </Box>
+        <WarehousesSelector
+          label={t('warehouses')}
+          placeholder={t('select_warehouses')}
+          value={employee?.warehouses_ids ? employee?.warehouses_ids : []}
+          onChange={(value) => handleChange('warehouses_ids', value as string)}
+          onCreatedWarehouse={(warehouseId) =>
+            handleChange('warehouses_ids', [
+              ...(employee?.warehouses_ids || []),
+              warehouseId,
+            ])
+          }
+          onClear={() => handleChange('warehouses_ids', [])}
+          errorMessage={errors?.warehouses_ids && t(errors.warehouses_ids)}
+          withActionButton
+          afterSelectorLabel={
+            <Box className="pl-1.5">
+              <InformationLabel
+                text={t('warehouses_assigning_on_employee')}
+                onlyTooltip
+                tooltipOverlayInnerStyle={{
+                  width: isSmallScreen ? undefined : '40rem',
+                  textAlign: 'center',
+                }}
+                iconSize="1.35rem"
+              />
+            </Box>
+          }
+          withRefreshButton
+        />
       </Box>
     </Card>
   );

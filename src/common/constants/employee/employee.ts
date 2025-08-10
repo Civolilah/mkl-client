@@ -13,8 +13,10 @@ import { User } from '@interfaces/index';
 export const INITIAL_EMPLOYEE: User = {
   first_name: '',
   last_name: '',
+  phone: '',
   email: '',
   permissions: [],
-  subsidiaries: [],
+  subsidiaries_ids: [],
+  warehouses_ids: [],
   password: '',
 };

@@ -340,6 +340,7 @@ interface ColorPickerProps {
   width?: 'full';
   productQuantityPreview?: boolean;
   images?: string[];
+  onColorRemove?: (hexCode: string) => void;
 }
 
 const ColorPicker = ({
@@ -352,6 +353,7 @@ const ColorPicker = ({
   width,
   productQuantityPreview,
   images = [],
+  onColorRemove,
 }: ColorPickerProps) => {
   const t = useTranslation();
   const colors = useColors();
@@ -429,7 +431,6 @@ const ColorPicker = ({
         <Div
           className={classNames('cursor-pointer', {
             'w-full': width === 'full',
-            'hover:opacity-75': productQuantityPreview,
             'mt-2': label,
           })}
           onClick={() => setIsModalOpen(true)}
@@ -446,13 +447,28 @@ const ColorPicker = ({
           ) : (
             <>
               {productQuantityPreview ? (
-                <Box
-                  style={{
-                    width: '3rem',
-                    height: '2.375rem',
-                    backgroundColor: color,
-                  }}
-                />
+                <Box className="relative group">
+                  <Box
+                    className="hover:opacity-75"
+                    style={{
+                      width: '3rem',
+                      height: '2.375rem',
+                      backgroundColor: color,
+                    }}
+                  />
+
+                  <Box
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 shadow-lg transition-all duration-200',
+                      'opacity-0 group-hover:opacity-100 hover:bg-red-600 hover:scale-110'
+                      'focus:outline-none focus:ring-2 focus:ring-red-300 focus:opacity-100"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onColorRemove?.(color);
+                    }}
+                  >
+                    <Icon name="close" size="0.9rem" />
+                  </Box>
+                </Box>
               ) : (
                 <Box
                   className={classNames(

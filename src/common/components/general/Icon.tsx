@@ -49,6 +49,7 @@ import {
   MdDelete,
   MdEdit,
   MdErrorOutline,
+  MdFeedback,
   MdHome,
   MdKeyboardArrowDown,
   MdOutlineEmail,
@@ -150,7 +151,8 @@ export type IconName =
   | 'eyeDropper'
   | 'emptyStar'
   | 'star'
-  | 'warehouse';
+  | 'warehouse'
+  | 'feedback';
 
 type Props = {
   className?: string;
@@ -313,6 +315,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdStarBorder);
     case 'warehouse':
       return generateIconElement(FaWarehouse);
+    case 'feedback':
+      return generateIconElement(MdFeedback);
 
     default:
       return <></>;

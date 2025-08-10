@@ -23,8 +23,10 @@ interface PermissionRow {
 const permissionRows: PermissionRow[] = [
   { name: 'all', key: 'all' },
   { name: 'product', key: 'product' },
+  { name: 'warehouse', key: 'warehouse' },
   { name: 'supplier', key: 'supplier' },
   { name: 'subsidiary', key: 'subsidiary' },
+  { name: 'brand', key: 'brand' },
   { name: 'category', key: 'category' },
   { name: 'label', key: 'label' },
   { name: 'label_category', key: 'label_category' },
@@ -184,14 +186,6 @@ const Permissions = (props: EmployeeProps) => {
         />
       </LabelElement>
 
-      <LabelElement label={t('view_store')} withoutOptionalText twoGridColumns>
-        <Toggle
-          checked={isPermissionChecked('view_store')}
-          onChange={(value) => handleChangePermissions(value, 'view_store')}
-          disabled={isPermissionDisabled()}
-        />
-      </LabelElement>
-
       <LabelElement
         label={t('export_products')}
         withoutOptionalText
@@ -202,6 +196,14 @@ const Permissions = (props: EmployeeProps) => {
           onChange={(value) =>
             handleChangePermissions(value, 'export_products')
           }
+          disabled={isPermissionDisabled()}
+        />
+      </LabelElement>
+
+      <LabelElement label={t('view_store')} withoutOptionalText twoGridColumns>
+        <Toggle
+          checked={isPermissionChecked('view_store')}
+          onChange={(value) => handleChangePermissions(value, 'view_store')}
           disabled={isPermissionDisabled()}
         />
       </LabelElement>

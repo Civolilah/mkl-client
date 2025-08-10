@@ -16,18 +16,16 @@ import { useTranslation } from '@hooks/index';
 import Details, { EmployeeProps } from '../components/Details';
 import Permissions from '../components/Permissions';
 
-const useTabs = (params: EmployeeProps) => {
+const useTabs = ({
+  employee,
+  editPage,
+  isLoading,
+  onRefresh,
+  errors,
+  handleChange,
+  setEmployee,
+}: EmployeeProps) => {
   const t = useTranslation();
-
-  const {
-    employee,
-    editPage,
-    isLoading,
-    onRefresh,
-    errors,
-    handleChange,
-    setEmployee,
-  } = params;
 
   const tabs = [
     {

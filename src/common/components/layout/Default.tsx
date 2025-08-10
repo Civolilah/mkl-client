@@ -121,14 +121,14 @@ const Default = (props: Props) => {
                         >
                           <Icon
                             name="home"
-                            size={isMiddleScreen ? '1.15rem' : '1rem'}
+                            size={isMiddleScreen ? '1.3rem' : '1.1rem'}
                             style={{ color: accentColor }}
                           />
 
                           <Box>
                             <Icon
                               name="arrowForward"
-                              size={isMiddleScreen ? '1.2rem' : '1rem'}
+                              size={isMiddleScreen ? '1.3rem' : '1.1rem'}
                               style={{ color: colors.$12 }}
                             />
                           </Box>
@@ -166,7 +166,7 @@ const Default = (props: Props) => {
                               <Box>
                                 <Icon
                                   name="arrowForward"
-                                  size={isMiddleScreen ? '1.2rem' : '1rem'}
+                                  size={isMiddleScreen ? '1.3rem' : '1.1rem'}
                                   style={{ color: colors.$12 }}
                                 />
                               </Box>

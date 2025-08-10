@@ -14,7 +14,7 @@ import { Product, ValidationErrors } from '@interfaces/index';
 
 import {
   Box,
-  BrandSelector,
+  BrandsSelector,
   Card,
   CategoriesSelector,
   InformationLabel,
@@ -78,7 +78,7 @@ const DetailsCard = ({
           errorMessage={errors?.name && t(errors.name)}
         />
 
-        <BrandSelector
+        <BrandsSelector
           mode="single"
           label={t('brand')}
           placeholder={t('select_brand')}

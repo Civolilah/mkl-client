@@ -107,7 +107,7 @@ const SupplierForm = ({
   }
 
   return (
-    <Box className="flex flex-col self-start gap-6 w-full md:w-3/4 xl:w-1/2">
+    <Box className="flex flex-col xl:flex-row self-start gap-6 w-full md:w-3/4 xl:w-full">
       <Card
         title={t('details')}
         className="w-full"

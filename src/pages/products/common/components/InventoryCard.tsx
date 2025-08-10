@@ -36,6 +36,7 @@ import {
   Text,
   Toggle,
 } from '@components/index';
+import { QuantityUnitsSelector } from '@components/index';
 
 import useSymbols from '@hooks/global/useSymbols';
 import {
@@ -94,7 +95,7 @@ const InventoryCard = ({
   const colors = useColors();
   const accentColor = useAccentColor();
   const { currencySymbol } = useSymbols();
-  const inventoryGroupOptions = useInventoryGroupOptions();
+  const inventoryGroupOptions = useInventoryGroupOptions({ product });
   const labelCategoriesAdditionalOptions =
     useLabelCategoriesAdditionalOptions();
   const { disablingNumberFieldSymbol } = useNumberFieldSymbols();
@@ -172,6 +173,12 @@ const InventoryCard = ({
       }
     >
       <Box className="flex flex-col space-y-4 pb-2">
+        <QuantityUnitsSelector
+          required
+          value={product?.quantity_unit || 'pcs'}
+          onChange={(value) => handleChange('quantity_unit', value)}
+        />
+
         <SelectStaticField
           mode="single"
           required
@@ -463,7 +470,7 @@ const InventoryCard = ({
                                 className="p-4"
                                 style={{ backgroundColor: colors.$36 }}
                               >
-                                <Box className="grid grid-cols-1 md:grid-cols-4 items-end gap-4">
+                                <Box className="grid grid-cols-1 md:grid-cols-3 items-end gap-4">
                                   <Box className="flex flex-col space-y-1">
                                     <Box className="flex items-center space-x-2">
                                       <Label>{t('unlimited_quantity')}</Label>

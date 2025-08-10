@@ -67,20 +67,20 @@ const useNavItems = () => {
       iconSize: '1.236rem',
     },
     {
-      key: 'store',
-      label: 'store',
-      iconName: 'store',
-      href: '/store',
-      visible: hasPermission('view_store'),
-      iconSize: '1.129rem',
-    },
-    {
       key: 'export',
       label: 'export',
       iconName: 'export',
       href: '/export',
       visible: hasPermission('export_products'),
       iconSize: '1.236rem',
+    },
+    {
+      key: 'store',
+      label: 'store',
+      iconName: 'store',
+      href: '/store',
+      visible: hasPermission('view_store'),
+      iconSize: '1.129rem',
     },
     {
       key: 'warehouses',
@@ -97,23 +97,6 @@ const useNavItems = () => {
         href: '/warehouses/new',
         tooltipText: 'new_warehouse',
         visible: hasPermission('create_warehouse'),
-      },
-    },
-    {
-      key: 'brands',
-      label: 'brands',
-      iconName: 'brand',
-      href: '/brands',
-      iconSize: '1.183rem',
-      visible:
-        hasPermission('create_brand') ||
-        hasPermission('view_brand') ||
-        hasPermission('edit_brand'),
-      rightIcon: {
-        name: 'add',
-        href: '/brands/new',
-        tooltipText: 'new_brand',
-        visible: hasPermission('create_brand'),
       },
     },
     {
@@ -148,6 +131,23 @@ const useNavItems = () => {
         href: '/subsidiaries/new',
         tooltipText: 'new_subsidiary',
         visible: hasPermission('create_subsidiary'),
+      },
+    },
+    {
+      key: 'brands',
+      label: 'brands',
+      iconName: 'brand',
+      href: '/brands',
+      iconSize: '1.183rem',
+      visible:
+        hasPermission('create_brand') ||
+        hasPermission('view_brand') ||
+        hasPermission('edit_brand'),
+      rightIcon: {
+        name: 'add',
+        href: '/brands/new',
+        tooltipText: 'new_brand',
+        visible: hasPermission('create_brand'),
       },
     },
     {
@@ -202,20 +202,6 @@ const useNavItems = () => {
       },
     },
     {
-      key: 'employees',
-      label: 'employees',
-      iconName: 'employees',
-      href: '/employees',
-      visible: hasPermission('admin'),
-      iconSize: '1.129rem',
-      rightIcon: {
-        name: 'add',
-        href: '/employees/new',
-        tooltipText: 'new_employee',
-        visible: hasPermission('admin'),
-      },
-    },
-    {
       key: 'statuses',
       label: 'statuses',
       iconName: 'assignment',
@@ -230,6 +216,20 @@ const useNavItems = () => {
         href: '/statuses/new',
         tooltipText: 'new_status',
         visible: hasPermission('create_status'),
+      },
+    },
+    {
+      key: 'employees',
+      label: 'employees',
+      iconName: 'employees',
+      href: '/employees',
+      visible: hasPermission('admin'),
+      iconSize: '1.129rem',
+      rightIcon: {
+        name: 'add',
+        href: '/employees/new',
+        tooltipText: 'new_employee',
+        visible: hasPermission('admin'),
       },
     },
     // {

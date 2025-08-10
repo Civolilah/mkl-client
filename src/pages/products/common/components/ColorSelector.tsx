@@ -38,6 +38,9 @@ const ColorSelector = ({ colors, handleChange, addColor, images }: Props) => {
             }
             productQuantityPreview
             images={images}
+            onColorRemove={(hexCode) =>
+              handleChange(colors.filter((color) => color !== hexCode))
+            }
           />
         ))}
       </Box>

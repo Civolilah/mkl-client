@@ -28,10 +28,14 @@ type Props = {
   onRefresh?: () => void;
 };
 
-const EmployeeForm = (props: Props) => {
-  const { employee, setEmployee, errors, editPage, isLoading, onRefresh } =
-    props;
-
+const EmployeeForm = ({
+  employee,
+  setEmployee,
+  errors,
+  editPage,
+  isLoading,
+  onRefresh,
+}: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleChange = useHandleChange({ setEmployee });

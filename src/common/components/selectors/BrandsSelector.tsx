@@ -36,7 +36,7 @@ type Props = {
   withRefreshButton?: boolean;
 };
 
-const BrandSelector = ({
+const BrandsSelector = ({
   value,
   onChange,
   onClear,
@@ -173,4 +173,4 @@ const BrandSelector = ({
   );
 };
 
-export default BrandSelector;
+export default BrandsSelector;

@@ -10,6 +10,8 @@
 
 import { QuantityGroup } from '@pages/products/common/hooks/useInventoryGroupOptions';
 
+import { QuantityUnit } from '@hooks/global/useQuantityUnitOptions';
+
 export type InventoryByVariant = {
   label_category_id?: string;
   label_ids?: string[];
@@ -37,6 +39,7 @@ export type StatusByQuantity = {
 export type Product = {
   id?: string;
   name: string;
+  quantity_unit: QuantityUnit;
   product_key?: string;
   price_by_item?: number;
   inventory_group: QuantityGroup;
@@ -49,6 +52,7 @@ export type Product = {
   status_id?: string;
   subsidiaries_ids?: string[];
   warehouses_ids?: string[];
+  suppliers_ids?: string[];
   quantity_by_variant?: QuantityByVariant[];
   default_image_id: number;
   supplier_ids?: string[];

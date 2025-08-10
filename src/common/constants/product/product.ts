@@ -19,4 +19,5 @@ export const INITIAL_PRODUCT: Product = {
   unlimited_quantity: false,
   quantity_by_variant: [],
   default_image_id: 0,
+  quantity_unit: 'pcs',
 };
