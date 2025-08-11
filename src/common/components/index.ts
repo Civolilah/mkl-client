@@ -76,3 +76,4 @@ export { default as WarehousesSelector } from '@components/selectors/WarehousesS
 export { default as QuantityUnitsSelector } from '@components/selectors/QuantityUnitsSelector';
 export { default as FeedbackModal } from '@components/general/FeedbackModal';
 export { default as MarkdownEditor } from '@components/input-fields/MarkdownEditor';
+export { default as AppleButton } from '@components/general/AppleButton';

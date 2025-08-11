@@ -39,7 +39,7 @@ export type UserDetails = {
   password_confirmation?: string;
 };
 
-export type AccessType = 'credentials' | 'google';
+export type AccessType = 'credentials' | 'google' | 'apple';
 
 const Register = () => {
   const t = useTranslation();

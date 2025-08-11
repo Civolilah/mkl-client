@@ -162,7 +162,7 @@ const ForgotPasswordModal = ({ email }: Props) => {
       </Modal>
 
       <TextStyled
-        className={classNames('self-end text-sm', {
+        className={classNames('self-end text-xs-mid', {
           'cursor-not-allowed': isFormBusy,
           'cursor-pointer': !isFormBusy,
         })}

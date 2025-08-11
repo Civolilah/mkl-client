@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 import classNames from 'classnames';
 import { Link as BaseLink } from 'react-router-dom';
@@ -21,6 +21,7 @@ type Props = {
   target?: '_blank';
   locale?: 'en' | 'tr';
   disableHoverColor?: boolean;
+  style?: CSSProperties;
 };
 
 const StyledLink = styled(BaseLink)`
@@ -30,9 +31,7 @@ const StyledLink = styled(BaseLink)`
   }
 `;
 
-const Link = (props: Props) => {
-  const { children, to, target, className } = props;
-
+const Link = ({ children, to, target, className, style }: Props) => {
   return (
     <StyledLink
       to={to}
@@ -45,6 +44,7 @@ const Link = (props: Props) => {
         color: '#2E6CBD',
         hoverColor: '#2E6CBD',
       }}
+      style={style}
     >
       {children}
     </StyledLink>

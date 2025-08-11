@@ -15,15 +15,14 @@ import { Popover as PopoverBase } from 'antd';
 type Props = {
   children: ReactNode;
   content: ReactNode;
+  trigger?: ('click' | 'hover')[];
 };
 
-const Popover = (props: Props) => {
-  const { children, content } = props;
-
+const Popover = ({ children, content, trigger = ['click'] }: Props) => {
   return (
     <PopoverBase
       content={content}
-      trigger={['click']}
+      trigger={trigger}
       arrow={false}
       overlayInnerStyle={{ borderRadius: 0, padding: 0 }}
     >

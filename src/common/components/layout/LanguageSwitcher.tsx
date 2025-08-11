@@ -8,13 +8,21 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { MenuProps } from 'antd';
-import { TR, GB, BA } from 'country-flag-icons/react/3x2';
+import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 
-import { Box, Dropdown, Icon, Text } from '@components/index';
+import { Box, Icon, Popover, Text } from '@components/index';
 
 import { useColors, useSwitchLanguage } from '@hooks/index';
+
+const Div = styled.div`
+  background-color: ${({ theme }) => theme.backgroundColor};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.hoverBackgroundColor};
+  }
+`;
 
 export const LANGUAGE_ALIASES = {
   en: 'English',
@@ -62,7 +70,6 @@ export const LANGUAGE_BY_TIMEZONE = {
   'Europe/Malta': 'mt',
   'Europe/Reykjavik': 'is',
   'Europe/Vatican': 'it',
-
   'America/New_York': 'en',
   'America/Detroit': 'en',
   'America/Kentucky/Louisville': 'en',
@@ -105,8 +112,14 @@ export const LANGUAGE_BY_TIMEZONE = {
   'America/Vancouver': 'en',
 };
 
-export const AVAILABLE_LANGUAGES = ['en', 'tr', 'bs'] as const;
+export const AVAILABLE_LANGUAGES = ['en', 'bs', 'tr'] as const;
 export type Languages = (typeof AVAILABLE_LANGUAGES)[number];
+
+const LANGUAGE_CODES = {
+  en: 'EN',
+  tr: 'TR',
+  bs: 'BS',
+} as const;
 
 const LanguageSwitcher = () => {
   const colors = useColors();
@@ -114,77 +127,56 @@ const LanguageSwitcher = () => {
 
   const switchLanguage = useSwitchLanguage();
 
-  const icon = {
-    en: <GB title="Great Britain" className="w-5 h-5" />,
-    tr: <TR title="Turkey" className="w-5 h-5" />,
-    bs: <BA title="Bosnia and Herzegovina" className="w-5 h-5" />,
+  const handleLanguageChange = (language: Languages) => {
+    switchLanguage(language);
   };
 
-  const languages: MenuProps['items'] = [
-    {
-      label: (
-        <Box
-          className="flex items-center space-x-4 py-1 px-2"
-          onClick={() => switchLanguage('en')}
-        >
-          {icon.en}
-
-          <Text className="text-xs">English</Text>
-        </Box>
-      ),
-      key: 'en',
-      disabled: i18n.language === 'en',
-      style: { paddingLeft: 7 },
-    },
-    {
-      label: (
-        <Box
-          className="flex items-center space-x-4 py-1 px-2"
-          onClick={() => switchLanguage('tr')}
-        >
-          {icon.tr}
-
-          <Text className="text-xs">Türkçe</Text>
-        </Box>
-      ),
-      key: 'tr',
-      disabled: i18n.language === 'tr',
-      style: { paddingLeft: 7 },
-    },
-    {
-      label: (
-        <Box
-          className="flex items-center space-x-4 py-1 px-2"
-          onClick={() => switchLanguage('bs')}
-        >
-          {icon.bs}
-
-          <Text className="text-xs">Bosanski</Text>
-        </Box>
-      ),
-      key: 'bs',
-      disabled: i18n.language === 'bs',
-      style: { paddingLeft: 7 },
-    },
-  ];
-
   return (
-    <Dropdown menu={{ items: languages }}>
-      <Box
-        className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap w-full"
-        style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
-      >
-        <Box className="flex items-center space-x-3">
-          {icon[i18n.language as Languages]}
-
-          <Text className="text-xs font-medium">
-            {LANGUAGE_ALIASES[i18n.language as Languages]}
-          </Text>
+    <Popover
+      content={
+        <Box className="p-1">
+          {AVAILABLE_LANGUAGES.map((lang) => (
+            <Div
+              key={lang}
+              className={classNames(
+                'flex items-center justify-center py-2 px-4 cursor-pointer',
+                {
+                  'cursor-not-allowed': i18n.language === lang,
+                }
+              )}
+              onClick={() =>
+                i18n.language !== lang && handleLanguageChange(lang)
+              }
+              theme={{
+                backgroundColor:
+                  i18n.language === lang ? colors.$1 : 'transparent',
+                hoverBackgroundColor:
+                  i18n.language === lang ? colors.$5 : colors.$1,
+              }}
+            >
+              <Text
+                className="text-sm font-medium"
+                style={{
+                  color: i18n.language === lang ? colors.$2 : colors.$12,
+                }}
+              >
+                {LANGUAGE_CODES[lang]}
+              </Text>
+            </Div>
+          ))}
         </Box>
+      }
+    >
+      <Box className="flex items-center cursor-pointer">
+        <Text className="text-sm font-normal" style={{ color: colors.$12 }}>
+          {LANGUAGE_CODES[i18n.language as Languages]}
+        </Text>
 
-        <Icon name="arrowDown" size="1.25rem" style={{ color: colors.$10 }} />
+        <Box>
+          <Icon name="arrowDown" size="1.25rem" style={{ color: colors.$12 }} />
+        </Box>
       </Box>
-    </Dropdown>
+    </Popover>
   );
 };
 
