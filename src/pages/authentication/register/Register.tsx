@@ -155,9 +155,9 @@ const Register = () => {
       >
         <img
           className="cursor-pointer"
-          src="/images/logo.png"
-          width={250}
-          height={75}
+          src="/images/mkl.png"
+          width={100}
+          height={100}
           alt="The ECOMKL Logo"
         />
 

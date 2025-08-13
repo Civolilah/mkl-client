@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request } from '@helpers/index';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
@@ -34,6 +35,11 @@ import { AccessType, UserDetails } from '../register/Register';
 import ForgotPasswordModal from './components/ForgotPasswordModal';
 import { validateUserDetails } from './helpers/helpers';
 
+export type AppleDetails = {
+  first_name: string;
+  last_name: string;
+};
+
 const Login = () => {
   const t = useTranslation();
   const colors = useColors();
@@ -48,7 +54,11 @@ const Login = () => {
     password: '',
   });
 
-  const handleAccessApp = async (type: AccessType, token?: string) => {
+  const handleAccessApp = async (
+    type: AccessType,
+    token?: string,
+    appleDetails?: AppleDetails
+  ) => {
     if (!Object.keys(errors).length || type !== 'credentials') {
       setIsFormBusy(true);
 
@@ -64,9 +74,11 @@ const Login = () => {
           type,
           ...(token && { token }),
           ...(!token && { details: userDetails }),
+          ...(appleDetails && { details: appleDetails }),
         })
           .then((response) => {
             localStorage.setItem('MKL-TOKEN', response.data.token);
+            sessionStorage.setItem('MKL-COMPANY', response.data.company_id);
 
             navigate('/');
           })
@@ -98,9 +110,30 @@ const Login = () => {
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      setUserDetails({
+        email: '',
+        password: '',
+      });
+
+      setErrors({});
+    };
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const response = await axios.get(
+        'https://api.ipstack.com/146.255.136.11?access_key=9245a0c5c8603583b67689b16fdb31eb'
+      );
+
+      console.log(response);
+    })();
+  }, []);
+
   return (
     <Box
-      className="flex h-screen"
+      className="flex justify-center items-center h-screen"
       style={{
         backgroundImage:
           'url(https://images.unsplash.com/photo-1586880244386-8b3e34c8382c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
@@ -109,7 +142,7 @@ const Login = () => {
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <Box className="h-full p-8 lg:w-5/12">
+      <Box className="h-full p-4 md:p-8 md:w-[35rem] lg:w-[43rem]">
         <Box
           className="flex flex-col justify-between items-center px-5 pt-5 pb-6 h-full w-full"
           style={{
@@ -118,19 +151,20 @@ const Login = () => {
         >
           <Box className="flex w-full justify-between">
             <img
-              className="cursor-pointer"
-              src="/images/logo.png"
-              width={150}
-              height={45}
-              alt="Logo"
+              src="/images/mkl.png"
+              width={75}
+              height={50}
+              alt="ecoMKL Logo"
             />
 
             <LanguageSwitcher />
           </Box>
 
-          <Box className="flex flex-col gap-y-5 w-[23rem]">
-            <Box className="flex flex-col items-center gap-y-2 mb-5">
-              <Text className="text-4xl font-normal">{t('welcome_back')}</Text>
+          <Box className="flex flex-col gap-y-5 px-0 md:px-12 lg:px-28 w-full">
+            <Box className="flex flex-col items-center gap-y-2 mb-8">
+              <Text className="text-4xl font-normal text-center">
+                {t('welcome_back')}
+              </Text>
 
               <Box className="flex items-center gap-x-1">
                 <Text className="text-sm" style={{ color: colors.$5 }}>
@@ -270,33 +304,6 @@ const Login = () => {
               )
             )}
           </Box>
-        </Box>
-      </Box>
-
-      {/* Right Side - Hero Text */}
-      <Box className="hidden lg:flex flex-col justify-center items-center w-1/2 p-12 relative z-10">
-        <Box className="text-center text-white max-w-lg">
-          <Text
-            className="mb-4"
-            style={{
-              fontSize: '3rem',
-              fontWeight: 'bold',
-              lineHeight: '1.1',
-              textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-            }}
-          >
-            {t('hero_title')}
-          </Text>
-          <Text
-            style={{
-              fontSize: '1.25rem',
-              fontWeight: '300',
-              opacity: 0.9,
-              textShadow: '0 1px 2px rgba(0,0,0,0.5)',
-            }}
-          >
-            {t('hero_subtitle')}
-          </Text>
         </Box>
       </Box>
     </Box>

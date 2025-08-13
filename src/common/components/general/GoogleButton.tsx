@@ -86,7 +86,7 @@ const GoogleButton = (props: Props) => {
       className={classNames(
         'flex items-center justify-center space-x-4 w-full py-1.5 text-sm font-medium border rounded-full',
         {
-          'cursor-not-allowed opacity-75': disabled,
+          'cursor-not-allowed pointer-events-none opacity-75': disabled,
           'cursor-pointer': !disabled,
         }
       )}

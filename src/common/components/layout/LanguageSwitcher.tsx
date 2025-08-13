@@ -24,12 +24,6 @@ const Div = styled.div`
   }
 `;
 
-export const LANGUAGE_ALIASES = {
-  en: 'English',
-  tr: 'Türkçe',
-  bs: 'Bosanski',
-};
-
 export const LANGUAGE_BY_TIMEZONE = {
   'Europe/Sarajevo': 'bs',
   'Europe/Belgrade': 'sr',
@@ -110,15 +104,36 @@ export const LANGUAGE_BY_TIMEZONE = {
   'America/Whitehorse': 'en',
   'America/Dawson': 'en',
   'America/Vancouver': 'en',
+  'Asia/Shanghai': 'zh',
+  'Asia/Kolkata': 'hi',
 };
 
-export const AVAILABLE_LANGUAGES = ['en', 'bs', 'tr'] as const;
+export const AVAILABLE_LANGUAGES = [
+  'en',
+  'de',
+  'fr',
+  'es',
+  'pt',
+  'zh',
+  'hi',
+  'bs',
+  'hr',
+  'sr',
+] as const;
+
 export type Languages = (typeof AVAILABLE_LANGUAGES)[number];
 
 const LANGUAGE_CODES = {
   en: 'EN',
-  tr: 'TR',
   bs: 'BS',
+  hr: 'HR',
+  sr: 'SR',
+  fr: 'FR',
+  de: 'DE',
+  es: 'ES',
+  pt: 'PT',
+  zh: '中文',
+  hi: 'हि',
 } as const;
 
 const LanguageSwitcher = () => {

@@ -53,7 +53,6 @@
     "confirm_password": "Confirm password",
     "passwords_not_match": "Confirm password does not match password.",
     "forgot_password": "Forgot your password?",
-    "send_email": "Send email",
     "import": "Import",
     "store": "Store",
     "company_details": "Company Details",
@@ -343,5 +342,7 @@
   "new_to_ecomkl": "New to ecoMKL?",
   "copyright_text": "By proceeding, you agree to our :terms and :privacyPolicy.",
   "terms": "terms",
-  "privacy_policy": "privacy policy"
+  "privacy_policy": "privacy policy",
+  "recover_your_password": "Recover your password",
+  "send_code": "Send code"
 }

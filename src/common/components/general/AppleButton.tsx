@@ -16,6 +16,7 @@ import AppleSignInButton, { AppleAuthResponse } from 'react-apple-signin-auth';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
 
+import { AppleDetails } from '@pages/authentication/login/Login';
 import { AccessType } from '@pages/authentication/register/Register';
 
 import { useAccentColor, useColors } from '@hooks/index';
@@ -69,7 +70,11 @@ const generateSecureState = (): string => {
 
 type Props = {
   disabled: boolean;
-  handleAccessApp: (type: AccessType, token?: string) => void;
+  handleAccessApp: (
+    type: AccessType,
+    token?: string,
+    appleDetails?: AppleDetails
+  ) => void;
 };
 
 const AppleButton = ({ disabled, handleAccessApp }: Props) => {
@@ -116,7 +121,15 @@ const AppleButton = ({ disabled, handleAccessApp }: Props) => {
     return true;
   };
 
+  // console.log(
+  //   jwtDecode(
+  //     'eyJraWQiOiJTZjJsRnF3a3BYIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiY29tLmVjb21rbC53ZWJhcHBzaSIsImV4cCI6MTc1NTA4NzIxOSwiaWF0IjoxNzU1MDAwODE5LCJzdWIiOiIwMDE5NDQuNzAyN2I1YTkwOWJmNGVlYTkwMTU0MzY4MWU1MmUyOTYuMTIxMyIsIm5vbmNlIjoiNmY4OWE0ZWQ3YTQ2NDEwMDlkZGJlYzc4YTc1Zjk4NzIiLCJjX2hhc2giOiJTc2NnejlPcVhqbU4yVkFtRmcycVBnIiwiZW1haWwiOiJoanNmajZqbjY1QHByaXZhdGVyZWxheS5hcHBsZWlkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdXRoX3RpbWUiOjE3NTUwMDA4MTksIm5vbmNlX3N1cHBvcnRlZCI6dHJ1ZX0.GC20nvdeFybw-tatUJfQeiZO9ITjvyt2Syf6QLmWzbREjmaSmgmNzanUZl8sGX9j0ExLePvriXo23DxUkIUoNCGnAe-p8AMcO68HS6SeQpXpwNsDODqyXdjfq4PZZfso8fVR4pnXaH-Z6WCa5D5Zt5i4L3z9PjnJAg1cCWVwUN2jiHHTa7XmOE6rUHrGu89LFzPsTQBShRsCRMOnhNnI-WTVxMd20Nsb_bMBREW8cnAPIHr1VXdi34NMNMl5sSS8wDbykwjNbEVriXuaL4nrRMPNb0hEqmItKCmKS9nMgNJp4FuvmI4z3rR1NKuojdJSYrMs9NjVIGpBF788GD7ELg'
+  //   )
+  // );
+
   const handleAppleSuccess = (response: AppleAuthResponse) => {
+    console.log(response);
+
     if (!validateSession(response.authorization.code)) {
       toast.error('Authentication validation failed');
       return;
@@ -124,7 +137,16 @@ const AppleButton = ({ disabled, handleAccessApp }: Props) => {
 
     currentSessionRef.current = null;
 
-    handleAccessApp('apple', response.authorization?.id_token);
+    handleAccessApp(
+      'apple',
+      response.authorization?.id_token,
+      response.user?.name
+        ? {
+            first_name: response.user?.name.firstName,
+            last_name: response.user?.name.lastName,
+          }
+        : undefined
+    );
   };
 
   const handleAppleError = (error: { error: string }) => {
@@ -157,7 +179,7 @@ const AppleButton = ({ disabled, handleAccessApp }: Props) => {
           className={classNames(
             'flex items-center justify-center space-x-4 w-full py-1.5 text-sm font-medium border rounded-full',
             {
-              'cursor-not-allowed opacity-75': disabled,
+              'cursor-not-allowed pointer-events-none opacity-75': disabled,
               'cursor-pointer': !disabled,
             }
           )}

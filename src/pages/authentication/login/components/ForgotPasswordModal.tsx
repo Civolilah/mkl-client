@@ -137,7 +137,7 @@ const ForgotPasswordModal = ({ email }: Props) => {
     <>
       <Modal
         size="small"
-        title={t('send_email')}
+        title={t('recover_your_password')}
         visible={isModalOpen}
         onClose={handleClose}
       >
@@ -156,7 +156,7 @@ const ForgotPasswordModal = ({ email }: Props) => {
             disabled={isFormBusy || Boolean(Object.keys(errors).length)}
             disabledWithLoadingIcon={Boolean(!Object.keys(errors).length)}
           >
-            {t('send_email')}
+            {t('send_code')}
           </Button>
         </div>
       </Modal>
