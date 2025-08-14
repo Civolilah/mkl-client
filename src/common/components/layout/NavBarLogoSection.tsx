@@ -49,7 +49,7 @@ const NavBarLogoSection = (props: Props) => {
           <div className="h-full" onClick={() => {}}>
             <img
               className="cursor-pointer"
-              src="/images/mkl.png"
+              src="/images/mkl.svg"
               width="full"
               height="full"
               alt="The MKL Store Logo"

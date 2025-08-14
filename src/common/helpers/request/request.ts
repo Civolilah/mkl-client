@@ -70,6 +70,7 @@ client.interceptors.response.use(
 const defaultHeaders = () => {
   return {
     'MKL-TOKEN': (localStorage.getItem('MKL-TOKEN') as string) || '',
+    'MKL-COMPANY': (sessionStorage.getItem('MKL-COMPANY') as string) || '',
     'X-Requested-With': 'XMLHttpRequest',
   };
 };

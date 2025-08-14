@@ -114,6 +114,7 @@ export const AVAILABLE_LANGUAGES = [
   'fr',
   'es',
   'pt',
+  'tr',
   'zh',
   'hi',
   'bs',
@@ -134,6 +135,7 @@ const LANGUAGE_CODES = {
   pt: 'PT',
   zh: '中文',
   hi: 'हि',
+  tr: 'TR',
 } as const;
 
 const LanguageSwitcher = () => {

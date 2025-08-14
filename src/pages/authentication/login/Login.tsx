@@ -151,7 +151,7 @@ const Login = () => {
         >
           <Box className="flex w-full justify-between">
             <img
-              src="/images/mkl.png"
+              src="/images/mkl.svg"
               width={75}
               height={50}
               alt="ecoMKL Logo"

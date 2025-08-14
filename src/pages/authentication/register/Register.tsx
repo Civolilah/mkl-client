@@ -155,10 +155,10 @@ const Register = () => {
       >
         <img
           className="cursor-pointer"
-          src="/images/mkl.png"
+          src="/images/mkl.svg"
           width={100}
           height={100}
-          alt="The ECOMKL Logo"
+          alt="The ecoMKL Logo"
         />
 
         <Box className="px-2 md:px-0 max-w-full w-[24rem] pb-[4.7rem]">
