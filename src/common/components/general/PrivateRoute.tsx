@@ -39,7 +39,6 @@ export type UserCompanyDetails = {
     comma_as_decimal_separator: boolean | null;
     color_theme: string | null;
     accent_color: string | null;
-    hover_accent_color: string | null;
     email_notification: boolean | null;
     enabled_security_password: boolean;
   };

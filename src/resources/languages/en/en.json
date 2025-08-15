@@ -344,5 +344,15 @@
   "terms": "terms",
   "privacy_policy": "privacy policy",
   "recover_your_password": "Recover your password",
-  "send_code": "Send code"
+  "send_code": "Send code",
+  "untitled_company": "Untitled company",
+  "company": "Company",
+  "select_company": "Select company",
+  "existing_employee": "Existing employee",
+  "select_existing_employee": "Select existing employee",
+  "selecting_existing_employee_help": "Search for employees from other companies to add them to the company you're managing instead of creating a new one.",
+  "permissions_reminder": "Permissions Reminder",
+  "permissions_reminder_description": "This employee has no permissions assigned. To grant inventory management access, use the 'Permissions' tab.",
+  "manage_permissions": "Manage Permissions",
+  "save_employee": "Save Employee"
 }

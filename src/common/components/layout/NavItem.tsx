@@ -8,6 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { route } from '@helpers/index';
 import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -78,7 +79,7 @@ const NavItem = (props: Props) => {
           hoverColor: colors.$8,
           isActive: location.pathname.startsWith(item.href),
         }}
-        onClick={() => navigate(item.href)}
+        onClick={() => navigate(route(item.href))}
         style={{ minHeight: '2.4rem' }}
       >
         <Box
@@ -110,7 +111,7 @@ const NavItem = (props: Props) => {
           ) && (
             <Tooltip
               text={t(item.rightIcon!.tooltipText)}
-              href={item.rightIcon!.href}
+              href={route(item.rightIcon!.href)}
             >
               <div
                 className="flex items-center justify-center"

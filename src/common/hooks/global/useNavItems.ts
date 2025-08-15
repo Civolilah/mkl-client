@@ -8,8 +8,6 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { route } from '@helpers/index';
-
 import { IconName } from '@components/general/Icon';
 
 import useHasPermission from './useHasPermission';
@@ -224,12 +222,12 @@ const useNavItems = () => {
       key: 'employees',
       label: 'employees',
       iconName: 'employees',
-      href: route('/employees'),
+      href: '/employees',
       visible: hasPermission('admin'),
       iconSize: '1.129rem',
       rightIcon: {
         name: 'add',
-        href: route('/employees/new'),
+        href: '/employees/new',
         tooltipText: 'new_employee',
         visible: hasPermission('admin'),
       },

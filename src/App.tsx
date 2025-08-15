@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
-import { Box, Button, Modal, Text } from '@components/index';
+import { Box, Button, LayoutWrapper, Modal, Text } from '@components/index';
 import {
   AVAILABLE_LANGUAGES,
   Languages,
@@ -176,7 +176,7 @@ const App = () => {
 
         <ToastContainer />
 
-        {routes}
+        <LayoutWrapper>{routes}</LayoutWrapper>
       </ConfigProvider>
     </Box>
   );

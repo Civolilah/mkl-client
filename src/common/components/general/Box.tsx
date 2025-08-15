@@ -10,20 +10,27 @@
 
 import { CSSProperties, MouseEvent, ReactNode } from 'react';
 
-type Props = {
+interface Props {
+  id?: string;
   className?: string;
   children?: ReactNode;
   style?: CSSProperties;
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
   onMouseDown?: (event: MouseEvent<HTMLDivElement>) => void;
-};
+}
 
-const Box = (props: Props) => {
-  const { children, className, style, onClick, onMouseDown } = props;
-
+const Box = ({
+  children,
+  className,
+  style,
+  onClick,
+  onMouseDown,
+  id,
+}: Props) => {
   if (!children)
     return (
       <div
+        id={id}
         className={className}
         style={style}
         onClick={onClick}
@@ -33,6 +40,7 @@ const Box = (props: Props) => {
 
   return (
     <div
+      id={id}
       className={className}
       style={style}
       onClick={onClick}

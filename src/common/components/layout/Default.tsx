@@ -263,7 +263,10 @@ const Default = (props: Props) => {
               </Box>
             )}
 
-            <Box className="flex w-full overflow-y-auto flex-1">
+            <Box
+              id="scrollable-content-box"
+              className="flex w-full overflow-y-auto flex-1"
+            >
               <Box
                 className="flex items-center justify-center w-full pt-4 px-2 pb-8 md:px-6 md:pt-6 md:pb-12"
                 style={{ minHeight: 'min-content' }}

@@ -332,7 +332,7 @@ const Header = (props: Props) => {
                     </Text>
                   </Box>
 
-                  <Box className="flex flex-col w-full">
+                  <Box className="flex flex-col w-full py-2">
                     <StyledBox
                       className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
                       onClick={() => navigate(route('/settings/profile'))}
@@ -449,8 +449,6 @@ const Header = (props: Props) => {
                       </Box>
                     </StyledBox>
                   </Box>
-
-                  <Box className="h-2" />
                 </Box>
               }
             >

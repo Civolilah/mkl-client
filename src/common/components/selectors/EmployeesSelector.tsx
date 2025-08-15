@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useSearchParams } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 import SelectDataField from '@components/input-fields/SelectDataField';
 
@@ -23,6 +23,8 @@ type Props = {
   errorMessage: string;
   mode?: 'single' | 'multiple';
   withRefreshButton?: boolean;
+  afterSelectorLabel?: ReactNode;
+  excludeCurrentCompanyEmployees?: boolean;
 };
 
 const EmployeesSelector = ({
@@ -34,29 +36,35 @@ const EmployeesSelector = ({
   placeholder,
   mode = 'single',
   withRefreshButton,
+  afterSelectorLabel,
+  excludeCurrentCompanyEmployees,
 }: Props) => {
   const hasPermission = useHasPermission();
 
-  const [searchParams] = useSearchParams();
-
   return (
     <SelectDataField
-      queryIdentifiers={[
-        `/api/users/${searchParams.get('company')}`,
-        'selector',
-      ]}
+      queryIdentifiers={
+        excludeCurrentCompanyEmployees
+          ? ['/api/users', 'selector', 'exclude_current_company_employees']
+          : ['/api/users', 'selector']
+      }
       mode={mode}
       label={label}
       placeholder={placeholder}
       valueKey="id"
       labelKey="name"
-      endpoint="/api/users?selector=true"
+      endpoint={`/api/users?selector=true${
+        excludeCurrentCompanyEmployees
+          ? '&excludeCurrentCompanyEmployees=true'
+          : ''
+      }`}
       enableByPermission={hasPermission('admin') || hasPermission('owner')}
       withoutRefreshData={!withRefreshButton}
       value={value}
       onChange={onChange}
       onClear={onClear}
       errorMessage={errorMessage}
+      afterLabel={afterSelectorLabel}
     />
   );
 };

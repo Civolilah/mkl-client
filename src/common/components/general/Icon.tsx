@@ -67,6 +67,7 @@ import {
   MdSettings,
   MdStarBorder,
   MdWarehouse,
+  MdWarning,
 } from 'react-icons/md';
 import {
   MdDashboard,
@@ -152,7 +153,8 @@ export type IconName =
   | 'emptyStar'
   | 'star'
   | 'warehouse'
-  | 'feedback';
+  | 'feedback'
+  | 'warning';
 
 type Props = {
   className?: string;
@@ -317,6 +319,8 @@ const Icon = (props: Props) => {
       return generateIconElement(FaWarehouse);
     case 'feedback':
       return generateIconElement(MdFeedback);
+    case 'warning':
+      return generateIconElement(MdWarning);
 
     default:
       return <></>;

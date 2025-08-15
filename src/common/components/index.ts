@@ -79,3 +79,4 @@ export { default as MarkdownEditor } from '@components/input-fields/MarkdownEdit
 export { default as AppleButton } from '@components/general/AppleButton';
 export { default as EmployeesSelector } from '@components/selectors/EmployeesSelector';
 export { default as CompaniesSelector } from '@components/selectors/CompaniesSelector';
+export { default as LayoutWrapper } from '@components/general/LayoutWrapper';

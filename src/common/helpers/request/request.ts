@@ -56,8 +56,7 @@ client.interceptors.response.use(
       window.dispatchEvent(
         new CustomEvent('display_error_toaster', {
           detail: {
-            message:
-              error.response.data?.errors.message || 'something_went_wrong',
+            message: 'something_went_wrong',
           },
         })
       );

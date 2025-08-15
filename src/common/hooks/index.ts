@@ -32,3 +32,4 @@ export { default as useFindLabel } from '@hooks/labels/useFindLabel';
 export { default as useFindSupplier } from '@hooks/suppliers/useFindSupplier';
 export { default as useQuantityUnitOptions } from '@hooks/global/useQuantityUnitOptions';
 export { default as useFormatMoney } from '@hooks/global/useFormatMoney';
+export { default as usePageLayoutAndActions } from '@hooks/global/usePageLayoutAndActions';

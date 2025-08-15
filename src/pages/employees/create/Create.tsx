@@ -19,13 +19,17 @@ import { useNavigate } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useRefetch, useTranslation } from '@hooks/index';
+import {
+  usePageLayoutAndActions,
+  useRefetch,
+  useTranslation,
+} from '@hooks/index';
 
 import EmployeeForm from '../common/components/EmployeeForm';
 import { validateEmployee } from '../common/helpers/helpers';
+import PermissionAlertModal from './common/components/PermissionAlertModal';
 
 const Create = () => {
   const t = useTranslation();
@@ -47,7 +51,24 @@ const Create = () => {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
+  const [isPermissionModalOpenOnce, setIsPermissionModalOpenOnce] =
+    useState<boolean>(false);
+  const [isPermissionAlertModalOpen, setIsPermissionAlertModalOpen] =
+    useState<boolean>(false);
   const [employee, setEmployee] = useState<User | undefined>(INITIAL_EMPLOYEE);
+
+  const handleCheckPermissions = () => {
+    if (isPermissionModalOpenOnce) return false;
+
+    if (!employee?.permissions.length) {
+      setIsPermissionAlertModalOpen(true);
+      setIsPermissionModalOpenOnce(true);
+
+      return true;
+    }
+
+    return false;
+  };
 
   const handleSave = async () => {
     if (!employee) {
@@ -63,6 +84,12 @@ const Create = () => {
 
       if (validationErrors) {
         setErrors(validationErrors);
+        return;
+      }
+
+      const isPermissionAlertRequired = handleCheckPermissions();
+
+      if (isPermissionAlertRequired) {
         return;
       }
 
@@ -94,6 +121,22 @@ const Create = () => {
     }
   }, [employee]);
 
+  usePageLayoutAndActions(
+    {
+      title: t('new_employee'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      saveButton: {
+        isLoading: isFormBusy,
+        isDisabled: isFormBusy,
+        onClick: handleSave,
+        disabledWithLoadingIcon: isFormBusy,
+      },
+    },
+    [employee, isFormBusy, handleSave]
+  );
+
   useEffect(() => {
     return () => {
       setErrors({});
@@ -102,19 +145,19 @@ const Create = () => {
   }, []);
 
   return (
-    <Default
-      title={t('new_employee')}
-      breadcrumbs={breadcrumbs}
-      onSaveClick={handleSave}
-      disabledSaveButton={isFormBusy}
-      disabledSaveButtonWithLoadingIcon={isFormBusy}
-    >
+    <>
+      <PermissionAlertModal
+        visible={isPermissionAlertModalOpen}
+        setVisible={setIsPermissionAlertModalOpen}
+        saveEmployee={handleSave}
+      />
+
       <EmployeeForm
         employee={employee}
         setEmployee={setEmployee}
         errors={errors}
       />
-    </Default>
+    </>
   );
 };
 
