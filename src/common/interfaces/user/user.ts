@@ -19,4 +19,5 @@ export type User = {
   warehouses_ids: string[];
   password?: string;
   password_confirmation?: string;
+  company_id?: string;
 };

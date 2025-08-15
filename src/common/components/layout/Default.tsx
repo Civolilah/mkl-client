@@ -10,6 +10,7 @@
 
 import { ReactNode } from 'react';
 
+import { route } from '@helpers/index';
 import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
@@ -117,7 +118,7 @@ const Default = (props: Props) => {
                       <Box className="flex items-center space-x-1 md:space-x-2">
                         <Box
                           className="flex items-center space-x-1 md:space-x-2 cursor-pointer"
-                          onClick={() => navigate('/')}
+                          onClick={() => navigate(route('/'))}
                         >
                           <Icon
                             name="home"

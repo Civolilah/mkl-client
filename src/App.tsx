@@ -10,7 +10,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { request, useToast } from '@helpers/index';
+import { request, route, useToast } from '@helpers/index';
 import { ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -60,11 +60,11 @@ const App = () => {
   };
 
   const handleNavigateNotFoundPage = () => {
-    navigate('/not_found');
+    navigate(route('/not_found'));
   };
 
   const handleNavigateUnauthorizedPage = () => {
-    navigate('/unauthorized');
+    navigate(route('/unauthorized'));
   };
 
   const handleLogoutUser = () => {
@@ -165,7 +165,7 @@ const App = () => {
               type="primary"
               className="w-full"
               onClick={() => {
-                navigate('/products/new');
+                navigate(route('/products/new'));
                 setIsWelcomeModalOpen(false);
               }}
             >

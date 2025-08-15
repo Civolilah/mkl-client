@@ -10,6 +10,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { route } from '@helpers/index';
 import { Drawer } from 'antd';
 import { useAtomValue } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
@@ -147,7 +148,7 @@ const Header = (props: Props) => {
                       onClick={() => {
                         setIsDrawerOpened(false);
                         setTimeout(() => {
-                          navigate('/settings/profile');
+                          navigate(route('/settings/profile'));
                         }, 100);
                       }}
                       theme={{
@@ -334,7 +335,7 @@ const Header = (props: Props) => {
                   <Box className="flex flex-col w-full">
                     <StyledBox
                       className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
-                      onClick={() => navigate('/settings/profile')}
+                      onClick={() => navigate(route('/settings/profile'))}
                       theme={{
                         hoverBackgroundColor: colors.$19,
                       }}

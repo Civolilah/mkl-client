@@ -68,9 +68,12 @@ client.interceptors.response.use(
 );
 
 const defaultHeaders = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const company = urlParams.get('company') || '';
+
   return {
     'MKL-TOKEN': (localStorage.getItem('MKL-TOKEN') as string) || '',
-    'MKL-COMPANY': (sessionStorage.getItem('MKL-COMPANY') as string) || '',
+    'MKL-COMPANY': company,
     'X-Requested-With': 'XMLHttpRequest',
   };
 };

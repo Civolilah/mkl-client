@@ -29,7 +29,7 @@ import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 import Box from './Box';
 import Icon from './Icon';
 
-type CreationRoute =
+export type CreationRoute =
   | '/subsidiaries/new'
   | '/employees/new'
   | '/statuses/new'

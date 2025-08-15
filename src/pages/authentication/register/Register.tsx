@@ -11,7 +11,7 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { request } from '@helpers/index';
+import { request, route } from '@helpers/index';
 import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
@@ -82,7 +82,7 @@ const Register = () => {
           .then((response) => {
             localStorage.setItem('MKL-TOKEN', response.data.token);
 
-            navigate('/');
+            navigate(route('/'));
           })
           .catch((error) => {
             if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {

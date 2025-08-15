@@ -77,3 +77,5 @@ export { default as QuantityUnitsSelector } from '@components/selectors/Quantity
 export { default as FeedbackModal } from '@components/general/FeedbackModal';
 export { default as MarkdownEditor } from '@components/input-fields/MarkdownEditor';
 export { default as AppleButton } from '@components/general/AppleButton';
+export { default as EmployeesSelector } from '@components/selectors/EmployeesSelector';
+export { default as CompaniesSelector } from '@components/selectors/CompaniesSelector';

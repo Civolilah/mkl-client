@@ -11,7 +11,7 @@
 import { request } from '@helpers/index';
 import { useAtom } from 'jotai';
 import { useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
 
@@ -19,12 +19,13 @@ const useAuthenticated = () => {
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [userCompanyDetails, setUserCompanyDetails] = useAtom(userCompanyAtom);
 
-  const token = localStorage.getItem('MKL-TOKEN');
-
   return async () => {
+    const token = localStorage.getItem('MKL-TOKEN');
+
     if (userCompanyDetails) {
       return true;
     }
@@ -48,6 +49,10 @@ const useAuthenticated = () => {
       setUserCompanyDetails(response);
 
       localStorage.setItem('MKL-LOCALE', response.preference.language);
+
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set('company', response.default_company_id);
+      setSearchParams(newSearchParams);
 
       isAuthenticated = true;
     } else {

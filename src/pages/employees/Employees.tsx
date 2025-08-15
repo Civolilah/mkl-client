@@ -10,8 +10,11 @@
 
 import { useState } from 'react';
 
+import { route } from '@helpers/index';
+
 import { User } from '@interfaces/index';
 
+import { CreationRoute } from '@components/general/Table';
 import { Box, Default, RefreshDataElement, Table } from '@components/index';
 
 import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
@@ -65,7 +68,7 @@ const Employees = () => {
             'subsidiaries.name',
           ] as (keyof User)[]
         }
-        creationRoute="/employees/new"
+        creationRoute={route('/employees/new') as CreationRoute}
         creationButtonLabel={t('new_employee')}
         filterFieldPlaceHolder={t('search_employee_by')}
       />

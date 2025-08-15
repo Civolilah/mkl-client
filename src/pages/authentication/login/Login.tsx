@@ -11,9 +11,8 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { request } from '@helpers/index';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { request, route } from '@helpers/index';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
 import { ValidationErrors } from '@interfaces/index';
@@ -47,6 +46,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [userDetails, setUserDetails] = useState<UserDetails>({
@@ -78,9 +79,12 @@ const Login = () => {
         })
           .then((response) => {
             localStorage.setItem('MKL-TOKEN', response.data.token);
-            sessionStorage.setItem('MKL-COMPANY', response.data.company_id);
 
-            navigate('/');
+            const newSearchParams = new URLSearchParams(searchParams);
+            newSearchParams.set('company', response.data.company_id);
+            setSearchParams(newSearchParams);
+
+            navigate(route('/'));
           })
           .catch((error) => {
             if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -121,15 +125,15 @@ const Login = () => {
     };
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const response = await axios.get(
-        'https://api.ipstack.com/146.255.136.11?access_key=9245a0c5c8603583b67689b16fdb31eb'
-      );
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await axios.get(
+  //       'https://api.ipstack.com/146.255.136.11?access_key=9245a0c5c8603583b67689b16fdb31eb'
+  //     );
 
-      console.log(response);
-    })();
-  }, []);
+  //     console.log(response);
+  //   })();
+  // }, []);
 
   return (
     <Box

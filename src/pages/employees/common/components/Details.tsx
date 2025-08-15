@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { useMediaQuery } from 'react-responsive';
 
@@ -22,6 +22,9 @@ import {
   SubsidiariesSelector,
   TextField,
   WarehousesSelector,
+  EmployeesSelector,
+  Text,
+  CompaniesSelector,
 } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
@@ -43,10 +46,32 @@ const Details = ({
   errors,
   handleChange,
   employee,
+  setEmployee,
 }: EmployeeProps) => {
   const t = useTranslation();
+  const [isExistingEmployee, setIsExistingEmployee] = useState(false);
+  const [showExistingEmployeeAlert, setShowExistingEmployeeAlert] =
+    useState(false);
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+
+  const handleEmployeeSelect = (selectedEmployee: User) => {
+    if (selectedEmployee) {
+      setEmployee({
+        ...selectedEmployee,
+        subsidiaries_ids: employee?.subsidiaries_ids || [],
+        warehouses_ids: employee?.warehouses_ids || [],
+      });
+      setIsExistingEmployee(true);
+      setShowExistingEmployeeAlert(true);
+    }
+  };
+
+  const handleClearSelection = () => {
+    setEmployee(undefined);
+    setIsExistingEmployee(false);
+    setShowExistingEmployeeAlert(false);
+  };
 
   return (
     <Card
@@ -60,53 +85,136 @@ const Details = ({
       }
     >
       <Box className="flex flex-col space-y-4 pb-4">
-        <TextField
-          required
-          label={t('first_name')}
-          placeHolder={t('first_name_placeholder')}
-          value={employee?.first_name || ''}
-          onValueChange={(value) => handleChange('first_name', value)}
-          changeOnBlur
-          errorMessage={errors?.first_name && t(errors.first_name)}
-        />
+        {/* Employee Selector - samo za create page */}
+        {!editPage && (
+          <Box className="space-y-3">
+            <EmployeesSelector
+              label={t('existing_employee')}
+              placeholder={t('search_existing_employee')}
+              value={isExistingEmployee ? [employee?.id as string] : []}
+              onChange={(value) => handleEmployeeSelect(value as string)}
+              onClear={handleClearSelection}
+              errorMessage={errors?.employee_id && t(errors.employee_id)}
+              helperText={t('search_employee_from_other_companies')}
+            />
 
-        <TextField
-          label={t('last_name')}
-          placeHolder={t('last_name_placeholder')}
-          value={employee?.last_name || ''}
-          onValueChange={(value) => handleChange('last_name', value)}
-          changeOnBlur
-          errorMessage={errors?.last_name && t(errors.last_name)}
-        />
+            {/* Alert za postojećeg employee-a */}
+            {showExistingEmployeeAlert && isExistingEmployee && (
+              <div>
+                <Text>{t('existing_employee_selected')}</Text>
+                <Text>{t('existing_employee_selected_description')}</Text>
+              </div>
+            )}
+          </Box>
+        )}
 
-        <TextField
-          required
-          label={t('email')}
-          placeHolder={t('email_placeholder')}
-          value={employee?.email || ''}
-          onValueChange={(value) => handleChange('email', value)}
-          changeOnBlur
-          errorMessage={errors?.email && t(errors.email)}
-        />
+        {!editPage && employee && <hr className="border-gray-200 my-4" />}
 
-        <TextField
-          type="tel"
-          label={t('phone')}
-          placeHolder={t('phone_placeholder')}
-          value={employee?.phone || ''}
-          onValueChange={(value) => handleChange('phone', value)}
-          changeOnBlur
-        />
+        {(!isExistingEmployee || editPage) && (
+          <>
+            <TextField
+              required
+              label={t('first_name')}
+              placeHolder={t('first_name_placeholder')}
+              value={employee?.first_name || ''}
+              onValueChange={(value) => handleChange('first_name', value)}
+              changeOnBlur
+              errorMessage={errors?.first_name && t(errors.first_name)}
+              disabled={isExistingEmployee}
+            />
 
-        <TextField
-          required={!editPage}
-          type="password"
-          label={t(editPage ? 'new_password' : 'password')}
-          placeHolder={t('password_placeholder')}
-          value={employee?.password || ''}
-          onValueChange={(value) => handleChange('password', value)}
-          changeOnBlur
-          errorMessage={errors?.password && t(errors.password)}
+            <TextField
+              label={t('last_name')}
+              placeHolder={t('last_name_placeholder')}
+              value={employee?.last_name || ''}
+              onValueChange={(value) => handleChange('last_name', value)}
+              changeOnBlur
+              errorMessage={errors?.last_name && t(errors.last_name)}
+              disabled={isExistingEmployee}
+            />
+
+            <TextField
+              required
+              label={t('email')}
+              placeHolder={t('email_placeholder')}
+              value={employee?.email || ''}
+              onValueChange={(value) => handleChange('email', value)}
+              changeOnBlur
+              errorMessage={errors?.email && t(errors.email)}
+              disabled={isExistingEmployee}
+            />
+
+            <TextField
+              type="tel"
+              label={t('phone')}
+              placeHolder={t('phone_placeholder')}
+              value={employee?.phone || ''}
+              onValueChange={(value) => handleChange('phone', value)}
+              changeOnBlur
+              disabled={isExistingEmployee}
+            />
+
+            <TextField
+              required={!editPage}
+              type="password"
+              label={t(editPage ? 'new_password' : 'password')}
+              placeHolder={t('password_placeholder')}
+              value={employee?.password || ''}
+              onValueChange={(value) => handleChange('password', value)}
+              changeOnBlur
+              errorMessage={errors?.password && t(errors.password)}
+              disabled={isExistingEmployee}
+            />
+          </>
+        )}
+
+        {isExistingEmployee && !editPage && (
+          <Box className="bg-gray-50 p-4 rounded-lg border">
+            <h4 className="font-medium text-gray-900 mb-2">
+              {t('selected_employee')}
+            </h4>
+            <div className="text-sm text-gray-600 space-y-1">
+              <p>
+                <strong>{t('name')}:</strong> {employee?.first_name}{' '}
+                {employee?.last_name}
+              </p>
+              <p>
+                <strong>{t('email')}:</strong> {employee?.email}
+              </p>
+              {employee?.phone && (
+                <p>
+                  <strong>{t('phone')}:</strong> {employee?.phone}
+                </p>
+              )}
+            </div>
+          </Box>
+        )}
+
+        <CompaniesSelector
+          label={t('company')}
+          placeholder={t('select_company')}
+          value={employee?.company_id ? [employee.company_id] : []}
+          onChange={(value) => handleChange('company_id', value)}
+          onClear={() => handleChange('company_id', [])}
+          errorMessage={errors?.company_id && t(errors.company_id)}
+          afterSelectorLabel={
+            <Box className="pl-1.5">
+              <InformationLabel
+                text={t(
+                  isExistingEmployee
+                    ? 'subsidiary_assigning_existing'
+                    : 'subsidiary_assigning'
+                )}
+                onlyTooltip
+                tooltipOverlayInnerStyle={{
+                  width: isSmallScreen ? undefined : '40rem',
+                  textAlign: 'center',
+                }}
+                iconSize="1.35rem"
+              />
+            </Box>
+          }
+          withRefreshButton
         />
 
         <SubsidiariesSelector
@@ -126,7 +234,11 @@ const Details = ({
           afterSelectorLabel={
             <Box className="pl-1.5">
               <InformationLabel
-                text={t('subsidiary_assigning')}
+                text={t(
+                  isExistingEmployee
+                    ? 'subsidiary_assigning_existing'
+                    : 'subsidiary_assigning'
+                )}
                 onlyTooltip
                 tooltipOverlayInnerStyle={{
                   width: isSmallScreen ? undefined : '40rem',
@@ -156,7 +268,11 @@ const Details = ({
           afterSelectorLabel={
             <Box className="pl-1.5">
               <InformationLabel
-                text={t('warehouses_assigning_on_employee')}
+                text={t(
+                  isExistingEmployee
+                    ? 'warehouses_assigning_existing'
+                    : 'warehouses_assigning_on_employee'
+                )}
                 onlyTooltip
                 tooltipOverlayInnerStyle={{
                   width: isSmallScreen ? undefined : '40rem',

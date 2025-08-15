@@ -19,4 +19,5 @@ export const INITIAL_EMPLOYEE: User = {
   subsidiaries_ids: [],
   warehouses_ids: [],
   password: '',
+  company_id: '',
 };

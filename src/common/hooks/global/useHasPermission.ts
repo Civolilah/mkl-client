@@ -21,6 +21,7 @@ export type Permission =
   | 'edit_status'
   | 'director'
   | 'admin'
+  | 'owner'
   | 'view_dashboard'
   | 'import_products'
   | 'export_products'
@@ -58,12 +59,15 @@ const useHasPermission = () => {
     if (
       !permission.includes('_') &&
       permission !== 'director' &&
-      permission !== 'admin'
+      permission !== 'admin' &&
+      permission !== 'owner'
     )
       return false;
 
     if (permission === 'director' && !userCompanyDetails.is_director)
       return false;
+
+    if (permission === 'owner' && userCompanyDetails.is_owner) return true;
 
     if (userCompanyDetails.is_director || userCompanyDetails.is_owner)
       return true;

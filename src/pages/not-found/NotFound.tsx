@@ -10,6 +10,7 @@
 
 import { Suspense } from 'react';
 
+import { route } from '@helpers/index';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,7 +40,7 @@ const NotFound = () => {
           icon={
             <Icon name="home" size={isMiddleScreen ? '1.25rem' : '1.125rem'} />
           }
-          onClick={() => navigate('/')}
+          onClick={() => navigate(route('/'))}
         >
           {t('home')}
         </Button>

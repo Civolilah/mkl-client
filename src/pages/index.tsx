@@ -10,6 +10,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { route } from '@helpers/index';
 import { Navigate } from 'react-router-dom';
 
 import { LoadingScreen } from '@components/index';
@@ -36,7 +37,7 @@ const IndexPage = () => {
   }
 
   return isUserAuthenticated ? (
-    <Navigate to="/dashboard" />
+    <Navigate to={route('/dashboard')} />
   ) : (
     <Navigate to="/login" />
   );

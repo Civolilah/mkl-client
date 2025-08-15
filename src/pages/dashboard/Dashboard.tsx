@@ -10,13 +10,14 @@
 
 import { useEffect } from 'react';
 
+import { route } from '@helpers/index';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/products');
+    navigate(route('/products'));
   }, []);
 
   return null;

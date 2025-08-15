@@ -98,11 +98,23 @@ type RouteParams = {
   [key: string]: string;
 };
 
-export const route = (url: string, params: RouteParams): string => {
-  return Object.entries(params).reduce((acc, [key, value]) => {
-    const pattern = new RegExp(`:${key}`, 'g');
-    return acc.replace(pattern, value.toString());
-  }, url);
+export const route = (url: string, params?: RouteParams): string => {
+  const processedUrl =
+    Object.entries(params ?? {}).reduce((acc, [key, value]) => {
+      const pattern = new RegExp(`:${key}`, 'g');
+      return acc.replace(pattern, value.toString());
+    }, url) ?? url;
+
+  const currentSearchParams = new URLSearchParams(window.location.search);
+  const currentCompany = currentSearchParams.get('company');
+
+  if (currentCompany) {
+    const separator = processedUrl.includes('?') ? '&' : '?';
+
+    return `${processedUrl}${separator}company=${currentCompany}`;
+  }
+
+  return processedUrl;
 };
 
 export const endpoint = (url: string, params: RouteParams): string => {
