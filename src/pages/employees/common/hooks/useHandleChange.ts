@@ -10,6 +10,8 @@
 
 import { Dispatch, SetStateAction } from 'react';
 
+import { cloneDeep, set } from 'lodash';
+
 import { User } from '@interfaces/index';
 
 type Params = {
@@ -18,13 +20,14 @@ type Params = {
 
 const useHandleChange = ({ setEmployee }: Params) => {
   return (property: keyof User, value: string | string[]) => {
-    setEmployee(
-      (currentEmployee) =>
-        currentEmployee && {
-          ...currentEmployee,
-          [property]: value,
-        }
-    );
+    setEmployee((currentEmployee) => {
+      if (!currentEmployee) return currentEmployee;
+
+      const updatedEmployee = cloneDeep(currentEmployee);
+      set(updatedEmployee, property, value);
+
+      return updatedEmployee;
+    });
   };
 };
 

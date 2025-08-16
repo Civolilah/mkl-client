@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route } from '@helpers/index';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
@@ -46,6 +46,8 @@ const Register = () => {
   const colors = useColors();
 
   const navigate = useNavigate();
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
@@ -81,6 +83,10 @@ const Register = () => {
         })
           .then((response) => {
             localStorage.setItem('MKL-TOKEN', response.data.token);
+
+            const newSearchParams = new URLSearchParams(searchParams);
+            newSearchParams.set('company', response.data.company_id);
+            setSearchParams(newSearchParams);
 
             navigate(route('/'));
           })
