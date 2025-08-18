@@ -83,6 +83,10 @@ const Register = () => {
         })
           .then((response) => {
             localStorage.setItem('MKL-TOKEN', response.data.token);
+            localStorage.setItem(
+              'DEFAULT-MKL-COMPANY',
+              response.data.company_id
+            );
 
             const newSearchParams = new URLSearchParams(searchParams);
             newSearchParams.set('company', response.data.company_id);

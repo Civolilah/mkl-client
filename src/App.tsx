@@ -69,6 +69,7 @@ const App = () => {
 
   const handleLogoutUser = () => {
     localStorage.removeItem('MKL-TOKEN');
+    localStorage.removeItem('DEFAULT-MKL-COMPANY');
 
     window.location.reload();
   };

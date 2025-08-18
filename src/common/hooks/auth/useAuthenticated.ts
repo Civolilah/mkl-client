@@ -36,8 +36,14 @@ const useAuthenticated = () => {
 
     let isAuthenticated = false;
 
+    let currentCompany = searchParams.get('company');
+
+    if (!currentCompany) {
+      currentCompany = localStorage.getItem('DEFAULT-MKL-COMPANY');
+    }
+
     const response = await queryClient.fetchQuery(
-      `/api/v1/refresh-${token}`,
+      `/api/v1/refresh-${token}-${currentCompany}`,
       () =>
         request('POST', '/api/users/authorize')
           .then((response) => response.data.data)
@@ -51,12 +57,13 @@ const useAuthenticated = () => {
       localStorage.setItem('MKL-LOCALE', response.preference.language);
 
       const newSearchParams = new URLSearchParams(searchParams);
-      newSearchParams.set('company', response.default_company_id);
+      newSearchParams.set('company', response.preference.default_company_id);
       setSearchParams(newSearchParams);
 
       isAuthenticated = true;
     } else {
       localStorage.removeItem('MKL-TOKEN');
+      localStorage.removeItem('DEFAULT-MKL-COMPANY');
 
       isAuthenticated = false;
 

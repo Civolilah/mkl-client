@@ -68,7 +68,11 @@ client.interceptors.response.use(
 
 const defaultHeaders = () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const company = urlParams.get('company') || '';
+  let company = urlParams.get('company') || '';
+
+  if (!company) {
+    company = localStorage.getItem('DEFAULT-MKL-COMPANY') || '';
+  }
 
   return {
     'MKL-TOKEN': (localStorage.getItem('MKL-TOKEN') as string) || '',

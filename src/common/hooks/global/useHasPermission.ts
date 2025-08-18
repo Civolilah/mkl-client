@@ -72,18 +72,18 @@ const useHasPermission = () => {
     if (userCompanyDetails.is_director || userCompanyDetails.is_owner)
       return true;
 
-    if (!userCompanyDetails.permissions) return false;
+    if (!userCompanyDetails.company.permissions) return false;
 
     const permissionType = permission.split('_')[0];
 
     if (
-      userCompanyDetails.permissions.includes(
+      userCompanyDetails.company.permissions.includes(
         `${permissionType}_all` as Permission
       )
     )
       return true;
 
-    return userCompanyDetails.permissions.includes(permission);
+    return userCompanyDetails.company.permissions.includes(permission);
   };
 };
 

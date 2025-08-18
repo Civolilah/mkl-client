@@ -31,20 +31,23 @@ export type UserCompanyDetails = {
   created_at: number;
   is_director: boolean;
   is_owner: boolean;
-  permissions: Permission[];
   preference: {
     language: Languages;
     mini_side_bar: boolean | null;
     time_zone: string | null;
+    is_military_time: boolean | null;
+    date_format: string | null;
     comma_as_decimal_separator: boolean | null;
-    color_theme: string | null;
     accent_color: string | null;
     email_notification: boolean | null;
     enabled_security_password: boolean;
+    default_company_id: string;
+    number_precision: number | null;
   };
   company: {
     name: string;
     plan: CompanyPlan;
+    permissions: Permission[];
   };
 };
 

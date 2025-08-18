@@ -30,6 +30,7 @@ const useLogout = () => {
       toast.dismiss();
 
       localStorage.removeItem('MKL-TOKEN');
+      localStorage.removeItem('DEFAULT-MKL-COMPANY');
 
       setUserCompanyDetails(null);
 

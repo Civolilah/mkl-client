@@ -32,6 +32,10 @@ const AVAILABLE_PERMISSIONS = [
   'view_product',
   'edit_product',
 
+  'create_warehouse',
+  'view_warehouse',
+  'edit_warehouse',
+
   'create_supplier',
   'view_supplier',
   'edit_supplier',
@@ -39,6 +43,10 @@ const AVAILABLE_PERMISSIONS = [
   'create_subsidiary',
   'view_subsidiary',
   'edit_subsidiary',
+
+  'create_brand',
+  'view_brand',
+  'edit_brand',
 
   'create_category',
   'view_category',
