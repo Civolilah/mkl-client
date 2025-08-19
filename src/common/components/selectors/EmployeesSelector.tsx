@@ -10,6 +10,8 @@
 
 import { ReactNode } from 'react';
 
+import { User } from '@interfaces/index';
+
 import SelectDataField from '@components/input-fields/SelectDataField';
 
 import { useHasPermission } from '@hooks/index';
@@ -58,6 +60,9 @@ const EmployeesSelector = ({
           ? '&excludeCurrentCompanyEmployees=true'
           : ''
       }`}
+      formatLabel={(employee) =>
+        `${(employee as User).first_name} ${(employee as User).last_name} (${(employee as User).email})`
+      }
       enableByPermission={hasPermission('admin') || hasPermission('owner')}
       withoutRefreshData={!withRefreshButton}
       value={value}

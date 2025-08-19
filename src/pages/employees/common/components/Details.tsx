@@ -62,7 +62,8 @@ const Details = ({
 
   useFetchEntity({
     queryIdentifiers: ['/api/users'],
-    endpoint: '/api/users?withoutCurrentCompanyEmployees=true',
+    endpoint:
+      '/api/users?exclude_current_company_employees=true&existing_employees_list=true',
     setEntities: setExistingEmployees,
     setIsLoading: setIsLoadingExistingEmployees,
     listQuery: true,
@@ -81,7 +82,12 @@ const Details = ({
       );
 
       if (foundEmployee) {
-        setSelectedExistingEmployee(cloneDeep(foundEmployee));
+        setSelectedExistingEmployee({
+          ...cloneDeep(foundEmployee),
+          subsidiaries_ids: [],
+          warehouses_ids: [],
+          permissions: [],
+        });
       }
     }
   }, [employee?.id]);
@@ -121,6 +127,7 @@ const Details = ({
                 </Box>
               }
               withRefreshButton
+              excludeCurrentCompanyEmployees
             />
           </Box>
         )}
@@ -193,31 +200,25 @@ const Details = ({
         )}
 
         {selectedExistingEmployee && !editPage && (
-          <>
-            <LabelElement
-              label={t('first_name')}
-              withoutOptionalText
-              twoGridColumns
-            >
+          <Box>
+            <LabelElement label={t('first_name')} withoutOptionalText>
               <Text>{selectedExistingEmployee?.first_name}</Text>
             </LabelElement>
 
-            <LabelElement
-              label={t('last_name')}
-              withoutOptionalText
-              twoGridColumns
-            >
-              <Text>{selectedExistingEmployee?.last_name}</Text>
+            <LabelElement label={t('last_name')} withoutOptionalText>
+              <Text>
+                {selectedExistingEmployee?.last_name || t('no_entry')}
+              </Text>
             </LabelElement>
 
-            <LabelElement label={t('email')} withoutOptionalText twoGridColumns>
+            <LabelElement label={t('email')} withoutOptionalText>
               <Text>{selectedExistingEmployee?.email}</Text>
             </LabelElement>
 
-            <LabelElement label={t('phone')} withoutOptionalText twoGridColumns>
-              <Text>{selectedExistingEmployee?.phone}</Text>
+            <LabelElement label={t('phone')} withoutOptionalText>
+              <Text>{selectedExistingEmployee?.phone || t('no_entry')}</Text>
             </LabelElement>
-          </>
+          </Box>
         )}
 
         <SubsidiariesSelector
@@ -253,7 +254,7 @@ const Details = ({
         <WarehousesSelector
           label={t('warehouses')}
           placeholder={t('select_warehouses')}
-          value={employee?.warehouses_ids ? employee?.warehouses_ids : []}
+          value={employee?.warehouses_ids || []}
           onChange={(value) => handleChange('warehouses_ids', value as string)}
           onCreatedWarehouse={(warehouseId) =>
             handleChange('warehouses_ids', [

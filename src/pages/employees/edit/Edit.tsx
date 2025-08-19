@@ -17,12 +17,12 @@ import { useParams } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useFetchEntity,
   useHasPermission,
+  usePageLayoutAndActions,
   useRefetch,
   useTranslation,
 } from '@hooks/index';
@@ -130,24 +130,34 @@ const Edit = () => {
     };
   }, []);
 
+  usePageLayoutAndActions(
+    {
+      title: t('edit_employee'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      saveButton: {
+        isLoading: isLoading,
+        isDisabled: isLoading,
+        onClick: handleSave,
+        disabledWithLoadingIcon: isLoading,
+      },
+      actions: {
+        list: employee ? actions(employee) : [],
+      },
+    },
+    [employee, isLoading, handleSave]
+  );
+
   return (
-    <Default
-      title={t('edit_employee')}
-      breadcrumbs={breadcrumbs}
-      onSaveClick={handleSave}
-      disabledSaveButton={isLoading}
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && employee)}
-      actions={employee ? actions(employee) : []}
-    >
-      <EmployeeForm
-        employee={employee}
-        setEmployee={setEmployee}
-        errors={errors}
-        editPage
-        isLoading={isLoading && !employee}
-        onRefresh={refresh}
-      />
-    </Default>
+    <EmployeeForm
+      employee={employee}
+      setEmployee={setEmployee}
+      errors={errors}
+      editPage
+      isLoading={isLoading && !employee}
+      onRefresh={refresh}
+    />
   );
 };
 

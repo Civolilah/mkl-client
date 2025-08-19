@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { useAtomValue } from 'jotai';
 import { useLocation } from 'react-router-dom';
@@ -21,16 +21,32 @@ interface Props {
   children: ReactNode;
 }
 
-const LAYOUT_WRAPPER_COVERED_ROUTES = ['/employees/new'];
+const LAYOUT_WRAPPER_COVERED_ROUTES = [
+  '/employees',
+  '/employees/new',
+  '/employees/:id/edit',
+];
 
 const LayoutWrapper = ({ children }: Props) => {
   const location = useLocation();
 
   const pageLayoutAndActions = useAtomValue(pageLayoutAndActionsAtom);
 
+  const updatedLayoutWrapperCoveredRoutes = useMemo(() => {
+    return LAYOUT_WRAPPER_COVERED_ROUTES.map((route) => {
+      if (route.includes(':id')) {
+        const idFromPath = location.pathname.split('/')[2];
+
+        return route.replace(':id', idFromPath);
+      }
+
+      return route;
+    });
+  }, [location]);
+
   if (
     !pageLayoutAndActions ||
-    !LAYOUT_WRAPPER_COVERED_ROUTES.includes(location.pathname)
+    !updatedLayoutWrapperCoveredRoutes.includes(location.pathname)
   ) {
     return <>{children}</>;
   }
@@ -44,6 +60,8 @@ const LayoutWrapper = ({ children }: Props) => {
       disabledSaveButtonWithLoadingIcon={
         pageLayoutAndActions.saveButton?.disabledWithLoadingIcon
       }
+      actions={pageLayoutAndActions.actions?.list || []}
+      footer={pageLayoutAndActions.footer}
     >
       {children}
     </Default>

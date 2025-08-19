@@ -34,6 +34,10 @@ const CopyToClipboard = ({ children, text, iconSize = '1.05rem' }: Props) => {
     toast.success(t('copied_to_clipboard'));
   };
 
+  if (!text) {
+    return null;
+  }
+
   return (
     <Box className="flex items-center space-x-2">
       <Box>{children}</Box>

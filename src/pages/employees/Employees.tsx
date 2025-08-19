@@ -15,9 +15,14 @@ import { route } from '@helpers/index';
 import { User } from '@interfaces/index';
 
 import { CreationRoute } from '@components/general/Table';
-import { Box, Default, RefreshDataElement, Table } from '@components/index';
+import { Box, RefreshDataElement, Table } from '@components/index';
 
-import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
+import {
+  useFetchEntity,
+  useHasPermission,
+  usePageLayoutAndActions,
+  useTranslation,
+} from '@hooks/index';
 
 import useColumns from './common/hooks/useColumns';
 
@@ -42,10 +47,10 @@ const Employees = () => {
     refresh,
   });
 
-  return (
-    <Default
-      title={t('employees')}
-      footer={
+  usePageLayoutAndActions(
+    {
+      title: t('employees'),
+      footer: (
         <Box className="flex w-full items-center justify-end">
           <RefreshDataElement
             isLoading={isLoading}
@@ -53,26 +58,29 @@ const Employees = () => {
             tooltipPlacement="left"
           />
         </Box>
+      ),
+    },
+    [isLoading]
+  );
+
+  return (
+    <Table<User>
+      columns={columns}
+      data={users}
+      isDataLoading={isLoading}
+      enableFiltering
+      filteringProps={
+        [
+          'first_name',
+          'last_name',
+          'email',
+          'subsidiaries.name',
+        ] as (keyof User)[]
       }
-    >
-      <Table<User>
-        columns={columns}
-        data={users}
-        isDataLoading={isLoading}
-        enableFiltering
-        filteringProps={
-          [
-            'first_name',
-            'last_name',
-            'email',
-            'subsidiaries.name',
-          ] as (keyof User)[]
-        }
-        creationRoute={route('/employees/new') as CreationRoute}
-        creationButtonLabel={t('new_employee')}
-        filterFieldPlaceHolder={t('search_employee_by')}
-      />
-    </Default>
+      creationRoute={route('/employees/new') as CreationRoute}
+      creationButtonLabel={t('new_employee')}
+      filterFieldPlaceHolder={t('search_employee_by')}
+    />
   );
 };
 

@@ -8,8 +8,9 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 
+import { ItemType } from 'antd/es/menu/interface';
 import { atom, useSetAtom } from 'jotai';
 
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -19,6 +20,10 @@ interface PageSaveButtonProps {
   isDisabled?: boolean;
   onClick: () => void;
   disabledWithLoadingIcon?: boolean;
+}
+
+interface PageActionsProps {
+  list?: ItemType[];
 }
 
 interface PageBreadcrumbsProps {
@@ -35,6 +40,8 @@ interface Params {
   saveButton?: PageSaveButtonProps;
   breadcrumbs?: PageBreadcrumbsProps;
   addResourceButton?: AddResourceButtonProps;
+  actions?: PageActionsProps;
+  footer?: ReactNode;
 }
 
 export const pageLayoutAndActionsAtom = atom<Params | undefined>(undefined);

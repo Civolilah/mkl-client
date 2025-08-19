@@ -83,6 +83,17 @@ const useColumns = (props: Props) => {
       ),
     },
     {
+      title: t('phone'),
+      dataIndex: 'phone',
+      render: (value) => (
+        <Box className="flex items-center space-x-4 min-w-56">
+          <CopyToClipboard text={value}>
+            <Text>{value}</Text>
+          </CopyToClipboard>
+        </Box>
+      ),
+    },
+    {
       title: t('subsidiaries'),
       dataIndex: 'subsidiaries',
       render: (subsidiaries: { id: string; name: string }[]) => (
@@ -91,6 +102,23 @@ const useColumns = (props: Props) => {
             <Box key={subsidiary.id} className="flex items-center">
               <Link to={route('/subsidiaries/:id/edit', { id: subsidiary.id })}>
                 {subsidiary.name}
+              </Link>
+
+              {index < array.length - 1 && <Text className="mx-2">|</Text>}
+            </Box>
+          ))}
+        </Box>
+      ),
+    },
+    {
+      title: t('warehouses'),
+      dataIndex: 'warehouses',
+      render: (warehouses: { id: string; name: string }[]) => (
+        <Box className="flex items-center min-w-56 max-w-96 truncate">
+          {warehouses.map((warehouse, index, array) => (
+            <Box key={warehouse.id} className="flex items-center">
+              <Link to={route('/warehouses/:id/edit', { id: warehouse.id })}>
+                {warehouse.name}
               </Link>
 
               {index < array.length - 1 && <Text className="mx-2">|</Text>}

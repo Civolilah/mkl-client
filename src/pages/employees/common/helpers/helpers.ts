@@ -36,6 +36,10 @@ const AVAILABLE_PERMISSIONS = [
   'view_warehouse',
   'edit_warehouse',
 
+  'create_customer',
+  'view_customer',
+  'edit_customer',
+
   'create_supplier',
   'view_supplier',
   'edit_supplier',

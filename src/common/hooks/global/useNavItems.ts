@@ -100,6 +100,23 @@ const useNavItems = () => {
       },
     },
     {
+      key: 'customers',
+      label: 'customers',
+      iconName: 'customer',
+      href: '/customers',
+      iconSize: '1.3rem',
+      visible:
+        hasPermission('create_customer') ||
+        hasPermission('view_customer') ||
+        hasPermission('edit_customer'),
+      rightIcon: {
+        name: 'add',
+        href: '/customers/new',
+        tooltipText: 'new_customer',
+        visible: hasPermission('create_customer'),
+      },
+    },
+    {
       key: 'suppliers',
       label: 'suppliers',
       iconName: 'truck',

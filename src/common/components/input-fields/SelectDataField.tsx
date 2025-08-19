@@ -14,7 +14,7 @@ import { Select } from 'antd';
 import Fuse from 'fuse.js';
 import { cloneDeep } from 'lodash';
 
-import { Label as LabelType } from '@interfaces/index';
+import { Label as LabelType, User as UserType } from '@interfaces/index';
 
 import {
   Box,
@@ -27,7 +27,7 @@ import {
 
 import { useFetchEntity } from '@hooks/index';
 
-type Entity = LabelType;
+type Entity = LabelType | UserType;
 
 type Props = {
   label?: string;

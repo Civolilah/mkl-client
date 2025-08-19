@@ -354,5 +354,7 @@
   "permissions_reminder": "Permissions Reminder",
   "permissions_reminder_description": "This employee has no permissions assigned. To grant inventory management access, use the 'Permissions' tab.",
   "manage_permissions": "Manage Permissions",
-  "save_employee": "Save Employee"
+  "save_employee": "Save Employee",
+  "customers": "Customers",
+  "new_customer": "New Customer"
 }

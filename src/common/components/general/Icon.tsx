@@ -154,7 +154,8 @@ export type IconName =
   | 'star'
   | 'warehouse'
   | 'feedback'
-  | 'warning';
+  | 'warning'
+  | 'customer';
 
 type Props = {
   className?: string;
@@ -321,7 +322,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdFeedback);
     case 'warning':
       return generateIconElement(MdWarning);
-
+    case 'customer':
+      return generateIconElement(MdPeople);
     default:
       return <></>;
   }
