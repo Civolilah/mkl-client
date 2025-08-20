@@ -57,15 +57,13 @@ const Permissions = (props: EmployeeProps) => {
           !currentPermission.startsWith(permissionType) ||
           currentPermission === 'import_products' ||
           currentPermission === 'view_dashboard' ||
-          currentPermission === 'export_products' ||
-          currentPermission === 'view_store'
+          currentPermission === 'export_products'
       );
     } else if (
       currentPermissions.includes(`${permissionType}_all`) &&
       permission !== 'import_products' &&
       permission !== 'view_dashboard' &&
-      permission !== 'export_products' &&
-      permission !== 'view_store'
+      permission !== 'export_products'
     ) {
       const permissionsByType = permissionRows
         .filter((row) => row.key !== 'all')
@@ -98,8 +96,7 @@ const Permissions = (props: EmployeeProps) => {
           !currentPermission.includes(`${permissionType}_`) ||
           currentPermission === 'import_products' ||
           currentPermission === 'view_dashboard' ||
-          currentPermission === 'export_products' ||
-          currentPermission === 'view_store'
+          currentPermission === 'export_products'
       );
     }
 
@@ -121,8 +118,7 @@ const Permissions = (props: EmployeeProps) => {
       permissions.includes(`${type}_all`) &&
       permission !== 'import_products' &&
       permission !== 'view_dashboard' &&
-      permission !== 'export_products' &&
-      permission !== 'view_store'
+      permission !== 'export_products'
     ) {
       return true;
     }
@@ -196,14 +192,6 @@ const Permissions = (props: EmployeeProps) => {
           onChange={(value) =>
             handleChangePermissions(value, 'export_products')
           }
-          disabled={isPermissionDisabled()}
-        />
-      </LabelElement>
-
-      <LabelElement label={t('view_store')} withoutOptionalText twoGridColumns>
-        <Toggle
-          checked={isPermissionChecked('view_store')}
-          onChange={(value) => handleChangePermissions(value, 'view_store')}
           disabled={isPermissionDisabled()}
         />
       </LabelElement>

@@ -8,6 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
 import classNames from 'classnames';
 
 import {
@@ -26,11 +27,11 @@ const NavigationBar = () => {
 
   return (
     <nav
-      className="flex flex-col space-y-3 border-r shadow-md pt-2 w-full"
+      className="flex flex-col space-y-1 border-r shadow-md pt-1 w-full"
       style={{
         backgroundColor: colors.$6,
         height: 'calc(100vh - 3.5rem)',
-        width: isMiniSideBar ? '4rem' : '15rem',
+        width: isMiniSideBar ? '4rem' : MAN_LARGE_SIDEBAR_WIDTH,
         borderColor: colors.$1,
       }}
     >

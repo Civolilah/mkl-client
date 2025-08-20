@@ -25,7 +25,6 @@ export type Permission =
   | 'view_dashboard'
   | 'import_products'
   | 'export_products'
-  | 'view_store'
   | 'create_label_category'
   | 'view_label_category'
   | 'edit_label_category'

@@ -35,6 +35,6 @@ export { INITIAL_SUPPLIER, BLANK_SUPPLIER_CONTACT } from './supplier/supplier';
 
 export { INITIAL_BRAND } from './brand/brand';
 
-export { COMPONENTS_FONT_SIZE } from './global/global';
+export { COMPONENTS_FONT_SIZE, MAN_LARGE_SIDEBAR_WIDTH } from './global/global';
 
 export { INITIAL_WAREHOUSE } from './warehouse/warehouse';

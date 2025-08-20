@@ -8,6 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { t } from 'i18next';
+
 import { IconName } from '@components/general/Icon';
 
 import useHasPermission from './useHasPermission';
@@ -59,28 +61,13 @@ const useNavItems = () => {
       },
     },
     {
-      key: 'import',
-      label: 'import',
-      iconName: 'import',
+      key: 'import_export',
+      label: 'import_export',
+      iconName: 'importExport',
       href: '/import',
-      visible: hasPermission('import_products'),
-      iconSize: '1.236rem',
-    },
-    {
-      key: 'export',
-      label: 'export',
-      iconName: 'export',
-      href: '/export',
-      visible: hasPermission('export_products'),
-      iconSize: '1.236rem',
-    },
-    {
-      key: 'store',
-      label: 'store',
-      iconName: 'store',
-      href: '/store',
-      visible: hasPermission('view_store'),
-      iconSize: '1.129rem',
+      visible:
+        hasPermission('import_products') || hasPermission('export_products'),
+      iconSize: '1.4rem',
     },
     {
       key: 'warehouses',
@@ -249,14 +236,28 @@ const useNavItems = () => {
         visible: hasPermission('admin'),
       },
     },
-    // {
-    //   key: 'e_store',
-    //   label: 'e_store',
-    //   iconName: 'shopCart',
-    //   href: '/e_store',
-    //   iconSize: '1.29rem',
-    //   visible: hasPermission('admin'),
-    // },
+    {
+      key: 'companies',
+      label: 'companies',
+      iconName: 'company',
+      href: '/companies',
+      visible: hasPermission('owner'),
+      iconSize: '1.129rem',
+      rightIcon: {
+        name: 'add',
+        href: '/companies/new',
+        tooltipText: 'new_company',
+        visible: true,
+      },
+    },
+    {
+      key: 'reports',
+      label: t('reports'),
+      iconName: 'barChart',
+      href: '/reports',
+      iconSize: '1.344rem',
+      visible: true,
+    },
     {
       key: 'settings',
       label: 'settings',
@@ -265,15 +266,6 @@ const useNavItems = () => {
       iconSize: '1.263rem',
       visible: true,
     },
-
-    // {
-    //   key: 'reports',
-    //   label: 'Reports',
-    //   iconName: 'barChart',
-    //   href: '/reports',
-    //   iconSize: '1.344rem',
-    //   visible: true,
-    // },
   ];
 
   return navItems;

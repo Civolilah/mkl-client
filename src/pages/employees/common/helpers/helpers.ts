@@ -21,7 +21,6 @@ const AVAILABLE_PERMISSIONS = [
 
   'view_dashboard',
   'import_products',
-  'view_store',
   'export_products',
 
   'create_all',

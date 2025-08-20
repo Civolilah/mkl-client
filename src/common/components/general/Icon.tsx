@@ -51,6 +51,7 @@ import {
   MdErrorOutline,
   MdFeedback,
   MdHome,
+  MdImportExport,
   MdKeyboardArrowDown,
   MdOutlineEmail,
   MdOutlineKeyboardArrowLeft,
@@ -155,7 +156,8 @@ export type IconName =
   | 'warehouse'
   | 'feedback'
   | 'warning'
-  | 'customer';
+  | 'customer'
+  | 'importExport';
 
 type Props = {
   className?: string;
@@ -324,6 +326,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdWarning);
     case 'customer':
       return generateIconElement(MdPeople);
+    case 'importExport':
+      return generateIconElement(MdImportExport);
     default:
       return <></>;
   }

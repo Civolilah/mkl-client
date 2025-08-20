@@ -10,6 +10,7 @@
 
 import { ReactNode } from 'react';
 
+import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
 import { route } from '@helpers/index';
 import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
@@ -99,7 +100,7 @@ const Default = (props: Props) => {
             className="flex flex-col justify-center items-center flex-1"
             style={{
               width: isLargeScreen
-                ? `calc(100% - ${isMiniSideBar ? '4.35rem' : '15rem'})`
+                ? `calc(100% - ${isMiniSideBar ? '4.35rem' : MAN_LARGE_SIDEBAR_WIDTH})`
                 : '100%',
             }}
           >

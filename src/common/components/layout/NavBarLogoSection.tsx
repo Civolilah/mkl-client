@@ -8,6 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
 import classNames from 'classnames';
 
 import { useColors, useIsMiniSidebar } from '@hooks/index';
@@ -41,7 +42,7 @@ const NavBarLogoSection = (props: Props) => {
             : '4rem'
           : mobileSideBar
             ? '100%'
-            : '15rem',
+            : MAN_LARGE_SIDEBAR_WIDTH,
       }}
     >
       <div className="flex w-full justify-between items-center">
