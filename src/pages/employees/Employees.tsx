@@ -15,7 +15,7 @@ import { route } from '@helpers/index';
 import { User } from '@interfaces/index';
 
 import { CreationRoute } from '@components/general/Table';
-import { Box, RefreshDataElement, Table } from '@components/index';
+import { Box, RefreshDataElement, Table, Text } from '@components/index';
 
 import {
   useFetchEntity,
@@ -24,6 +24,7 @@ import {
   useTranslation,
 } from '@hooks/index';
 
+import MobileCard from './common/components/MobileCard';
 import useColumns from './common/hooks/useColumns';
 
 const Employees = () => {
@@ -80,6 +81,17 @@ const Employees = () => {
       creationRoute={route('/employees/new') as CreationRoute}
       creationButtonLabel={t('new_employee')}
       filterFieldPlaceHolder={t('search_employee_by')}
+      turnOnMobilePreview
+      mobileCardRender={(entity) => (
+        <MobileCard entity={entity} refresh={refresh} />
+      )}
+      mobileModalRender={(entity) => (
+        <Box className="flex flex-col gap-2">
+          <Text>
+            {entity.first_name} {entity.last_name}
+          </Text>
+        </Box>
+      )}
     />
   );
 };

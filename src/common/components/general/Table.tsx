@@ -19,10 +19,17 @@ import {
 } from 'antd';
 import classNames from 'classnames';
 import { get, some } from 'lodash';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Button, Dropdown, Text, TextField } from '@components/index';
+import {
+  Button,
+  Dropdown,
+  MobilePreviewModal,
+  Text,
+  TextField,
+} from '@components/index';
 
 import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
@@ -64,6 +71,9 @@ type Props<EntityType> = {
   creationRoute?: CreationRoute;
   creationButtonLabel?: string;
   filterFieldPlaceHolder?: string;
+  turnOnMobilePreview?: boolean;
+  mobileCardRender?: (entity: EntityType) => ReactNode;
+  mobileModalRender?: (entity: EntityType) => ReactNode;
 };
 
 type CustomHeaderCellProps = {
@@ -159,7 +169,7 @@ const Footer = ({
 
   const colors = useColors();
 
-  const numberOfPages = Math.ceil(total / perPage);
+  const numberOfPages = Math.ceil(total / perPage) || 1;
 
   const actions: MenuProps['items'] = [
     {
@@ -306,30 +316,36 @@ const Footer = ({
   );
 };
 
-const Table = <EntityType,>(props: Props<EntityType>) => {
+const Table = <EntityType,>({
+  columns,
+  data,
+  isDataLoading,
+  enableFiltering,
+  filteringProps,
+  creationButtonLabel,
+  creationRoute,
+  filterFieldPlaceHolder,
+  turnOnMobilePreview,
+  mobileCardRender,
+  mobileModalRender,
+}: Props<EntityType>) => {
   const t = useTranslation();
 
-  const {
-    columns,
-    data,
-    isDataLoading,
-    enableFiltering,
-    filteringProps,
-    creationButtonLabel,
-    creationRoute,
-    filterFieldPlaceHolder,
-  } = props;
-
   const navigate = useNavigate();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const [filter, setFilter] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [perPage, setPerPage] = useState<10 | 20 | 50 | 100>(10);
+  const [currentScrollY, setCurrentScrollY] = useState<string | undefined>();
+  const [currentEntity, setCurrentEntity] = useState<EntityType | null>(null);
+  const [isMobilePreviewModalOpen, setIsMobilePreviewModalOpen] =
+    useState<boolean>(false);
   const [currentData, setCurrentData] = useState<Data<EntityType>>({
     data,
     total: data.length,
   });
-  const [currentScrollY, setCurrentScrollY] = useState<string | undefined>();
 
   const handleFiltering = () => {
     if (!filter) {
@@ -425,77 +441,108 @@ const Table = <EntityType,>(props: Props<EntityType>) => {
   }, [currentPage, perPage, filter, data]);
 
   return (
-    <Box className="flex flex-col relative h-full w-full items-start space-y-4">
-      <Box className="flex justify-between space-x-4 items-center w-full">
-        {enableFiltering && (
-          <Box className="w-72">
-            <TextField
-              placeHolder={filterFieldPlaceHolder}
-              value={filter}
-              onValueChange={setFilter}
-              debounce={300}
-              disabled={isDataLoading}
+    <>
+      {isLargeScreen || !turnOnMobilePreview ? (
+        <Box className="flex flex-col relative h-full w-full items-start space-y-4">
+          <Box className="flex justify-between space-x-4 items-center w-full">
+            {enableFiltering && (
+              <Box className="w-72">
+                <TextField
+                  placeHolder={filterFieldPlaceHolder}
+                  value={filter}
+                  onValueChange={setFilter}
+                  debounce={300}
+                  disabled={isDataLoading}
+                />
+              </Box>
+            )}
+
+            {creationRoute && (
+              <Button
+                onClick={() => navigate(creationRoute)}
+                disabled={isDataLoading}
+              >
+                {creationButtonLabel}
+              </Button>
+            )}
+          </Box>
+
+          <Box className="flex flex-col flex-1 space-y-4 w-full">
+            <TableBase<EntityType>
+              bordered
+              loading={isDataLoading}
+              columns={columns}
+              dataSource={currentData.data.map((entity) => ({
+                ...entity,
+                key: entity['id' as keyof EntityType],
+              }))}
+              showSorterTooltip={{ target: 'sorter-icon' }}
+              pagination={false}
+              components={{
+                header: {
+                  cell: (props: CustomHeaderCellProps) => (
+                    <CustomHeaderCell {...props} />
+                  ),
+                },
+                body: {
+                  cell: (props: CustomBodyCellProps) => (
+                    <CustomBodyCell {...props} />
+                  ),
+                },
+              }}
+              scroll={{
+                x: 'max-content',
+                y: currentScrollY,
+              }}
+              size="small"
+              locale={{
+                emptyText: (
+                  <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={t('no_data')}
+                  />
+                ),
+              }}
+            />
+
+            <Footer
+              perPage={perPage}
+              currentPage={currentPage}
+              total={currentData.total}
+              setPerPage={setPerPage}
+              setCurrentPage={setCurrentPage}
             />
           </Box>
-        )}
+        </Box>
+      ) : (
+        <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 self-start w-full">
+          {currentData.data.map((entity, index) => (
+            <Box
+              key={index}
+              className="cursor-pointer hover:opacity-80 transition-opacity duration-300"
+              onClick={() => {
+                setCurrentEntity(entity);
+                setIsMobilePreviewModalOpen(true);
+              }}
+            >
+              {mobileCardRender?.(entity)}
+            </Box>
+          ))}
+        </Box>
+      )}
 
-        {creationRoute && (
-          <Button
-            onClick={() => navigate(creationRoute)}
-            disabled={isDataLoading}
-          >
-            {creationButtonLabel}
-          </Button>
-        )}
-      </Box>
-
-      <Box className="flex flex-col flex-1 space-y-4 w-full">
-        <TableBase<EntityType>
-          bordered
-          loading={isDataLoading}
-          columns={columns}
-          dataSource={currentData.data.map((entity) => ({
-            ...entity,
-            key: entity['id' as keyof EntityType],
-          }))}
-          showSorterTooltip={{ target: 'sorter-icon' }}
-          pagination={false}
-          components={{
-            header: {
-              cell: (props: CustomHeaderCellProps) => (
-                <CustomHeaderCell {...props} />
-              ),
-            },
-            body: {
-              cell: (props: CustomBodyCellProps) => (
-                <CustomBodyCell {...props} />
-              ),
-            },
-          }}
-          scroll={{
-            x: 'max-content',
-            y: currentScrollY,
-          }}
-          size="small"
-          locale={{
-            emptyText: (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={t('no_data')}
-              />
-            ),
-          }}
-        />
-
-        <Footer
-          perPage={perPage}
-          currentPage={currentPage}
-          total={currentData.total}
-          setPerPage={setPerPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </Box>
-    </Box>
+      <MobilePreviewModal
+        title={t('preview')}
+        visible={Boolean(isMobilePreviewModalOpen && currentEntity)}
+        onClose={() => {
+          setIsMobilePreviewModalOpen(false);
+          setCurrentEntity(null);
+        }}
+      >
+        {Boolean(currentEntity) &&
+          mobileModalRender?.(currentEntity as EntityType)}
+      </MobilePreviewModal>
+    </>
   );
 };
 

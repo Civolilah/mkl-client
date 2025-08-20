@@ -129,7 +129,12 @@ const TableActionsDropdown = ({
   ];
 
   return (
-    <Box className="flex justify-center">
+    <Box
+      className="flex justify-center"
+      onClick={(event) => {
+        event.stopPropagation();
+      }}
+    >
       <Dropdown menu={{ items: actions }}>
         <ActionLabelElement />
       </Dropdown>

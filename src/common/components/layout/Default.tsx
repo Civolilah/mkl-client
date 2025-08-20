@@ -282,7 +282,7 @@ const Default = (props: Props) => {
                 style={{
                   borderColor: colors.$1,
                   backgroundColor: colors.$6,
-                  height: '2.85rem',
+                  height: isLargeScreen ? '2.85rem' : '3.5rem',
                 }}
               >
                 {footer}

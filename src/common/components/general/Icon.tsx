@@ -27,6 +27,7 @@ import {
   FaFacebook,
   FaFileImage,
   FaInstagram,
+  FaPhone,
   FaRuler,
   FaStore,
   FaTag,
@@ -157,7 +158,8 @@ export type IconName =
   | 'feedback'
   | 'warning'
   | 'customer'
-  | 'importExport';
+  | 'importExport'
+  | 'phone';
 
 type Props = {
   className?: string;
@@ -328,6 +330,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdPeople);
     case 'importExport':
       return generateIconElement(MdImportExport);
+    case 'phone':
+      return generateIconElement(FaPhone);
     default:
       return <></>;
   }
