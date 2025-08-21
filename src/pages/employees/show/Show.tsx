@@ -10,31 +10,37 @@
 
 import { useEffect, useState } from 'react';
 
-import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, route, useToast } from '@helpers/index';
-import { cloneDeep, isEqual } from 'lodash';
+import { route } from '@helpers/index';
+import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { User, ValidationErrors } from '@interfaces/index';
+import { User } from '@interfaces/index';
 
-import { Box, FooterAction, RefreshDataElement } from '@components/index';
+import {
+  Box,
+  Card,
+  FooterAction,
+  LabelElement,
+  Link,
+  RefreshDataElement,
+  Text,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useFetchEntity,
   useHasPermission,
+  useIsMiniSidebar,
   usePageLayoutAndActions,
-  useRefetch,
   useTranslation,
 } from '@hooks/index';
 
-import EmployeeForm from '../common/components/EmployeeForm';
-import { validateEmployee } from '../common/helpers/helpers';
-import useActions from '../common/hooks/useActions';
-
-const Edit = () => {
+const Show = () => {
   const t = useTranslation();
+
+  const { id } = useParams();
+  const isMiniSideBar = useIsMiniSidebar();
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -42,113 +48,49 @@ const Edit = () => {
       href: '/employees',
     },
     {
-      title: t('edit_employee'),
+      title: t('view_employee'),
+      href: route('/employees/:id/show', { id: id || '' }),
     },
   ];
 
-  const toast = useToast();
-  const { id } = useParams();
-
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
-  const refetch = useRefetch();
-  const actions = useActions();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
 
-  const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [employee, setEmployee] = useState<User | undefined>();
-  const [initialResponse, setInitialResponse] = useState<User | undefined>();
 
   const { refresh } = useFetchEntity<User>({
     queryIdentifiers: ['/api/users'],
     endpoint: '/api/users',
     setEntity: setEmployee,
     setIsLoading,
-    setInitialResponse,
     enableByPermission: hasPermission('admin'),
   });
 
-  const handleSave = async () => {
-    if (!isLoading && id && employee) {
-      if (isEqual(initialResponse, employee)) {
-        toast.info('no_employee_changes');
-        return;
-      }
-
-      setErrors({});
-
-      const validationErrors = await validateEmployee(employee, {
-        creatingUser: false,
-        password: employee.password,
-      });
-
-      if (validationErrors) {
-        setErrors(validationErrors);
-        return;
-      }
-
-      toast.loading();
-
-      setIsLoading(true);
-
-      request(
-        'PATCH',
-        endpoint('/api/users/:id/update_employee', { id }),
-        employee
-      )
-        .then(() => {
-          setEmployee(
-            (prev) =>
-              prev && {
-                ...prev,
-                password: '',
-              }
-          );
-
-          refetch(['users']);
-
-          toast.success('updated_employee');
-          setInitialResponse(cloneDeep(employee));
-        })
-        .catch((error) => {
-          if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
-            toast.dismiss();
-            setErrors(error.response.data.errors);
-          }
-        })
-        .finally(() => setIsLoading(false));
-    }
-  };
-
-  useEffect(() => {
-    if (Object.keys(errors).length) {
-      setErrors({});
-    }
-  }, [employee]);
-
   useEffect(() => {
     return () => {
-      setErrors({});
       setEmployee(undefined);
     };
   }, []);
 
   usePageLayoutAndActions(
     {
-      title: t('edit_employee'),
+      title: t('view_employee'),
       breadcrumbs: {
         breadcrumbs,
       },
       buttonAction: {
         isLoading: isLoading,
         isDisabled: isLoading,
-        onClick: handleSave,
+        onClick: () => {
+          navigate(route('/employees/:id/edit', { id: id || '' }));
+        },
         disabledWithLoadingIcon: isLoading,
-      },
-      actions: {
-        list: employee ? actions(employee) : [],
+        label: 'edit',
+        iconName: 'edit',
+        iconColor: 'white',
       },
       footer: isLargeScreen ? (
         <Box className="flex w-full items-center justify-end">
@@ -181,9 +123,11 @@ const Edit = () => {
           />
 
           <FooterAction
-            text="save"
-            onClick={handleSave}
-            iconName="save"
+            text="edit"
+            onClick={() => {
+              navigate(route('/employees/:id/edit', { id: id || '' }));
+            }}
+            iconName="edit"
             disabled={isLoading}
             iconSize="1.3rem"
           />
@@ -197,19 +141,56 @@ const Edit = () => {
         </Box>
       ),
     },
-    [employee, isLoading, handleSave]
+    [employee, isLoading]
   );
 
   return (
-    <EmployeeForm
-      employee={employee}
-      setEmployee={setEmployee}
-      errors={errors}
-      editPage
-      isLoading={isLoading && !employee}
-      onRefresh={refresh}
-    />
+    <Box
+      className={classNames('flex w-full self-start', {
+        'md:w-full xl:w-3/4': !isMiniSideBar,
+        'md:w-3/4 xl:w-2/3': isMiniSideBar,
+      })}
+    >
+      <Card title={t('view_employee')} className="w-full">
+        <LabelElement label={t('first_name')} withoutOptionalText>
+          <Text className="font-medium">{employee?.first_name}</Text>
+        </LabelElement>
+
+        <LabelElement label={t('last_name')} withoutOptionalText>
+          <Text className="font-medium">{employee?.last_name}</Text>
+        </LabelElement>
+
+        <LabelElement label={t('email')} withoutOptionalText>
+          <Text className="font-medium">{employee?.email}</Text>
+        </LabelElement>
+
+        <LabelElement label={t('phone')} withoutOptionalText>
+          <Text className="font-medium">
+            {employee?.phone || t('no_entry')}
+          </Text>
+        </LabelElement>
+
+        <LabelElement label={t('subsidiaries')} withoutOptionalText>
+          <Box className="flex items-center flex-wrap">
+            {employee?.subsidiaries_ids?.map((subsidiaryId, index, array) => (
+              <Box
+                key={subsidiaryId}
+                className="flex items-center whitespace-nowrap"
+              >
+                <Link
+                  to={route('/subsidiaries/:id/edit', { id: subsidiaryId })}
+                >
+                  {subsidiaryId}
+                </Link>
+
+                {index < array.length - 1 && <Text className="mx-2">|</Text>}
+              </Box>
+            ))}
+          </Box>
+        </LabelElement>
+      </Card>
+    </Box>
   );
 };
 
-export default Edit;
+export default Show;

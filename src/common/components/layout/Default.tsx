@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
-import Icon from '@components/general/Icon';
+import Icon, { IconName } from '@components/general/Icon';
 import {
   Box,
   Button,
@@ -48,6 +48,9 @@ type Props = {
   onSaveClick?: () => void;
   onCancelClick?: () => void;
   disabledSaveButton?: boolean;
+  saveButtonLabel?: string;
+  saveButtonIcon?: IconName;
+  saveButtonIconColor?: string;
   disabledSaveButtonWithLoadingIcon?: boolean;
   disabledCancelButton?: boolean;
   disabledCancelButtonWithLoadingIcon?: boolean;
@@ -57,24 +60,25 @@ type Props = {
   displayPermissionTooltip?: boolean;
 };
 
-const Default = (props: Props) => {
+const Default = ({
+  title,
+  children,
+  breadcrumbs = [],
+  onSaveClick,
+  onCancelClick,
+  disabledSaveButton = false,
+  saveButtonLabel = 'save',
+  saveButtonIcon = 'save',
+  saveButtonIconColor,
+  disabledSaveButtonWithLoadingIcon = false,
+  disabledCancelButton = false,
+  disabledCancelButtonWithLoadingIcon = false,
+  footer,
+  actions = [],
+  tooltipPermissionMessage,
+  displayPermissionTooltip = false,
+}: Props) => {
   const t = useTranslation();
-
-  const {
-    title,
-    children,
-    breadcrumbs = [],
-    onSaveClick,
-    onCancelClick,
-    disabledSaveButton = false,
-    disabledSaveButtonWithLoadingIcon = false,
-    disabledCancelButton = false,
-    disabledCancelButtonWithLoadingIcon = false,
-    footer,
-    actions = [],
-    tooltipPermissionMessage,
-    displayPermissionTooltip = false,
-  } = props;
 
   const colors = useColors();
   const accentColor = useAccentColor();
@@ -214,13 +218,15 @@ const Default = (props: Props) => {
                                 <Button
                                   type="primary"
                                   onClick={onSaveClick}
-                                  icon={<Icon name="save" size="1.1rem" />}
+                                  icon={
+                                    <Icon name={saveButtonIcon} size="1.1rem" />
+                                  }
                                   disabled={disabledSaveButton}
                                   disabledWithLoadingIcon={
                                     disabledSaveButtonWithLoadingIcon
                                   }
                                 >
-                                  {t('save')}
+                                  {t(saveButtonLabel)}
                                 </Button>
                               </div>
                             </Tooltip>
@@ -228,13 +234,19 @@ const Default = (props: Props) => {
                             <Button
                               type="primary"
                               onClick={onSaveClick}
-                              icon={<Icon name="save" size="1.1rem" />}
+                              icon={
+                                <Icon
+                                  name={saveButtonIcon}
+                                  size="1.1rem"
+                                  style={{ color: saveButtonIconColor }}
+                                />
+                              }
                               disabled={disabledSaveButton}
                               disabledWithLoadingIcon={
                                 disabledSaveButtonWithLoadingIcon
                               }
                             >
-                              {t('save')}
+                              {t(saveButtonLabel)}
                             </Button>
                           )}
                         </>

@@ -17,6 +17,7 @@ import { RoutePermission } from '@components/index';
 const Employees = lazy(() => import('@pages/employees/Employees'));
 const CreateEmployee = lazy(() => import('@pages/employees/create/Create'));
 const EditEmployee = lazy(() => import('@pages/employees/edit/Edit'));
+const ShowEmployee = lazy(() => import('@pages/employees/show/Show'));
 
 const Routes = (
   <>
@@ -36,6 +37,16 @@ const Routes = (
         <RoutePermission
           permissions={['admin']}
           routeComponent={<CreateEmployee />}
+        />
+      }
+    />
+
+    <Route
+      path="/employees/:id/show"
+      element={
+        <RoutePermission
+          permissions={['admin']}
+          routeComponent={<ShowEmployee />}
         />
       }
     />

@@ -43,7 +43,7 @@ const useColumns = (props: Props) => {
       render: (value, resource) => (
         <Box className="min-w-56 max-w-96 truncate">
           <Link
-            to={route('/employees/:id/edit', { id: resource.id as string })}
+            to={route('/employees/:id/show', { id: resource.id as string })}
           >
             {value}
           </Link>
@@ -51,7 +51,7 @@ const useColumns = (props: Props) => {
       ),
       onCell: (record) => ({
         onClick: () =>
-          navigate(route('/employees/:id/edit', { id: record.id as string })),
+          navigate(route('/employees/:id/show', { id: record.id as string })),
       }),
     },
     {
@@ -60,7 +60,7 @@ const useColumns = (props: Props) => {
       render: (value, resource) => (
         <Box className="min-w-56 max-w-96 truncate">
           <Link
-            to={route('/employees/:id/edit', { id: resource.id as string })}
+            to={route('/employees/:id/show', { id: resource.id as string })}
           >
             {value}
           </Link>
@@ -68,7 +68,7 @@ const useColumns = (props: Props) => {
       ),
       onCell: (record) => ({
         onClick: () =>
-          navigate(route('/employees/:id/edit', { id: record.id as string })),
+          navigate(route('/employees/:id/show', { id: record.id as string })),
       }),
     },
     {

@@ -13,13 +13,17 @@ import { ReactNode, useEffect } from 'react';
 import { ItemType } from 'antd/es/menu/interface';
 import { atom, useSetAtom } from 'jotai';
 
+import { IconName } from '@components/general/Icon';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-interface PageSaveButtonProps {
+interface PageButtonActionProps {
   isLoading: boolean;
   isDisabled?: boolean;
   onClick: () => void;
   disabledWithLoadingIcon?: boolean;
+  label?: string;
+  iconName?: IconName;
+  iconColor?: string;
 }
 
 interface PageActionsProps {
@@ -37,7 +41,7 @@ interface AddResourceButtonProps {
 
 interface Params {
   title?: string;
-  saveButton?: PageSaveButtonProps;
+  buttonAction?: PageButtonActionProps;
   breadcrumbs?: PageBreadcrumbsProps;
   addResourceButton?: AddResourceButtonProps;
   actions?: PageActionsProps;

@@ -364,5 +364,6 @@
   "reload": "Reload",
   "dashboard": "Dashboard",
   "search": "Search",
-  "no_entry": "No entry"
+  "no_entry": "No entry",
+  "view_employee": "View Employee"
 }

@@ -25,6 +25,7 @@ const LAYOUT_WRAPPER_COVERED_ROUTES = [
   '/employees',
   '/employees/new',
   '/employees/:id/edit',
+  '/employees/:id/show',
 ];
 
 const LayoutWrapper = ({ children }: Props) => {
@@ -55,13 +56,16 @@ const LayoutWrapper = ({ children }: Props) => {
     <Default
       title={pageLayoutAndActions.title}
       breadcrumbs={pageLayoutAndActions.breadcrumbs?.breadcrumbs || []}
-      onSaveClick={pageLayoutAndActions.saveButton?.onClick}
-      disabledSaveButton={pageLayoutAndActions.saveButton?.isDisabled}
+      onSaveClick={pageLayoutAndActions.buttonAction?.onClick}
+      disabledSaveButton={pageLayoutAndActions.buttonAction?.isDisabled}
       disabledSaveButtonWithLoadingIcon={
-        pageLayoutAndActions.saveButton?.disabledWithLoadingIcon
+        pageLayoutAndActions.buttonAction?.disabledWithLoadingIcon
       }
       actions={pageLayoutAndActions.actions?.list || []}
       footer={pageLayoutAndActions.footer}
+      saveButtonLabel={pageLayoutAndActions.buttonAction?.label}
+      saveButtonIcon={pageLayoutAndActions.buttonAction?.iconName}
+      saveButtonIconColor={pageLayoutAndActions.buttonAction?.iconColor}
     >
       {children}
     </Default>

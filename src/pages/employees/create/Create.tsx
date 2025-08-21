@@ -130,7 +130,7 @@ const Create = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      saveButton: {
+      buttonAction: {
         isLoading: isFormBusy,
         isDisabled: isFormBusy,
         onClick: handleSave,
