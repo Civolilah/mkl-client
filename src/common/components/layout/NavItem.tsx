@@ -10,6 +10,7 @@
 
 import { route } from '@helpers/index';
 import classNames from 'classnames';
+import { useSetAtom } from 'jotai';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -22,6 +23,8 @@ import {
   useIsMiniSidebar,
   useTranslation,
 } from '@hooks/index';
+
+import { menuDrawerOpenedAtom } from './MobileNavBar';
 
 type Props = {
   item: NavItemType;
@@ -62,11 +65,14 @@ const NavItem = (props: Props) => {
   const accentColor = useAccentColor();
   const isMiniSideBar = useIsMiniSidebar();
 
+  const setIsMenuDrawerOpened = useSetAtom(menuDrawerOpenedAtom);
+
   return (
     <Tooltip
       placement="right"
       text={isMiniSideBar ? t(item.label) : ''}
       withoutArrow
+      withoutClickOpenOnMobile
     >
       <Div
         className={classNames('flex items-center cursor-pointer', {
@@ -79,7 +85,10 @@ const NavItem = (props: Props) => {
           hoverColor: colors.$8,
           isActive: location.pathname.startsWith(item.href),
         }}
-        onClick={() => navigate(route(item.href))}
+        onClick={() => {
+          navigate(route(item.href));
+          setIsMenuDrawerOpened(false);
+        }}
         style={{ minHeight: '2.4rem' }}
       >
         <Box
@@ -111,10 +120,15 @@ const NavItem = (props: Props) => {
           ) && (
             <Tooltip
               text={t(item.rightIcon!.tooltipText)}
-              href={route(item.rightIcon!.href)}
+              withoutClickOpenOnMobile
             >
               <div
                 className="flex items-center justify-center"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  navigate(route(item.rightIcon!.href));
+                  setIsMenuDrawerOpened(false);
+                }}
                 style={{
                   borderRadius: '50%',
                   color: accentColor,

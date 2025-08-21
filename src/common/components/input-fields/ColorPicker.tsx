@@ -488,7 +488,11 @@ const ColorPicker = ({
                     }}
                   />
 
-                  <CopyToClipboard text={color} iconSize="1rem">
+                  <CopyToClipboard
+                    text={color}
+                    iconSize="1rem"
+                    withoutClickOpenOnMobile
+                  >
                     <Text className="text-xs">{color}</Text>
                   </CopyToClipboard>
                 </Box>
@@ -566,7 +570,12 @@ const ColorPicker = ({
                 }}
               />
 
-              {color && <CopyToClipboardOnlyIcon text={color} />}
+              {color && (
+                <CopyToClipboardOnlyIcon
+                  text={color}
+                  withoutClickOpenOnMobile
+                />
+              )}
             </Box>
           </Box>
 

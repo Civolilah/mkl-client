@@ -28,6 +28,8 @@ type Props = {
   withoutArrow?: boolean;
   overlayClassName?: string;
   overlayInnerStyle?: CSSProperties;
+  withoutClickOpenOnMobile?: boolean;
+  onClick?: () => void;
 };
 
 const Tooltip = ({
@@ -40,6 +42,8 @@ const Tooltip = ({
   withoutArrow,
   overlayClassName,
   overlayInnerStyle,
+  withoutClickOpenOnMobile,
+  onClick,
 }: Props) => {
   const accentColor = useAccentColor();
 
@@ -52,13 +56,20 @@ const Tooltip = ({
       <Box
         onClick={(event) => {
           event.stopPropagation();
+          onClick?.();
           navigate(href);
         }}
       >
         <TooltipBase
           className={className}
           title={text}
-          trigger={isLargeScreen ? (trigger ?? ['hover']) : ['click']}
+          trigger={
+            isLargeScreen
+              ? (trigger ?? ['hover'])
+              : withoutClickOpenOnMobile
+                ? []
+                : ['click']
+          }
           mouseEnterDelay={0}
           overlayInnerStyle={{
             fontSize: '0.75rem',
@@ -82,7 +93,13 @@ const Tooltip = ({
     <TooltipBase
       className={className}
       title={text}
-      trigger={isLargeScreen ? (trigger ?? ['hover']) : ['click']}
+      trigger={
+        isLargeScreen
+          ? (trigger ?? ['hover'])
+          : withoutClickOpenOnMobile
+            ? []
+            : ['click']
+      }
       mouseEnterDelay={0}
       overlayInnerStyle={{
         fontSize: '0.75rem',

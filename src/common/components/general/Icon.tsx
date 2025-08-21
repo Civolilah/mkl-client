@@ -54,6 +54,7 @@ import {
   MdHome,
   MdImportExport,
   MdKeyboardArrowDown,
+  MdKeyboardCommandKey,
   MdOutlineEmail,
   MdOutlineKeyboardArrowLeft,
   MdOutlineKeyboardArrowRight,
@@ -65,6 +66,7 @@ import {
   MdQrCode,
   MdRefresh,
   MdSave,
+  MdSearch,
   MdSecurity,
   MdSettings,
   MdStarBorder,
@@ -159,7 +161,9 @@ export type IconName =
   | 'warning'
   | 'customer'
   | 'importExport'
-  | 'phone';
+  | 'phone'
+  | 'command'
+  | 'search';
 
 type Props = {
   className?: string;
@@ -332,6 +336,10 @@ const Icon = (props: Props) => {
       return generateIconElement(MdImportExport);
     case 'phone':
       return generateIconElement(FaPhone);
+    case 'command':
+      return generateIconElement(MdKeyboardCommandKey);
+    case 'search':
+      return generateIconElement(MdSearch);
     default:
       return <></>;
   }

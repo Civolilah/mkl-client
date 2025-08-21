@@ -6,7 +6,6 @@ import {
   ErrorMessageElement,
   Label,
   LabelElement,
-  RefreshDataElement,
   Toggle,
 } from '@components/index';
 
@@ -33,11 +32,13 @@ const permissionRows: PermissionRow[] = [
   { name: 'status', key: 'status' },
 ];
 
-const Permissions = (props: EmployeeProps) => {
+const Permissions = ({
+  employee,
+  isLoading,
+  handleChange,
+  errors,
+}: EmployeeProps) => {
   const t = useTranslation();
-
-  const { employee, editPage, isLoading, onRefresh, handleChange, errors } =
-    props;
 
   const handleChangePermissions = (value: boolean, permission: Permission) => {
     if (permission === 'admin') {
@@ -135,15 +136,7 @@ const Permissions = (props: EmployeeProps) => {
   };
 
   return (
-    <Card
-      title={t('permissions')}
-      className="w-full"
-      topRight={
-        editPage && onRefresh && typeof isLoading === 'boolean' ? (
-          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
-        ) : undefined
-      }
-    >
+    <Card title={t('permissions')} className="w-full">
       <LabelElement
         label={t('administrator')}
         helpLabel={t('administrator_help')}
@@ -206,7 +199,10 @@ const Permissions = (props: EmployeeProps) => {
 
         <Box className="flex flex-col space-y-4">
           {permissionRows.map((row) => (
-            <Box key={row.key} className="grid grid-cols-4 gap-4">
+            <Box
+              key={row.key}
+              className="grid grid-cols-4 gap-2 lg:gap-4 items-center"
+            >
               <Label>{t(row.name)}</Label>
 
               <Box className="text-center">

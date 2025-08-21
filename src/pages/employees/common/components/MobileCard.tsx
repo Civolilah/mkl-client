@@ -62,7 +62,7 @@ const MobileCard = ({ entity, refresh }: Props) => {
             <Icon name="email" size="1.3rem" style={{ color: '#3b82f6' }} />
           </Box>
 
-          <CopyToClipboard text={entity.email}>
+          <CopyToClipboard text={entity.email} withoutClickOpenOnMobile>
             <Text className="truncate text-sm-plus flex-1">{entity.email}</Text>
           </CopyToClipboard>
         </Box>
@@ -72,7 +72,7 @@ const MobileCard = ({ entity, refresh }: Props) => {
             <Box style={{ width: '1.5rem' }}>
               <Icon name="phone" size="1rem" style={{ color: '#22c55e' }} />
             </Box>
-            <CopyToClipboard text={entity.phone}>
+            <CopyToClipboard text={entity.phone} withoutClickOpenOnMobile>
               <Text className="text-sm-plus truncate flex-1">
                 {entity.phone}
               </Text>

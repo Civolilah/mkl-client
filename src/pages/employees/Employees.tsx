@@ -11,11 +11,20 @@
 import { useState } from 'react';
 
 import { route } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
 
 import { User } from '@interfaces/index';
 
 import { CreationRoute } from '@components/general/Table';
-import { Box, RefreshDataElement, Table, Text } from '@components/index';
+import {
+  Box,
+  FooterAction,
+  MobileSearchAction,
+  RefreshDataElement,
+  Table,
+  Text,
+} from '@components/index';
 
 import {
   useFetchEntity,
@@ -30,7 +39,12 @@ import useColumns from './common/hooks/useColumns';
 const Employees = () => {
   const t = useTranslation();
 
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
+
+  const isLargeScreen = useMediaQuery({
+    query: '(min-width: 1024px)',
+  });
 
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -51,7 +65,7 @@ const Employees = () => {
   usePageLayoutAndActions(
     {
       title: t('employees'),
-      footer: (
+      footer: isLargeScreen ? (
         <Box className="flex w-full items-center justify-end">
           <RefreshDataElement
             isLoading={isLoading}
@@ -59,9 +73,44 @@ const Employees = () => {
             tooltipPlacement="left"
           />
         </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="dashboard"
+            onClick={() => {
+              navigate(route('/dashboard'));
+            }}
+            iconName="dashboard"
+            disabled={isLoading}
+            iconSize="1.1rem"
+          />
+
+          <MobileSearchAction
+            disabled={isLoading}
+            iconSize="1.3rem"
+            searchPlaceholder="search_employee_by"
+          />
+
+          <FooterAction
+            text="new_employee"
+            onClick={() => {
+              navigate(route('/employees/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+        </Box>
       ),
     },
-    [isLoading]
+    [isLoading, isLargeScreen]
   );
 
   return (
@@ -76,6 +125,7 @@ const Employees = () => {
           'last_name',
           'email',
           'subsidiaries.name',
+          'warehouses.name',
         ] as (keyof User)[]
       }
       creationRoute={route('/employees/new') as CreationRoute}

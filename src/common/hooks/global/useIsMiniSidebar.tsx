@@ -15,7 +15,7 @@ import { userCompanyAtom } from '@components/general/PrivateRoute';
 const useIsMiniSidebar = (): boolean => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);
 
-  return Boolean(userCompanyDetails?.preference.mini_side_bar) || false;
+  return Boolean(userCompanyDetails?.preference.mini_sidebar) || false;
 };
 
 export default useIsMiniSidebar;

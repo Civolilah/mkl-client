@@ -40,7 +40,7 @@ const LabelElement = (props: Props) => {
   return (
     <Box
       className={classNames(
-        `flex flex-col lg:flex-row sm:grid sm:gap-10 ${className}`,
+        `flex flex-col space-y-2 sm:space-y-0 lg:flex-row sm:grid sm:gap-10 ${className}`,
         {
           'py-4 sm:py-3': !props.noVerticalPadding,
           'lg:items-center': !props.withoutItemsCenter,

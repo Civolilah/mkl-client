@@ -33,7 +33,7 @@ export type UserCompanyDetails = {
   is_owner: boolean;
   preference: {
     language: Languages;
-    mini_side_bar: boolean | null;
+    mini_sidebar: boolean | null;
     time_zone: string | null;
     is_military_time: boolean | null;
     date_format: string | null;

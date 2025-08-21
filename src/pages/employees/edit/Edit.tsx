@@ -11,12 +11,14 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, useToast } from '@helpers/index';
+import { endpoint, request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
+import { Box, FooterAction, RefreshDataElement } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -47,8 +49,11 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
   const refetch = useRefetch();
   const actions = useActions();
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
@@ -145,6 +150,52 @@ const Edit = () => {
       actions: {
         list: employee ? actions(employee) : [],
       },
+      footer: isLargeScreen ? (
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
+        </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="dashboard"
+            onClick={() => {
+              navigate(route('/dashboard'));
+            }}
+            iconName="dashboard"
+            disabled={isLoading}
+            iconSize="1.1rem"
+          />
+
+          <FooterAction
+            text="employees"
+            onClick={() => {
+              navigate(route('/employees'));
+            }}
+            iconName="employees"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+        </Box>
+      ),
     },
     [employee, isLoading, handleSave]
   );

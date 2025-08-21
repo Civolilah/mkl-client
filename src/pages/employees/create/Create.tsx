@@ -15,10 +15,12 @@ import {
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
+import { Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -45,6 +47,7 @@ const Create = () => {
   ];
 
   const toast = useToast();
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const refetch = useRefetch();
   const navigate = useNavigate();
@@ -133,6 +136,37 @@ const Create = () => {
         onClick: handleSave,
         disabledWithLoadingIcon: isFormBusy,
       },
+      footer: isLargeScreen ? undefined : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="dashboard"
+            onClick={() => {
+              navigate(route('/dashboard'));
+            }}
+            iconName="dashboard"
+            disabled={isFormBusy}
+            iconSize="1.1rem"
+          />
+
+          <FooterAction
+            text="employees"
+            onClick={() => {
+              navigate(route('/employees'));
+            }}
+            iconName="employees"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+        </Box>
+      ),
     },
     [employee, isFormBusy, handleSave]
   );

@@ -74,7 +74,7 @@ const ColorColumn = ({ color }: Props) => {
             }}
           />
 
-          <CopyToClipboard text={color}>
+          <CopyToClipboard text={color} withoutClickOpenOnMobile>
             <Text className="font-medium">{color}</Text>
           </CopyToClipboard>
         </Box>

@@ -19,7 +19,6 @@ import {
   Box,
   Card,
   InformationLabel,
-  RefreshDataElement,
   SubsidiariesSelector,
   TextField,
   WarehousesSelector,
@@ -35,7 +34,6 @@ export type EmployeeProps = {
   employee: User | undefined;
   editPage: boolean | undefined;
   isLoading: boolean | undefined;
-  onRefresh?: () => void;
   errors: Record<string, string>;
   handleChange: (field: keyof User, value: string | string[]) => void;
   setEmployee: Dispatch<SetStateAction<User | undefined>>;
@@ -44,7 +42,6 @@ export type EmployeeProps = {
 const Details = ({
   editPage,
   isLoading,
-  onRefresh,
   errors,
   handleChange,
   employee,
@@ -97,11 +94,6 @@ const Details = ({
       title={t('details')}
       className="w-full"
       isLoading={isLoading || isLoadingExistingEmployees}
-      topRight={
-        editPage && onRefresh && typeof isLoading === 'boolean' ? (
-          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
-        ) : undefined
-      }
     >
       <Box className="flex flex-col space-y-4 pb-4">
         {!editPage && (

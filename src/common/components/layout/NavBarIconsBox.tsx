@@ -8,12 +8,14 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { request } from '@helpers/index';
 import classNames from 'classnames';
+import platform from 'platform';
+import reactStringReplace from 'react-string-replace';
 
-import { Box, FeedbackModal, Icon, Tooltip } from '@components/index';
+import { Box, FeedbackModal, Icon, Text, Tooltip } from '@components/index';
 
 import {
   useAccentColor,
@@ -34,17 +36,41 @@ const NavBarIconsBox = () => {
 
   const [feedbackModalVisible, setFeedbackModalVisible] =
     useState<boolean>(false);
+  const [currentSidebarState, setCurrentSidebarState] =
+    useState<boolean>(isMiniSideBar);
 
-  const handleClick = () => {
-    request('POST', '/api/users/toggle_sidebar', {
-      value: !isMiniSideBar,
-    }).then((response) =>
-      handleChangeUserCompanyDetails(
-        'preference.mini_side_bar',
-        response.data.value
-      )
-    );
-  };
+  const handleClick = useCallback(() => {
+    handleChangeUserCompanyDetails('preference.mini_sidebar', !isMiniSideBar);
+  }, [isMiniSideBar]);
+
+  const isMac = useCallback(() => {
+    return platform?.os?.family === 'OS X' || platform?.os?.family === 'macOS';
+  }, [platform]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === '/') {
+        event.preventDefault();
+        handleClick();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMiniSideBar]);
+
+  useEffect(() => {
+    if (currentSidebarState !== isMiniSideBar) {
+      setCurrentSidebarState(isMiniSideBar);
+
+      request('POST', '/api/users/toggle_sidebar', {
+        value: isMiniSideBar,
+      });
+    }
+  }, [isMiniSideBar, currentSidebarState]);
 
   return (
     <>
@@ -62,7 +88,7 @@ const NavBarIconsBox = () => {
           style={{ color: accentColor }}
         >
           {!isMiniSideBar && (
-            <Tooltip text={t('contact_us')}>
+            <Tooltip text={t('contact_us')} withoutClickOpenOnMobile>
               <div className="cursor-pointer">
                 <Icon name="email" size="1.375rem" />
               </div>
@@ -70,7 +96,7 @@ const NavBarIconsBox = () => {
           )}
 
           {!isMiniSideBar && (
-            <Tooltip text={t('about_us')}>
+            <Tooltip text={t('about_us')} withoutClickOpenOnMobile>
               <div className="cursor-pointer">
                 <Icon name="information" size="1.425rem" />
               </div>
@@ -78,7 +104,10 @@ const NavBarIconsBox = () => {
           )}
 
           {!isMiniSideBar && (
-            <Tooltip text={t('feedback_bugs_features')}>
+            <Tooltip
+              text={t('feedback_bugs_features')}
+              withoutClickOpenOnMobile
+            >
               <div
                 className="cursor-pointer"
                 onClick={(event) => {
@@ -100,9 +129,42 @@ const NavBarIconsBox = () => {
           >
             <Tooltip
               text={
-                isMiniSideBar ? t('maximize_sidebar') : t('minimize_sidebar')
+                isMiniSideBar
+                  ? reactStringReplace(
+                      t('maximize_sidebar'),
+                      ':command',
+                      () => (
+                        <Box className="inline-flex items-center gap-x-1 whitespace-nowrap align-middle">
+                          {isMac() ? (
+                            <>
+                              <Icon name="command" size="0.9rem" />
+                              <Text className="text-xs font-medium">/</Text>
+                            </>
+                          ) : (
+                            <Text className="text-xs font-medium">Ctrl /</Text>
+                          )}
+                        </Box>
+                      )
+                    )
+                  : reactStringReplace(
+                      t('minimize_sidebar'),
+                      ':command',
+                      () => (
+                        <Box className="inline-flex items-center gap-x-1 whitespace-nowrap align-middle">
+                          {isMac() ? (
+                            <>
+                              <Icon name="command" size="0.9rem" />
+                              <Text className="text-xs font-medium">/</Text>
+                            </>
+                          ) : (
+                            <Text className="text-xs font-medium">Ctrl /</Text>
+                          )}
+                        </Box>
+                      )
+                    )
               }
-              trigger={['hover', 'click']}
+              trigger={['hover']}
+              withoutClickOpenOnMobile
             >
               <div className="cursor-pointer">
                 {isMiniSideBar ? (

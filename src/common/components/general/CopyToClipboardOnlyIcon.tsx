@@ -18,9 +18,10 @@ import Tooltip from './Tooltip';
 
 type Props = {
   text: string;
+  withoutClickOpenOnMobile?: boolean;
 };
 
-const CopyToClipboardOnlyIcon = ({ text }: Props) => {
+const CopyToClipboardOnlyIcon = ({ text, withoutClickOpenOnMobile }: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
@@ -32,7 +33,10 @@ const CopyToClipboardOnlyIcon = ({ text }: Props) => {
   };
 
   return (
-    <Tooltip text={t('copy_to_clipboard')}>
+    <Tooltip
+      text={t('copy_to_clipboard')}
+      withoutClickOpenOnMobile={withoutClickOpenOnMobile}
+    >
       <div
         className="cursor-pointer"
         onClick={(event) => {

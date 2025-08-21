@@ -20,7 +20,6 @@ const useTabs = ({
   employee,
   editPage,
   isLoading,
-  onRefresh,
   errors,
   handleChange,
   setEmployee,
@@ -44,7 +43,6 @@ const useTabs = ({
           employee={employee}
           editPage={editPage}
           isLoading={isLoading}
-          onRefresh={onRefresh}
           errors={errors}
           handleChange={handleChange}
           setEmployee={setEmployee}
@@ -67,7 +65,6 @@ const useTabs = ({
           employee={employee}
           editPage={editPage}
           isLoading={isLoading}
-          onRefresh={onRefresh}
           errors={errors}
           handleChange={handleChange}
           setEmployee={setEmployee}

@@ -81,3 +81,5 @@ export { default as EmployeesSelector } from '@components/selectors/EmployeesSel
 export { default as CompaniesSelector } from '@components/selectors/CompaniesSelector';
 export { default as LayoutWrapper } from '@components/general/LayoutWrapper';
 export { default as MobilePreviewModal } from '@components/general/MobilePreviewModal';
+export { default as FooterAction } from '@components/layout/FooterAction';
+export { default as MobileSearchAction } from '@components/table/MobileSearchAction';

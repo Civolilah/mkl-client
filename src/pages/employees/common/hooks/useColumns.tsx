@@ -76,7 +76,7 @@ const useColumns = (props: Props) => {
       dataIndex: 'email',
       render: (value) => (
         <Box className="flex items-center space-x-4 min-w-56">
-          <CopyToClipboard text={value}>
+          <CopyToClipboard text={value} withoutClickOpenOnMobile>
             <Text>{value}</Text>
           </CopyToClipboard>
         </Box>
@@ -87,7 +87,7 @@ const useColumns = (props: Props) => {
       dataIndex: 'phone',
       render: (value) => (
         <Box className="flex items-center space-x-4 min-w-56">
-          <CopyToClipboard text={value}>
+          <CopyToClipboard text={value} withoutClickOpenOnMobile>
             <Text>{value}</Text>
           </CopyToClipboard>
         </Box>

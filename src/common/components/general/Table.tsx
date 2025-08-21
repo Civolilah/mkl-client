@@ -18,6 +18,7 @@ import {
   TableProps,
 } from 'antd';
 import classNames from 'classnames';
+import { atom, useAtom } from 'jotai';
 import { get, some } from 'lodash';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +28,7 @@ import {
   Button,
   Dropdown,
   MobilePreviewModal,
+  Spinner,
   Text,
   TextField,
 } from '@components/index';
@@ -171,27 +173,39 @@ const Footer = ({
 
   const numberOfPages = Math.ceil(total / perPage) || 1;
 
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
   const actions: MenuProps['items'] = [
     {
-      label: <Box className="px-2 py-1 text-xs">10</Box>,
+      label: (
+        <Box className="px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm">10</Box>
+      ),
       onClick: () => setPerPage(10),
       key: '10',
       disabled: perPage === 10,
     },
     {
-      label: <Box className="px-2 py-1 text-xs">20</Box>,
+      label: (
+        <Box className="px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm">20</Box>
+      ),
       onClick: () => setPerPage(20),
       key: '20',
       disabled: perPage === 20,
     },
     {
-      label: <Box className="px-2 py-1 text-xs">50</Box>,
+      label: (
+        <Box className="px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm">50</Box>
+      ),
       onClick: () => setPerPage(50),
       key: '50',
       disabled: perPage === 50,
     },
     {
-      label: <Box className="px-2 py-1 text-xs">100</Box>,
+      label: (
+        <Box className="px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm">
+          100
+        </Box>
+      ),
       onClick: () => setPerPage(100),
       key: '100',
       disabled: perPage === 100,
@@ -203,7 +217,7 @@ const Footer = ({
       <Box className="flex items-center justify-center space-x-2">
         <Text className="text-xs font-medium">{t('total')}</Text>
 
-        <Text className="text-xs">{total}.</Text>
+        <Text className="text-xs md:text-sm">{total}.</Text>
       </Box>
 
       <Box className="flex items-center space-x-2">
@@ -220,12 +234,15 @@ const Footer = ({
             }}
             style={{
               borderColor: colors.$1,
-              height: '1.925rem',
-              width: '1.925rem',
+              height: isLargeScreen ? '2.2rem' : '1.925rem',
+              width: isLargeScreen ? '2.2rem' : '1.925rem',
             }}
           >
             <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <Icon name="doubleArrowBack" size="1.2rem" />
+              <Icon
+                name="doubleArrowBack"
+                size={isLargeScreen ? '1.35rem' : '1.2rem'}
+              />
             </Box>
           </PaginationArrowBox>
 
@@ -241,12 +258,15 @@ const Footer = ({
             }}
             style={{
               borderColor: colors.$1,
-              height: '1.925rem',
-              width: '1.925rem',
+              height: isLargeScreen ? '2.2rem' : '1.925rem',
+              width: isLargeScreen ? '2.2rem' : '1.925rem',
             }}
           >
             <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <Icon name="arrowBack" size="1.2rem" />
+              <Icon
+                name="arrowBack"
+                size={isLargeScreen ? '1.35rem' : '1.2rem'}
+              />
             </Box>
           </PaginationArrowBox>
         </Box>
@@ -267,12 +287,15 @@ const Footer = ({
             }}
             style={{
               borderColor: colors.$1,
-              height: '1.925rem',
-              width: '1.925rem',
+              height: isLargeScreen ? '2.2rem' : '1.925rem',
+              width: isLargeScreen ? '2.2rem' : '1.925rem',
             }}
           >
             <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <Icon name="arrowForward" size="1.2rem" />
+              <Icon
+                name="arrowForward"
+                size={isLargeScreen ? '1.35rem' : '1.2rem'}
+              />
             </Box>
           </PaginationArrowBox>
 
@@ -291,12 +314,15 @@ const Footer = ({
             }}
             style={{
               borderColor: colors.$1,
-              height: '1.925rem',
-              width: '1.925rem',
+              height: isLargeScreen ? '2.2rem' : '1.925rem',
+              width: isLargeScreen ? '2.2rem' : '1.925rem',
             }}
           >
             <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <Icon name="doubleArrowForward" size="1.2rem" />
+              <Icon
+                name="doubleArrowForward"
+                size={isLargeScreen ? '1.35rem' : '1.2rem'}
+              />
             </Box>
           </PaginationArrowBox>
         </Box>
@@ -304,10 +330,10 @@ const Footer = ({
 
       <Dropdown menu={{ items: actions }}>
         <Box
-          className="flex items-center justify-between space-x-3 border px-2 py-1 cursor-pointer whitespace-nowrap w-full"
+          className="flex items-center justify-between space-x-3 border px-2 py-1 md:px-3 md:py-1.5 cursor-pointer whitespace-nowrap w-full"
           style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
         >
-          <Text className="text-xs font-medium">{t(perPage.toString())}</Text>
+          <Text className="text-sm">{t(perPage.toString())}</Text>
 
           <Icon name="arrowDown" size="1.2rem" style={{ color: colors.$10 }} />
         </Box>
@@ -315,6 +341,8 @@ const Footer = ({
     </Box>
   );
 };
+
+export const filterAtom = atom<string>('');
 
 const Table = <EntityType,>({
   columns,
@@ -335,7 +363,7 @@ const Table = <EntityType,>({
 
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
-  const [filter, setFilter] = useState<string>('');
+  const [filter, setFilter] = useAtom(filterAtom);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [perPage, setPerPage] = useState<10 | 20 | 50 | 100>(10);
   const [currentScrollY, setCurrentScrollY] = useState<string | undefined>();
@@ -515,20 +543,38 @@ const Table = <EntityType,>({
           </Box>
         </Box>
       ) : (
-        <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 self-start w-full">
-          {currentData.data.map((entity, index) => (
-            <Box
-              key={index}
-              className="cursor-pointer hover:opacity-80 transition-opacity duration-300"
-              onClick={() => {
-                setCurrentEntity(entity);
-                setIsMobilePreviewModalOpen(true);
-              }}
-            >
-              {mobileCardRender?.(entity)}
+        <>
+          {isDataLoading ? (
+            <Box className="w-full h-full flex items-center justify-center">
+              <Spinner size="large" />
             </Box>
-          ))}
-        </Box>
+          ) : (
+            <Box className="flex flex-col w-full gap-y-6">
+              <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 self-start w-full">
+                {currentData.data.map((entity, index) => (
+                  <Box
+                    key={index}
+                    className="cursor-pointer hover:opacity-80 transition-opacity duration-300"
+                    onClick={() => {
+                      setCurrentEntity(entity);
+                      setIsMobilePreviewModalOpen(true);
+                    }}
+                  >
+                    {mobileCardRender?.(entity)}
+                  </Box>
+                ))}
+              </Box>
+
+              <Footer
+                perPage={perPage}
+                currentPage={currentPage}
+                total={currentData.total}
+                setPerPage={setPerPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </Box>
+          )}
+        </>
       )}
 
       <MobilePreviewModal

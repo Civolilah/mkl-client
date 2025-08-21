@@ -30,7 +30,11 @@ const RefreshDataElement = ({
   const t = useTranslation();
 
   return (
-    <Tooltip text={t('refresh_data')} placement={tooltipPlacement}>
+    <Tooltip
+      text={t('reload_data')}
+      placement={tooltipPlacement}
+      withoutClickOpenOnMobile
+    >
       <div
         className={classNames({
           'cursor-not-allowed': isLoading,

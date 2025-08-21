@@ -8,10 +8,11 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { Drawer } from 'antd';
 import classNames from 'classnames';
+import { atom, useAtom } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
 
 import Icon from '@components/general/Icon';
@@ -28,12 +29,14 @@ type Props = {
   items: NavItem[];
 };
 
+export const menuDrawerOpenedAtom = atom<boolean>(false);
+
 const MobileNavBar = (props: Props) => {
   const { items } = props;
 
   const colors = useColors();
 
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useAtom(menuDrawerOpenedAtom);
 
   const isMiniSideBar = useIsMiniSidebar();
 

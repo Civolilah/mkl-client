@@ -205,6 +205,7 @@ const SelectDataField = ({
                       ))}
                     </Box>
                   }
+                  withoutClickOpenOnMobile
                 >
                   <span>{`+ ${omittedValues.length} ...`}</span>
                 </Tooltip>

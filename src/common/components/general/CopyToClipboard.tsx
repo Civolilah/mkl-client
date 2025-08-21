@@ -21,9 +21,15 @@ type Props = {
   text: string;
   children: React.ReactNode;
   iconSize?: string;
+  withoutClickOpenOnMobile?: boolean;
 };
 
-const CopyToClipboard = ({ children, text, iconSize = '1.05rem' }: Props) => {
+const CopyToClipboard = ({
+  children,
+  text,
+  iconSize = '1.05rem',
+  withoutClickOpenOnMobile,
+}: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
@@ -42,7 +48,10 @@ const CopyToClipboard = ({ children, text, iconSize = '1.05rem' }: Props) => {
     <Box className="flex items-center space-x-2">
       <Box>{children}</Box>
 
-      <Tooltip text={t('copy_to_clipboard')}>
+      <Tooltip
+        text={t('copy_to_clipboard')}
+        withoutClickOpenOnMobile={withoutClickOpenOnMobile}
+      >
         <div
           className="cursor-pointer"
           onClick={(event) => {

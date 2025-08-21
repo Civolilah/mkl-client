@@ -37,7 +37,6 @@ const EmployeeForm = ({
   errors,
   editPage,
   isLoading,
-  onRefresh,
 }: Props) => {
   const isMiniSideBar = useIsMiniSidebar();
 
@@ -53,7 +52,6 @@ const EmployeeForm = ({
     employee,
     editPage,
     isLoading,
-    onRefresh,
     errors,
     handleChange,
     setEmployee,
