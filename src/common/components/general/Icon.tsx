@@ -63,6 +63,7 @@ import {
   MdOutlineMenu,
   MdOutlineShoppingCart,
   MdOutlineStar,
+  MdPreview,
   MdQrCode,
   MdRefresh,
   MdSave,
@@ -163,7 +164,8 @@ export type IconName =
   | 'importExport'
   | 'phone'
   | 'command'
-  | 'search';
+  | 'search'
+  | 'preview';
 
 type Props = {
   className?: string;
@@ -340,6 +342,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdKeyboardCommandKey);
     case 'search':
       return generateIconElement(MdSearch);
+    case 'preview':
+      return generateIconElement(MdPreview);
     default:
       return <></>;
   }

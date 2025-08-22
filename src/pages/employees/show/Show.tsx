@@ -29,6 +29,8 @@ import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useFetchEntity,
+  useFindSubsidiary,
+  useFindWarehouse,
   useHasPermission,
   usePageLayoutAndActions,
   useTranslation,
@@ -54,6 +56,8 @@ const Show = () => {
 
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
+  const { findWarehouseById } = useFindWarehouse();
+  const { findSubsidiaryById } = useFindSubsidiary();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [employee, setEmployee] = useState<User | undefined>();
@@ -166,6 +170,10 @@ const Show = () => {
 
         <LabelElement label={t('subsidiaries')} withoutOptionalText>
           <Box className="flex items-center flex-wrap">
+            {!employee?.subsidiaries_ids?.length && (
+              <Text className="font-medium">{t('no_entry')}</Text>
+            )}
+
             {employee?.subsidiaries_ids?.map((subsidiaryId, index, array) => (
               <Box
                 key={subsidiaryId}
@@ -174,8 +182,41 @@ const Show = () => {
                 <Link
                   to={route('/subsidiaries/:id/edit', { id: subsidiaryId })}
                 >
-                  {subsidiaryId}
+                  {findSubsidiaryById(subsidiaryId)?.name}
                 </Link>
+
+                {index < array.length - 1 && <Text className="mx-2">|</Text>}
+              </Box>
+            ))}
+          </Box>
+        </LabelElement>
+
+        <LabelElement label={t('warehouses')} withoutOptionalText>
+          <Box className="flex items-center flex-wrap">
+            {!employee?.warehouses_ids?.length && (
+              <Text className="font-medium">{t('no_entry')}</Text>
+            )}
+
+            {employee?.warehouses_ids?.map((warehouseId, index, array) => (
+              <Box
+                key={warehouseId}
+                className="flex items-center whitespace-nowrap"
+              >
+                <Link to={route('/warehouses/:id/edit', { id: warehouseId })}>
+                  {findWarehouseById(warehouseId)?.name}
+                </Link>
+
+                {index < array.length - 1 && <Text className="mx-2">|</Text>}
+              </Box>
+            ))}
+          </Box>
+        </LabelElement>
+
+        <LabelElement label={t('permissions')} withoutOptionalText>
+          <Box className="flex items-center flex-wrap">
+            {employee?.permissions?.map((permission, index, array) => (
+              <Box key={index} className="flex items-center whitespace-nowrap">
+                <Text className="font-medium">{t(permission)}</Text>
 
                 {index < array.length - 1 && <Text className="mx-2">|</Text>}
               </Box>

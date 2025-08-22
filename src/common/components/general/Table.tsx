@@ -76,6 +76,7 @@ type Props<EntityType> = {
   turnOnMobilePreview?: boolean;
   mobileCardRender?: (entity: EntityType) => ReactNode;
   mobileModalRender?: (entity: EntityType) => ReactNode;
+  onMobileCardClick?: (entity: EntityType) => void;
 };
 
 type CustomHeaderCellProps = {
@@ -346,6 +347,7 @@ const Table = <EntityType,>({
   turnOnMobilePreview,
   mobileCardRender,
   mobileModalRender,
+  onMobileCardClick,
 }: Props<EntityType>) => {
   const t = useTranslation();
 
@@ -553,8 +555,12 @@ const Table = <EntityType,>({
                     key={index}
                     className="cursor-pointer hover:opacity-80 transition-opacity duration-300"
                     onClick={() => {
-                      setCurrentEntity(entity);
-                      setIsMobilePreviewModalOpen(true);
+                      if (mobileModalRender) {
+                        setCurrentEntity(entity);
+                        setIsMobilePreviewModalOpen(true);
+                      }
+
+                      onMobileCardClick?.(entity);
                     }}
                   >
                     {mobileCardRender?.(entity)}

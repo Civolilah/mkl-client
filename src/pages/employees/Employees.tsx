@@ -23,7 +23,6 @@ import {
   MobileSearchAction,
   RefreshDataElement,
   Table,
-  Text,
 } from '@components/index';
 
 import {
@@ -135,13 +134,9 @@ const Employees = () => {
       mobileCardRender={(entity) => (
         <MobileCard entity={entity} refresh={refresh} />
       )}
-      mobileModalRender={(entity) => (
-        <Box className="flex flex-col gap-2">
-          <Text>
-            {entity.first_name} {entity.last_name}
-          </Text>
-        </Box>
-      )}
+      onMobileCardClick={(entity) => {
+        navigate(route('/employees/:id/show', { id: entity.id || '' }));
+      }}
     />
   );
 };

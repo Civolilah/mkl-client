@@ -22,6 +22,7 @@ interface Props {
   iconName: IconName;
   iconSize?: string;
   disabled?: boolean;
+  iconColor?: string;
 }
 
 const FooterAction = ({
@@ -30,6 +31,7 @@ const FooterAction = ({
   iconName,
   iconSize = '1.25rem',
   disabled = false,
+  iconColor,
 }: Props) => {
   const t = useTranslation();
 
@@ -46,7 +48,7 @@ const FooterAction = ({
         onClick={onClick}
       >
         <Box>
-          <Icon name={iconName} size={iconSize} />
+          <Icon name={iconName} size={iconSize} style={{ color: iconColor }} />
         </Box>
 
         <Text className="text-xs">{t(text)}</Text>

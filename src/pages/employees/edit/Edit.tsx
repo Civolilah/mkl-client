@@ -57,7 +57,7 @@ const Edit = () => {
   const hasPermission = useHasPermission();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [employee, setEmployee] = useState<User | undefined>();
   const [initialResponse, setInitialResponse] = useState<User | undefined>();
 
@@ -181,9 +181,11 @@ const Edit = () => {
           />
 
           <FooterAction
-            text="save"
-            onClick={handleSave}
-            iconName="save"
+            text="preview"
+            onClick={() => {
+              navigate(route('/employees/:id/show', { id: id || '' }));
+            }}
+            iconName="preview"
             disabled={isLoading}
             iconSize="1.3rem"
           />
@@ -193,6 +195,14 @@ const Edit = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
           />
         </Box>
       ),

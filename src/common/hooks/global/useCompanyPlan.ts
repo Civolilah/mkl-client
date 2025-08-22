@@ -15,7 +15,7 @@ import { userCompanyAtom } from '@components/general/PrivateRoute';
 const useCompanyPlan = () => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);
 
-  const plan = userCompanyDetails?.company?.plan;
+  const plan = userCompanyDetails?.account?.plan;
 
   return { companyPlan: plan };
 };

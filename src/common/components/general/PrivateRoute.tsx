@@ -21,9 +21,9 @@ import { useAuthenticated } from '@hooks/index';
 
 import LoadingScreen from './LoadingScreen';
 
-export type CompanyPlan = 'free' | 'basic' | 'pro' | 'advanced' | 'enterprise';
+export type AccountPlan = 'basic' | 'standard' | 'professional' | 'enterprise';
 
-export type UserCompanyDetails = {
+export interface UserCompanyDetails {
   id: string;
   first_name: string;
   last_name: string;
@@ -46,10 +46,13 @@ export type UserCompanyDetails = {
   };
   company: {
     name: string;
-    plan: CompanyPlan;
     permissions: Permission[];
   };
-};
+  account: {
+    plan: AccountPlan;
+    plan_expires_at: string;
+  };
+}
 
 export const userCompanyAtom = atom<UserCompanyDetails | null>(null);
 

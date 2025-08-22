@@ -124,7 +124,7 @@ const useFetchEntity = <T>({
   }, [entityResponse, isLoading]);
 
   useEffect(() => {
-    if (companyPlan !== 'free' && companyPlan !== 'basic') {
+    if (companyPlan !== 'basic') {
       queryClient.invalidateQueries(queryIdentifiers);
     }
   }, []);
