@@ -9,25 +9,55 @@
  */
 
 import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
+import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
+import { useAtomValue } from 'jotai';
+import styled from 'styled-components';
 
-import { Box, Text } from '@components/index';
+import { userCompanyAtom } from '@components/general/PrivateRoute';
+import { AddCompanyAction, Box, Dropdown, Icon, Text } from '@components/index';
 
-import { useColors } from '@hooks/index';
+import { useColors, useTranslation } from '@hooks/index';
 
-type Props = {
+interface Props {
   mobileSideBar?: boolean;
   handleCloseSideBar?: () => void;
-};
+}
 
-const NavBarLogoSection = (props: Props) => {
-  const { mobileSideBar } = props;
+const StyledBox = styled(Box)`
+  background-color: ${({ theme }) => theme.backgroundColor};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.hoverBackgroundColor};
+  }
+`;
+
+const NavBarLogoSection = ({ mobileSideBar }: Props) => {
+  const t = useTranslation();
 
   const colors = useColors();
 
+  const userCompany = useAtomValue(userCompanyAtom);
+
+  const actions: ItemType[] = [
+    {
+      key: 'about_us',
+      label: (
+        <Box className="flex items-center gap-x-2 py-2 px-3">
+          <Icon name="information" size="1.5rem" />
+          <Text className="text-sm font-medium">{t('about_us')}</Text>
+        </Box>
+      ),
+    },
+    {
+      key: 'add_company',
+      label: <AddCompanyAction />,
+    },
+  ];
+
   return (
     <Box
-      className={classNames('flex items-center px-1.5', {
+      className={classNames('flex items-center px-3', {
         'border-r': !mobileSideBar,
         'border-b': mobileSideBar,
       })}
@@ -37,20 +67,44 @@ const NavBarLogoSection = (props: Props) => {
         width: mobileSideBar ? '100%' : MAN_LARGE_SIDEBAR_WIDTH,
       }}
     >
-      <Box className="flex w-full justify-start items-center space-x-4">
-        <img
-          className="cursor-pointer"
-          src="/images/mkl.svg"
-          alt="ecoMKL Logo"
+      <Dropdown menu={{ items: actions }}>
+        <StyledBox
+          className="flex w-full justify-between items-center cursor-pointer pl-2 pr-0.5"
           style={{
-            width: '4rem',
-            height: '50px',
-            objectFit: 'contain',
+            width: mobileSideBar
+              ? '100%'
+              : `calc(${MAN_LARGE_SIDEBAR_WIDTH} - 1.5rem)`,
+            height: '2.5rem',
           }}
-        />
+          theme={{
+            backgroundColor: colors.$2,
+            hoverBackgroundColor: colors.$19,
+          }}
+        >
+          <Box className="flex items-center gap-x-4 cursor-pointer">
+            <img
+              className="cursor-pointer"
+              src="/images/mkl.svg"
+              alt="ecoMKL Logo"
+              style={{
+                width: '2.5rem',
+                height: '50px',
+                objectFit: 'contain',
+              }}
+            />
 
-        <Text className="text-lg font-medium">ecoMKL</Text>
-      </Box>
+            <Box className="flex-1 truncate max-w-[8.25rem]">
+              <Text className="text-sm font-medium">
+                {userCompany?.company.name || t('untitled_company')}
+              </Text>
+            </Box>
+          </Box>
+
+          <Box>
+            <Icon name="arrowUpDown" size="1.5rem" />
+          </Box>
+        </StyledBox>
+      </Dropdown>
     </Box>
   );
 };

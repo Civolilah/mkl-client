@@ -387,5 +387,8 @@
   "create_subsidiary": "Create Subsidiary",
   "create_warehouse": "Create Warehouse",
   "create_customer": "Create Customer",
-  "edit_customer": "Edit Customer"
+  "edit_customer": "Edit Customer",
+  "manage_stock_counting": "Manage Stock Counting",
+  "add_company_plan_message": "Adding more companies requires having a professional or enterprise plan.",
+  "upgrade_plan": "Upgrade Plan"
 }

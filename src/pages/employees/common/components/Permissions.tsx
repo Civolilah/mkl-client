@@ -58,13 +58,15 @@ const Permissions = ({
           !currentPermission.startsWith(permissionType) ||
           currentPermission === 'import_products' ||
           currentPermission === 'view_dashboard' ||
-          currentPermission === 'export_products'
+          currentPermission === 'export_products' ||
+          currentPermission === 'manage_stock_counting'
       );
     } else if (
       currentPermissions.includes(`${permissionType}_all`) &&
       permission !== 'import_products' &&
       permission !== 'view_dashboard' &&
-      permission !== 'export_products'
+      permission !== 'export_products' &&
+      permission !== 'manage_stock_counting'
     ) {
       const permissionsByType = permissionRows
         .filter((row) => row.key !== 'all')
@@ -97,7 +99,8 @@ const Permissions = ({
           !currentPermission.includes(`${permissionType}_`) ||
           currentPermission === 'import_products' ||
           currentPermission === 'view_dashboard' ||
-          currentPermission === 'export_products'
+          currentPermission === 'export_products' ||
+          currentPermission === 'manage_stock_counting'
       );
     }
 
@@ -119,7 +122,8 @@ const Permissions = ({
       permissions.includes(`${type}_all`) &&
       permission !== 'import_products' &&
       permission !== 'view_dashboard' &&
-      permission !== 'export_products'
+      permission !== 'export_products' &&
+      permission !== 'manage_stock_counting'
     ) {
       return true;
     }
@@ -184,6 +188,20 @@ const Permissions = ({
           checked={isPermissionChecked('export_products')}
           onChange={(value) =>
             handleChangePermissions(value, 'export_products')
+          }
+          disabled={isPermissionDisabled()}
+        />
+      </LabelElement>
+
+      <LabelElement
+        label={t('manage_stock_counting')}
+        withoutOptionalText
+        twoGridColumns
+      >
+        <Toggle
+          checked={isPermissionChecked('manage_stock_counting')}
+          onChange={(value) =>
+            handleChangePermissions(value, 'manage_stock_counting')
           }
           disabled={isPermissionDisabled()}
         />

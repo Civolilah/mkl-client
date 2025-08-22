@@ -23,6 +23,8 @@ export type { LabelCategory } from '@interfaces/label-category/label-category';
 
 export type { Category } from '@interfaces/category/category';
 
+export type { Company } from '@interfaces/company/company';
+
 export type { Label } from '@interfaces/label/label';
 
 export type { Supplier, SupplierContact } from '@interfaces/supplier/supplier';

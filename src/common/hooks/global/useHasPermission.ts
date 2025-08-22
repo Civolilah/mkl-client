@@ -25,6 +25,7 @@ export type Permission =
   | 'view_dashboard'
   | 'import_products'
   | 'export_products'
+  | 'manage_stock_counting'
   | 'create_label_category'
   | 'view_label_category'
   | 'edit_label_category'

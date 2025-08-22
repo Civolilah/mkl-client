@@ -83,3 +83,4 @@ export { default as LayoutWrapper } from '@components/general/LayoutWrapper';
 export { default as MobilePreviewModal } from '@components/general/MobilePreviewModal';
 export { default as FooterAction } from '@components/layout/FooterAction';
 export { default as MobileSearchAction } from '@components/table/MobileSearchAction';
+export { default as AddCompanyAction } from '@components/company/AddCompanyAction';

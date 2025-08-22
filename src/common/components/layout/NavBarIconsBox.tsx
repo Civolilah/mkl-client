@@ -39,13 +39,7 @@ const NavBarIconsBox = () => {
         >
           <Tooltip text={t('contact_us')} withoutClickOpenOnMobile>
             <div className="cursor-pointer">
-              <Icon name="email" size="1.375rem" />
-            </div>
-          </Tooltip>
-
-          <Tooltip text={t('about_us')} withoutClickOpenOnMobile>
-            <div className="cursor-pointer">
-              <Icon name="information" size="1.425rem" />
+              <Icon name="email" size="1.5rem" />
             </div>
           </Tooltip>
 
@@ -57,7 +51,7 @@ const NavBarIconsBox = () => {
                 setFeedbackModalVisible(true);
               }}
             >
-              <Icon name="feedback" size="1.3rem" />
+              <Icon name="feedback" size="1.5rem" />
             </div>
           </Tooltip>
         </Box>

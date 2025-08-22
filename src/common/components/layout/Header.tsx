@@ -247,39 +247,6 @@ const Header = (props: Props) => {
                       onClick={() => {
                         setIsDrawerOpened(false);
                         setTimeout(() => {
-                          // Handle about us
-                        }, 100);
-                      }}
-                      theme={{
-                        hoverBackgroundColor: colors.$19,
-                      }}
-                    >
-                      <Box className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                        <Icon
-                          name="information"
-                          size="1.25rem"
-                          style={{ color: '#8b5cf6' }}
-                        />
-                      </Box>
-
-                      <Box className="flex-1">
-                        <Text className="font-medium text-base">
-                          {t('about_us')}
-                        </Text>
-                      </Box>
-
-                      <Icon
-                        name="arrowForward"
-                        size="1.6rem"
-                        style={{ color: colors.$8 }}
-                      />
-                    </StyledBox>
-
-                    <StyledBox
-                      className="flex w-full items-center space-x-4 cursor-pointer px-6 py-3.5 transition-colors duration-200"
-                      onClick={() => {
-                        setIsDrawerOpened(false);
-                        setTimeout(() => {
                           logout();
                         }, 100);
                       }}
@@ -399,30 +366,6 @@ const Header = (props: Props) => {
                       <Box className="flex-1">
                         <Text className="font-medium text-sm">
                           {t('feedback_bugs_features')}
-                        </Text>
-                      </Box>
-                    </StyledBox>
-
-                    <StyledBox
-                      className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
-                      onClick={() => {
-                        // Handle about us
-                      }}
-                      theme={{
-                        hoverBackgroundColor: colors.$19,
-                      }}
-                    >
-                      <Box className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                        <Icon
-                          name="information"
-                          size="1rem"
-                          style={{ color: '#8b5cf6' }}
-                        />
-                      </Box>
-
-                      <Box className="flex-1">
-                        <Text className="font-medium text-sm">
-                          {t('about_us')}
                         </Text>
                       </Box>
                     </StyledBox>

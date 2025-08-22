@@ -39,6 +39,7 @@ import {
 } from 'react-icons/fa';
 import { FaEyeDropper } from 'react-icons/fa6';
 import { GoDotFill } from 'react-icons/go';
+import { HiChevronUpDown } from 'react-icons/hi2';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { IoInformationCircleOutline } from 'react-icons/io5';
 import {
@@ -165,7 +166,8 @@ export type IconName =
   | 'phone'
   | 'command'
   | 'search'
-  | 'preview';
+  | 'preview'
+  | 'arrowUpDown';
 
 type Props = {
   className?: string;
@@ -344,6 +346,8 @@ const Icon = (props: Props) => {
       return generateIconElement(MdSearch);
     case 'preview':
       return generateIconElement(MdPreview);
+    case 'arrowUpDown':
+      return generateIconElement(HiChevronUpDown);
     default:
       return <></>;
   }

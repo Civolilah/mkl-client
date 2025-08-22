@@ -20,7 +20,8 @@ export type RefetchEntity =
   | 'subsidiaries'
   | 'users'
   | 'suppliers'
-  | 'warehouses';
+  | 'warehouses'
+  | 'companies';
 
 type Endpoint =
   | '/api/brands'
@@ -32,7 +33,8 @@ type Endpoint =
   | '/api/subsidiaries'
   | '/api/users'
   | '/api/suppliers'
-  | '/api/warehouses';
+  | '/api/warehouses'
+  | '/api/companies';
 
 type RefetchObject = {
   mainEndpoint: Endpoint;
@@ -79,6 +81,10 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   warehouses: {
     mainEndpoint: '/api/warehouses',
     dependencies: ['/api/products'],
+  },
+  companies: {
+    mainEndpoint: '/api/companies',
+    dependencies: [],
   },
 };
 
