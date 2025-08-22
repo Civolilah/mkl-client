@@ -165,7 +165,7 @@ const Register = () => {
       <Box
         className="flex justify-center items-center h-screen w-full"
         style={{
-          backgroundImage: 'url(/public/images/login-register-bg.jpg)',
+          backgroundImage: 'url(/images/login-register-bg.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

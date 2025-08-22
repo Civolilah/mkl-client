@@ -9,7 +9,6 @@
  */
 
 import { route } from '@helpers/index';
-import classNames from 'classnames';
 import { useSetAtom } from 'jotai';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,12 +16,7 @@ import styled from 'styled-components';
 import { Box, Icon, Text, Tooltip } from '@components/index';
 
 import { NavItem as NavItemType } from '@hooks/global/useNavItems';
-import {
-  useAccentColor,
-  useColors,
-  useIsMiniSidebar,
-  useTranslation,
-} from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 import { menuDrawerOpenedAtom } from './MobileNavBar';
 
@@ -53,95 +47,73 @@ const IconWrapper = styled.div`
   }
 `;
 
-const NavItem = (props: Props) => {
+const NavItem = ({ item }: Props) => {
   const t = useTranslation();
-
-  const { item } = props;
 
   const navigate = useNavigate();
 
   const colors = useColors();
   const location = useLocation();
   const accentColor = useAccentColor();
-  const isMiniSideBar = useIsMiniSidebar();
 
   const setIsMenuDrawerOpened = useSetAtom(menuDrawerOpenedAtom);
 
   return (
-    <Tooltip
-      placement="right"
-      text={isMiniSideBar ? t(item.label) : ''}
-      withoutArrow
-      withoutClickOpenOnMobile
+    <Div
+      className="flex items-center cursor-pointer pl-1 pr-2"
+      theme={{
+        hoverBackgroundColor: colors.$30,
+        backgroundColor: colors.$7,
+        hoverColor: colors.$8,
+        isActive: location.pathname.startsWith(item.href),
+      }}
+      onClick={() => {
+        navigate(route(item.href));
+        setIsMenuDrawerOpened(false);
+      }}
+      style={{ minHeight: '2.4rem' }}
     >
-      <Div
-        className={classNames('flex items-center cursor-pointer', {
-          'pl-1 pr-2': !isMiniSideBar,
-          'px-1': isMiniSideBar,
-        })}
-        theme={{
-          hoverBackgroundColor: colors.$30,
-          backgroundColor: colors.$7,
-          hoverColor: colors.$8,
-          isActive: location.pathname.startsWith(item.href),
-        }}
-        onClick={() => {
-          navigate(route(item.href));
-          setIsMenuDrawerOpened(false);
-        }}
-        style={{ minHeight: '2.4rem' }}
-      >
-        <Box
-          className={classNames('flex w-full items-center', {
-            'justify-center': isMiniSideBar,
-            'justify-between': !isMiniSideBar,
-          })}
-        >
-          <Box className="flex items-center space-x-2">
-            <Box className="flex justify-center items-center min-w-8">
-              <IconWrapper
-                theme={{
-                  color: accentColor,
-                  hoverColor: colors.$9,
-                  isActive: location.pathname.startsWith(item.href),
-                }}
-              >
-                <Icon name={item.iconName} size={item.iconSize} />
-              </IconWrapper>
-            </Box>
-
-            {!isMiniSideBar && (
-              <Text className="text-xs-mid">{t(item.label)}</Text>
-            )}
+      <Box className="flex w-full items-center justify-between">
+        <Box className="flex items-center space-x-2">
+          <Box className="flex justify-center items-center min-w-8">
+            <IconWrapper
+              theme={{
+                color: accentColor,
+                hoverColor: colors.$9,
+                isActive: location.pathname.startsWith(item.href),
+              }}
+            >
+              <Icon name={item.iconName} size={item.iconSize} />
+            </IconWrapper>
           </Box>
 
-          {Boolean(
-            item.rightIcon && !isMiniSideBar && item.rightIcon.visible
-          ) && (
-            <Tooltip
-              text={t(item.rightIcon!.tooltipText)}
-              withoutClickOpenOnMobile
-            >
-              <div
-                className="flex items-center justify-center"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  navigate(route(item.rightIcon!.href));
-                  setIsMenuDrawerOpened(false);
-                }}
-                style={{
-                  borderRadius: '50%',
-                  color: accentColor,
-                  border: `1px solid ${accentColor}`,
-                }}
-              >
-                <Icon name={item.rightIcon!.name} size="0.95rem" />
-              </div>
-            </Tooltip>
-          )}
+          <Text className="text-xs-mid">{t(item.label)}</Text>
         </Box>
-      </Div>
-    </Tooltip>
+
+        {Boolean(item.rightIcon && item.rightIcon.visible) && (
+          <Tooltip
+            text={t(item.rightIcon!.tooltipText)}
+            withoutClickOpenOnMobile
+          >
+            <div
+              className="flex items-center justify-center"
+              onClick={(event) => {
+                event.stopPropagation();
+                navigate(route(item.rightIcon!.href));
+                setIsMenuDrawerOpened(false);
+              }}
+              style={{
+                borderRadius: '50%',
+                color: accentColor,
+                border: `1px solid ${accentColor}`,
+              }}
+            >
+              <Icon name={item.rightIcon!.name} size="0.95rem" />
+            </div>
+          </Tooltip>
+        )}
+      </Box>
+    </Div>
   );
 };
 

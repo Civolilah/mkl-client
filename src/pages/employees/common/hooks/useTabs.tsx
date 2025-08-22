@@ -30,7 +30,7 @@ const useTabs = ({
     {
       key: 'details',
       label: (
-        <Box className="flex item-center space-x-2 px-5 py-0.5">
+        <Box className="flex justify-center item-center space-x-2 px-5 py-0.5">
           <Box>
             <Icon name="person" size="1.3rem" />
           </Box>
@@ -52,7 +52,7 @@ const useTabs = ({
     {
       key: 'permissions',
       label: (
-        <Box className="flex item-center space-x-2 px-5 py-0.5">
+        <Box className="flex justify-center item-center space-x-2 px-5 py-0.5">
           <Box>
             <Icon name="security" size="1.25rem" />
           </Box>

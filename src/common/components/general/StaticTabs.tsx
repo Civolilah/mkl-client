@@ -11,6 +11,7 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import { Tabs } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 
 type Props = {
   tabs: {
@@ -31,15 +32,18 @@ const StaticTabs = ({
   activeTab,
   setActiveTab,
 }: Props) => {
+  const isMediumScreen = useMediaQuery({ query: '(min-width: 768px)' });
+
   return (
     <Tabs
       items={tabs}
-      type="line"
+      type={isMediumScreen ? 'line' : 'card'}
       defaultActiveKey={defaultActiveKey}
       style={{ width: '100%' }}
       activeKey={activeTab}
       onChange={(activeKey) => setActiveTab?.(activeKey)}
       size="small"
+      className="mobile-sticky-tabs"
     />
   );
 };

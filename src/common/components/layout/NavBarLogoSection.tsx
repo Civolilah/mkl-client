@@ -11,7 +11,9 @@
 import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
 import classNames from 'classnames';
 
-import { useColors, useIsMiniSidebar } from '@hooks/index';
+import { Box, Text } from '@components/index';
+
+import { useColors } from '@hooks/index';
 
 type Props = {
   mobileSideBar?: boolean;
@@ -23,43 +25,33 @@ const NavBarLogoSection = (props: Props) => {
 
   const colors = useColors();
 
-  const isMiniSideBar = useIsMiniSidebar();
-
   return (
-    <div
-      className={classNames('flex items-center py-2', {
+    <Box
+      className={classNames('flex items-center px-1.5', {
         'border-r': !mobileSideBar,
         'border-b': mobileSideBar,
-        'px-2': !mobileSideBar,
-        'px-4': mobileSideBar,
       })}
       style={{
         height: '3.5rem',
         borderColor: colors.$1,
-        width: isMiniSideBar
-          ? mobileSideBar
-            ? '4.35rem'
-            : '4rem'
-          : mobileSideBar
-            ? '100%'
-            : MAN_LARGE_SIDEBAR_WIDTH,
+        width: mobileSideBar ? '100%' : MAN_LARGE_SIDEBAR_WIDTH,
       }}
     >
-      <div className="flex w-full justify-between items-center">
-        {(!isMiniSideBar || (mobileSideBar && !isMiniSideBar)) && (
-          <div className="h-full" onClick={() => {}}>
-            <img
-              className="cursor-pointer"
-              src="/images/mkl.svg"
-              width="full"
-              height="full"
-              alt="The MKL Store Logo"
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
-        )}
-      </div>
-    </div>
+      <Box className="flex w-full justify-start items-center space-x-4">
+        <img
+          className="cursor-pointer"
+          src="/images/mkl.svg"
+          alt="ecoMKL Logo"
+          style={{
+            width: '4rem',
+            height: '50px',
+            objectFit: 'contain',
+          }}
+        />
+
+        <Text className="text-lg font-medium">ecoMKL</Text>
+      </Box>
+    </Box>
   );
 };
 

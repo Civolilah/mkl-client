@@ -9,7 +9,6 @@
  */
 
 import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
-import classNames from 'classnames';
 
 import {
   Box,
@@ -17,13 +16,11 @@ import {
   NavItem as NavItemElement,
 } from '@components/index';
 
-import { useColors, useIsMiniSidebar, useNavItems } from '@hooks/index';
+import { useColors, useNavItems } from '@hooks/index';
 
 const NavigationBar = () => {
   const colors = useColors();
   const navItems = useNavItems();
-
-  const isMiniSideBar = useIsMiniSidebar();
 
   return (
     <nav
@@ -31,19 +28,11 @@ const NavigationBar = () => {
       style={{
         backgroundColor: colors.$6,
         height: 'calc(100vh - 3.5rem)',
-        width: isMiniSideBar ? '4rem' : MAN_LARGE_SIDEBAR_WIDTH,
+        width: MAN_LARGE_SIDEBAR_WIDTH,
         borderColor: colors.$1,
       }}
     >
-      <Box
-        className={classNames(
-          'flex flex-col flex-1 overflow-y-auto break-all',
-          {
-            'px-2': !isMiniSideBar,
-            'px-1': isMiniSideBar,
-          }
-        )}
-      >
+      <Box className="flex flex-col flex-1 overflow-y-auto break-all px-1.5">
         {navItems
           .filter((item) => item.visible)
           .map((item) => (

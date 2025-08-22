@@ -60,3 +60,25 @@ td::before {
 .custom-medium-switch.ant-switch-checked .ant-switch-handle {
   inset-inline-start: calc(100% - 1rem - 2px) !important;
 }
+
+@media (max-width: 768px) {
+  .mobile-sticky-tabs .ant-tabs-nav-list {
+    width: 100%;
+    display: flex;
+  }
+
+  .mobile-sticky-tabs .ant-tabs-tab {
+    flex: 1;
+    justify-content: center;
+    margin: 0 !important;
+  }
+
+  .mobile-sticky-tabs .ant-tabs-tab + .ant-tabs-tab {
+    margin: 0 !important;
+  }
+
+  .mobile-sticky-tabs .ant-tabs-tab-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

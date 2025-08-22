@@ -81,14 +81,11 @@ const Login = () => {
             localStorage.setItem('MKL-TOKEN', response.data.token);
             localStorage.setItem(
               'DEFAULT-MKL-COMPANY',
-              response.data.preference.default_company_id
+              response.data.company_id
             );
 
             const newSearchParams = new URLSearchParams(searchParams);
-            newSearchParams.set(
-              'company',
-              response.data.preference.default_company_id
-            );
+            newSearchParams.set('company', response.data.company_id);
             setSearchParams(newSearchParams);
 
             navigate(route('/'));
@@ -146,7 +143,7 @@ const Login = () => {
     <Box
       className="flex justify-center items-center h-screen w-full"
       style={{
-        backgroundImage: 'url(/public/images/login-register-bg.jpg)',
+        backgroundImage: 'url(/images/login-register-bg.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

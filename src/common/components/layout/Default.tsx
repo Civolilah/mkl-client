@@ -27,12 +27,7 @@ import {
   Tooltip,
 } from '@components/index';
 
-import {
-  useAccentColor,
-  useColors,
-  useIsMiniSidebar,
-  useTranslation,
-} from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 import MainNavBar from './MainNavBar';
 
@@ -83,8 +78,6 @@ const Default = ({
   const colors = useColors();
   const accentColor = useAccentColor();
 
-  const isMiniSideBar = useIsMiniSidebar();
-
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
@@ -104,7 +97,7 @@ const Default = ({
             className="flex flex-col justify-center items-center flex-1"
             style={{
               width: isLargeScreen
-                ? `calc(100% - ${isMiniSideBar ? '4.35rem' : MAN_LARGE_SIDEBAR_WIDTH})`
+                ? `calc(100% - ${MAN_LARGE_SIDEBAR_WIDTH})`
                 : '100%',
             }}
           >

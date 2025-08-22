@@ -11,7 +11,6 @@
 import { useEffect, useState } from 'react';
 
 import { route } from '@helpers/index';
-import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -31,7 +30,6 @@ import { BreadcrumbItem } from '@components/layout/Default';
 import {
   useFetchEntity,
   useHasPermission,
-  useIsMiniSidebar,
   usePageLayoutAndActions,
   useTranslation,
 } from '@hooks/index';
@@ -40,7 +38,6 @@ const Show = () => {
   const t = useTranslation();
 
   const { id } = useParams();
-  const isMiniSideBar = useIsMiniSidebar();
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -145,12 +142,7 @@ const Show = () => {
   );
 
   return (
-    <Box
-      className={classNames('flex w-full self-start', {
-        'md:w-full xl:w-3/4': !isMiniSideBar,
-        'md:w-3/4 xl:w-2/3': isMiniSideBar,
-      })}
-    >
+    <Box className="flex w-full self-start md:w-full xl:w-3/4">
       <Card title={t('view_employee')} className="w-full">
         <LabelElement label={t('first_name')} withoutOptionalText>
           <Text className="font-medium">{employee?.first_name}</Text>

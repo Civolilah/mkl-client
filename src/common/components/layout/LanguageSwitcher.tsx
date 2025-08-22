@@ -17,9 +17,11 @@ import { Box, Icon, Popover, Text } from '@components/index';
 import { useColors, useSwitchLanguage } from '@hooks/index';
 
 const Div = styled.div`
+  color: ${({ theme }) => theme.color};
   background-color: ${({ theme }) => theme.backgroundColor};
 
   &:hover {
+    color: ${({ theme }) => theme.hoverColor};
     background-color: ${({ theme }) => theme.hoverBackgroundColor};
   }
 `;
@@ -158,27 +160,24 @@ const LanguageSwitcher = () => {
             <Div
               key={lang}
               className={classNames(
-                'flex items-center justify-center py-2 px-4 cursor-pointer',
+                'flex items-center justify-center py-2 px-4',
                 {
-                  'cursor-not-allowed': i18n.language === lang,
+                  'cursor-pointer': i18n.language !== lang,
                 }
               )}
               onClick={() =>
                 i18n.language !== lang && handleLanguageChange(lang)
               }
               theme={{
+                color: i18n.language === lang ? colors.$2 : colors.$12,
+                hoverColor: colors.$2,
                 backgroundColor:
                   i18n.language === lang ? colors.$1 : 'transparent',
                 hoverBackgroundColor:
-                  i18n.language === lang ? colors.$5 : colors.$1,
+                  i18n.language === lang ? colors.$1 : colors.$17,
               }}
             >
-              <Text
-                className="text-sm font-medium"
-                style={{
-                  color: i18n.language === lang ? colors.$2 : colors.$12,
-                }}
-              >
+              <Text className="text-sm font-medium">
                 {LANGUAGE_CODES[lang]}
               </Text>
             </Div>

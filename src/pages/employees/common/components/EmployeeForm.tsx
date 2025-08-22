@@ -10,14 +10,11 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import classNames from 'classnames';
 import { useSearchParams } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
 import { Box, StaticTabs } from '@components/index';
-
-import { useIsMiniSidebar } from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
 import useTabs from '../hooks/useTabs';
@@ -38,8 +35,6 @@ const EmployeeForm = ({
   editPage,
   isLoading,
 }: Props) => {
-  const isMiniSideBar = useIsMiniSidebar();
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleChange = useHandleChange({ setEmployee });
@@ -95,12 +90,7 @@ const EmployeeForm = ({
   }, [searchParams]);
 
   return (
-    <Box
-      className={classNames('flex w-full self-start', {
-        'md:w-full xl:w-3/4': !isMiniSideBar,
-        'md:w-3/4 xl:w-2/3': isMiniSideBar,
-      })}
-    >
+    <Box className="flex w-full self-start md:w-full xl:w-3/4">
       <StaticTabs
         tabs={tabs}
         activeTab={activeTab}
