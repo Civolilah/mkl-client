@@ -13,15 +13,18 @@ import { useEffect, useState } from 'react';
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route } from '@helpers/index';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import reactStringReplace from 'react-string-replace';
 
 import { ValidationErrors } from '@interfaces/index';
 
 import {
+  AppleButton,
   Box,
   Button,
   Captcha,
   GoogleButton,
   Icon,
+  LanguageSwitcher,
   Link,
   Modal,
   Spinner,
@@ -29,7 +32,7 @@ import {
   TextField,
 } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 import { validateUserDetails } from './helpers/helpers';
 
@@ -43,7 +46,9 @@ export type AccessType = 'credentials' | 'google' | 'apple';
 
 const Register = () => {
   const t = useTranslation();
+
   const colors = useColors();
+  const accentColor = useAccentColor();
 
   const navigate = useNavigate();
 
@@ -158,164 +163,165 @@ const Register = () => {
       </Modal>
 
       <Box
-        className="flex flex-col items-center justify-center min-h-screen min-w-screen"
+        className="flex justify-center items-center h-screen w-full"
         style={{
-          backgroundColor: colors.$3,
+          backgroundImage: 'url(/public/images/login-register-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       >
-        <img
-          className="cursor-pointer"
-          src="/images/mkl.svg"
-          width={100}
-          height={100}
-          alt="The ecoMKL Logo"
-        />
-
-        <Box className="px-2 md:px-0 max-w-full w-[24rem] pb-[4.7rem]">
+        <Box className="flex justify-center items-center h-full p-4 md:p-8 w-full md:w-[35rem]">
           <Box
-            className="flex flex-col border px-4 md:px-6 pt-8 pb-6 md:pb-8 md:pt-10 w-full"
+            className="flex flex-col gap-y-16 justify-between items-center px-4 md:px-8 pt-6 md:pt-8 pb-4 h-auto w-full rounded-xl"
             style={{
-              borderColor: colors.$1,
-              boxShadow: `
-            0 1px 2px rgba(0, 0, 0, 0.04),
-            0 2px 4px rgba(0, 0, 0, 0.03),
-            0 4px 8px rgba(0, 0, 0, 0.02),
-            0 8px 16px rgba(0, 0, 0, 0.01)
-          `,
               backgroundColor: colors.$2,
             }}
           >
-            <Box className="flex flex-col items-center justify-center space-y-10">
-              <Text style={{ fontSize: '1.75rem' }}>
-                {t('create_your_account')}
-              </Text>
+            <Box className="flex w-full justify-between">
+              <img
+                src="/images/mkl.svg"
+                width={75}
+                height={50}
+                alt="ecoMKL Logo"
+              />
 
-              <Box className="flex flex-col justify-center items-center space-y-4 w-full">
-                <TextField
-                  type="email"
-                  label={t('email')}
-                  placeHolder={t('email_placeholder')}
-                  value={userDetails.email}
-                  onValueChange={(value) =>
-                    setUserDetails((current) => ({ ...current, email: value }))
-                  }
-                  debounce={0}
-                  disabled={isFormBusy}
-                  onPressEnter={() => {
-                    setTurnstileToken('');
-                    setIsAntiBotModalOpen(true);
-                  }}
-                  errorMessage={errors.email && t(errors.email)}
-                  withoutOptionalText
-                  autoComplete="email"
-                />
+              <LanguageSwitcher />
+            </Box>
 
-                <TextField
-                  type="password"
-                  label={t('password')}
-                  placeHolder={t('password_placeholder')}
-                  value={userDetails.password}
-                  onValueChange={(value) =>
-                    setUserDetails((current) => ({
-                      ...current,
-                      password: value,
-                    }))
-                  }
-                  debounce={0}
-                  disabled={isFormBusy}
-                  onPressEnter={() => {
-                    setTurnstileToken('');
-                    setIsAntiBotModalOpen(true);
-                  }}
-                  errorMessage={errors.password && t(errors.password)}
-                  withoutOptionalText
-                />
+            <Box className="flex flex-col gap-y-4 px-0 md:px-12 lg:px-10 w-full">
+              <Box className="flex flex-col items-center gap-y-1 mb-4">
+                <Text className="text-4xl font-normal text-center">
+                  {t('create_account')}
+                </Text>
 
-                <TextField
-                  type="password"
-                  label={t('confirm_password')}
-                  placeHolder={t('password_placeholder')}
-                  value={userDetails.password_confirmation as string}
-                  onValueChange={(value) =>
-                    setUserDetails((current) => ({
-                      ...current,
-                      password_confirmation: value,
-                    }))
-                  }
-                  debounce={0}
-                  disabled={isFormBusy}
-                  onPressEnter={() => {
-                    setTurnstileToken('');
-                    setIsAntiBotModalOpen(true);
+                <Box className="flex items-center gap-x-1">
+                  <Text className="text-sm" style={{ color: colors.$5 }}>
+                    {t('already_have_account')}
+                  </Text>
+
+                  <Link to="/login" className="text-sm">
+                    {t('log_in')}
+                  </Link>
+                </Box>
+              </Box>
+
+              <TextField
+                type="email"
+                label={t('email')}
+                placeHolder={t('email_placeholder')}
+                value={userDetails.email}
+                onValueChange={(value) =>
+                  setUserDetails((current) => ({ ...current, email: value }))
+                }
+                debounce={0}
+                disabled={isFormBusy}
+                onPressEnter={() => {
+                  setTurnstileToken('');
+                  setIsAntiBotModalOpen(true);
+                }}
+                errorMessage={errors.email && t(errors.email)}
+                withoutOptionalText
+                autoComplete="email"
+              />
+
+              <TextField
+                type="password"
+                label={t('password')}
+                placeHolder={t('password_placeholder')}
+                value={userDetails.password}
+                onValueChange={(value) =>
+                  setUserDetails((current) => ({
+                    ...current,
+                    password: value,
+                  }))
+                }
+                debounce={0}
+                disabled={isFormBusy}
+                onPressEnter={() => {
+                  setTurnstileToken('');
+                  setIsAntiBotModalOpen(true);
+                }}
+                errorMessage={errors.password && t(errors.password)}
+                withoutOptionalText
+              />
+
+              <TextField
+                type="password"
+                label={t('confirm_password')}
+                placeHolder={t('password_placeholder')}
+                value={userDetails.password_confirmation as string}
+                onValueChange={(value) =>
+                  setUserDetails((current) => ({
+                    ...current,
+                    password_confirmation: value,
+                  }))
+                }
+                debounce={0}
+                disabled={isFormBusy}
+                onPressEnter={() => {
+                  setTurnstileToken('');
+                  setIsAntiBotModalOpen(true);
+                }}
+                errorMessage={
+                  errors.password_confirmation &&
+                  t(errors.password_confirmation)
+                }
+                withoutOptionalText
+              />
+
+              <Button
+                className="w-full"
+                onClick={() => {
+                  setTurnstileToken('');
+                  setIsAntiBotModalOpen(true);
+                }}
+                disabled={
+                  isFormBusy ||
+                  Boolean(Object.keys(errors).length) ||
+                  isAntiBotModalOpen
+                }
+                disabledWithLoadingIcon={Boolean(
+                  !Object.keys(errors).length && turnstileToken
+                )}
+              >
+                {t('create_account')}
+              </Button>
+
+              <Box className="flex items-center w-full space-x-4">
+                <Box
+                  className="flex-1"
+                  style={{
+                    height: '1px',
+                    backgroundColor: colors.$1,
                   }}
-                  errorMessage={
-                    errors.password_confirmation &&
-                    t(errors.password_confirmation)
-                  }
-                  withoutOptionalText
                 />
 
                 <Box
-                  className="flex flex-col items-center justify-center w-full space-y-3"
-                  style={{ marginTop: '1.5rem' }}
+                  className="text-xs-mid font-medium uppercase"
+                  style={{
+                    color: colors.$5,
+                  }}
                 >
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      setTurnstileToken('');
-                      setIsAntiBotModalOpen(true);
-                    }}
-                    disabled={
-                      isFormBusy ||
-                      Boolean(Object.keys(errors).length) ||
-                      isAntiBotModalOpen
-                    }
-                    disabledWithLoadingIcon={Boolean(
-                      !Object.keys(errors).length && turnstileToken
-                    )}
-                  >
-                    {t('create_account')}
-                  </Button>
-
-                  <Box className="flex items-center justify-center w-full space-x-3">
-                    <Text className="text-xs-mid">
-                      {t('already_have_account')}
-                    </Text>
-
-                    <Link className="text-xs-mid" to="/login">
-                      {t('sign_in')}
-                    </Link>
-                  </Box>
+                  {t('or')}
                 </Box>
 
-                <Box className="flex items-center w-full space-x-4">
-                  <Box
-                    className="flex-1"
-                    style={{
-                      height: '1px',
-                      backgroundColor: colors.$1,
-                    }}
-                  />
+                <Box
+                  className="flex-1"
+                  style={{
+                    height: '1px',
+                    backgroundColor: colors.$1,
+                  }}
+                />
+              </Box>
 
-                  <Box
-                    className="text-xs-mid font-medium uppercase"
-                    style={{
-                      color: colors.$5,
-                    }}
-                  >
-                    {t('or')}
-                  </Box>
-
-                  <Box
-                    className="flex-1"
-                    style={{
-                      height: '1px',
-                      backgroundColor: colors.$1,
-                    }}
-                  />
-                </Box>
-
+              <Box className="grid grid-cols-2 gap-x-4">
                 <GoogleButton
+                  disabled={isFormBusy}
+                  handleAccessApp={handleRegister}
+                />
+
+                <AppleButton
                   disabled={isFormBusy}
                   handleAccessApp={handleRegister}
                 />
@@ -324,6 +330,48 @@ const Register = () => {
                   <Captcha onVerify={handleCaptchaVerify} />
                 )}
               </Box>
+            </Box>
+
+            <Box
+              className="text-center text-xs mt-6"
+              style={{
+                color: colors.$5,
+              }}
+            >
+              {reactStringReplace(
+                reactStringReplace(
+                  t('copyright_text', {
+                    terms: ':terms',
+                    privacyPolicy: ':privacyPolicy',
+                  }),
+                  ':terms',
+                  () => (
+                    <Link
+                      key="terms"
+                      to="/terms"
+                      className="text-xs font-medium"
+                      style={{
+                        color: accentColor,
+                      }}
+                    >
+                      {t('terms')}
+                    </Link>
+                  )
+                ),
+                ':privacyPolicy',
+                () => (
+                  <Link
+                    key="privacyPolicy"
+                    to="/privacy"
+                    className="text-xs font-medium"
+                    style={{
+                      color: accentColor,
+                    }}
+                  >
+                    {t('privacy_policy')}
+                  </Link>
+                )
+              )}
             </Box>
           </Box>
         </Box>

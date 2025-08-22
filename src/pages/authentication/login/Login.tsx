@@ -144,18 +144,17 @@ const Login = () => {
 
   return (
     <Box
-      className="flex justify-center items-center h-screen"
+      className="flex justify-center items-center h-screen w-full"
       style={{
-        backgroundImage:
-          'url(https://images.unsplash.com/photo-1586880244386-8b3e34c8382c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80)',
+        backgroundImage: 'url(/public/images/login-register-bg.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <Box className="h-full p-4 md:p-8 md:w-[35rem] lg:w-[43rem]">
+      <Box className="flex justify-center items-center h-full p-4 md:p-8 w-full md:w-[35rem]">
         <Box
-          className="flex flex-col justify-between items-center px-5 pt-5 pb-6 h-full w-full"
+          className="flex flex-col gap-y-16 justify-between items-center px-4 md:px-8 pt-6 md:pt-8 pb-4 h-auto w-full rounded-xl"
           style={{
             backgroundColor: colors.$2,
           }}
@@ -171,8 +170,8 @@ const Login = () => {
             <LanguageSwitcher />
           </Box>
 
-          <Box className="flex flex-col gap-y-5 px-0 md:px-12 lg:px-28 w-full">
-            <Box className="flex flex-col items-center gap-y-2 mb-8">
+          <Box className="flex flex-col gap-y-4 px-0 md:px-12 lg:px-10 w-full">
+            <Box className="flex flex-col items-center gap-y-1 mb-4">
               <Text className="text-4xl font-normal text-center">
                 {t('welcome_back')}
               </Text>

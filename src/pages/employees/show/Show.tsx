@@ -157,7 +157,9 @@ const Show = () => {
         </LabelElement>
 
         <LabelElement label={t('last_name')} withoutOptionalText>
-          <Text className="font-medium">{employee?.last_name}</Text>
+          <Text className="font-medium">
+            {employee?.last_name || t('no_entry')}
+          </Text>
         </LabelElement>
 
         <LabelElement label={t('email')} withoutOptionalText>
