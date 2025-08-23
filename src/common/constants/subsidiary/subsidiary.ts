@@ -12,4 +12,8 @@ import { Subsidiary } from '@interfaces/index';
 
 export const INITIAL_SUBSIDIARY: Subsidiary = {
   name: '',
+  address: '',
+  city: '',
+  zip_code: '',
+  country_code: '',
 };

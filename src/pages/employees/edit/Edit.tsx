@@ -18,7 +18,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
-import { Box, FooterAction, RefreshDataElement } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  RefreshDataElement,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -161,26 +166,6 @@ const Edit = () => {
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="dashboard"
-            onClick={() => {
-              navigate(route('/dashboard'));
-            }}
-            iconName="dashboard"
-            disabled={isLoading}
-            iconSize="1.1rem"
-          />
-
-          <FooterAction
-            text="employees"
-            onClick={() => {
-              navigate(route('/employees'));
-            }}
-            iconName="employees"
-            disabled={isLoading}
-            iconSize="1.3rem"
-          />
-
-          <FooterAction
             text="preview"
             onClick={() => {
               navigate(route('/employees/:id/show', { id: id || '' }));
@@ -204,6 +189,8 @@ const Edit = () => {
             disabled={isLoading}
             iconSize="1.3rem"
           />
+
+          <AISearchAction disabled={isLoading} />
         </Box>
       ),
     },

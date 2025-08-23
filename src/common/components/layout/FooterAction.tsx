@@ -8,6 +8,8 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { ReactNode } from 'react';
+
 import classNames from 'classnames';
 
 import Icon, { IconName } from '@components/general/Icon';
@@ -19,10 +21,11 @@ import { Box, Text } from '..';
 interface Props {
   text: string;
   onClick: () => void;
-  iconName: IconName;
+  iconName?: IconName;
   iconSize?: string;
   disabled?: boolean;
   iconColor?: string;
+  icon?: ReactNode;
 }
 
 const FooterAction = ({
@@ -32,6 +35,7 @@ const FooterAction = ({
   iconSize = '1.25rem',
   disabled = false,
   iconColor,
+  icon,
 }: Props) => {
   const t = useTranslation();
 
@@ -48,7 +52,15 @@ const FooterAction = ({
         onClick={onClick}
       >
         <Box>
-          <Icon name={iconName} size={iconSize} style={{ color: iconColor }} />
+          {Boolean(iconName && !icon) && (
+            <Icon
+              name={iconName as IconName}
+              size={iconSize}
+              style={{ color: iconColor }}
+            />
+          )}
+
+          {icon}
         </Box>
 
         <Text className="text-xs">{t(text)}</Text>

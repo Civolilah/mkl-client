@@ -18,6 +18,7 @@ import { User } from '@interfaces/index';
 
 import { CreationRoute } from '@components/general/Table';
 import {
+  AISearchAction,
   Box,
   FooterAction,
   MobileSearchAction,
@@ -74,16 +75,6 @@ const Employees = () => {
         </Box>
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
-          <FooterAction
-            text="dashboard"
-            onClick={() => {
-              navigate(route('/dashboard'));
-            }}
-            iconName="dashboard"
-            disabled={isLoading}
-            iconSize="1.1rem"
-          />
-
           <MobileSearchAction
             disabled={isLoading}
             iconSize="1.3rem"
@@ -106,6 +97,8 @@ const Employees = () => {
             iconName="refresh"
             disabled={isLoading}
           />
+
+          <AISearchAction disabled={isLoading} />
         </Box>
       ),
     },

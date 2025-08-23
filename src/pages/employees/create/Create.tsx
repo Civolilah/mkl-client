@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
-import { Box, FooterAction } from '@components/index';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -139,16 +139,6 @@ const Create = () => {
       footer: isLargeScreen ? undefined : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="dashboard"
-            onClick={() => {
-              navigate(route('/dashboard'));
-            }}
-            iconName="dashboard"
-            disabled={isFormBusy}
-            iconSize="1.1rem"
-          />
-
-          <FooterAction
             text="employees"
             onClick={() => {
               navigate(route('/employees'));
@@ -165,6 +155,8 @@ const Create = () => {
             disabled={isFormBusy}
             iconSize="1.3rem"
           />
+
+          <AISearchAction disabled={isFormBusy} />
         </Box>
       ),
     },

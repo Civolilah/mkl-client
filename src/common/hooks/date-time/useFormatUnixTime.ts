@@ -9,25 +9,25 @@
  */
 
 import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { useAtomValue } from 'jotai';
+
+import { userCompanyAtom } from '@components/general/PrivateRoute';
 
 dayjs.extend(utc);
-dayjs.extend(timezone);
 
 const useFormatUnixTime = () => {
-  const isMilitaryTime = false;
-  const timeZone = 'Europe/Sarajevo';
+  const userCompany = useAtomValue(userCompanyAtom);
 
-  return (value: number, format = 'DD.MM.YYYY HH:mm') => {
-    if (isMilitaryTime) {
-      return dayjs
-        .unix(value)
-        .tz(timeZone)
-        .format(`${format.replace('HH', 'hh')} A`);
+  return (value: number, format?: string) => {
+    const currentFormat =
+      format || `${userCompany?.preference.date_format} HH:mm`;
+
+    if (userCompany?.preference.is_military_time) {
+      return dayjs.unix(value).format(`${currentFormat.replace('HH', 'hh')} A`);
     }
 
-    return dayjs.unix(value).tz(timeZone).format(format);
+    return dayjs.unix(value).format(currentFormat);
   };
 };
 

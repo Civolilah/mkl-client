@@ -21,6 +21,7 @@ type Props = {
   children: ReactNode;
   onClick?: () => void;
   size?: 'default' | 'large';
+  fontSize?: string;
 };
 
 const Avatar = ({
@@ -30,6 +31,7 @@ const Avatar = ({
   children,
   onClick,
   size = 'default',
+  fontSize = '1.1rem',
 }: Props) => {
   const accentColor = useAccentColor();
 
@@ -39,7 +41,7 @@ const Avatar = ({
       style={{
         backgroundColor: backgroundColor || accentColor,
         verticalAlign: 'middle',
-        fontSize: '1.1rem',
+        fontSize: fontSize,
       }}
       size={size}
       gap={gap}

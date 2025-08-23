@@ -86,7 +86,17 @@ import {
   MdBarChart,
   MdAttachMoney,
 } from 'react-icons/md';
-import { RiInboxLine, RiLockPasswordFill } from 'react-icons/ri';
+import {
+  RiAiGenerate,
+  RiArrowDownSFill,
+  RiArrowUpSFill,
+  RiBarcodeLine,
+  RiImageLine,
+  RiInboxLine,
+  RiLockPasswordFill,
+  RiMicLine,
+  RiRobot2Line,
+} from 'react-icons/ri';
 import { RxPerson } from 'react-icons/rx';
 import { RxDotsHorizontal } from 'react-icons/rx';
 import { SiCashapp } from 'react-icons/si';
@@ -167,7 +177,14 @@ export type IconName =
   | 'command'
   | 'search'
   | 'preview'
-  | 'arrowUpDown';
+  | 'arrowUpDown'
+  | 'ai'
+  | 'robotLine'
+  | 'arrowUpFill'
+  | 'arrowDownFill'
+  | 'barcode'
+  | 'microphoneLine'
+  | 'imageLine';
 
 type Props = {
   className?: string;
@@ -348,6 +365,20 @@ const Icon = (props: Props) => {
       return generateIconElement(MdPreview);
     case 'arrowUpDown':
       return generateIconElement(HiChevronUpDown);
+    case 'ai':
+      return generateIconElement(RiAiGenerate);
+    case 'robotLine':
+      return generateIconElement(RiRobot2Line);
+    case 'arrowUpFill':
+      return generateIconElement(RiArrowUpSFill);
+    case 'arrowDownFill':
+      return generateIconElement(RiArrowDownSFill);
+    case 'barcode':
+      return generateIconElement(RiBarcodeLine);
+    case 'microphoneLine':
+      return generateIconElement(RiMicLine);
+    case 'imageLine':
+      return generateIconElement(RiImageLine);
     default:
       return <></>;
   }

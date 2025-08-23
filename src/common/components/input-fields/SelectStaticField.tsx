@@ -41,21 +41,19 @@ type Props = {
   size?: 'large' | 'middle' | 'small';
 };
 
-const SelectStaticField = (props: Props) => {
-  const {
-    label,
-    required,
-    withoutOptionalText,
-    value,
-    mode = 'multiple',
-    onChange,
-    placeholder,
-    errorMessage,
-    onClear,
-    size = 'large',
-    options,
-  } = props;
-
+const SelectStaticField = ({
+  label,
+  required,
+  withoutOptionalText,
+  value,
+  mode = 'multiple',
+  onChange,
+  placeholder,
+  errorMessage,
+  onClear,
+  size = 'large',
+  options,
+}: Props) => {
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
 
   const handleSearch = (value: string) => {

@@ -17,6 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { User } from '@interfaces/index';
 
 import {
+  AISearchAction,
   Box,
   Card,
   FooterAction,
@@ -104,16 +105,6 @@ const Show = () => {
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="dashboard"
-            onClick={() => {
-              navigate(route('/dashboard'));
-            }}
-            iconName="dashboard"
-            disabled={isLoading}
-            iconSize="1.1rem"
-          />
-
-          <FooterAction
             text="employees"
             onClick={() => {
               navigate(route('/employees'));
@@ -139,6 +130,8 @@ const Show = () => {
             iconName="refresh"
             disabled={isLoading}
           />
+
+          <AISearchAction disabled={isLoading} />
         </Box>
       ),
     },

@@ -10,17 +10,36 @@
 
 import { useState } from 'react';
 
+import { route } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
+
 import { Subsidiary } from '@interfaces/index';
 
-import { Box, Default, RefreshDataElement, Table } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  MobileSearchAction,
+  RefreshDataElement,
+  Table,
+} from '@components/index';
 
-import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
+import {
+  useFetchEntity,
+  useHasPermission,
+  usePageLayoutAndActions,
+  useTranslation,
+} from '@hooks/index';
 
 import useColumns from './common/hooks/useColumns';
 
 const Subsidiaries = () => {
   const t = useTranslation();
 
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,10 +61,10 @@ const Subsidiaries = () => {
     refresh,
   });
 
-  return (
-    <Default
-      title={t('subsidiaries')}
-      footer={
+  usePageLayoutAndActions(
+    {
+      title: t('subsidiaries'),
+      footer: isLargeScreen ? (
         <Box className="flex w-full items-center justify-end">
           <RefreshDataElement
             isLoading={isLoading}
@@ -53,19 +72,49 @@ const Subsidiaries = () => {
             tooltipPlacement="left"
           />
         </Box>
-      }
-    >
-      <Table<Subsidiary>
-        columns={columns}
-        data={subsidiaries}
-        isDataLoading={isLoading}
-        enableFiltering
-        filteringProps={['name']}
-        creationRoute="/subsidiaries/new"
-        creationButtonLabel={t('new_subsidiary')}
-        filterFieldPlaceHolder={t('search_by_name')}
-      />
-    </Default>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <MobileSearchAction
+            disabled={isLoading}
+            iconSize="1.3rem"
+            searchPlaceholder="search_subsidiary_by"
+          />
+
+          <FooterAction
+            text="new_subsidiary"
+            onClick={() => {
+              navigate(route('/subsidiaries/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [isLoading, isLargeScreen]
+  );
+
+  return (
+    <Table<Subsidiary>
+      columns={columns}
+      data={subsidiaries}
+      isDataLoading={isLoading}
+      enableFiltering
+      filteringProps={['name']}
+      creationRoute="/subsidiaries/new"
+      creationButtonLabel={t('new_subsidiary')}
+      filterFieldPlaceHolder={t('search_subsidiary_by')}
+    />
   );
 };
 

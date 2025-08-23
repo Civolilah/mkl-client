@@ -22,7 +22,7 @@ import { Company, ValidationErrors } from '@interfaces/index';
 import { userCompanyAtom } from '@components/general/PrivateRoute';
 import { Box, Button, Icon, Modal, Text, TextField } from '@components/index';
 
-import { useRefetch, useTranslation } from '@hooks/index';
+import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 
 const AddCompanyAction = () => {
   const t = useTranslation();
@@ -31,6 +31,7 @@ const AddCompanyAction = () => {
 
   const refetch = useRefetch();
   const navigate = useNavigate();
+  const hasPermission = useHasPermission();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -162,16 +163,18 @@ const AddCompanyAction = () => {
         )}
       </Modal>
 
-      <Box
-        className={classNames('flex items-center gap-x-2 py-2 px-3', {
-          'cursor-pointer': !isFormBusy,
-          'pointer-events-none': isFormBusy,
-        })}
-        onClick={() => !isFormBusy && setIsModalVisible(true)}
-      >
-        <Icon name="add" size="1.5rem" />
-        <Text className="text-sm font-medium">{t('new_company')}</Text>
-      </Box>
+      {hasPermission('owner') && (
+        <Box
+          className={classNames('flex items-center gap-x-2 py-2 px-3', {
+            'cursor-pointer': !isFormBusy,
+            'pointer-events-none': isFormBusy,
+          })}
+          onClick={() => !isFormBusy && setIsModalVisible(true)}
+        >
+          <Icon name="add" size="1.5rem" />
+          <Text className="text-sm font-medium">{t('new_company')}</Text>
+        </Box>
+      )}
     </>
   );
 };

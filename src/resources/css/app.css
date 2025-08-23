@@ -61,6 +61,10 @@ td::before {
   inset-inline-start: calc(100% - 1rem - 2px) !important;
 }
 
+.company-switcher-dropdown .ant-dropdown-trigger {
+  width: 100% !important;
+}
+
 @media (max-width: 768px) {
   .mobile-sticky-tabs .ant-tabs-nav-list {
     width: 100%;

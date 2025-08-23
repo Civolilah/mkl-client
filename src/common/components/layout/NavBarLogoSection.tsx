@@ -15,7 +15,14 @@ import { useAtomValue } from 'jotai';
 import styled from 'styled-components';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
-import { AddCompanyAction, Box, Dropdown, Icon, Text } from '@components/index';
+import {
+  AddCompanyAction,
+  Avatar,
+  Box,
+  Dropdown,
+  Icon,
+  Text,
+} from '@components/index';
 
 import { useColors, useTranslation } from '@hooks/index';
 
@@ -57,10 +64,13 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
 
   return (
     <Box
-      className={classNames('flex items-center px-3', {
-        'border-r': !mobileSideBar,
-        'border-b': mobileSideBar,
-      })}
+      className={classNames(
+        'flex items-center px-3 company-switcher-dropdown',
+        {
+          'border-r': !mobileSideBar,
+          'border-b': mobileSideBar,
+        }
+      )}
       style={{
         height: '3.5rem',
         borderColor: colors.$1,
@@ -71,9 +81,6 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
         <StyledBox
           className="flex w-full justify-between items-center cursor-pointer pl-2 pr-0.5"
           style={{
-            width: mobileSideBar
-              ? '100%'
-              : `calc(${MAN_LARGE_SIDEBAR_WIDTH} - 1.5rem)`,
             height: '2.5rem',
           }}
           theme={{
@@ -81,17 +88,10 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
             hoverBackgroundColor: colors.$19,
           }}
         >
-          <Box className="flex items-center gap-x-4 cursor-pointer">
-            <img
-              className="cursor-pointer"
-              src="/images/mkl.svg"
-              alt="ecoMKL Logo"
-              style={{
-                width: '2.5rem',
-                height: '50px',
-                objectFit: 'contain',
-              }}
-            />
+          <Box className="flex items-center gap-x-4 cursor-pointer flex-1">
+            <Avatar className="uppercase" fontSize="1.05rem">
+              {(userCompany?.company.name || t('untitled_company'))[0]}
+            </Avatar>
 
             <Box className="flex-1 truncate max-w-[8.25rem]">
               <Text className="text-sm font-medium">

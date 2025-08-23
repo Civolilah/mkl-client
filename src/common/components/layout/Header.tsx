@@ -12,9 +12,10 @@ import { useEffect, useState } from 'react';
 
 import { route } from '@helpers/index';
 import { Drawer } from 'antd';
+import classNames from 'classnames';
 import { useAtomValue } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
@@ -46,12 +47,11 @@ const StyledBox = styled.div`
   }
 `;
 
-const Header = (props: Props) => {
+const Header = ({ title }: Props) => {
   const t = useTranslation();
 
-  const { title } = props;
-
   const colors = useColors();
+  const location = useLocation();
   const navItems = useNavItems();
   const accentColor = useAccentColor();
 
@@ -77,7 +77,15 @@ const Header = (props: Props) => {
 
   return (
     <Box
-      className="flex items-center justify-center w-full border-b py-4"
+      className={classNames(
+        'flex items-center justify-center w-full border-b py-4',
+        {
+          'shadow-sm':
+            !location.pathname.includes('/new') &&
+            !location.pathname.includes('/edit') &&
+            !location.pathname.includes('/show'),
+        }
+      )}
       style={{
         height: '3.5rem',
         borderColor: colors.$1,

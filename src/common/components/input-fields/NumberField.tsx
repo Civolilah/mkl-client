@@ -11,8 +11,10 @@
 import { KeyboardEvent, ReactNode, useEffect, useState } from 'react';
 
 import { InputNumber } from 'antd';
+import { useAtomValue } from 'jotai';
 import { useDebounce } from 'react-use';
 
+import { userCompanyAtom } from '@components/general/PrivateRoute';
 import {
   Box,
   ErrorMessageElement,
@@ -62,6 +64,8 @@ const NumberField = ({
   readOnly = false,
   afterLabel,
 }: Props) => {
+  const userCompany = useAtomValue(userCompanyAtom);
+
   const [currentValue, setCurrentValue] = useState<number>(value);
 
   useDebounce(
@@ -124,6 +128,7 @@ const NumberField = ({
           boxShadow: 'none',
         }}
         readOnly={readOnly}
+        precision={userCompany?.preference.number_precision || 2}
       />
 
       <ErrorMessageElement errorMessage={errorMessage} />

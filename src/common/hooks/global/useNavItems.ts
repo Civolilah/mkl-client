@@ -237,20 +237,6 @@ const useNavItems = () => {
       },
     },
     {
-      key: 'companies',
-      label: 'companies',
-      iconName: 'company',
-      href: '/companies',
-      visible: hasPermission('owner'),
-      iconSize: '1.129rem',
-      rightIcon: {
-        name: 'add',
-        href: '/companies/new',
-        tooltipText: 'new_company',
-        visible: true,
-      },
-    },
-    {
       key: 'reports',
       label: t('reports'),
       iconName: 'barChart',

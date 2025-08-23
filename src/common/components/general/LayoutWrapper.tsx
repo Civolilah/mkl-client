@@ -26,6 +26,9 @@ const LAYOUT_WRAPPER_COVERED_ROUTES = [
   '/employees/new',
   '/employees/:id/edit',
   '/employees/:id/show',
+  '/subsidiaries',
+  '/subsidiaries/new',
+  '/subsidiaries/:id/edit',
 ];
 
 const LayoutWrapper = ({ children }: Props) => {
@@ -66,6 +69,12 @@ const LayoutWrapper = ({ children }: Props) => {
       saveButtonLabel={pageLayoutAndActions.buttonAction?.label}
       saveButtonIcon={pageLayoutAndActions.buttonAction?.iconName}
       saveButtonIconColor={pageLayoutAndActions.buttonAction?.iconColor}
+      displayPermissionTooltip={
+        pageLayoutAndActions.buttonAction?.displayPermissionTooltip
+      }
+      tooltipPermissionMessage={
+        pageLayoutAndActions.buttonAction?.tooltipPermissionMessage
+      }
     >
       {children}
     </Default>

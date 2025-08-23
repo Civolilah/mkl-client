@@ -84,3 +84,5 @@ export { default as MobilePreviewModal } from '@components/general/MobilePreview
 export { default as FooterAction } from '@components/layout/FooterAction';
 export { default as MobileSearchAction } from '@components/table/MobileSearchAction';
 export { default as AddCompanyAction } from '@components/company/AddCompanyAction';
+export { default as CountriesSelector } from '@components/selectors/CountriesSelector';
+export { default as AISearchAction } from '@components/layout/AISearchAction';

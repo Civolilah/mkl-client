@@ -34,3 +34,4 @@ export { default as useFormatMoney } from '@hooks/global/useFormatMoney';
 export { default as usePageLayoutAndActions } from '@hooks/global/usePageLayoutAndActions';
 export { default as useFindSubsidiary } from '@hooks/subsidiaries/useFindSubsidiary';
 export { default as useFindWarehouse } from '@hooks/warehouses/useFindWarehouse';
+export { default as useAccountPlan } from '@hooks/global/useAccountPlan';
