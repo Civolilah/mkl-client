@@ -29,9 +29,12 @@ import {
   useFetchEntity,
   useHasPermission,
   usePageLayoutAndActions,
+  useResolveCountry,
   useTranslation,
 } from '@hooks/index';
 
+import MobileCard from './common/components/MobileCard';
+import MobilePreviewModalContent from './common/components/MobilePreviewModalContent';
 import useColumns from './common/hooks/useColumns';
 
 const Subsidiaries = () => {
@@ -41,6 +44,7 @@ const Subsidiaries = () => {
 
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
+  const resolveCountry = useResolveCountry();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [subsidiaries, setSubsidiaries] = useState<Subsidiary[]>([]);
@@ -110,10 +114,23 @@ const Subsidiaries = () => {
       data={subsidiaries}
       isDataLoading={isLoading}
       enableFiltering
-      filteringProps={['name']}
+      filteringProps={['name', 'address', 'city', 'zip_code', 'country_code']}
+      propsWithAdjustedFilteringValues={[
+        {
+          key: 'country_code',
+          adjustingFunction: (value) => resolveCountry(value || ''),
+        },
+      ]}
       creationRoute="/subsidiaries/new"
       creationButtonLabel={t('new_subsidiary')}
       filterFieldPlaceHolder={t('search_subsidiary_by')}
+      turnOnMobilePreview
+      mobileCardRender={(entity) => (
+        <MobileCard entity={entity} refresh={refresh} />
+      )}
+      mobileModalRender={(entity) => (
+        <MobilePreviewModalContent entity={entity} refresh={refresh} />
+      )}
     />
   );
 };

@@ -14,6 +14,19 @@ import { request, route, useToast } from '@helpers/index';
 import { ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import countries from 'i18n-iso-countries';
+import bs from 'i18n-iso-countries/langs/bs.json';
+import de from 'i18n-iso-countries/langs/de.json';
+import en from 'i18n-iso-countries/langs/en.json';
+import es from 'i18n-iso-countries/langs/es.json';
+import fr from 'i18n-iso-countries/langs/fr.json';
+import hi from 'i18n-iso-countries/langs/hi.json';
+import hr from 'i18n-iso-countries/langs/hr.json';
+import it from 'i18n-iso-countries/langs/it.json';
+import pt from 'i18n-iso-countries/langs/pt.json';
+import sr from 'i18n-iso-countries/langs/sr.json';
+import tr from 'i18n-iso-countries/langs/tr.json';
+import zh from 'i18n-iso-countries/langs/zh.json';
 import { useAtomValue } from 'jotai';
 import { useTranslation as useTranslationBase } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -29,6 +42,19 @@ import {
 import { useSwitchLanguage, useTheme, useTranslation } from '@hooks/index';
 
 import { routes } from './routes';
+
+countries.registerLocale(en);
+countries.registerLocale(bs);
+countries.registerLocale(de);
+countries.registerLocale(fr);
+countries.registerLocale(it);
+countries.registerLocale(es);
+countries.registerLocale(pt);
+countries.registerLocale(tr);
+countries.registerLocale(zh);
+countries.registerLocale(hi);
+countries.registerLocale(hr);
+countries.registerLocale(sr);
 
 dayjs.extend(utc);
 

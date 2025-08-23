@@ -16,7 +16,11 @@ import { Subsidiary, User } from '@interfaces/index';
 
 import { Box, Link, TableActionsDropdown, Text } from '@components/index';
 
-import { useFormatUnixTime, useTranslation } from '@hooks/index';
+import {
+  useFormatUnixTime,
+  useResolveCountry,
+  useTranslation,
+} from '@hooks/index';
 
 type Props = {
   refresh: () => void;
@@ -29,6 +33,7 @@ const useColumns = (props: Props) => {
 
   const navigate = useNavigate();
   const formatUnixTime = useFormatUnixTime();
+  const resolveCountry = useResolveCountry();
 
   const columns: TableColumnsType<Subsidiary> = [
     {
@@ -49,6 +54,42 @@ const useColumns = (props: Props) => {
             route('/subsidiaries/:id/edit', { id: record.id as string })
           ),
       }),
+    },
+    {
+      title: t('address'),
+      dataIndex: 'address',
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('city'),
+      dataIndex: 'city',
+      render: (value) => (
+        <Box className="min-w-40 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('zip_code'),
+      dataIndex: 'zip_code',
+      render: (value) => (
+        <Box className="min-w-40 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('country'),
+      dataIndex: 'country_code',
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          <Text>{resolveCountry(value)}</Text>
+        </Box>
+      ),
     },
     {
       title: t('created_at'),

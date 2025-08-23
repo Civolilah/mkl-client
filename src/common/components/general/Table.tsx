@@ -63,7 +63,12 @@ const PaginationArrowBox = styled(Box)`
   }
 `;
 
-type Props<EntityType> = {
+interface PropsWithAdjustedFilteringValues<EntityType> {
+  key: keyof EntityType;
+  adjustingFunction: (value: EntityType[keyof EntityType]) => string;
+}
+
+interface Props<EntityType> {
   isDataLoading?: boolean;
   columns: TableColumnsType<EntityType>;
   data: EntityType[];
@@ -77,7 +82,8 @@ type Props<EntityType> = {
   mobileCardRender?: (entity: EntityType) => ReactNode;
   mobileModalRender?: (entity: EntityType) => ReactNode;
   onMobileCardClick?: (entity: EntityType) => void;
-};
+  propsWithAdjustedFilteringValues?: PropsWithAdjustedFilteringValues<EntityType>[];
+}
 
 type CustomHeaderCellProps = {
   children: ReactNode;
@@ -348,6 +354,7 @@ const Table = <EntityType,>({
   mobileCardRender,
   mobileModalRender,
   onMobileCardClick,
+  propsWithAdjustedFilteringValues = [],
 }: Props<EntityType>) => {
   const t = useTranslation();
 
@@ -387,7 +394,17 @@ const Table = <EntityType,>({
               labelProp = filteringProp.toString().split('.')[1];
             }
 
-            const value = get(item, updatedFilteringProp);
+            let value = get(item, updatedFilteringProp);
+
+            if (
+              propsWithAdjustedFilteringValues.some(
+                (prop) => prop.key === updatedFilteringProp
+              )
+            ) {
+              value = propsWithAdjustedFilteringValues
+                .find((prop) => prop.key === updatedFilteringProp)
+                ?.adjustingFunction(value);
+            }
 
             if (Array.isArray(value) && labelProp) {
               return some(value, (v) =>
@@ -434,7 +451,17 @@ const Table = <EntityType,>({
           labelProp = filteringProp.toString().split('.')[1];
         }
 
-        const value = get(item, updatedFilteringProp);
+        let value = get(item, updatedFilteringProp);
+
+        if (
+          propsWithAdjustedFilteringValues.some(
+            (prop) => prop.key === updatedFilteringProp
+          )
+        ) {
+          value = propsWithAdjustedFilteringValues
+            .find((prop) => prop.key === updatedFilteringProp)
+            ?.adjustingFunction(value);
+        }
 
         if (Array.isArray(value) && labelProp) {
           return some(value, (v) =>

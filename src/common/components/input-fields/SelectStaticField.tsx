@@ -114,7 +114,10 @@ const SelectStaticField = ({
           options={filteredOptions}
           filterOption={false}
           onSearch={handleSearch}
-          onClear={onClear}
+          onClear={() => {
+            setFilteredOptions(options);
+            onClear?.();
+          }}
           allowClear={Boolean(onClear)}
         />
       )}
@@ -130,7 +133,10 @@ const SelectStaticField = ({
           onSearch={handleSearch}
           filterOption={false}
           showSearch
-          onClear={onClear}
+          onClear={() => {
+            setFilteredOptions(options);
+            onClear?.();
+          }}
           allowClear={Boolean(onClear)}
         />
       )}
