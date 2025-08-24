@@ -42,10 +42,21 @@ const CountriesSelector = ({
     );
 
     return Object.entries(countryNames)
-      .map(([code, name]) => ({
-        value: code,
-        label: `${name} (${countries.getAlpha3Code(name, userCompany?.preference.language || 'en')})`,
-      }))
+      .map(([code, name]) => {
+        const alpha3Code = countries.getAlpha3Code(
+          name,
+          userCompany?.preference.language || 'en'
+        );
+
+        const currentValue = Object.entries(countries.getNumericCodes()).find(
+          ([, currentCode]) => currentCode === code
+        )?.[0];
+
+        return {
+          value: String(currentValue || ''),
+          label: `${name} (${alpha3Code})`,
+        };
+      })
       .sort((a, b) =>
         a.label.localeCompare(b.label, userCompany?.preference.language || 'en')
       );

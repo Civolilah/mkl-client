@@ -21,7 +21,7 @@ export const validateSubsidiary = async (subsidiary: Subsidiary) => {
     address: Yup.string().max(500, 'subsidiary_address_max_length').optional(),
     city: Yup.string().max(200, 'subsidiary_city_max_length').optional(),
     zip_code: Yup.string().max(50, 'subsidiary_zip_code_max_length').optional(),
-    country_code: Yup.string().max(50, 'invalid_country_code').optional(),
+    country_id: Yup.string().max(50, 'invalid_country_id').optional(),
   });
 
   try {

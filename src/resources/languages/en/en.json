@@ -402,7 +402,7 @@
   "search_subsidiary_by": "Search by name, address, city, zip code or country",
   "ai_search": "AI Search",
   "preview": "Preview",
-  "invalid_country_code": "Invalid country code.",
+  "invalid_country_id": "Invalid country.",
   "subsidiary_address_max_length": "Max length for subsidiary address is 500 characters.",
   "subsidiary_city_max_length": "Max length for subsidiary city is 200 characters.",
   "subsidiary_zip_code_max_length": "Max length for subsidiary zip code is 50 characters."

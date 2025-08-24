@@ -14,5 +14,5 @@ export type Subsidiary = {
   address?: string;
   city?: string;
   zip_code?: string;
-  country_code?: string;
+  country_id?: string;
 };

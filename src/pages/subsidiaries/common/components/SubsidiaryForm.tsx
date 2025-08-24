@@ -85,10 +85,10 @@ const SubsidiaryForm = ({
         <CountriesSelector
           label={t('country')}
           placeHolder={t('select_country')}
-          value={subsidiary?.country_code || ''}
-          onValueChange={(value) => handleChange('country_code', value)}
-          onClear={() => handleChange('country_code', '')}
-          errorMessage={errors?.country_code && t(errors.country_code)}
+          value={subsidiary?.country_id || ''}
+          onValueChange={(value) => handleChange('country_id', value)}
+          onClear={() => handleChange('country_id', '')}
+          errorMessage={errors?.country_id && t(errors.country_id)}
         />
 
         <TextField

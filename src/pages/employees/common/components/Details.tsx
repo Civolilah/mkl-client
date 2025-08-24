@@ -28,7 +28,7 @@ import {
   Text,
 } from '@components/index';
 
-import { useFetchEntity, useTranslation } from '@hooks/index';
+import { useAccountPlan, useFetchEntity, useTranslation } from '@hooks/index';
 
 export type EmployeeProps = {
   employee: User | undefined;
@@ -47,6 +47,8 @@ const Details = ({
   employee,
 }: EmployeeProps) => {
   const t = useTranslation();
+
+  const { isProfessionalPlan, isEnterprisePlan } = useAccountPlan();
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
@@ -96,7 +98,7 @@ const Details = ({
       isLoading={isLoading || isLoadingExistingEmployees}
     >
       <Box className="flex flex-col space-y-4 pb-4">
-        {!editPage && (
+        {Boolean(!editPage && (isEnterprisePlan || isProfessionalPlan)) && (
           <Box className="space-y-3">
             <EmployeesSelector
               label={t('existing_employee')}
@@ -124,14 +126,15 @@ const Details = ({
           </Box>
         )}
 
-        {!editPage && employee && (
-          <Divider
-            style={{
-              marginTop: '1.75rem',
-              marginBottom: '0.45rem',
-            }}
-          />
-        )}
+        {Boolean(!editPage && (isEnterprisePlan || isProfessionalPlan)) &&
+          employee && (
+            <Divider
+              style={{
+                marginTop: '1.75rem',
+                marginBottom: '0.45rem',
+              }}
+            />
+          )}
 
         {(!selectedExistingEmployee || editPage) && (
           <>

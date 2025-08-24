@@ -84,7 +84,7 @@ const useColumns = (props: Props) => {
     },
     {
       title: t('country'),
-      dataIndex: 'country_code',
+      dataIndex: 'country_id',
       render: (value) => (
         <Box className="min-w-56 max-w-96 truncate">
           <Text>{resolveCountry(value)}</Text>

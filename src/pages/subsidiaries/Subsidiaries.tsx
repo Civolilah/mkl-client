@@ -114,10 +114,10 @@ const Subsidiaries = () => {
       data={subsidiaries}
       isDataLoading={isLoading}
       enableFiltering
-      filteringProps={['name', 'address', 'city', 'zip_code', 'country_code']}
+      filteringProps={['name', 'address', 'city', 'zip_code', 'country_id']}
       propsWithAdjustedFilteringValues={[
         {
-          key: 'country_code',
+          key: 'country_id',
           adjustingFunction: (value) => resolveCountry(value || ''),
         },
       ]}

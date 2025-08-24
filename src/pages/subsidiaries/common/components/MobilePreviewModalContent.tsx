@@ -48,7 +48,7 @@ const MobilePreviewModalContent = ({ entity }: Props) => {
 
       <LabelElement label={t('country')} withoutOptionalText>
         <Text className="font-medium">
-          {resolveCountry(entity.country_code || '') || t('no_entry')}
+          {resolveCountry(entity.country_id || '') || t('no_entry')}
         </Text>
       </LabelElement>
 
