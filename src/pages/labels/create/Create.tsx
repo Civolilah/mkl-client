@@ -12,14 +12,19 @@ import { useEffect, useState } from 'react';
 
 import { INITIAL_LABEL, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { Label, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useRefetch, useTranslation } from '@hooks/index';
+import {
+  usePageLayoutAndActions,
+  useRefetch,
+  useTranslation,
+} from '@hooks/index';
 
 import LabelForm from '../common/components/LabelForm';
 import { validateLabel } from '../common/helpers/helpers';
@@ -38,6 +43,8 @@ const Create = () => {
   ];
 
   const toast = useToast();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const refetch = useRefetch();
   const navigate = useNavigate();
@@ -83,6 +90,45 @@ const Create = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('new_label'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isFormBusy,
+        isDisabled: isFormBusy,
+        onClick: handleSave,
+        disabledWithLoadingIcon: isFormBusy,
+      },
+      footer: isLargeScreen ? undefined : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="labels"
+            onClick={() => {
+              navigate(route('/labels'));
+            }}
+            iconName="tag"
+            disabled={isFormBusy}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isFormBusy} />
+        </Box>
+      ),
+    },
+    [label, isFormBusy, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -96,17 +142,7 @@ const Create = () => {
     };
   }, []);
 
-  return (
-    <Default
-      title={t('new_label')}
-      breadcrumbs={breadcrumbs}
-      onSaveClick={handleSave}
-      disabledSaveButton={isFormBusy}
-      disabledSaveButtonWithLoadingIcon={isFormBusy}
-    >
-      <LabelForm label={label} setLabel={setLabel} errors={errors} />
-    </Default>
-  );
+  return <LabelForm label={label} setLabel={setLabel} errors={errors} />;
 };
 
 export default Create;

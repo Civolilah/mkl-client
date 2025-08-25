@@ -33,7 +33,6 @@ import {
 } from '@hooks/index';
 
 import MobileCard from './common/components/MobileCard';
-import MobilePreviewModalContent from './common/components/MobilePreviewModalContent';
 import useColumns from './common/hooks/useColumns';
 
 const Statuses = () => {
@@ -120,9 +119,9 @@ const Statuses = () => {
       mobileCardRender={(entity) => (
         <MobileCard entity={entity} refresh={refresh} />
       )}
-      mobileModalRender={(entity) => (
-        <MobilePreviewModalContent entity={entity} refresh={refresh} />
-      )}
+      onMobileCardClick={(entity) => {
+        navigate(route('/statuses/:id/edit', { id: entity.id || '' }));
+      }}
     />
   );
 };

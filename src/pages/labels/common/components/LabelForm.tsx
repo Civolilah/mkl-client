@@ -20,7 +20,6 @@ import {
   Card,
   InformationLabel,
   LabelCategoriesSelector,
-  RefreshDataElement,
   Text,
   TextField,
 } from '@components/index';
@@ -41,20 +40,17 @@ type Props = {
   withoutLabelCategorySelectorRefreshData?: boolean;
 };
 
-const LabelForm = (props: Props) => {
+const LabelForm = ({
+  label,
+  setLabel,
+  errors,
+  editPage,
+  isLoading,
+  onlyFields,
+  disableLabelCategorySelector,
+  withoutLabelCategorySelectorRefreshData,
+}: Props) => {
   const t = useTranslation();
-
-  const {
-    label,
-    setLabel,
-    errors,
-    editPage,
-    isLoading,
-    onRefresh,
-    onlyFields,
-    disableLabelCategorySelector,
-    withoutLabelCategorySelectorRefreshData,
-  } = props;
 
   const handleChange = useHandleChange({ setLabel });
 
@@ -99,11 +95,6 @@ const LabelForm = (props: Props) => {
       title={editPage ? t('edit_label') : t('new_label')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
-      topRight={
-        editPage && onRefresh && typeof isLoading === 'boolean' ? (
-          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
-        ) : undefined
-      }
       paddingBottom={!editPage ? '0rem' : undefined}
     >
       <Box

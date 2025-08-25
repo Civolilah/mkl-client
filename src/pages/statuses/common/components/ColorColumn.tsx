@@ -48,7 +48,10 @@ const ColorColumn = ({ color }: Props) => {
     <>
       <Box
         className="cursor-pointer hover:opacity-75 border"
-        onClick={() => setIsModalOpen(true)}
+        onClick={(event) => {
+          event.stopPropagation();
+          setIsModalOpen(true);
+        }}
         style={{
           backgroundColor: color,
           width: '5rem',

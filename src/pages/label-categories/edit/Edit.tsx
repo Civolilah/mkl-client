@@ -11,19 +11,26 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, useToast } from '@helpers/index';
+import { endpoint, request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { LabelCategory, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  RefreshDataElement,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  usePageLayoutAndActions,
   useRefetch,
   useTranslation,
 } from '@hooks/index';
@@ -34,6 +41,8 @@ import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -50,6 +59,7 @@ const Edit = () => {
 
   const actions = useActions();
   const refetch = useRefetch();
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
 
@@ -116,6 +126,75 @@ const Edit = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('edit_label_category'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isLoading,
+        isDisabled:
+          isLoading ||
+          !canEditEntity(
+            'edit_label_category',
+            'create_label_category',
+            labelCategory
+          ),
+        onClick: handleSave,
+        disabledWithLoadingIcon: Boolean(isLoading && labelCategory),
+        displayPermissionTooltip: !canEditEntity(
+          'edit_label_category',
+          'create_label_category',
+          labelCategory
+        ),
+        tooltipPermissionMessage: t('no_permission_to_edit_label_category'),
+      },
+      actions: {
+        list: labelCategory ? actions(labelCategory) : [],
+      },
+      footer: isLargeScreen ? (
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
+        </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="label_categories"
+            onClick={() => {
+              navigate(route('/label_categories'));
+            }}
+            iconName="tags"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [labelCategory, isLoading, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -130,38 +209,14 @@ const Edit = () => {
   }, []);
 
   return (
-    <Default
-      title={t('edit_label_category')}
-      breadcrumbs={breadcrumbs}
-      actions={labelCategory ? actions(labelCategory) : undefined}
-      onSaveClick={handleSave}
-      disabledSaveButton={
-        isLoading ||
-        !canEditEntity(
-          'edit_label_category',
-          'create_label_category',
-          labelCategory
-        )
-      }
-      displayPermissionTooltip={
-        !canEditEntity(
-          'edit_label_category',
-          'create_label_category',
-          labelCategory
-        )
-      }
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && labelCategory)}
-      tooltipPermissionMessage={t('no_permission_to_edit_label_category')}
-    >
-      <LabelCategoryForm
-        labelCategory={labelCategory}
-        setLabelCategory={setLabelCategory}
-        errors={errors}
-        editPage
-        isLoading={isLoading && !labelCategory}
-        onRefresh={refresh}
-      />
-    </Default>
+    <LabelCategoryForm
+      labelCategory={labelCategory}
+      setLabelCategory={setLabelCategory}
+      errors={errors}
+      editPage
+      isLoading={isLoading && !labelCategory}
+      onRefresh={refresh}
+    />
   );
 };
 

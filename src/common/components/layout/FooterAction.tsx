@@ -16,7 +16,7 @@ import Icon, { IconName } from '@components/general/Icon';
 
 import { useTranslation } from '@hooks/index';
 
-import { Box, Text } from '..';
+import { Box } from '..';
 
 interface Props {
   text: string;
@@ -40,7 +40,7 @@ const FooterAction = ({
   const t = useTranslation();
 
   return (
-    <Box className="flex flex-1 h-full items-center">
+    <Box className="flex flex-1 h-full items-center overflow-hidden px-1.5">
       <Box
         className={classNames(
           'flex flex-col w-full justify-between items-center h-9',
@@ -63,7 +63,9 @@ const FooterAction = ({
           {icon}
         </Box>
 
-        <Text className="text-xs">{t(text)}</Text>
+        <Box className="w-full truncate text-xs text-center min-w-0">
+          {t(text)}
+        </Box>
       </Box>
     </Box>
   );

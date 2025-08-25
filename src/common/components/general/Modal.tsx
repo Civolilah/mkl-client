@@ -30,18 +30,16 @@ type Props = {
   withoutTitleAndClose?: boolean;
 };
 
-const Modal = (props: Props) => {
-  const {
-    visible,
-    title,
-    isLoading,
-    children,
-    onClose,
-    size = 'regular',
-    disableClosing,
-    withoutTitleAndClose,
-  } = props;
-
+const Modal = ({
+  visible,
+  title,
+  isLoading,
+  children,
+  onClose,
+  size = 'regular',
+  disableClosing,
+  withoutTitleAndClose,
+}: Props) => {
   const colors = useColors();
 
   const getWidth = () => {
@@ -89,7 +87,10 @@ const Modal = (props: Props) => {
       centered
       keyboard={false}
     >
-      <Box className="flex flex-col items-center justify-center">
+      <Box
+        className="flex flex-col items-center justify-center"
+        onClick={(event) => event.stopPropagation()}
+      >
         {!withoutTitleAndClose && (
           <Box
             className="flex w-full items-center justify-between self-start px-4 py-3.5 border-b"

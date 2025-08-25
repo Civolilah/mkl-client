@@ -8,16 +8,14 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Status } from '@interfaces/index';
+import { LabelCategory } from '@interfaces/index';
 
-import { Box, Icon, TableActionsDropdown, Text } from '@components/index';
+import { Box, TableActionsDropdown, Text } from '@components/index';
 
 import { useColors } from '@hooks/index';
 
-import ColorColumn from './ColorColumn';
-
 interface Props {
-  entity: Status;
+  entity: LabelCategory;
   refresh: () => void;
 }
 
@@ -36,29 +34,13 @@ const MobileCard = ({ entity, refresh }: Props) => {
 
         <TableActionsDropdown
           resource={entity}
-          editPageLink="/statuses/:id/edit"
-          resourceType="status"
-          deleteEndpoint="/api/statuses/:id"
+          editPageLink="/label_categories/:id/edit"
+          resourceType="label_category"
+          deleteEndpoint="/api/label_categories/:id"
           refresh={refresh}
           resourceName={entity.name}
-          resourceQueryIdentifier="statuses"
+          resourceQueryIdentifier="label_categories"
         />
-      </Box>
-
-      <Box className="flex items-center gap-x-2">
-        <Box style={{ width: '1.5rem' }}>
-          <Icon
-            name="colorPalette"
-            size="1.3rem"
-            style={{ color: '#3b82f6' }}
-          />
-        </Box>
-
-        <Text className="truncate text-sm-plus flex-1">
-          <Box style={{ minWidth: '9rem' }}>
-            <ColorColumn color={entity.color} />
-          </Box>
-        </Text>
       </Box>
     </Box>
   );

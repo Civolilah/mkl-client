@@ -11,19 +11,26 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, useToast } from '@helpers/index';
+import { endpoint, request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Label, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  RefreshDataElement,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  usePageLayoutAndActions,
   useRefetch,
   useTranslation,
 } from '@hooks/index';
@@ -48,8 +55,11 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
   const refetch = useRefetch();
   const actions = useActions();
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
 
@@ -108,6 +118,70 @@ const Edit = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('edit_label'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isLoading,
+        isDisabled:
+          isLoading || !canEditEntity('edit_label', 'create_label', label),
+        onClick: handleSave,
+        disabledWithLoadingIcon: Boolean(isLoading && label),
+        displayPermissionTooltip: !canEditEntity(
+          'edit_label',
+          'create_label',
+          label
+        ),
+        tooltipPermissionMessage: t('no_permission_to_edit_label'),
+      },
+      actions: {
+        list: label ? actions(label) : [],
+      },
+      footer: isLargeScreen ? (
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
+        </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="labels"
+            onClick={() => {
+              navigate(route('/labels'));
+            }}
+            iconName="tag"
+            disabled={isLoading}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [label, isLoading, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -122,29 +196,14 @@ const Edit = () => {
   }, []);
 
   return (
-    <Default
-      title={t('edit_label')}
-      breadcrumbs={breadcrumbs}
-      actions={label ? actions(label) : undefined}
-      onSaveClick={handleSave}
-      disabledSaveButton={
-        isLoading || !canEditEntity('edit_label', 'create_label', label)
-      }
-      displayPermissionTooltip={
-        !canEditEntity('edit_label', 'create_label', label)
-      }
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && label)}
-      tooltipPermissionMessage={t('no_permission_to_edit_label')}
-    >
-      <LabelForm
-        label={label}
-        setLabel={setLabel}
-        errors={errors}
-        editPage
-        isLoading={isLoading && !label}
-        onRefresh={refresh}
-      />
-    </Default>
+    <LabelForm
+      label={label}
+      setLabel={setLabel}
+      errors={errors}
+      editPage
+      isLoading={isLoading && !label}
+      onRefresh={refresh}
+    />
   );
 };
 

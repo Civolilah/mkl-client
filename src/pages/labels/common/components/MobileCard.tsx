@@ -8,16 +8,14 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Status } from '@interfaces/index';
+import { Label } from '@interfaces/index';
 
 import { Box, Icon, TableActionsDropdown, Text } from '@components/index';
 
 import { useColors } from '@hooks/index';
 
-import ColorColumn from './ColorColumn';
-
 interface Props {
-  entity: Status;
+  entity: Label;
   refresh: () => void;
 }
 
@@ -47,17 +45,11 @@ const MobileCard = ({ entity, refresh }: Props) => {
 
       <Box className="flex items-center gap-x-2">
         <Box style={{ width: '1.5rem' }}>
-          <Icon
-            name="colorPalette"
-            size="1.3rem"
-            style={{ color: '#3b82f6' }}
-          />
+          <Icon name="tags" size="1.25rem" />
         </Box>
 
         <Text className="truncate text-sm-plus flex-1">
-          <Box style={{ minWidth: '9rem' }}>
-            <ColorColumn color={entity.color} />
-          </Box>
+          <Box>{entity.label_category?.name}</Box>
         </Text>
       </Box>
     </Box>

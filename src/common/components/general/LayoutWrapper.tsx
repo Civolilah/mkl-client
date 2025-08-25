@@ -32,6 +32,12 @@ const LAYOUT_WRAPPER_COVERED_ROUTES = [
   '/statuses',
   '/statuses/new',
   '/statuses/:id/edit',
+  '/label_categories',
+  '/label_categories/new',
+  '/label_categories/:id/edit',
+  '/labels',
+  '/labels/new',
+  '/labels/:id/edit',
 ];
 
 const LayoutWrapper = ({ children }: Props) => {
