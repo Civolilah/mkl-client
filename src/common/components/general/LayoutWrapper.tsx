@@ -13,7 +13,7 @@ import { ReactNode, useMemo } from 'react';
 import { useAtomValue } from 'jotai';
 import { useLocation } from 'react-router-dom';
 
-import { Default } from '@components/index';
+import { AISearchAction, Default } from '@components/index';
 
 import { pageLayoutAndActionsAtom } from '@hooks/global/usePageLayoutAndActions';
 
@@ -29,6 +29,9 @@ const LAYOUT_WRAPPER_COVERED_ROUTES = [
   '/subsidiaries',
   '/subsidiaries/new',
   '/subsidiaries/:id/edit',
+  '/statuses',
+  '/statuses/new',
+  '/statuses/:id/edit',
 ];
 
 const LayoutWrapper = ({ children }: Props) => {
@@ -77,6 +80,8 @@ const LayoutWrapper = ({ children }: Props) => {
       }
     >
       {children}
+
+      <AISearchAction withoutFooterAction />
     </Default>
   );
 };

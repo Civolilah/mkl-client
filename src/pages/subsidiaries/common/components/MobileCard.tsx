@@ -37,7 +37,7 @@ const MobileCard = ({ entity, refresh }: Props) => {
           resource={entity}
           editPageLink="/subsidiaries/:id/edit"
           resourceType="subsidiary"
-          deleteEndpoint="/api/subsidiaries/:id/delete_subsidiary"
+          deleteEndpoint="/api/subsidiaries/:id"
           refresh={refresh}
           resourceName={entity.name}
           resourceQueryIdentifier="subsidiaries"

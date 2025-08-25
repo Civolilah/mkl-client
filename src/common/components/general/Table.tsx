@@ -184,25 +184,25 @@ const Footer = ({
 
   const actions: MenuProps['items'] = [
     {
-      label: <Box className="px-3 py-1.5 text-xs md:text-sm">10</Box>,
+      label: <Box className="px-3 py-1.5 text-sm">10</Box>,
       onClick: () => setPerPage(10),
       key: '10',
       disabled: perPage === 10,
     },
     {
-      label: <Box className="px-3 py-1.5 text-xs md:text-sm">20</Box>,
+      label: <Box className="px-3 py-1.5 text-sm">20</Box>,
       onClick: () => setPerPage(20),
       key: '20',
       disabled: perPage === 20,
     },
     {
-      label: <Box className="px-3 py-1.5 text-xs md:text-sm">50</Box>,
+      label: <Box className="px-3 py-1.5 text-sm">50</Box>,
       onClick: () => setPerPage(50),
       key: '50',
       disabled: perPage === 50,
     },
     {
-      label: <Box className="px-3 py-1.5 text-xs md:text-sm">100</Box>,
+      label: <Box className="px-3 py-1.5 text-sm">100</Box>,
       onClick: () => setPerPage(100),
       key: '100',
       disabled: perPage === 100,
@@ -212,9 +212,9 @@ const Footer = ({
   return (
     <Box className="flex justify-between items-center w-full relative">
       <Box className="flex items-center justify-center space-x-2">
-        <Text className="text-xs font-medium">{t('total')}</Text>
+        <Text className="text-sm font-medium">{t('total')}</Text>
 
-        <Text className="text-xs md:text-sm">{total}.</Text>
+        <Text className="text-sm">{total}.</Text>
       </Box>
 
       <Box className="flex items-center space-x-2">

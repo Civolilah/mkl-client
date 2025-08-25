@@ -481,8 +481,8 @@ const ColorPicker = ({
                   <Box
                     className="border"
                     style={{
-                      width: '1.625rem',
-                      height: '1.625rem',
+                      width: '1.875rem',
+                      height: '1.875rem',
                       backgroundColor: color,
                       borderColor: colors.$1,
                     }}

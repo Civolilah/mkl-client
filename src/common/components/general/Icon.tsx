@@ -47,6 +47,7 @@ import {
   MdBusiness,
   MdCategory,
   MdClose,
+  MdColorLens,
   MdContentCopy,
   MdDelete,
   MdEdit,
@@ -184,7 +185,8 @@ export type IconName =
   | 'arrowDownFill'
   | 'barcode'
   | 'microphoneLine'
-  | 'imageLine';
+  | 'imageLine'
+  | 'colorPalette';
 
 type Props = {
   className?: string;
@@ -379,6 +381,8 @@ const Icon = (props: Props) => {
       return generateIconElement(RiMicLine);
     case 'imageLine':
       return generateIconElement(RiImageLine);
+    case 'colorPalette':
+      return generateIconElement(MdColorLens);
     default:
       return <></>;
   }

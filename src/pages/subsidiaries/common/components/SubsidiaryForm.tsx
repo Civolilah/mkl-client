@@ -82,15 +82,6 @@ const SubsidiaryForm = ({
           errorMessage={errors?.address && t(errors.address)}
         />
 
-        <CountriesSelector
-          label={t('country')}
-          placeHolder={t('select_country')}
-          value={subsidiary?.country_id || ''}
-          onValueChange={(value) => handleChange('country_id', value)}
-          onClear={() => handleChange('country_id', '')}
-          errorMessage={errors?.country_id && t(errors.country_id)}
-        />
-
         <TextField
           label={t('city')}
           placeHolder={t('subsidiary_city_placeholder')}
@@ -101,12 +92,30 @@ const SubsidiaryForm = ({
         />
 
         <TextField
+          label={t('state')}
+          placeHolder={t('subsidiary_state_placeholder')}
+          value={subsidiary?.state || ''}
+          onValueChange={(value) => handleChange('state', value)}
+          changeOnBlur
+          errorMessage={errors?.state && t(errors.state)}
+        />
+
+        <TextField
           label={t('zip_code')}
           placeHolder={t('subsidiary_zip_code_placeholder')}
           value={subsidiary?.zip_code || ''}
           onValueChange={(value) => handleChange('zip_code', value)}
           changeOnBlur
           errorMessage={errors?.zip_code && t(errors.zip_code)}
+        />
+
+        <CountriesSelector
+          label={t('country')}
+          placeHolder={t('select_country')}
+          value={subsidiary?.country_id || ''}
+          onValueChange={(value) => handleChange('country_id', value)}
+          onClear={() => handleChange('country_id', '')}
+          errorMessage={errors?.country_id && t(errors.country_id)}
         />
       </Box>
     </Card>

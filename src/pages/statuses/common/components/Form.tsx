@@ -20,7 +20,6 @@ import {
   Card,
   ColorPicker,
   InformationLabel,
-  RefreshDataElement,
   Text,
   TextField,
 } from '@components/index';
@@ -39,18 +38,15 @@ type Props = {
   onlyFields?: boolean;
 };
 
-const Form = (props: Props) => {
+const Form = ({
+  status,
+  setStatus,
+  editPage,
+  isLoading,
+  errors,
+  onlyFields,
+}: Props) => {
   const t = useTranslation();
-
-  const {
-    status,
-    setStatus,
-    editPage,
-    isLoading,
-    onRefresh,
-    errors,
-    onlyFields,
-  } = props;
 
   const handleChange = useHandleChange({ setStatus });
 
@@ -82,11 +78,6 @@ const Form = (props: Props) => {
       title={editPage ? t('edit_status') : t('new_status')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
-      topRight={
-        editPage && onRefresh && typeof isLoading === 'boolean' ? (
-          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
-        ) : undefined
-      }
       paddingBottom={!editPage ? '0rem' : undefined}
     >
       <Box

@@ -8,9 +8,12 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Popover } from 'antd';
+import classNames from 'classnames';
+import { useMediaQuery } from 'react-responsive';
+import { useLocation } from 'react-router-dom';
 
 import { Box, Icon } from '@components/index';
 
@@ -20,10 +23,16 @@ import FooterAction from './FooterAction';
 
 interface Props {
   disabled?: boolean;
+  withoutFooterAction?: boolean;
 }
 
-const AISearchAction = ({ disabled }: Props) => {
+const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
+  const location = useLocation();
   const accentColor = useAccentColor();
+
+  const popoverRef = useRef(null);
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -55,8 +64,13 @@ const AISearchAction = ({ disabled }: Props) => {
     setIsOpen(false);
   };
 
+  if (withoutFooterAction && !isLargeScreen) {
+    return null;
+  }
+
   return (
     <Popover
+      ref={popoverRef}
       content={
         <Box className="flex flex-col gap-y-3 p-2">
           <Box
@@ -115,26 +129,58 @@ const AISearchAction = ({ disabled }: Props) => {
         paddingBottom: '1rem',
         boxShadow: 'none',
       }}
+      getTooltipContainer={() => document.body}
     >
-      <FooterAction
-        text="ai_search"
-        onClick={() => setIsOpen(!isOpen)}
-        icon={
-          <Box className="flex relative">
-            <Box className="pr-3">
-              <Icon name="robotLine" size="1.2rem" />
-            </Box>
-
-            <Box className="absolute -right-[0.6rem]">
-              <Icon
-                name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
-                size="1.4rem"
-              />
-            </Box>
+      {isLargeScreen ? (
+        <div
+          className={classNames(
+            'flex fixed rounded-full pl-3 pr-5 py-[1.2rem] cursor-pointer',
+            {
+              'bottom-[2rem] right-[2rem]': location.pathname.includes('/new'),
+              'bottom-[4.25rem] right-[2rem]':
+                !location.pathname.includes('/new'),
+            }
+          )}
+          style={{
+            backgroundColor: accentColor,
+          }}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <Box className="pr-1.5">
+            <Icon name="robotLine" size="1.5rem" style={{ color: 'white' }} />
           </Box>
-        }
-        disabled={disabled}
-      />
+
+          <Box className="absolute top-[1.3rem] right-[0.2rem]">
+            <Icon
+              name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
+              size="1.4rem"
+              style={{ color: 'white' }}
+            />
+          </Box>
+        </div>
+      ) : (
+        <div className="flex flex-1 h-full items-center">
+          <FooterAction
+            text="ai_search"
+            onClick={() => setIsOpen(!isOpen)}
+            icon={
+              <Box className="flex relative">
+                <Box className="pr-3">
+                  <Icon name="robotLine" size="1.2rem" />
+                </Box>
+
+                <Box className="absolute -right-[0.6rem]">
+                  <Icon
+                    name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
+                    size="1.4rem"
+                  />
+                </Box>
+              </Box>
+            }
+            disabled={disabled}
+          />
+        </div>
+      )}
     </Popover>
   );
 };

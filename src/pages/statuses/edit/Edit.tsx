@@ -11,19 +11,26 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, useToast } from '@helpers/index';
+import { endpoint, request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Status, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  RefreshDataElement,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  usePageLayoutAndActions,
   useRefetch,
   useTranslation,
 } from '@hooks/index';
@@ -34,6 +41,8 @@ import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -50,6 +59,7 @@ const Edit = () => {
 
   const actions = useActions();
   const refetch = useRefetch();
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
 
@@ -108,6 +118,70 @@ const Edit = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('edit_status'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isLoading,
+        isDisabled:
+          isLoading || !canEditEntity('edit_status', 'create_status', status),
+        onClick: handleSave,
+        disabledWithLoadingIcon: Boolean(isLoading && status),
+        displayPermissionTooltip: !canEditEntity(
+          'edit_status',
+          'create_status',
+          status
+        ),
+        tooltipPermissionMessage: t('no_permission_to_edit_status'),
+      },
+      actions: {
+        list: status ? actions(status) : [],
+      },
+      footer: isLargeScreen ? (
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
+        </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="statuses"
+            onClick={() => {
+              navigate(route('/statuses'));
+            }}
+            iconName="assignment"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [status, isLoading, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -122,29 +196,14 @@ const Edit = () => {
   }, []);
 
   return (
-    <Default
-      title={t('edit_status')}
-      breadcrumbs={breadcrumbs}
-      actions={status ? actions(status) : undefined}
-      onSaveClick={handleSave}
-      disabledSaveButton={
-        isLoading || !canEditEntity('edit_status', 'create_status', status)
-      }
-      displayPermissionTooltip={
-        !canEditEntity('edit_status', 'create_status', status)
-      }
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && status)}
-      tooltipPermissionMessage={t('no_permission_to_edit_status')}
-    >
-      <Form
-        status={status}
-        setStatus={setStatus}
-        errors={errors}
-        editPage
-        isLoading={isLoading && !status}
-        onRefresh={refresh}
-      />
-    </Default>
+    <Form
+      status={status}
+      setStatus={setStatus}
+      errors={errors}
+      editPage
+      isLoading={isLoading && !status}
+      onRefresh={refresh}
+    />
   );
 };
 

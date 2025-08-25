@@ -12,20 +12,27 @@ import { useEffect, useState } from 'react';
 
 import { INITIAL_STATUS, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { Status, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useRefetch, useTranslation } from '@hooks/index';
+import {
+  usePageLayoutAndActions,
+  useRefetch,
+  useTranslation,
+} from '@hooks/index';
 
 import Form from '../common/components/Form';
 import { validateStatus } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -96,17 +103,46 @@ const Create = () => {
     };
   }, []);
 
-  return (
-    <Default
-      title={t('new_status')}
-      breadcrumbs={breadcrumbs}
-      onSaveClick={handleSave}
-      disabledSaveButton={isFormBusy}
-      disabledSaveButtonWithLoadingIcon={isFormBusy}
-    >
-      <Form status={status} setStatus={setStatus} errors={errors} />
-    </Default>
+  usePageLayoutAndActions(
+    {
+      title: t('new_status'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isFormBusy,
+        isDisabled: isFormBusy,
+        onClick: handleSave,
+        disabledWithLoadingIcon: isFormBusy,
+      },
+      footer: isLargeScreen ? undefined : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="statuses"
+            onClick={() => {
+              navigate(route('/statuses'));
+            }}
+            iconName="assignment"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isFormBusy} />
+        </Box>
+      ),
+    },
+    [status, isFormBusy, handleSave]
   );
+
+  return <Form status={status} setStatus={setStatus} errors={errors} />;
 };
 
 export default Create;

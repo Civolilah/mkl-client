@@ -84,7 +84,7 @@ const MobileNavBar = (props: Props) => {
           <nav className="flex flex-col space-y-3 h-full">
             <NavBarLogoSection mobileSideBar />
 
-            <Box className="flex flex-col flex-1 overflow-y-auto break-all px-2.5">
+            <Box className="flex flex-col flex-1 overflow-y-auto break-all px-1.5">
               {items
                 .filter((item) => item.visible)
                 .map((item) => (

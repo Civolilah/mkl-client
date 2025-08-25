@@ -74,6 +74,15 @@ const useColumns = (props: Props) => {
       ),
     },
     {
+      title: t('state'),
+      dataIndex: 'state',
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
       title: t('zip_code'),
       dataIndex: 'zip_code',
       render: (value) => (

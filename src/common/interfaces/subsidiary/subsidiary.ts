@@ -13,6 +13,7 @@ export type Subsidiary = {
   name: string;
   address?: string;
   city?: string;
+  state?: string;
   zip_code?: string;
   country_id?: string;
 };
