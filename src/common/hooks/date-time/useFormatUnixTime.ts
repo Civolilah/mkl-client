@@ -23,7 +23,7 @@ const useFormatUnixTime = () => {
     const currentFormat =
       format || `${userCompany?.preference.date_format} HH:mm`;
 
-    if (userCompany?.preference.is_military_time) {
+    if (!userCompany?.preference.is_military_time) {
       return dayjs.unix(value).format(`${currentFormat.replace('HH', 'hh')} A`);
     }
 
