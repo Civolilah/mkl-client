@@ -188,7 +188,7 @@ const DetailsCard = ({
 
         <MarkdownEditor
           label={t('description')}
-          placeholder={t('product_description_placeholder')}
+          placeholder={t('enter_description')}
           value={product?.description || ''}
           onChange={(value) => handleChange('description', value)}
           withoutImageFormat

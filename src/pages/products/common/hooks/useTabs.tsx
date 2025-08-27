@@ -104,14 +104,14 @@ const useTabs = ({
       ),
     },
     {
-      key: 'additional_details',
+      key: 'status_details',
       label: (
         <Box className="flex item-center space-x-2 px-5 py-0.5">
           <Box>
-            <Icon name="information" size="1.3rem" />
+            <Icon name="status_marked" size="1.1rem" />
           </Box>
 
-          <Text className="text-sm">{t('additional_details')}</Text>
+          <Text className="text-sm">{t('status_details')}</Text>
         </Box>
       ),
       children: (

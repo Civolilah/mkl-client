@@ -211,6 +211,7 @@
     "save_product_to_add_images": "Save product to add images.",
     "images": "Images",
     "description": "Description",
+    "enter_description": "Enter description",
     "group_inventory_by": "Group inventory by",
     "inventory": "Inventory",
     "quantity": "Quantity",
@@ -240,7 +241,7 @@
     "qr_code": "QR Code",
     "save_to_generate_qr_code": "Save product to generate QR code.",
     "status_by_quantity": "Status by quantity",
-    "additional_details": "Additional Details",
+    "status_details": "Status Details",
     "unlimited_quantity": "Unlimited quantity",
     "max_images_reached": "Max images reached",
     "upgrade": "Upgrade",
@@ -412,5 +413,6 @@
   "purchase_orders": "Purchase Orders",
   "new_purchase_order": "New Purchase Order",
   "add_to_purchase_orders": "Add to purchase orders",
-  "let_us_know_you_are_human": "Let us know you're human"
+  "let_us_know_you_are_human": "Let us know you're human",
+  "display_settings": "Display Settings"
 }

@@ -67,7 +67,7 @@ const AdditionalDetailsCard = ({
 
   return (
     <Card
-      title={t('additional_details')}
+      title={t('status_details')}
       className="w-full"
       isLoading={isLoading}
       topRight={
