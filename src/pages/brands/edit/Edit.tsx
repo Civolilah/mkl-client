@@ -11,19 +11,26 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, useToast } from '@helpers/index';
+import { endpoint, request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Brand, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  RefreshDataElement,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  usePageLayoutAndActions,
   useRefetch,
   useTranslation,
 } from '@hooks/index';
@@ -34,6 +41,8 @@ import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -50,6 +59,7 @@ const Edit = () => {
 
   const actions = useActions();
   const refetch = useRefetch();
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
 
@@ -108,6 +118,80 @@ const Edit = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('edit_brand'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isLoading,
+        isDisabled:
+          isLoading || !canEditEntity('edit_brand', 'create_brand', brand),
+        onClick: handleSave,
+        disabledWithLoadingIcon: Boolean(isLoading && brand),
+        displayPermissionTooltip: !canEditEntity(
+          'edit_brand',
+          'create_brand',
+          brand
+        ),
+        tooltipPermissionMessage: t('no_permission_to_edit_brand'),
+      },
+      actions: {
+        list: brand ? actions(brand) : [],
+      },
+      footer: isLargeScreen ? (
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
+        </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="brands"
+            onClick={() => {
+              navigate(route('/brands'));
+            }}
+            iconName="brand"
+            disabled={isLoading}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="new_brand"
+            onClick={() => {
+              navigate(route('/brands/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [brand, isLoading, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -122,29 +206,14 @@ const Edit = () => {
   }, []);
 
   return (
-    <Default
-      title={t('edit_brand')}
-      breadcrumbs={breadcrumbs}
-      actions={brand ? actions(brand) : undefined}
-      onSaveClick={handleSave}
-      disabledSaveButton={
-        isLoading || !canEditEntity('edit_brand', 'create_brand', brand)
-      }
-      displayPermissionTooltip={
-        !canEditEntity('edit_brand', 'create_brand', brand)
-      }
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && brand)}
-      tooltipPermissionMessage={t('no_permission_to_edit_brand')}
-    >
-      <BrandForm
-        brand={brand}
-        setBrand={setBrand}
-        errors={errors}
-        editPage
-        isLoading={isLoading && !brand}
-        onRefresh={refresh}
-      />
-    </Default>
+    <BrandForm
+      brand={brand}
+      setBrand={setBrand}
+      errors={errors}
+      editPage
+      isLoading={isLoading && !brand}
+      onRefresh={refresh}
+    />
   );
 };
 

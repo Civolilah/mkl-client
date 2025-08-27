@@ -284,7 +284,7 @@ const Default = ({
 
             {footer && (
               <Box
-                className="flex w-full items-center border-t shadow-lg md:px-6 mt-3"
+                className="flex w-full items-center border-t shadow-sm md:px-6 mt-3"
                 style={{
                   borderColor: colors.$1,
                   backgroundColor: colors.$6,

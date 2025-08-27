@@ -15,6 +15,8 @@ export const BLANK_SUPPLIER_CONTACT: SupplierContact = {
   last_name: '',
   email: '',
   phone: '',
+  password: '',
+  add_to_purchase_orders: false,
 };
 
 export const INITIAL_SUPPLIER: Supplier = {

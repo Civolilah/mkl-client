@@ -24,6 +24,7 @@ type Props = {
   label?: string;
   required?: boolean;
   placeholder?: string;
+  onClear?: () => void;
 };
 
 const CurrenciesSelector = ({
@@ -33,6 +34,7 @@ const CurrenciesSelector = ({
   label,
   required,
   placeholder,
+  onClear,
 }: Props) => {
   const t = useTranslation();
 
@@ -59,6 +61,7 @@ const CurrenciesSelector = ({
       onChange={(value) => onChange(value as string)}
       errorMessage={errorMessage}
       placeholder={placeholder}
+      onClear={onClear}
     />
   );
 };

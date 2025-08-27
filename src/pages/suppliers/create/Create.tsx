@@ -15,20 +15,29 @@ import {
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { useAtomValue } from 'jotai';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { Supplier, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import { userCompanyAtom } from '@components/general/PrivateRoute';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useRefetch, useTranslation } from '@hooks/index';
+import {
+  usePageLayoutAndActions,
+  useRefetch,
+  useTranslation,
+} from '@hooks/index';
 
 import SupplierForm from '../common/components/SupplierForm';
 import { validateSupplier } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -44,6 +53,8 @@ const Create = () => {
 
   const refetch = useRefetch();
   const navigate = useNavigate();
+
+  const userCompanyDetails = useAtomValue(userCompanyAtom);
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
@@ -88,6 +99,45 @@ const Create = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('new_category'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isFormBusy,
+        isDisabled: isFormBusy,
+        onClick: handleSave,
+        disabledWithLoadingIcon: isFormBusy,
+      },
+      footer: isLargeScreen ? undefined : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="suppliers"
+            onClick={() => {
+              navigate(route('/suppliers'));
+            }}
+            iconName="truck"
+            disabled={isFormBusy}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isFormBusy} />
+        </Box>
+      ),
+    },
+    [supplier, isFormBusy, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -95,6 +145,14 @@ const Create = () => {
   }, [supplier]);
 
   useEffect(() => {
+    if (userCompanyDetails?.company) {
+      setSupplier({
+        ...INITIAL_SUPPLIER,
+        currency_id: userCompanyDetails.company.currency_id,
+        country_id: userCompanyDetails.company.country_id,
+      });
+    }
+
     return () => {
       setErrors({});
       setSupplier(INITIAL_SUPPLIER);
@@ -102,19 +160,11 @@ const Create = () => {
   }, []);
 
   return (
-    <Default
-      title={t('new_supplier')}
-      breadcrumbs={breadcrumbs}
-      onSaveClick={handleSave}
-      disabledSaveButton={isFormBusy}
-      disabledSaveButtonWithLoadingIcon={isFormBusy}
-    >
-      <SupplierForm
-        supplier={supplier}
-        setSupplier={setSupplier}
-        errors={errors}
-      />
-    </Default>
+    <SupplierForm
+      supplier={supplier}
+      setSupplier={setSupplier}
+      errors={errors}
+    />
   );
 };
 

@@ -15,9 +15,10 @@ import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 import { useLocation } from 'react-router-dom';
 
+import { IconName } from '@components/general/Icon';
 import { Box, Icon } from '@components/index';
 
-import { useAccentColor } from '@hooks/index';
+import { useAccentColor, useColors } from '@hooks/index';
 
 import FooterAction from './FooterAction';
 
@@ -25,6 +26,43 @@ interface Props {
   disabled?: boolean;
   withoutFooterAction?: boolean;
 }
+
+const SearchItem = ({
+  icon,
+  onClick,
+}: {
+  icon: IconName;
+  onClick: () => void;
+}) => {
+  const colors = useColors();
+  const accentColor = useAccentColor();
+
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  return (
+    <Box
+      className={classNames(
+        'flex items-center justify-center p-3 cursor-pointer rounded-full border',
+        {
+          'shadow-xl': isHovered,
+        }
+      )}
+      onClick={onClick}
+      style={{
+        backgroundColor: isHovered ? 'white' : accentColor,
+        borderColor: isHovered ? colors.$1 : 'transparent',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Icon
+        name={icon}
+        size="1.5rem"
+        style={{ color: isHovered ? accentColor : 'white' }}
+      />
+    </Box>
+  );
+};
 
 const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
   const location = useLocation();
@@ -73,49 +111,13 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
       ref={popoverRef}
       content={
         <Box className="flex flex-col gap-y-3 p-2">
-          <Box
-            className="flex items-center justify-center p-3 cursor-pointer hover:bg-gray-100 rounded-full transition-colors"
-            onClick={handleQRScan}
-            style={{
-              backgroundColor: accentColor,
-            }}
-          >
-            <Icon name="qrCode" size="1.5rem" style={{ color: 'white' }} />
-          </Box>
+          <SearchItem icon="qrCode" onClick={handleQRScan} />
 
-          <Box
-            className="flex items-center justify-center p-3 cursor-pointer bg-white hover:bg-gray-100 rounded-full transition-colors"
-            onClick={handleBarcodeScan}
-            style={{
-              backgroundColor: accentColor,
-            }}
-          >
-            <Icon name="barcode" size="1.5rem" style={{ color: 'white' }} />
-          </Box>
+          <SearchItem icon="barcode" onClick={handleBarcodeScan} />
 
-          <Box
-            className="flex items-center justify-center p-3 cursor-pointer bg-white hover:bg-gray-100 rounded-full transition-colors"
-            onClick={handleVoiceSearch}
-            style={{
-              backgroundColor: accentColor,
-            }}
-          >
-            <Icon
-              name="microphoneLine"
-              size="1.5rem"
-              style={{ color: 'white' }}
-            />
-          </Box>
+          <SearchItem icon="microphoneLine" onClick={handleVoiceSearch} />
 
-          <Box
-            className="flex items-center justify-center p-3 cursor-pointer bg-white hover:bg-gray-100 rounded-full transition-colors"
-            onClick={handleImageSearch}
-            style={{
-              backgroundColor: accentColor,
-            }}
-          >
-            <Icon name="imageLine" size="1.5rem" style={{ color: 'white' }} />
-          </Box>
+          <SearchItem icon="imageLine" onClick={handleImageSearch} />
         </Box>
       }
       trigger="click"

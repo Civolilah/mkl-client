@@ -20,14 +20,20 @@ import {
   Box,
   Button,
   Card,
+  CountriesSelector,
   CurrenciesSelector,
   Icon,
-  RefreshDataElement,
+  Label,
   Text,
   TextField,
+  Toggle,
 } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import {
+  useColors,
+  useEnableInvoicingFeature,
+  useTranslation,
+} from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
 
@@ -45,14 +51,14 @@ const SupplierForm = ({
   supplier,
   setSupplier,
   errors,
-  editPage,
   isLoading,
-  onRefresh,
   onlyFields,
 }: Props) => {
   const t = useTranslation();
 
   const colors = useColors();
+
+  const { isEnabledInvoicing } = useEnableInvoicingFeature();
 
   const handleChange = useHandleChange({ setSupplier });
 
@@ -108,16 +114,7 @@ const SupplierForm = ({
 
   return (
     <Box className="flex flex-col xl:flex-row self-start gap-6 w-full md:w-3/4 xl:w-full">
-      <Card
-        title={t('details')}
-        className="w-full"
-        isLoading={isLoading}
-        topRight={
-          editPage && onRefresh && typeof isLoading === 'boolean' ? (
-            <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
-          ) : undefined
-        }
-      >
+      <Card title={t('details')} className="w-full" isLoading={isLoading}>
         <Box className="flex flex-col gap-y-4">
           <TextField
             required
@@ -129,11 +126,21 @@ const SupplierForm = ({
             errorMessage={errors?.name && t(errors.name)}
           />
 
+          <CountriesSelector
+            label={t('country')}
+            placeHolder={t('select_country')}
+            value={supplier?.country_id || ''}
+            onValueChange={(value) => handleChange('country_id', value)}
+            onClear={() => handleChange('country_id', '')}
+            errorMessage={errors?.country_id && t(errors.country_id)}
+          />
+
           <CurrenciesSelector
             label={t('currency')}
             placeholder={t('select_currency')}
             value={supplier?.currency_id || ''}
             onChange={(value) => handleChange('currency_id', value)}
+            onClear={() => handleChange('currency_id', '')}
             errorMessage={errors?.currency_id && t(errors.currency_id)}
           />
         </Box>
@@ -238,6 +245,43 @@ const SupplierForm = ({
                 }
                 withoutOptionalText
               />
+
+              {isEnabledInvoicing && (
+                <>
+                  <TextField
+                    type="password"
+                    label={t('password')}
+                    placeHolder={t('password_placeholder')}
+                    value={contact.password || ''}
+                    onValueChange={(value) =>
+                      handleChange(
+                        `contacts.${index}.password` as keyof Supplier,
+                        value
+                      )
+                    }
+                    changeOnBlur
+                    errorMessage={
+                      get(errors, `contacts.${index}.password`) &&
+                      t(get(errors, `contacts.${index}.password`))
+                    }
+                    withoutOptionalText
+                  />
+
+                  <Box className="flex items-center space-x-10">
+                    <Label>{t('add_to_purchase_orders')}</Label>
+
+                    <Toggle
+                      checked={Boolean(contact.add_to_purchase_orders)}
+                      onChange={(value) =>
+                        handleChange(
+                          `contacts.${index}.add_to_purchase_orders` as keyof Supplier,
+                          value
+                        )
+                      }
+                    />
+                  </Box>
+                </>
+              )}
 
               <Button
                 className="self-end"

@@ -10,13 +10,12 @@
 
 import { useAtomValue } from 'jotai';
 
-import { CompanyPlan, userCompanyAtom } from '@components/general/PrivateRoute';
+import { AccountPlan, userCompanyAtom } from '@components/general/PrivateRoute';
 
-const IMAGE_LIMIT_BY_PLAN: Record<CompanyPlan, number> = {
-  free: 5,
+const IMAGE_LIMIT_BY_PLAN: Record<AccountPlan, number> = {
   basic: 5,
-  pro: 7,
-  advanced: 10,
+  standard: 7,
+  professional: 10,
   enterprise: 15,
 };
 
@@ -24,7 +23,7 @@ const useImageLimitByPlan = () => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);
 
   const imagesNumberLimit =
-    IMAGE_LIMIT_BY_PLAN[userCompanyDetails?.company?.plan as CompanyPlan];
+    IMAGE_LIMIT_BY_PLAN[userCompanyDetails?.account?.plan as AccountPlan];
 
   return { imagesNumberLimit };
 };

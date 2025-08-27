@@ -54,7 +54,6 @@
     "optional": "optional",
     "email_already_exists": "An account with this email address already exists. Please use a different email or try logging in.",
     "login_register_max_requests": "Too many attempts. Please try again in 5 minutes.",
-    "anti_bot_verification": "Anti-bot verification!",
     "add_product": "Add Product",
     "add_first_product": "Add your first product to the store!",
     "cancel": "Cancel",
@@ -408,5 +407,10 @@
   "subsidiary_zip_code_max_length": "Max length for subsidiary zip code is 50 characters.",
   "subsidiary_state_max_length": "Max length for subsidiary state is 200 characters.",
   "subsidiary_state_placeholder": "e.g., New York, California, etc.",
-  "state": "State/Province"
+  "state": "State/Province",
+  "orders": "Orders",
+  "purchase_orders": "Purchase Orders",
+  "new_purchase_order": "New Purchase Order",
+  "add_to_purchase_orders": "Add to purchase orders",
+  "let_us_know_you_are_human": "Let us know you're human"
 }

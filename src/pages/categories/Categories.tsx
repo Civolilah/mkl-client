@@ -10,17 +10,37 @@
 
 import { useState } from 'react';
 
+import { route } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
+
 import { Category } from '@interfaces/index';
 
-import { Box, Default, RefreshDataElement, Table } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  MobileSearchAction,
+  RefreshDataElement,
+  Table,
+} from '@components/index';
 
-import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
+import {
+  useFetchEntity,
+  useHasPermission,
+  usePageLayoutAndActions,
+  useTranslation,
+} from '@hooks/index';
 
+import MobileCard from './common/components/MobileCard';
 import useColumns from './common/hooks/useColumns';
 
 const Categories = () => {
   const t = useTranslation();
 
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,10 +62,10 @@ const Categories = () => {
     refresh,
   });
 
-  return (
-    <Default
-      title={t('categories')}
-      footer={
+  usePageLayoutAndActions(
+    {
+      title: t('categories'),
+      footer: isLargeScreen ? (
         <Box className="flex w-full items-center justify-end">
           <RefreshDataElement
             isLoading={isLoading}
@@ -53,19 +73,56 @@ const Categories = () => {
             tooltipPlacement="left"
           />
         </Box>
-      }
-    >
-      <Table<Category>
-        columns={columns}
-        data={categories}
-        isDataLoading={isLoading}
-        enableFiltering
-        filteringProps={['name']}
-        creationRoute="/categories/new"
-        creationButtonLabel={t('new_category')}
-        filterFieldPlaceHolder={t('search_by_name')}
-      />
-    </Default>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <MobileSearchAction
+            disabled={isLoading}
+            iconSize="1.3rem"
+            searchPlaceholder="search_by_name"
+          />
+
+          <FooterAction
+            text="new_category"
+            onClick={() => {
+              navigate(route('/categories/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [isLoading, isLargeScreen]
+  );
+
+  return (
+    <Table<Category>
+      columns={columns}
+      data={categories}
+      isDataLoading={isLoading}
+      enableFiltering
+      filteringProps={['name']}
+      creationRoute="/categories/new"
+      creationButtonLabel={t('new_category')}
+      filterFieldPlaceHolder={t('search_by_name')}
+      turnOnMobilePreview
+      mobileCardRender={(entity) => (
+        <MobileCard entity={entity} refresh={refresh} />
+      )}
+      onMobileCardClick={(entity) => {
+        navigate(route('/categories/:id/edit', { id: entity.id || '' }));
+      }}
+    />
   );
 };
 

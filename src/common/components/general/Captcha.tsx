@@ -19,9 +19,15 @@ const Captcha = (props: Props) => {
 
   return (
     <Turnstile
+      language={localStorage.getItem('MKL-LOCALE') || 'en'}
+      className="turnstile-container"
       sitekey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
       appearance="always"
       onVerify={onVerify}
+      style={{
+        width: '100%',
+      }}
+      size="flexible"
     />
   );
 };

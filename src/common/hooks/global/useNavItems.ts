@@ -12,6 +12,7 @@ import { t } from 'i18next';
 
 import { IconName } from '@components/general/Icon';
 
+import useEnableInvoicingFeature from './useEnableInvoicingFeature';
 import useHasPermission from './useHasPermission';
 
 type RightIcon = {
@@ -33,6 +34,8 @@ export type NavItem = {
 
 const useNavItems = () => {
   const hasPermission = useHasPermission();
+
+  const { isEnabledInvoicing } = useEnableInvoicingFeature();
 
   const navItems: NavItem[] = [
     {
@@ -59,6 +62,14 @@ const useNavItems = () => {
         tooltipText: 'new_product',
         visible: hasPermission('create_product'),
       },
+    },
+    {
+      key: 'orders',
+      label: 'orders',
+      iconName: 'clipboardList',
+      href: '/orders',
+      visible: hasPermission('view_orders') && isEnabledInvoicing,
+      iconSize: '1.15rem',
     },
     {
       key: 'import_export',
@@ -203,6 +214,24 @@ const useNavItems = () => {
         href: '/label_categories/new',
         tooltipText: 'new_label_category',
         visible: hasPermission('create_label_category'),
+      },
+    },
+    {
+      key: 'purchase_orders',
+      label: 'purchase_orders',
+      iconName: 'fileInvoiceDollar',
+      href: '/purchase_orders',
+      visible:
+        (hasPermission('create_purchase_order') ||
+          hasPermission('view_purchase_order') ||
+          hasPermission('edit_purchase_order')) &&
+        isEnabledInvoicing,
+      iconSize: '1.129rem',
+      rightIcon: {
+        name: 'add',
+        href: '/purchase_orders/new',
+        tooltipText: 'new_purchase_order',
+        visible: hasPermission('create_purchase_order'),
       },
     },
     {

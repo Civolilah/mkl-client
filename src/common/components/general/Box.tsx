@@ -17,6 +17,8 @@ interface Props {
   style?: CSSProperties;
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
   onMouseDown?: (event: MouseEvent<HTMLDivElement>) => void;
+  onMouseEnter?: (event: MouseEvent<HTMLDivElement>) => void;
+  onMouseLeave?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
 const Box = ({
@@ -25,6 +27,8 @@ const Box = ({
   style,
   onClick,
   onMouseDown,
+  onMouseEnter,
+  onMouseLeave,
   id,
 }: Props) => {
   if (!children)
@@ -35,6 +39,8 @@ const Box = ({
         style={style}
         onClick={onClick}
         onMouseDown={onMouseDown}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       />
     );
 
@@ -45,6 +51,8 @@ const Box = ({
       style={style}
       onClick={onClick}
       onMouseDown={onMouseDown}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {children}
     </div>

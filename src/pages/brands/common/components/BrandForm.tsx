@@ -12,7 +12,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { Brand, ValidationErrors } from '@interfaces/index';
 
-import { Card, RefreshDataElement, TextField } from '@components/index';
+import { Card, TextField } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -28,18 +28,15 @@ type Props = {
   onlyFields?: boolean;
 };
 
-const BrandForm = (props: Props) => {
+const BrandForm = ({
+  brand,
+  setBrand,
+  errors,
+  editPage,
+  isLoading,
+  onlyFields,
+}: Props) => {
   const t = useTranslation();
-
-  const {
-    brand,
-    setBrand,
-    errors,
-    editPage,
-    isLoading,
-    onRefresh,
-    onlyFields,
-  } = props;
 
   const handleChange = useHandleChange({ setBrand });
 
@@ -64,11 +61,6 @@ const BrandForm = (props: Props) => {
       title={editPage ? t('edit_brand') : t('new_brand')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
-      topRight={
-        editPage && onRefresh && typeof isLoading === 'boolean' ? (
-          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
-        ) : undefined
-      }
     >
       <TextField
         required

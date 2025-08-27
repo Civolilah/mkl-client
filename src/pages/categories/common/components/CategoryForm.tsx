@@ -12,7 +12,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { Category, ValidationErrors } from '@interfaces/index';
 
-import { Box, Card, RefreshDataElement, TextField } from '@components/index';
+import { Box, Card, TextField } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -28,18 +28,15 @@ type Props = {
   onlyFields?: boolean;
 };
 
-const CategoryForm = (props: Props) => {
+const CategoryForm = ({
+  category,
+  setCategory,
+  errors,
+  editPage,
+  isLoading,
+  onlyFields,
+}: Props) => {
   const t = useTranslation();
-
-  const {
-    category,
-    setCategory,
-    errors,
-    editPage,
-    isLoading,
-    onRefresh,
-    onlyFields,
-  } = props;
 
   const handleChange = useHandleChange({ setCategory });
 
@@ -64,11 +61,6 @@ const CategoryForm = (props: Props) => {
       title={editPage ? t('edit_category') : t('new_category')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
-      topRight={
-        editPage && onRefresh && typeof isLoading === 'boolean' ? (
-          <RefreshDataElement isLoading={isLoading} refresh={onRefresh} />
-        ) : undefined
-      }
     >
       <Box className="pb-2">
         <TextField

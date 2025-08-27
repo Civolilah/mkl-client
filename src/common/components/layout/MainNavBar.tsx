@@ -24,7 +24,7 @@ const NavigationBar = () => {
 
   return (
     <nav
-      className="flex flex-col space-y-1 border-r shadow-md pt-3 w-full"
+      className="flex flex-col space-y-1 border-r shadow-md pt-1 w-full"
       style={{
         backgroundColor: colors.$6,
         height: 'calc(100vh - 3.5rem)',

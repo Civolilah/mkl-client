@@ -136,6 +136,13 @@ const Login = () => {
   //     );
 
   //     console.log(response);
+
+  //     const currentCountryId =
+  //       Object.entries(countries.getNumericCodes()).find(
+  //         ([, code]) => code === response?.data?.country_code
+  //       )?.[0] || '';
+
+  //     console.log(currentCountryId);
   //   })();
   // }, []);
 

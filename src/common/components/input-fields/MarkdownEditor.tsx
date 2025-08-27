@@ -28,18 +28,20 @@ interface MarkdownEditorProps {
   label?: string;
   required?: boolean;
   withoutOptionalText?: boolean;
+  withoutImageFormat?: boolean;
 }
 
 const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   value = '',
   onChange,
-  placeholder = 'Start writing...',
+  placeholder,
   readOnly = false,
-  className = '',
+  className,
   label,
   required,
   withoutOptionalText,
   height = '10rem',
+  withoutImageFormat = false,
 }) => {
   const [content, setContent] = useState(value);
 
@@ -63,23 +65,6 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
     }),
     [readOnly]
   );
-
-  const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'color',
-    'background',
-    'list',
-    'bullet',
-    'align',
-    'link',
-    'image',
-    'blockquote',
-    'code-block',
-  ];
 
   const handleChange = (newValue: string) => {
     setContent(newValue);
@@ -107,7 +92,22 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         value={content}
         onChange={handleChange}
         modules={modules}
-        formats={formats}
+        formats={[
+          'header',
+          'bold',
+          'italic',
+          'underline',
+          'strike',
+          'color',
+          'background',
+          'list',
+          'bullet',
+          'align',
+          'link',
+          'image',
+          'blockquote',
+          'code-block',
+        ].filter((format) => !withoutImageFormat || format !== 'image')}
         placeholder={placeholder}
         readOnly={readOnly}
         theme="snow"

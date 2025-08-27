@@ -37,3 +37,4 @@ export { default as useFindWarehouse } from '@hooks/warehouses/useFindWarehouse'
 export { default as useAccountPlan } from '@hooks/global/useAccountPlan';
 export { default as useResolveCountry } from '@hooks/global/useResolveCountry';
 export { default as useFindLabelCategory } from '@hooks/label-categories/useFindLabelCategory';
+export { default as useEnableInvoicingFeature } from '@hooks/global/useEnableInvoicingFeature';

@@ -47,6 +47,8 @@ export interface UserCompanyDetails {
   company: {
     name: string;
     permissions: Permission[];
+    country_id: string;
+    currency_id: string;
   };
   account: {
     plan: AccountPlan;

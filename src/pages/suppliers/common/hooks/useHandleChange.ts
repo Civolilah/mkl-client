@@ -17,7 +17,7 @@ type Params = {
 };
 
 const useHandleChange = ({ setSupplier }: Params) => {
-  return (property: keyof Supplier, value: string) => {
+  return (property: keyof Supplier, value: string | boolean) => {
     setSupplier(
       (currentSupplier) =>
         currentSupplier && {

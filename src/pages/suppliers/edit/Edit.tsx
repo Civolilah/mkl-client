@@ -11,19 +11,26 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, useToast } from '@helpers/index';
+import { endpoint, request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Supplier, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  RefreshDataElement,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  usePageLayoutAndActions,
   useRefetch,
   useTranslation,
 } from '@hooks/index';
@@ -34,6 +41,8 @@ import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -50,6 +59,7 @@ const Edit = () => {
 
   const actions = useActions();
   const refetch = useRefetch();
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
 
@@ -110,6 +120,81 @@ const Edit = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('edit_supplier'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isLoading,
+        isDisabled:
+          isLoading ||
+          !canEditEntity('edit_supplier', 'create_supplier', supplier),
+        onClick: handleSave,
+        disabledWithLoadingIcon: Boolean(isLoading && supplier),
+        displayPermissionTooltip: !canEditEntity(
+          'edit_supplier',
+          'create_supplier',
+          supplier
+        ),
+        tooltipPermissionMessage: t('no_permission_to_edit_supplier'),
+      },
+      actions: {
+        list: supplier ? actions(supplier) : [],
+      },
+      footer: isLargeScreen ? (
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
+        </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="suppliers"
+            onClick={() => {
+              navigate(route('/suppliers'));
+            }}
+            iconName="truck"
+            disabled={isLoading}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="new_supplier"
+            onClick={() => {
+              navigate(route('/suppliers/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [supplier, isLoading, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -124,30 +209,14 @@ const Edit = () => {
   }, []);
 
   return (
-    <Default
-      title={t('edit_supplier')}
-      breadcrumbs={breadcrumbs}
-      actions={supplier ? actions(supplier) : undefined}
-      onSaveClick={handleSave}
-      disabledSaveButton={
-        isLoading ||
-        !canEditEntity('edit_supplier', 'create_supplier', supplier)
-      }
-      displayPermissionTooltip={
-        !canEditEntity('edit_supplier', 'create_supplier', supplier)
-      }
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && supplier)}
-      tooltipPermissionMessage={t('no_permission_to_edit_supplier')}
-    >
-      <SupplierForm
-        supplier={supplier}
-        setSupplier={setSupplier}
-        errors={errors}
-        editPage
-        isLoading={isLoading && !supplier}
-        onRefresh={refresh}
-      />
-    </Default>
+    <SupplierForm
+      supplier={supplier}
+      setSupplier={setSupplier}
+      errors={errors}
+      editPage
+      isLoading={isLoading && !supplier}
+      onRefresh={refresh}
+    />
   );
 };
 

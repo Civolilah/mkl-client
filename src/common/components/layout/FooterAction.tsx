@@ -40,7 +40,7 @@ const FooterAction = ({
   const t = useTranslation();
 
   return (
-    <Box className="flex flex-1 h-full items-center overflow-hidden px-1.5">
+    <Box className="flex flex-1 h-full items-center overflow-hidden px-2">
       <Box
         className={classNames(
           'flex flex-col w-full justify-between items-center h-9',

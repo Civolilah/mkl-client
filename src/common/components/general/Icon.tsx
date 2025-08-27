@@ -24,8 +24,10 @@ import {
   FaAward,
   FaCheckCircle,
   FaClipboardCheck,
+  FaClipboardList,
   FaFacebook,
   FaFileImage,
+  FaFileInvoiceDollar,
   FaInstagram,
   FaPhone,
   FaRuler,
@@ -186,7 +188,9 @@ export type IconName =
   | 'barcode'
   | 'microphoneLine'
   | 'imageLine'
-  | 'colorPalette';
+  | 'colorPalette'
+  | 'clipboardList'
+  | 'fileInvoiceDollar';
 
 type Props = {
   className?: string;
@@ -383,6 +387,10 @@ const Icon = (props: Props) => {
       return generateIconElement(RiImageLine);
     case 'colorPalette':
       return generateIconElement(MdColorLens);
+    case 'clipboardList':
+      return generateIconElement(FaClipboardList);
+    case 'fileInvoiceDollar':
+      return generateIconElement(FaFileInvoiceDollar);
     default:
       return <></>;
   }

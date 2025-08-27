@@ -18,6 +18,7 @@ import {
   Card,
   CategoriesSelector,
   InformationLabel,
+  MarkdownEditor,
   RefreshDataElement,
   SubsidiariesSelector,
   SuppliersSelector,
@@ -185,13 +186,12 @@ const DetailsCard = ({
           withRefreshButton
         />
 
-        <TextField
-          type="textarea"
+        <MarkdownEditor
           label={t('description')}
-          placeHolder={t('product_notes')}
+          placeholder={t('product_description_placeholder')}
           value={product?.description || ''}
-          onValueChange={(value) => handleChange('description', value)}
-          maxLength={2000}
+          onChange={(value) => handleChange('description', value)}
+          withoutImageFormat
         />
       </Box>
     </Card>

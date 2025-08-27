@@ -38,6 +38,15 @@ const LAYOUT_WRAPPER_COVERED_ROUTES = [
   '/labels',
   '/labels/new',
   '/labels/:id/edit',
+  '/categories',
+  '/categories/new',
+  '/categories/:id/edit',
+  '/suppliers',
+  '/suppliers/new',
+  '/suppliers/:id/edit',
+  '/brands',
+  '/brands/new',
+  '/brands/:id/edit',
 ];
 
 const LayoutWrapper = ({ children }: Props) => {

@@ -13,7 +13,11 @@ import { Box } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
-import Details, { ProductProps } from '../components/Details';
+import AdditionalDetailsCard from '../components/AdditionalDetailsCard';
+import { ProductProps } from '../components/Details';
+import DetailsCard from '../components/DetailsCard';
+import ImagesCard from '../components/ImagesCard';
+import InventoryCard from '../components/InventoryCard';
 import QRCode from '../components/QRCode';
 
 const useTabs = ({
@@ -26,7 +30,6 @@ const useTabs = ({
   quantityByVariants,
   setQuantityByVariants,
   setCurrentImages,
-  currentImages,
 }: ProductProps) => {
   const t = useTranslation();
 
@@ -43,7 +46,29 @@ const useTabs = ({
         </Box>
       ),
       children: (
-        <Details
+        <DetailsCard
+          product={product}
+          editPage={editPage}
+          isLoading={isLoading}
+          onRefresh={onRefresh}
+          errors={errors}
+          handleChange={handleChange}
+        />
+      ),
+    },
+    {
+      key: 'inventory',
+      label: (
+        <Box className="flex item-center space-x-2 px-5 py-0.5">
+          <Box>
+            <Icon name="inventory" size="1.2rem" />
+          </Box>
+
+          <Text className="text-sm">{t('inventory')}</Text>
+        </Box>
+      ),
+      children: (
+        <InventoryCard
           product={product}
           editPage={editPage}
           isLoading={isLoading}
@@ -52,8 +77,75 @@ const useTabs = ({
           handleChange={handleChange}
           quantityByVariants={quantityByVariants}
           setQuantityByVariants={setQuantityByVariants}
+        />
+      ),
+    },
+    {
+      key: 'images',
+      label: (
+        <Box className="flex item-center space-x-2 px-5 py-0.5">
+          <Box>
+            <Icon name="image" size="1.1rem" />
+          </Box>
+
+          <Text className="text-sm">{t('images')}</Text>
+        </Box>
+      ),
+      children: (
+        <ImagesCard
+          product={product}
+          editPage={editPage}
+          isLoading={isLoading}
+          onRefresh={onRefresh}
+          errors={errors}
+          handleChange={handleChange}
           setCurrentImages={setCurrentImages}
-          currentImages={currentImages}
+        />
+      ),
+    },
+    {
+      key: 'additional_details',
+      label: (
+        <Box className="flex item-center space-x-2 px-5 py-0.5">
+          <Box>
+            <Icon name="information" size="1.3rem" />
+          </Box>
+
+          <Text className="text-sm">{t('additional_details')}</Text>
+        </Box>
+      ),
+      children: (
+        <AdditionalDetailsCard
+          product={product}
+          editPage={editPage}
+          isLoading={isLoading}
+          onRefresh={onRefresh}
+          errors={errors}
+          handleChange={handleChange}
+          quantityByVariants={quantityByVariants}
+        />
+      ),
+    },
+    {
+      key: 'display_settings',
+      label: (
+        <Box className="flex item-center space-x-2 px-5 py-0.5">
+          <Box>
+            <Icon name="preview" size="1.3rem" />
+          </Box>
+
+          <Text className="text-sm">{t('display_settings')}</Text>
+        </Box>
+      ),
+      children: (
+        <AdditionalDetailsCard
+          product={product}
+          editPage={editPage}
+          isLoading={isLoading}
+          onRefresh={onRefresh}
+          errors={errors}
+          handleChange={handleChange}
+          quantityByVariants={quantityByVariants}
         />
       ),
     },

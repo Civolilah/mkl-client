@@ -14,6 +14,8 @@ export type SupplierContact = {
   last_name: string;
   email: string;
   phone: string;
+  password?: string;
+  add_to_purchase_orders?: boolean;
 };
 
 export type Supplier = {
@@ -21,4 +23,5 @@ export type Supplier = {
   name: string;
   contacts: SupplierContact[];
   currency_id?: string;
+  country_id?: string;
 };

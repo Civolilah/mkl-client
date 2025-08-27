@@ -12,20 +12,27 @@ import { useEffect, useState } from 'react';
 
 import { INITIAL_BRAND, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { Brand, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useRefetch, useTranslation } from '@hooks/index';
+import {
+  usePageLayoutAndActions,
+  useRefetch,
+  useTranslation,
+} from '@hooks/index';
 
 import BrandForm from '../common/components/BrandForm';
 import { validateBrand } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -83,6 +90,45 @@ const Create = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('new_category'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isFormBusy,
+        isDisabled: isFormBusy,
+        onClick: handleSave,
+        disabledWithLoadingIcon: isFormBusy,
+      },
+      footer: isLargeScreen ? undefined : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="brands"
+            onClick={() => {
+              navigate(route('/brands'));
+            }}
+            iconName="brand"
+            disabled={isFormBusy}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isFormBusy} />
+        </Box>
+      ),
+    },
+    [brand, isFormBusy, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -96,17 +142,7 @@ const Create = () => {
     };
   }, []);
 
-  return (
-    <Default
-      title={t('new_brand')}
-      breadcrumbs={breadcrumbs}
-      onSaveClick={handleSave}
-      disabledSaveButton={isFormBusy}
-      disabledSaveButtonWithLoadingIcon={isFormBusy}
-    >
-      <BrandForm brand={brand} setBrand={setBrand} errors={errors} />
-    </Default>
-  );
+  return <BrandForm brand={brand} setBrand={setBrand} errors={errors} />;
 };
 
 export default Create;
