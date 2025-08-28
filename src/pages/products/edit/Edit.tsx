@@ -11,19 +11,26 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, useToast } from '@helpers/index';
+import { endpoint, request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Product, ValidationErrors } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  RefreshDataElement,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  usePageLayoutAndActions,
   useTranslation,
 } from '@hooks/index';
 
@@ -33,6 +40,8 @@ import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -48,6 +57,7 @@ const Edit = () => {
   const { id } = useParams();
 
   const actions = useActions();
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
 
@@ -103,6 +113,82 @@ const Edit = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('edit_product'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isLoading,
+        isDisabled:
+          isLoading ||
+          !canEditEntity('edit_product', 'create_product', product),
+        onClick: handleSave,
+        disabledWithLoadingIcon: Boolean(isLoading && product),
+        displayPermissionTooltip: !canEditEntity(
+          'edit_product',
+          'create_product',
+          product
+        ),
+        tooltipPermissionMessage: t('no_permission_to_edit_product'),
+      },
+      actions: {
+        list: product ? actions(product) : [],
+      },
+      footer: isLargeScreen ? (
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
+        </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="products"
+            onClick={() => {
+              navigate(route('/products'));
+            }}
+            iconName="product"
+            disabled={isLoading}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="new_product"
+            onClick={() => {
+              navigate(route('/products/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            iconSize="1.3rem"
+            visible={hasPermission('create_product')}
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [product, isLoading, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -117,29 +203,13 @@ const Edit = () => {
   }, []);
 
   return (
-    <Default
-      title={t('edit_product')}
-      breadcrumbs={breadcrumbs}
-      actions={product ? actions(product) : undefined}
-      onSaveClick={handleSave}
-      disabledSaveButton={
-        isLoading || !canEditEntity('edit_product', 'create_product', product)
-      }
-      displayPermissionTooltip={
-        !canEditEntity('edit_product', 'create_product', product)
-      }
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && product)}
-      tooltipPermissionMessage={t('no_permission_to_edit_product')}
-    >
-      <ProductForm
-        product={product}
-        setProduct={setProduct}
-        errors={errors}
-        editPage
-        isLoading={isLoading && !product}
-        onRefresh={refresh}
-      />
-    </Default>
+    <ProductForm
+      product={product}
+      setProduct={setProduct}
+      errors={errors}
+      isLoading={isLoading && !product}
+      onRefresh={refresh}
+    />
   );
 };
 

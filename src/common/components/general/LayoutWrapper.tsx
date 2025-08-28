@@ -8,10 +8,9 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode, useMemo } from 'react';
+import { ReactNode } from 'react';
 
 import { useAtomValue } from 'jotai';
-import { useLocation } from 'react-router-dom';
 
 import { AISearchAction, Default } from '@components/index';
 
@@ -21,55 +20,10 @@ interface Props {
   children: ReactNode;
 }
 
-const LAYOUT_WRAPPER_COVERED_ROUTES = [
-  '/employees',
-  '/employees/new',
-  '/employees/:id/edit',
-  '/employees/:id/show',
-  '/subsidiaries',
-  '/subsidiaries/new',
-  '/subsidiaries/:id/edit',
-  '/statuses',
-  '/statuses/new',
-  '/statuses/:id/edit',
-  '/label_categories',
-  '/label_categories/new',
-  '/label_categories/:id/edit',
-  '/labels',
-  '/labels/new',
-  '/labels/:id/edit',
-  '/categories',
-  '/categories/new',
-  '/categories/:id/edit',
-  '/suppliers',
-  '/suppliers/new',
-  '/suppliers/:id/edit',
-  '/brands',
-  '/brands/new',
-  '/brands/:id/edit',
-];
-
 const LayoutWrapper = ({ children }: Props) => {
-  const location = useLocation();
-
   const pageLayoutAndActions = useAtomValue(pageLayoutAndActionsAtom);
 
-  const updatedLayoutWrapperCoveredRoutes = useMemo(() => {
-    return LAYOUT_WRAPPER_COVERED_ROUTES.map((route) => {
-      if (route.includes(':id')) {
-        const idFromPath = location.pathname.split('/')[2];
-
-        return route.replace(':id', idFromPath);
-      }
-
-      return route;
-    });
-  }, [location]);
-
-  if (
-    !pageLayoutAndActions ||
-    !updatedLayoutWrapperCoveredRoutes.includes(location.pathname)
-  ) {
+  if (!pageLayoutAndActions) {
     return <>{children}</>;
   }
 

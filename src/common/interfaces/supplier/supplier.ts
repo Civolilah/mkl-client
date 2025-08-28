@@ -15,12 +15,23 @@ export type SupplierContact = {
   email: string;
   phone: string;
   password?: string;
-  add_to_purchase_orders?: boolean;
+  send_email?: boolean;
 };
 
 export type Supplier = {
   id?: string;
   name: string;
+  number?: string;
+  id_number?: string;
+  vat_number?: string;
+  website?: string;
+  phone?: string;
+  routing_id?: string;
+  address?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
   contacts: SupplierContact[];
   currency_id?: string;
   country_id?: string;

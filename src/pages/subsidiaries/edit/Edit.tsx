@@ -164,6 +164,16 @@ const Edit = () => {
           />
 
           <FooterAction
+            text="new_subsidiary"
+            onClick={() => {
+              navigate(route('/subsidiaries/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            visible={hasPermission('create_subsidiary')}
+          />
+
+          <FooterAction
             text="reload"
             onClick={refresh}
             iconName="refresh"
@@ -203,9 +213,7 @@ const Edit = () => {
       subsidiary={subsidiary}
       setSubsidiary={setSubsidiary}
       errors={errors}
-      editPage
       isLoading={isLoading && !subsidiary}
-      onRefresh={refresh}
     />
   );
 };

@@ -56,8 +56,17 @@ const useColumns = (props: Props) => {
       }),
     },
     {
-      title: t('address'),
+      title: t('street'),
       dataIndex: 'address',
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('apt_suite'),
+      dataIndex: 'address2',
       render: (value) => (
         <Box className="min-w-56 max-w-96 truncate">
           <Text>{value}</Text>

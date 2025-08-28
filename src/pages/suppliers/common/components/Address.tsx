@@ -8,72 +8,35 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dispatch, SetStateAction } from 'react';
-
-import { Subsidiary, ValidationErrors } from '@interfaces/index';
-
 import { Box, Card, CountriesSelector, TextField } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
+import { SupplierProps } from '../hooks/useTabs';
 
-interface Props {
-  subsidiary: Subsidiary | undefined;
-  setSubsidiary: Dispatch<SetStateAction<Subsidiary | undefined>>;
-  errors: ValidationErrors;
-  isLoading?: boolean;
-  onlyFields?: boolean;
-}
-
-const SubsidiaryForm = ({
-  subsidiary,
-  setSubsidiary,
-  errors,
+const Address = ({
+  supplier,
   isLoading,
-  onlyFields,
-}: Props) => {
+  errors,
+  setSupplier,
+}: SupplierProps) => {
   const t = useTranslation();
 
-  const handleChange = useHandleChange({ setSubsidiary });
-
-  if (onlyFields) {
-    return (
-      <>
-        <TextField
-          required
-          label={t('name')}
-          placeHolder={t('subsidiary_name_placeholder')}
-          value={subsidiary?.name || ''}
-          onValueChange={(value) => handleChange('name', value)}
-          changeOnBlur
-          errorMessage={errors?.name && t(errors.name)}
-        />
-      </>
-    );
-  }
+  const handleChange = useHandleChange({ setSupplier });
 
   return (
     <Card
-      title={t('details')}
-      className="w-full md:w-full xl:w-3/4"
+      title={t('address')}
+      className="w-full"
+      childrenParentClassName="pb-8"
       isLoading={isLoading}
     >
-      <Box className="flex flex-col gap-y-4 pb-2">
-        <TextField
-          required
-          label={t('name')}
-          placeHolder={t('subsidiary_name_placeholder')}
-          value={subsidiary?.name || ''}
-          onValueChange={(value) => handleChange('name', value)}
-          changeOnBlur
-          errorMessage={errors?.name && t(errors.name)}
-        />
-
+      <Box className="flex flex-col gap-4">
         <TextField
           label={t('street')}
           placeHolder={t('street_placeholder')}
-          value={subsidiary?.address || ''}
+          value={supplier?.address || ''}
           onValueChange={(value) => handleChange('address', value)}
           changeOnBlur
           errorMessage={errors?.address && t(errors.address)}
@@ -82,7 +45,7 @@ const SubsidiaryForm = ({
         <TextField
           label={t('apt_suite')}
           placeHolder={t('apt_suite_placeholder')}
-          value={subsidiary?.address2 || ''}
+          value={supplier?.address2 || ''}
           onValueChange={(value) => handleChange('address2', value)}
           changeOnBlur
           errorMessage={errors?.address2 && t(errors.address2)}
@@ -91,7 +54,7 @@ const SubsidiaryForm = ({
         <TextField
           label={t('city')}
           placeHolder={t('city_placeholder')}
-          value={subsidiary?.city || ''}
+          value={supplier?.city || ''}
           onValueChange={(value) => handleChange('city', value)}
           changeOnBlur
           errorMessage={errors?.city && t(errors.city)}
@@ -100,7 +63,7 @@ const SubsidiaryForm = ({
         <TextField
           label={t('state')}
           placeHolder={t('state_placeholder')}
-          value={subsidiary?.state || ''}
+          value={supplier?.state || ''}
           onValueChange={(value) => handleChange('state', value)}
           changeOnBlur
           errorMessage={errors?.state && t(errors.state)}
@@ -109,7 +72,7 @@ const SubsidiaryForm = ({
         <TextField
           label={t('zip_code')}
           placeHolder={t('zip_code_placeholder')}
-          value={subsidiary?.zip_code || ''}
+          value={supplier?.zip_code || ''}
           onValueChange={(value) => handleChange('zip_code', value)}
           changeOnBlur
           errorMessage={errors?.zip_code && t(errors.zip_code)}
@@ -118,7 +81,7 @@ const SubsidiaryForm = ({
         <CountriesSelector
           label={t('country')}
           placeHolder={t('select_country')}
-          value={subsidiary?.country_id || ''}
+          value={supplier?.country_id || ''}
           onValueChange={(value) => handleChange('country_id', value)}
           onClear={() => handleChange('country_id', '')}
           errorMessage={errors?.country_id && t(errors.country_id)}
@@ -128,4 +91,4 @@ const SubsidiaryForm = ({
   );
 };
 
-export default SubsidiaryForm;
+export default Address;

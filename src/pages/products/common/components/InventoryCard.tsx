@@ -8,18 +8,13 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 
 import classNames from 'classnames';
 import colorString from 'color-string';
 import { cloneDeep, get, set } from 'lodash';
 
-import {
-  LabelCategory,
-  Product,
-  QuantityByVariant,
-  ValidationErrors,
-} from '@interfaces/index';
+import { LabelCategory, Product } from '@interfaces/index';
 
 import {
   Box,
@@ -51,29 +46,10 @@ import {
 
 import ColorSelector from './ColorSelector';
 import DimensionsModal from './DimensionsModal';
+import { ProductProps } from './ProductForm';
+import useHandleChange from '../hooks/useHandleChange';
 import useInventoryGroupOptions from '../hooks/useInventoryGroupOptions';
 import useLabelCategoriesAdditionalOptions from '../hooks/useLabelCategoriesAdditionalOptions';
-
-type Props = {
-  isLoading?: boolean;
-  editPage?: boolean;
-  onRefresh?: () => void;
-  product: Product | undefined;
-  errors: ValidationErrors;
-  handleChange: (
-    field: keyof Product,
-    value:
-      | string
-      | number
-      | boolean
-      | Product['inventory_by_variant']
-      | string[]
-      | Product['quantity_by_variant']
-  ) => void;
-  images?: string[];
-  quantityByVariants: QuantityByVariant[];
-  setQuantityByVariants: Dispatch<SetStateAction<QuantityByVariant[]>>;
-};
 
 const InventoryCard = ({
   isLoading,
@@ -81,14 +57,16 @@ const InventoryCard = ({
   onRefresh,
   product,
   errors,
-  handleChange,
-  images,
-  quantityByVariants,
+  setProduct,
   setQuantityByVariants,
-}: Props) => {
+  quantityByVariants,
+  currentImages,
+}: ProductProps) => {
   const t = useTranslation();
 
   const hasPermission = useHasPermission();
+
+  const handleChange = useHandleChange({ setProduct });
 
   const { getLabelNameByLabelId, isLoadingLabels } = useFindLabel();
 
@@ -121,6 +99,10 @@ const InventoryCard = ({
     field: string,
     value: string | number | boolean
   ) => {
+    if (!quantityByVariants || !setQuantityByVariants) {
+      return;
+    }
+
     const updatedCombinations = cloneDeep(quantityByVariants);
 
     set(updatedCombinations, `${index}.${field}`, value);
@@ -320,7 +302,7 @@ const InventoryCard = ({
                                         ]
                                       )
                                     }
-                                    images={images}
+                                    images={currentImages}
                                   />
                                 </Box>
                               ) : (
@@ -371,7 +353,7 @@ const InventoryCard = ({
                       ))}
                     </Box>
 
-                    {Boolean(quantityByVariants.length) && (
+                    {Boolean(quantityByVariants?.length) && (
                       <Divider
                         style={{
                           marginTop: '1.25rem',
@@ -380,14 +362,14 @@ const InventoryCard = ({
                       />
                     )}
 
-                    {Boolean(quantityByVariants.length) && (
+                    {Boolean(quantityByVariants?.length) && (
                       <Box className="flex flex-col space-y-4 w-full">
                         <Text className="font-medium text-lg">
                           {t('quantity_by_variants')}
                         </Text>
 
                         <Box className="flex flex-col space-y-4">
-                          {quantityByVariants.map((combination, index) => (
+                          {quantityByVariants?.map((combination, index) => (
                             <Box
                               key={index}
                               className="border overflow-hidden rounded-t-lg"
@@ -490,7 +472,7 @@ const InventoryCard = ({
                                               `${index}.quantity`,
                                               0
                                             );
-                                            setQuantityByVariants(
+                                            setQuantityByVariants?.(
                                               updatedCombinations
                                             );
                                           } else {

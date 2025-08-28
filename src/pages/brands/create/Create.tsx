@@ -92,7 +92,7 @@ const Create = () => {
 
   usePageLayoutAndActions(
     {
-      title: t('new_category'),
+      title: t('new_brand'),
       breadcrumbs: {
         breadcrumbs,
       },

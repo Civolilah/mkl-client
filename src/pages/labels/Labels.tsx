@@ -89,6 +89,7 @@ const Labels = () => {
             iconName="add"
             disabled={isLoading}
             iconSize="1.3rem"
+            visible={hasPermission('create_label')}
           />
 
           <FooterAction

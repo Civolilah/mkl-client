@@ -12,6 +12,7 @@ export type Subsidiary = {
   id?: string;
   name: string;
   address?: string;
+  address2?: string;
   city?: string;
   state?: string;
   zip_code?: string;

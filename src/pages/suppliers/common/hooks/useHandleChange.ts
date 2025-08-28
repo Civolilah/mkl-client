@@ -10,6 +10,8 @@
 
 import { Dispatch, SetStateAction } from 'react';
 
+import { cloneDeep, set } from 'lodash';
+
 import { Supplier } from '@interfaces/index';
 
 type Params = {
@@ -17,14 +19,15 @@ type Params = {
 };
 
 const useHandleChange = ({ setSupplier }: Params) => {
-  return (property: keyof Supplier, value: string | boolean) => {
-    setSupplier(
-      (currentSupplier) =>
-        currentSupplier && {
-          ...currentSupplier,
-          [property]: value,
-        }
-    );
+  return (property: string, value: string | boolean) => {
+    setSupplier((currentSupplier) => {
+      if (!currentSupplier) return currentSupplier;
+
+      const updatedSupplier = cloneDeep(currentSupplier);
+      set(updatedSupplier, property, value);
+
+      return updatedSupplier;
+    });
   };
 };
 

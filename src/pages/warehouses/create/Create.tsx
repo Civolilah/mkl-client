@@ -15,20 +15,27 @@ import {
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors, Warehouse } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useRefetch, useTranslation } from '@hooks/index';
+import {
+  usePageLayoutAndActions,
+  useRefetch,
+  useTranslation,
+} from '@hooks/index';
 
 import WarehouseForm from '../common/components/WarehouseForm';
 import { validateWarehouse } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -88,6 +95,45 @@ const Create = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('new_warehouse'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isFormBusy,
+        isDisabled: isFormBusy,
+        onClick: handleSave,
+        disabledWithLoadingIcon: isFormBusy,
+      },
+      footer: isLargeScreen ? undefined : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="warehouses"
+            onClick={() => {
+              navigate(route('/warehouses'));
+            }}
+            iconName="warehouse"
+            disabled={isFormBusy}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isFormBusy} />
+        </Box>
+      ),
+    },
+    [warehouse, isFormBusy, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -102,19 +148,11 @@ const Create = () => {
   }, []);
 
   return (
-    <Default
-      title={t('new_warehouse')}
-      breadcrumbs={breadcrumbs}
-      onSaveClick={handleSave}
-      disabledSaveButton={isFormBusy}
-      disabledSaveButtonWithLoadingIcon={isFormBusy}
-    >
-      <WarehouseForm
-        warehouse={warehouse}
-        setWarehouse={setWarehouse}
-        errors={errors}
-      />
-    </Default>
+    <WarehouseForm
+      warehouse={warehouse}
+      setWarehouse={setWarehouse}
+      errors={errors}
+    />
   );
 };
 

@@ -1,0 +1,225 @@
+/**
+ * MKL (https://mkl.ba).
+ *
+ * @link https://github.com/mkl source repository
+ *
+ * @copyright Copyright (c) 2024. MKL (https://mkl.ba)
+ *
+ * @license https://www.elastic.co/licensing/elastic-license
+ */
+
+import { BLANK_SUPPLIER_CONTACT } from '@constants/index';
+import classNames from 'classnames';
+import { get } from 'lodash';
+
+import {
+  Box,
+  Button,
+  Card,
+  Icon,
+  Label,
+  Text,
+  TextField,
+  Toggle,
+} from '@components/index';
+
+import { useColors, useTranslation } from '@hooks/index';
+
+import useHandleChange from '../hooks/useHandleChange';
+import { SupplierProps } from '../hooks/useTabs';
+
+const Contacts = ({
+  supplier,
+  isLoading,
+  errors,
+  setSupplier,
+}: SupplierProps) => {
+  const t = useTranslation();
+
+  const colors = useColors();
+
+  const handleChange = useHandleChange({ setSupplier });
+
+  // Enable invoicing feature for this component
+  const isEnabledInvoicing = true;
+
+  const handleAddContact = () => {
+    setSupplier(
+      (prev) =>
+        prev && {
+          ...prev,
+          contacts: [...(supplier?.contacts || []), BLANK_SUPPLIER_CONTACT],
+        }
+    );
+
+    setTimeout(() => {
+      const contactElements = document.querySelectorAll(
+        '[id^="supplier_contact_first_name_"]'
+      );
+
+      if (contactElements.length > 1) {
+        const lastContactElement = contactElements[contactElements.length - 1];
+        lastContactElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    }, 50);
+  };
+
+  const handleRemoveContact = (index: number) => {
+    setSupplier(
+      (prev) =>
+        prev && {
+          ...prev,
+          contacts: prev.contacts.filter((_, i) => i !== index),
+        }
+    );
+  };
+
+  return (
+    <Card
+      title={t('contacts')}
+      className="w-full"
+      isLoading={isLoading}
+      topRight={
+        <Button type="default" size="middle" onClick={handleAddContact}>
+          <Box>
+            <Icon name="add" />
+          </Box>
+
+          <Text>{t('add_contact')}</Text>
+        </Button>
+      }
+    >
+      <Box className="flex flex-col gap-6">
+        {supplier?.contacts.map((contact, index) => (
+          <Box
+            key={index}
+            className={classNames('flex flex-col gap-y-4 pb-4', {
+              'border-b border-dashed':
+                supplier?.contacts.length > 1 &&
+                index !== supplier?.contacts.length - 1,
+            })}
+            style={{ borderColor: colors.$1 }}
+          >
+            <TextField
+              id={`supplier_contact_first_name_${index}`}
+              label={t('first_name')}
+              placeHolder={t('supplier_contact_first_name_placeholder')}
+              value={contact.first_name}
+              onValueChange={(value) =>
+                handleChange(`contacts.${index}.first_name`, value)
+              }
+              changeOnBlur
+              errorMessage={
+                get(errors, `contacts.${index}.first_name`) &&
+                t(get(errors, `contacts.${index}.first_name`))
+              }
+              withoutOptionalText
+            />
+
+            <TextField
+              label={t('last_name')}
+              placeHolder={t('supplier_contact_last_name_placeholder')}
+              value={contact.last_name}
+              onValueChange={(value) =>
+                handleChange(`contacts.${index}.last_name`, value)
+              }
+              changeOnBlur
+              errorMessage={
+                get(errors, `contacts.${index}.last_name`) &&
+                t(get(errors, `contacts.${index}.last_name`))
+              }
+              withoutOptionalText
+            />
+
+            <TextField
+              type="email"
+              label={t('email')}
+              placeHolder={t('supplier_contact_email_placeholder')}
+              value={contact.email}
+              onValueChange={(value) =>
+                handleChange(`contacts.${index}.email`, value)
+              }
+              changeOnBlur
+              errorMessage={
+                get(errors, `contacts.${index}.email`) &&
+                t(get(errors, `contacts.${index}.email`))
+              }
+              withoutOptionalText
+            />
+
+            <TextField
+              type="tel"
+              label={t('phone')}
+              placeHolder={t('supplier_contact_phone_placeholder')}
+              value={contact.phone}
+              onValueChange={(value) =>
+                handleChange(`contacts.${index}.phone`, value)
+              }
+              changeOnBlur
+              errorMessage={
+                get(errors, `contacts.${index}.phone`) &&
+                t(get(errors, `contacts.${index}.phone`))
+              }
+              withoutOptionalText
+            />
+
+            {isEnabledInvoicing && (
+              <>
+                <TextField
+                  type="password"
+                  label={t('password')}
+                  placeHolder={t('password_placeholder')}
+                  value={contact.password || ''}
+                  onValueChange={(value) =>
+                    handleChange(`contacts.${index}.password`, value)
+                  }
+                  changeOnBlur
+                  errorMessage={
+                    get(errors, `contacts.${index}.password`) &&
+                    t(get(errors, `contacts.${index}.password`))
+                  }
+                  withoutOptionalText
+                />
+
+                <Box className="flex items-center space-x-10">
+                  <Label>{t('send_email')}</Label>
+
+                  <Toggle
+                    checked={Boolean(contact.send_email)}
+                    onChange={(value) =>
+                      handleChange(`contacts.${index}.send_email`, value)
+                    }
+                  />
+                </Box>
+              </>
+            )}
+
+            <Button
+              className="self-end"
+              type="default"
+              size="middle"
+              onClick={() => handleRemoveContact(index)}
+            >
+              <Box>
+                <Icon name="delete" />
+              </Box>
+
+              <Text>{t('remove')}</Text>
+            </Button>
+          </Box>
+        ))}
+
+        {supplier?.contacts.length === 0 && (
+          <Text className="self-center pt-4 font-medium">
+            {t('no_contacts_added')}
+          </Text>
+        )}
+      </Box>
+    </Card>
+  );
+};
+
+export default Contacts;

@@ -11,19 +11,26 @@
 import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { endpoint, request, useToast } from '@helpers/index';
+import { endpoint, request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { ValidationErrors, Warehouse } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  RefreshDataElement,
+} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  usePageLayoutAndActions,
   useRefetch,
   useTranslation,
 } from '@hooks/index';
@@ -34,6 +41,8 @@ import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -50,6 +59,7 @@ const Edit = () => {
 
   const actions = useActions();
   const refetch = useRefetch();
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
 
@@ -110,6 +120,82 @@ const Edit = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('edit_warehouse'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isLoading,
+        isDisabled:
+          isLoading ||
+          !canEditEntity('edit_warehouse', 'create_warehouse', warehouse),
+        onClick: handleSave,
+        disabledWithLoadingIcon: Boolean(isLoading && warehouse),
+        displayPermissionTooltip: !canEditEntity(
+          'edit_warehouse',
+          'create_warehouse',
+          warehouse
+        ),
+        tooltipPermissionMessage: t('no_permission_to_edit_warehouse'),
+      },
+      actions: {
+        list: warehouse ? actions(warehouse) : [],
+      },
+      footer: isLargeScreen ? (
+        <Box className="flex w-full items-center justify-end">
+          <RefreshDataElement
+            isLoading={isLoading}
+            refresh={refresh}
+            tooltipPlacement="left"
+          />
+        </Box>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="warehouses"
+            onClick={() => {
+              navigate(route('/warehouses'));
+            }}
+            iconName="warehouse"
+            disabled={isLoading}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="new_warehouse"
+            onClick={() => {
+              navigate(route('/warehouses/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            iconSize="1.3rem"
+            visible={hasPermission('create_warehouse')}
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [warehouse, isLoading, handleSave]
+  );
+
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
@@ -124,30 +210,12 @@ const Edit = () => {
   }, []);
 
   return (
-    <Default
-      title={t('edit_warehouse')}
-      breadcrumbs={breadcrumbs}
-      actions={warehouse ? actions(warehouse) : undefined}
-      onSaveClick={handleSave}
-      disabledSaveButton={
-        isLoading ||
-        !canEditEntity('edit_warehouse', 'create_warehouse', warehouse)
-      }
-      displayPermissionTooltip={
-        !canEditEntity('edit_warehouse', 'create_warehouse', warehouse)
-      }
-      disabledSaveButtonWithLoadingIcon={Boolean(isLoading && warehouse)}
-      tooltipPermissionMessage={t('no_permission_to_edit_warehouse')}
-    >
-      <WarehouseForm
-        warehouse={warehouse}
-        setWarehouse={setWarehouse}
-        errors={errors}
-        editPage
-        isLoading={isLoading && !warehouse}
-        onRefresh={refresh}
-      />
-    </Default>
+    <WarehouseForm
+      warehouse={warehouse}
+      setWarehouse={setWarehouse}
+      errors={errors}
+      isLoading={isLoading && !warehouse}
+    />
   );
 };
 

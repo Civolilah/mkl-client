@@ -20,21 +20,20 @@ import {
 
 import { Box, StaticTabs } from '@components/index';
 
-import useHandleChange from '../hooks/useHandleChange';
 import useTabs from '../hooks/useTabs';
 
-type Props = {
+export interface ProductProps {
   product: Product | undefined;
   setProduct: Dispatch<SetStateAction<Product | undefined>>;
   errors: ValidationErrors;
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
-  quantityByVariants: QuantityByVariant[];
-  setQuantityByVariants: Dispatch<SetStateAction<QuantityByVariant[]>>;
+  quantityByVariants?: QuantityByVariant[];
+  setQuantityByVariants?: Dispatch<SetStateAction<QuantityByVariant[]>>;
   setCurrentImages?: Dispatch<SetStateAction<string[]>>;
   currentImages?: string[];
-};
+}
 
 const ProductForm = ({
   product,
@@ -47,9 +46,7 @@ const ProductForm = ({
   setQuantityByVariants,
   setCurrentImages,
   currentImages,
-}: Props) => {
-  const handleChange = useHandleChange({ setProduct });
-
+}: ProductProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [activeTab, setActiveTab] = useState<string>(
@@ -62,11 +59,11 @@ const ProductForm = ({
     isLoading,
     onRefresh,
     errors,
-    handleChange,
     quantityByVariants,
     setQuantityByVariants,
     setCurrentImages,
     currentImages,
+    setProduct,
   });
 
   useEffect(() => {

@@ -13,4 +13,9 @@ import { Warehouse } from '@interfaces/index';
 export const INITIAL_WAREHOUSE: Warehouse = {
   name: '',
   address: '',
+  address2: '',
+  city: '',
+  state: '',
+  zip_code: '',
+  country_id: '',
 };

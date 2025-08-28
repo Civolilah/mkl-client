@@ -22,9 +22,7 @@ type Props = {
   category: Category | undefined;
   setCategory: Dispatch<SetStateAction<Category | undefined>>;
   errors: ValidationErrors;
-  editPage?: boolean;
   isLoading?: boolean;
-  onRefresh?: () => void;
   onlyFields?: boolean;
 };
 
@@ -32,7 +30,6 @@ const CategoryForm = ({
   category,
   setCategory,
   errors,
-  editPage,
   isLoading,
   onlyFields,
 }: Props) => {
@@ -58,7 +55,7 @@ const CategoryForm = ({
 
   return (
     <Card
-      title={editPage ? t('edit_category') : t('new_category')}
+      title={t('details')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
     >

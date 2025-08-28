@@ -39,7 +39,7 @@ import {
   FaWarehouse,
   FaWeight,
 } from 'react-icons/fa';
-import { FaEyeDropper } from 'react-icons/fa6';
+import { FaEyeDropper, FaLocationDot } from 'react-icons/fa6';
 import { GoDotFill } from 'react-icons/go';
 import { HiChevronUpDown } from 'react-icons/hi2';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
@@ -67,6 +67,7 @@ import {
   MdOutlineMenu,
   MdOutlineShoppingCart,
   MdOutlineStar,
+  MdOutlineViewColumn,
   MdPreview,
   MdQrCode,
   MdRefresh,
@@ -190,7 +191,9 @@ export type IconName =
   | 'imageLine'
   | 'colorPalette'
   | 'clipboardList'
-  | 'fileInvoiceDollar';
+  | 'fileInvoiceDollar'
+  | 'locationDot'
+  | 'outlineViewColumn';
 
 type Props = {
   className?: string;
@@ -391,6 +394,10 @@ const Icon = (props: Props) => {
       return generateIconElement(FaClipboardList);
     case 'fileInvoiceDollar':
       return generateIconElement(FaFileInvoiceDollar);
+    case 'locationDot':
+      return generateIconElement(FaLocationDot);
+    case 'outlineViewColumn':
+      return generateIconElement(MdOutlineViewColumn);
     default:
       return <></>;
   }

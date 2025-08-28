@@ -168,6 +168,7 @@ const Edit = () => {
             iconName="add"
             disabled={isLoading}
             iconSize="1.3rem"
+            visible={hasPermission('create_brand')}
           />
 
           <FooterAction

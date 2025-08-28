@@ -10,17 +10,37 @@
 
 import { useState } from 'react';
 
+import { route } from '@helpers/index';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
+
 import { Warehouse } from '@interfaces/index';
 
-import { Box, Default, RefreshDataElement, Table } from '@components/index';
+import {
+  AISearchAction,
+  Box,
+  FooterAction,
+  MobileSearchAction,
+  RefreshDataElement,
+  Table,
+} from '@components/index';
 
-import { useFetchEntity, useHasPermission, useTranslation } from '@hooks/index';
+import {
+  useFetchEntity,
+  useHasPermission,
+  usePageLayoutAndActions,
+  useTranslation,
+} from '@hooks/index';
 
+import MobileCard from './common/components/MobileCard';
 import useColumns from './common/hooks/useColumns';
 
 const Warehouses = () => {
   const t = useTranslation();
 
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
+  const navigate = useNavigate();
   const hasPermission = useHasPermission();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,10 +62,10 @@ const Warehouses = () => {
     refresh,
   });
 
-  return (
-    <Default
-      title={t('warehouses')}
-      footer={
+  usePageLayoutAndActions(
+    {
+      title: t('warehouses'),
+      footer: isLargeScreen ? (
         <Box className="flex w-full items-center justify-end">
           <RefreshDataElement
             isLoading={isLoading}
@@ -53,19 +73,57 @@ const Warehouses = () => {
             tooltipPlacement="left"
           />
         </Box>
-      }
-    >
-      <Table<Warehouse>
-        columns={columns}
-        data={warehouses}
-        isDataLoading={isLoading}
-        enableFiltering
-        filteringProps={['name']}
-        creationRoute="/warehouses/new"
-        creationButtonLabel={t('new_warehouse')}
-        filterFieldPlaceHolder={t('search_by_name')}
-      />
-    </Default>
+      ) : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <MobileSearchAction
+            disabled={isLoading}
+            iconSize="1.3rem"
+            searchPlaceholder="search_by_name"
+          />
+
+          <FooterAction
+            text="new_warehouse"
+            onClick={() => {
+              navigate(route('/warehouses/new'));
+            }}
+            iconName="add"
+            disabled={isLoading}
+            iconSize="1.3rem"
+            visible={hasPermission('create_warehouse')}
+          />
+
+          <FooterAction
+            text="reload"
+            onClick={refresh}
+            iconName="refresh"
+            disabled={isLoading}
+          />
+
+          <AISearchAction disabled={isLoading} />
+        </Box>
+      ),
+    },
+    [isLoading, isLargeScreen]
+  );
+
+  return (
+    <Table<Warehouse>
+      columns={columns}
+      data={warehouses}
+      isDataLoading={isLoading}
+      enableFiltering
+      filteringProps={['name']}
+      creationRoute="/warehouses/new"
+      creationButtonLabel={t('new_warehouse')}
+      filterFieldPlaceHolder={t('search_by_name')}
+      turnOnMobilePreview
+      mobileCardRender={(entity) => (
+        <MobileCard entity={entity} refresh={refresh} />
+      )}
+      onMobileCardClick={(entity) => {
+        navigate(route('/warehouses/:id/edit', { id: entity.id || '' }));
+      }}
+    />
   );
 };
 

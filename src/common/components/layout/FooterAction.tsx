@@ -26,6 +26,7 @@ interface Props {
   disabled?: boolean;
   iconColor?: string;
   icon?: ReactNode;
+  visible?: boolean;
 }
 
 const FooterAction = ({
@@ -36,8 +37,13 @@ const FooterAction = ({
   disabled = false,
   iconColor,
   icon,
+  visible = true,
 }: Props) => {
   const t = useTranslation();
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Box className="flex flex-1 h-full items-center overflow-hidden px-2">

@@ -47,21 +47,19 @@ const MobileCard = ({ entity, refresh }: Props) => {
       <Box className="flex flex-col gap-y-2">
         <Box className="flex items-center gap-x-2">
           <Box style={{ width: '1.5rem' }}>
-            <Icon name="email" size="1.3rem" style={{ color: '#3b82f6' }} />
+            <Icon
+              name="locationDot"
+              size="1.3rem"
+              style={{ color: '#3b82f6' }}
+            />
           </Box>
 
           <Text className="truncate text-sm-plus flex-1">
-            {entity.address || t('no_entry')}
-          </Text>
-        </Box>
-
-        <Box className="flex items-center gap-x-2">
-          <Box style={{ width: '1.5rem' }}>
-            <Icon name="phone" size="1rem" style={{ color: '#22c55e' }} />
-          </Box>
-
-          <Text className="text-sm-plus truncate flex-1">
-            {entity.city || t('no_entry')}
+            {entity.address || entity.city
+              ? `${entity.address || ''}${
+                  entity.city ? `, ${entity.city}` : ''
+                }`
+              : t('no_entry')}
           </Text>
         </Box>
       </Box>

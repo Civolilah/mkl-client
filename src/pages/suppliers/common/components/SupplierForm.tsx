@@ -8,34 +8,18 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { BLANK_SUPPLIER_CONTACT } from '@constants/index';
-import classNames from 'classnames';
-import { get } from 'lodash';
+import { useSearchParams } from 'react-router-dom';
 
 import { Supplier, ValidationErrors } from '@interfaces/index';
 
-import {
-  Box,
-  Button,
-  Card,
-  CountriesSelector,
-  CurrenciesSelector,
-  Icon,
-  Label,
-  Text,
-  TextField,
-  Toggle,
-} from '@components/index';
+import { Box, StaticTabs, TextField } from '@components/index';
 
-import {
-  useColors,
-  useEnableInvoicingFeature,
-  useTranslation,
-} from '@hooks/index';
+import { useTranslation } from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
+import useTabs from '../hooks/useTabs';
 
 type Props = {
   supplier: Supplier | undefined;
@@ -56,45 +40,47 @@ const SupplierForm = ({
 }: Props) => {
   const t = useTranslation();
 
-  const colors = useColors();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const { isEnabledInvoicing } = useEnableInvoicingFeature();
+  const isEnabledInvoicing = true;
 
   const handleChange = useHandleChange({ setSupplier });
 
-  const handleAddContact = () => {
-    setSupplier(
-      (prev) =>
-        prev && {
-          ...prev,
-          contacts: [...(supplier?.contacts || []), BLANK_SUPPLIER_CONTACT],
-        }
-    );
+  const [activeTab, setActiveTab] = useState<string>(
+    searchParams.get('tab') ?? 'details'
+  );
 
-    setTimeout(() => {
-      const contactElements = document.querySelectorAll(
-        '[id^="supplier_contact_first_name_"]'
+  const tabs = useTabs({
+    supplier,
+    isLoading,
+    errors,
+    setSupplier,
+  });
+
+  useEffect(() => {
+    if (Object.keys(errors).length && isEnabledInvoicing) {
+      const isErrorFromDetailsPage = Object.keys(errors).some(
+        (key) =>
+          key.includes('name') ||
+          key.includes('country_id') ||
+          key.includes('currency_id')
       );
 
-      if (contactElements.length > 1) {
-        const lastContactElement = contactElements[contactElements.length - 1];
-        lastContactElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        });
+      if (isErrorFromDetailsPage) {
+        setActiveTab('details');
       }
-    }, 50);
-  };
+    }
+  }, [errors]);
 
-  const handleRemoveContact = (index: number) => {
-    setSupplier(
-      (prev) =>
-        prev && {
-          ...prev,
-          contacts: prev.contacts.filter((_, i) => i !== index),
-        }
-    );
-  };
+  useEffect(() => {
+    if (isEnabledInvoicing) {
+      setSearchParams((prev) => {
+        const newParams = new URLSearchParams(prev);
+        newParams.set('tab', activeTab);
+        return newParams;
+      });
+    }
+  }, [activeTab]);
 
   if (onlyFields) {
     return (
@@ -113,198 +99,12 @@ const SupplierForm = ({
   }
 
   return (
-    <Box className="flex flex-col xl:flex-row self-start gap-6 w-full md:w-3/4 xl:w-full">
-      <Card title={t('details')} className="w-full" isLoading={isLoading}>
-        <Box className="flex flex-col gap-y-4">
-          <TextField
-            required
-            label={t('name')}
-            placeHolder={t('supplier_name_placeholder')}
-            value={supplier?.name || ''}
-            onValueChange={(value) => handleChange('name', value)}
-            changeOnBlur
-            errorMessage={errors?.name && t(errors.name)}
-          />
-
-          <CountriesSelector
-            label={t('country')}
-            placeHolder={t('select_country')}
-            value={supplier?.country_id || ''}
-            onValueChange={(value) => handleChange('country_id', value)}
-            onClear={() => handleChange('country_id', '')}
-            errorMessage={errors?.country_id && t(errors.country_id)}
-          />
-
-          <CurrenciesSelector
-            label={t('currency')}
-            placeholder={t('select_currency')}
-            value={supplier?.currency_id || ''}
-            onChange={(value) => handleChange('currency_id', value)}
-            onClear={() => handleChange('currency_id', '')}
-            errorMessage={errors?.currency_id && t(errors.currency_id)}
-          />
-        </Box>
-      </Card>
-
-      <Card
-        title={t('contacts')}
-        className="w-full"
-        isLoading={isLoading}
-        topRight={
-          <Button type="default" size="middle" onClick={handleAddContact}>
-            <Box>
-              <Icon name="add" />
-            </Box>
-
-            <Text>{t('add_contact')}</Text>
-          </Button>
-        }
-      >
-        <Box className="flex flex-col gap-6">
-          {supplier?.contacts.map((contact, index) => (
-            <Box
-              key={index}
-              className={classNames('flex flex-col gap-y-4 pb-4', {
-                'border-b border-dashed':
-                  supplier?.contacts.length > 1 &&
-                  index !== supplier?.contacts.length - 1,
-              })}
-              style={{ borderColor: colors.$1 }}
-            >
-              <TextField
-                id={`supplier_contact_first_name_${index}`}
-                label={t('first_name')}
-                placeHolder={t('supplier_contact_first_name_placeholder')}
-                value={contact.first_name}
-                onValueChange={(value) =>
-                  handleChange(
-                    `contacts.${index}.first_name` as keyof Supplier,
-                    value
-                  )
-                }
-                changeOnBlur
-                errorMessage={
-                  get(errors, `contacts.${index}.first_name`) &&
-                  t(get(errors, `contacts.${index}.first_name`))
-                }
-                withoutOptionalText
-              />
-
-              <TextField
-                label={t('last_name')}
-                placeHolder={t('supplier_contact_last_name_placeholder')}
-                value={contact.last_name}
-                onValueChange={(value) =>
-                  handleChange(
-                    `contacts.${index}.last_name` as keyof Supplier,
-                    value
-                  )
-                }
-                changeOnBlur
-                errorMessage={
-                  get(errors, `contacts.${index}.last_name`) &&
-                  t(get(errors, `contacts.${index}.last_name`))
-                }
-                withoutOptionalText
-              />
-
-              <TextField
-                type="email"
-                label={t('email')}
-                placeHolder={t('supplier_contact_email_placeholder')}
-                value={contact.email}
-                onValueChange={(value) =>
-                  handleChange(
-                    `contacts.${index}.email` as keyof Supplier,
-                    value
-                  )
-                }
-                changeOnBlur
-                errorMessage={
-                  get(errors, `contacts.${index}.email`) &&
-                  t(get(errors, `contacts.${index}.email`))
-                }
-                withoutOptionalText
-              />
-
-              <TextField
-                type="tel"
-                label={t('phone')}
-                placeHolder={t('supplier_contact_phone_placeholder')}
-                value={contact.phone}
-                onValueChange={(value) =>
-                  handleChange(
-                    `contacts.${index}.phone` as keyof Supplier,
-                    value
-                  )
-                }
-                changeOnBlur
-                errorMessage={
-                  get(errors, `contacts.${index}.phone`) &&
-                  t(get(errors, `contacts.${index}.phone`))
-                }
-                withoutOptionalText
-              />
-
-              {isEnabledInvoicing && (
-                <>
-                  <TextField
-                    type="password"
-                    label={t('password')}
-                    placeHolder={t('password_placeholder')}
-                    value={contact.password || ''}
-                    onValueChange={(value) =>
-                      handleChange(
-                        `contacts.${index}.password` as keyof Supplier,
-                        value
-                      )
-                    }
-                    changeOnBlur
-                    errorMessage={
-                      get(errors, `contacts.${index}.password`) &&
-                      t(get(errors, `contacts.${index}.password`))
-                    }
-                    withoutOptionalText
-                  />
-
-                  <Box className="flex items-center space-x-10">
-                    <Label>{t('add_to_purchase_orders')}</Label>
-
-                    <Toggle
-                      checked={Boolean(contact.add_to_purchase_orders)}
-                      onChange={(value) =>
-                        handleChange(
-                          `contacts.${index}.add_to_purchase_orders` as keyof Supplier,
-                          value
-                        )
-                      }
-                    />
-                  </Box>
-                </>
-              )}
-
-              <Button
-                className="self-end"
-                type="default"
-                size="middle"
-                onClick={() => handleRemoveContact(index)}
-              >
-                <Box>
-                  <Icon name="delete" />
-                </Box>
-
-                <Text>{t('remove')}</Text>
-              </Button>
-            </Box>
-          ))}
-
-          {supplier?.contacts.length === 0 && (
-            <Text className="self-center pt-4 font-medium">
-              {t('no_contacts_added')}
-            </Text>
-          )}
-        </Box>
-      </Card>
+    <Box className="flex w-full self-start md:w-full xl:w-3/4">
+      <StaticTabs
+        tabs={tabs}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
     </Box>
   );
 };

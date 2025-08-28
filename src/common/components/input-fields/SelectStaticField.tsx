@@ -118,6 +118,11 @@ const SelectStaticField = ({
             setFilteredOptions(options);
             onClear?.();
           }}
+          onDropdownVisibleChange={(visible) => {
+            if (!visible) {
+              setFilteredOptions(options);
+            }
+          }}
           allowClear={Boolean(onClear)}
         />
       )}
@@ -136,6 +141,11 @@ const SelectStaticField = ({
           onClear={() => {
             setFilteredOptions(options);
             onClear?.();
+          }}
+          onDropdownVisibleChange={(visible) => {
+            if (!visible) {
+              setFilteredOptions(options);
+            }
           }}
           allowClear={Boolean(onClear)}
         />

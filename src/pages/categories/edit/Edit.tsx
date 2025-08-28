@@ -170,6 +170,7 @@ const Edit = () => {
             iconName="add"
             disabled={isLoading}
             iconSize="1.3rem"
+            visible={hasPermission('create_category')}
           />
 
           <FooterAction
@@ -212,9 +213,7 @@ const Edit = () => {
       category={category}
       setCategory={setCategory}
       errors={errors}
-      editPage
       isLoading={isLoading && !category}
-      onRefresh={refresh}
     />
   );
 };

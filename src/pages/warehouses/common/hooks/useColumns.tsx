@@ -16,7 +16,11 @@ import { User, Warehouse } from '@interfaces/index';
 
 import { Box, Link, TableActionsDropdown, Text } from '@components/index';
 
-import { useFormatUnixTime, useTranslation } from '@hooks/index';
+import {
+  useFormatUnixTime,
+  useResolveCountry,
+  useTranslation,
+} from '@hooks/index';
 
 type Props = {
   refresh: () => void;
@@ -28,6 +32,7 @@ const useColumns = (props: Props) => {
   const { refresh } = props;
 
   const navigate = useNavigate();
+  const resolveCountry = useResolveCountry();
   const formatUnixTime = useFormatUnixTime();
 
   const columns: TableColumnsType<Warehouse> = [
@@ -37,9 +42,7 @@ const useColumns = (props: Props) => {
       render: (value, resource) => (
         <Box className="min-w-56">
           <Link
-            to={route('/warehouses/:id/edit', {
-              id: resource.id as string,
-            })}
+            to={route('/warehouses/:id/edit', { id: resource.id as string })}
           >
             {value}
           </Link>
@@ -49,6 +52,60 @@ const useColumns = (props: Props) => {
         onClick: () =>
           navigate(route('/warehouses/:id/edit', { id: record.id as string })),
       }),
+    },
+    {
+      title: t('street'),
+      dataIndex: 'address',
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('apt_suite'),
+      dataIndex: 'address2',
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('city'),
+      dataIndex: 'city',
+      render: (value) => (
+        <Box className="min-w-40 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('state'),
+      dataIndex: 'state',
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('zip_code'),
+      dataIndex: 'zip_code',
+      render: (value) => (
+        <Box className="min-w-40 max-w-96 truncate">
+          <Text>{value}</Text>
+        </Box>
+      ),
+    },
+    {
+      title: t('country'),
+      dataIndex: 'country_id',
+      render: (value) => (
+        <Box className="min-w-56 max-w-96 truncate">
+          <Text>{resolveCountry(value)}</Text>
+        </Box>
+      ),
     },
     {
       title: t('created_at'),

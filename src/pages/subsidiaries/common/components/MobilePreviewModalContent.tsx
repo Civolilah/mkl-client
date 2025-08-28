@@ -34,8 +34,12 @@ const MobilePreviewModalContent = ({ entity }: Props) => {
         <Text className="font-medium">{entity.name}</Text>
       </LabelElement>
 
-      <LabelElement label={t('address')} withoutOptionalText>
+      <LabelElement label={t('street')} withoutOptionalText>
         <Text className="font-medium">{entity.address || t('no_entry')}</Text>
+      </LabelElement>
+
+      <LabelElement label={t('apt_suite')} withoutOptionalText>
+        <Text className="font-medium">{entity.address2 || t('no_entry')}</Text>
       </LabelElement>
 
       <LabelElement label={t('city')} withoutOptionalText>

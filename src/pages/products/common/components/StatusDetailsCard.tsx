@@ -10,11 +10,7 @@
 
 import colorString from 'color-string';
 
-import {
-  Product,
-  QuantityByVariant,
-  ValidationErrors,
-} from '@interfaces/index';
+import { Product } from '@interfaces/index';
 
 import {
   Box,
@@ -32,38 +28,25 @@ import {
 
 import { useColors, useFindLabel, useTranslation } from '@hooks/index';
 
-type Props = {
-  isLoading?: boolean;
-  editPage?: boolean;
-  onRefresh?: () => void;
-  product: Product | undefined;
-  errors: ValidationErrors;
-  handleChange: (
-    field: keyof Product,
-    value:
-      | string
-      | number
-      | boolean
-      | Product['inventory_by_variant']
-      | string[]
-  ) => void;
-  quantityByVariants: QuantityByVariant[];
-};
+import { ProductProps } from './ProductForm';
+import useHandleChange from '../hooks/useHandleChange';
 
-const AdditionalDetailsCard = ({
+const StatusDetailsCard = ({
   isLoading,
   editPage,
   onRefresh,
   product,
   errors,
-  handleChange,
+  setProduct,
   quantityByVariants,
-}: Props) => {
+}: ProductProps) => {
   const t = useTranslation();
 
   const colors = useColors();
 
   const { getLabelNameByLabelId, isLoadingLabels } = useFindLabel();
+
+  const handleChange = useHandleChange({ setProduct });
 
   return (
     <Card
@@ -96,9 +79,9 @@ const AdditionalDetailsCard = ({
 
             {!isLoadingLabels && (
               <>
-                {quantityByVariants.length > 0 ? (
+                {(quantityByVariants?.length || 0) > 0 ? (
                   <Box className="flex flex-col space-y-4">
-                    {quantityByVariants.map(
+                    {quantityByVariants?.map(
                       (combination, quantityByVariantIndex) => (
                         <Box
                           key={quantityByVariantIndex}
@@ -309,4 +292,4 @@ const AdditionalDetailsCard = ({
   );
 };
 
-export default AdditionalDetailsCard;
+export default StatusDetailsCard;

@@ -10,8 +10,6 @@
 
 import { useMediaQuery } from 'react-responsive';
 
-import { Product, ValidationErrors } from '@interfaces/index';
-
 import {
   Box,
   BrandsSelector,
@@ -28,22 +26,8 @@ import {
 
 import { useTranslation } from '@hooks/index';
 
-type Props = {
-  isLoading?: boolean;
-  editPage?: boolean;
-  onRefresh?: () => void;
-  product: Product | undefined;
-  errors: ValidationErrors;
-  handleChange: (
-    field: keyof Product,
-    value:
-      | string
-      | number
-      | boolean
-      | Product['inventory_by_variant']
-      | string[]
-  ) => void;
-};
+import { ProductProps } from './ProductForm';
+import useHandleChange from '../hooks/useHandleChange';
 
 const DetailsCard = ({
   isLoading,
@@ -51,11 +35,13 @@ const DetailsCard = ({
   onRefresh,
   product,
   errors,
-  handleChange,
-}: Props) => {
+  setProduct,
+}: ProductProps) => {
   const t = useTranslation();
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+
+  const handleChange = useHandleChange({ setProduct });
 
   return (
     <Card

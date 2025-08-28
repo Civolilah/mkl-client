@@ -13,12 +13,13 @@ import { Box } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
-import AdditionalDetailsCard from '../components/AdditionalDetailsCard';
-import { ProductProps } from '../components/Details';
 import DetailsCard from '../components/DetailsCard';
+import DisplaySettingsCard from '../components/DisplaySettingsCard';
 import ImagesCard from '../components/ImagesCard';
 import InventoryCard from '../components/InventoryCard';
+import { ProductProps } from '../components/ProductForm';
 import QRCode from '../components/QRCode';
+import StatusDetailsCard from '../components/StatusDetailsCard';
 
 const useTabs = ({
   product,
@@ -26,10 +27,10 @@ const useTabs = ({
   isLoading,
   onRefresh,
   errors,
-  handleChange,
   quantityByVariants,
   setQuantityByVariants,
   setCurrentImages,
+  setProduct,
 }: ProductProps) => {
   const t = useTranslation();
 
@@ -52,7 +53,7 @@ const useTabs = ({
           isLoading={isLoading}
           onRefresh={onRefresh}
           errors={errors}
-          handleChange={handleChange}
+          setProduct={setProduct}
         />
       ),
     },
@@ -74,9 +75,9 @@ const useTabs = ({
           isLoading={isLoading}
           onRefresh={onRefresh}
           errors={errors}
-          handleChange={handleChange}
           quantityByVariants={quantityByVariants}
           setQuantityByVariants={setQuantityByVariants}
+          setProduct={setProduct}
         />
       ),
     },
@@ -98,8 +99,8 @@ const useTabs = ({
           isLoading={isLoading}
           onRefresh={onRefresh}
           errors={errors}
-          handleChange={handleChange}
           setCurrentImages={setCurrentImages}
+          setProduct={setProduct}
         />
       ),
     },
@@ -115,14 +116,13 @@ const useTabs = ({
         </Box>
       ),
       children: (
-        <AdditionalDetailsCard
+        <StatusDetailsCard
           product={product}
           editPage={editPage}
           isLoading={isLoading}
           onRefresh={onRefresh}
           errors={errors}
-          handleChange={handleChange}
-          quantityByVariants={quantityByVariants}
+          setProduct={setProduct}
         />
       ),
     },
@@ -138,14 +138,10 @@ const useTabs = ({
         </Box>
       ),
       children: (
-        <AdditionalDetailsCard
+        <DisplaySettingsCard
           product={product}
-          editPage={editPage}
           isLoading={isLoading}
-          onRefresh={onRefresh}
           errors={errors}
-          handleChange={handleChange}
-          quantityByVariants={quantityByVariants}
         />
       ),
     },
@@ -167,9 +163,7 @@ const useTabs = ({
           isLoading={isLoading}
           onRefresh={onRefresh}
           errors={errors}
-          handleChange={handleChange}
-          quantityByVariants={quantityByVariants}
-          setQuantityByVariants={setQuantityByVariants}
+          setProduct={setProduct}
         />
       ),
     },

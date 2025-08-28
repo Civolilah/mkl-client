@@ -17,6 +17,7 @@ import { Box, Card, RefreshDataElement } from '@components/index';
 import { useTranslation } from '@hooks/index';
 
 import ImageUploader from './ImageUploader';
+import useHandleChange from '../hooks/useHandleChange';
 
 type Props = {
   isLoading?: boolean;
@@ -24,27 +25,20 @@ type Props = {
   onRefresh?: () => void;
   product: Product | undefined;
   errors: ValidationErrors;
-  handleChange: (
-    field: keyof Product,
-    value:
-      | string
-      | number
-      | boolean
-      | Product['inventory_by_variant']
-      | string[]
-      | File[]
-  ) => void;
   setCurrentImages?: Dispatch<SetStateAction<string[]>>;
+  setProduct: Dispatch<SetStateAction<Product | undefined>>;
 };
 
 const ImagesCard = ({
   isLoading,
   editPage,
   onRefresh,
-  handleChange,
   setCurrentImages,
+  setProduct,
 }: Props) => {
   const t = useTranslation();
+
+  const handleChange = useHandleChange({ setProduct });
 
   return (
     <Card

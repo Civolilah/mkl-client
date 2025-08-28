@@ -11,5 +11,10 @@
 export type Warehouse = {
   id?: string;
   name: string;
-  address: string;
+  address?: string;
+  address2?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  country_id?: string;
 };

@@ -16,6 +16,7 @@ import {
 } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
 import { cloneDeep, isEqual } from 'lodash';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -24,10 +25,10 @@ import {
   ValidationErrors,
 } from '@interfaces/index';
 
-import { Default } from '@components/index';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
-import { useTranslation } from '@hooks/index';
+import { usePageLayoutAndActions, useTranslation } from '@hooks/index';
 
 import ProductForm from '../common/components/ProductForm';
 import { validateProduct } from '../common/helpers/helpers';
@@ -36,6 +37,8 @@ import useGenerateVariantCombinations from '../common/hooks/useGenerateVariantCo
 
 const Create = () => {
   const t = useTranslation();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -107,6 +110,45 @@ const Create = () => {
     }
   };
 
+  usePageLayoutAndActions(
+    {
+      title: t('new_product'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      buttonAction: {
+        isLoading: isFormBusy,
+        isDisabled: isFormBusy,
+        onClick: handleSave,
+        disabledWithLoadingIcon: isFormBusy,
+      },
+      footer: isLargeScreen ? undefined : (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="products"
+            onClick={() => {
+              navigate(route('/products'));
+            }}
+            iconName="product"
+            disabled={isFormBusy}
+            iconSize="1.05rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <AISearchAction disabled={isFormBusy} />
+        </Box>
+      ),
+    },
+    [product, isFormBusy, handleSave]
+  );
+
   useEffect(() => {
     if (
       product?.inventory_by_variant &&
@@ -146,24 +188,16 @@ const Create = () => {
   }, []);
 
   return (
-    <Default
-      title={t('new_product')}
-      breadcrumbs={breadcrumbs}
-      onSaveClick={handleSave}
-      disabledSaveButton={isFormBusy}
-      disabledSaveButtonWithLoadingIcon={isFormBusy}
-    >
-      <ProductForm
-        product={product}
-        setProduct={setProduct}
-        errors={errors}
-        isLoading={isFormBusy}
-        quantityByVariants={quantityByVariants}
-        setQuantityByVariants={setQuantityByVariants}
-        setCurrentImages={setCurrentImages}
-        currentImages={currentImages}
-      />
-    </Default>
+    <ProductForm
+      product={product}
+      setProduct={setProduct}
+      errors={errors}
+      isLoading={isFormBusy}
+      quantityByVariants={quantityByVariants}
+      setQuantityByVariants={setQuantityByVariants}
+      setCurrentImages={setCurrentImages}
+      currentImages={currentImages}
+    />
   );
 };
 
