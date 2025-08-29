@@ -36,6 +36,10 @@ const AVAILABLE_PERMISSIONS = [
   'view_warehouse',
   'edit_warehouse',
 
+  'create_subsidiary',
+  'view_subsidiary',
+  'edit_subsidiary',
+
   'create_customer',
   'view_customer',
   'edit_customer',
@@ -43,10 +47,6 @@ const AVAILABLE_PERMISSIONS = [
   'create_supplier',
   'view_supplier',
   'edit_supplier',
-
-  'create_subsidiary',
-  'view_subsidiary',
-  'edit_subsidiary',
 
   'create_brand',
   'view_brand',
@@ -67,6 +67,10 @@ const AVAILABLE_PERMISSIONS = [
   'create_status',
   'view_status',
   'edit_status',
+
+  'create_purchase_order',
+  'view_purchase_order',
+  'edit_purchase_order',
 ];
 
 type ValidationOptions = {

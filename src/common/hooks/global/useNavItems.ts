@@ -47,23 +47,6 @@ const useNavItems = () => {
       iconSize: '1.129rem',
     },
     {
-      key: 'products',
-      label: 'products',
-      iconName: 'product',
-      href: '/products',
-      visible:
-        hasPermission('create_product') ||
-        hasPermission('view_product') ||
-        hasPermission('edit_product'),
-      iconSize: '1.29rem',
-      rightIcon: {
-        name: 'add',
-        href: '/products/new',
-        tooltipText: 'new_product',
-        visible: hasPermission('create_product'),
-      },
-    },
-    {
       key: 'orders',
       label: 'orders',
       iconName: 'clipboardList',
@@ -81,6 +64,24 @@ const useNavItems = () => {
       iconSize: '1.4rem',
     },
     {
+      key: 'products',
+      label: 'products',
+      iconName: 'product',
+      href: '/products',
+      visible:
+        hasPermission('create_product') ||
+        hasPermission('view_product') ||
+        hasPermission('edit_product'),
+      iconSize: '1.29rem',
+      rightIcon: {
+        name: 'add',
+        href: '/products/new',
+        tooltipText: 'new_product',
+        visible: hasPermission('create_product'),
+      },
+    },
+
+    {
       key: 'warehouses',
       label: 'warehouses',
       iconName: 'warehouse',
@@ -95,6 +96,23 @@ const useNavItems = () => {
         href: '/warehouses/new',
         tooltipText: 'new_warehouse',
         visible: hasPermission('create_warehouse'),
+      },
+    },
+    {
+      key: 'subsidiaries',
+      label: 'subsidiaries',
+      iconName: 'subsidiary',
+      href: '/subsidiaries',
+      iconSize: '1.021rem',
+      visible:
+        hasPermission('create_subsidiary') ||
+        hasPermission('view_subsidiary') ||
+        hasPermission('edit_subsidiary'),
+      rightIcon: {
+        name: 'add',
+        href: '/subsidiaries/new',
+        tooltipText: 'new_subsidiary',
+        visible: hasPermission('create_subsidiary'),
       },
     },
     {
@@ -131,23 +149,7 @@ const useNavItems = () => {
         visible: hasPermission('create_supplier'),
       },
     },
-    {
-      key: 'subsidiaries',
-      label: 'subsidiaries',
-      iconName: 'subsidiary',
-      href: '/subsidiaries',
-      iconSize: '1.021rem',
-      visible:
-        hasPermission('create_subsidiary') ||
-        hasPermission('view_subsidiary') ||
-        hasPermission('edit_subsidiary'),
-      rightIcon: {
-        name: 'add',
-        href: '/subsidiaries/new',
-        tooltipText: 'new_subsidiary',
-        visible: hasPermission('create_subsidiary'),
-      },
-    },
+
     {
       key: 'brands',
       label: 'brands',

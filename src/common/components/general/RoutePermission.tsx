@@ -10,7 +10,7 @@
 
 import { ReactNode } from 'react';
 
-import { Default, PermissionScreen } from '@components/index';
+import { PermissionScreen } from '@components/index';
 
 import useHasPermission, { Permission } from '@hooks/global/useHasPermission';
 
@@ -29,11 +29,7 @@ const RoutePermission = (props: Props) => {
   );
 
   if (!doesHavePermissionForRoute) {
-    return (
-      <Default>
-        <PermissionScreen />
-      </Default>
-    );
+    return <PermissionScreen />;
   }
 
   return routeComponent;

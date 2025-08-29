@@ -8,18 +8,29 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { CSSProperties } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 import { Switch } from 'antd';
 
+import { Box, Label } from '@components/index';
+
 type Props = {
+  label?: string;
   checked: boolean;
   onChange?: (value: boolean) => void;
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
+  afterLabel?: ReactNode;
 };
 
-const Toggle = ({ checked, onChange, disabled, size = 'medium' }: Props) => {
+const Toggle = ({
+  label,
+  checked,
+  onChange,
+  disabled,
+  size = 'medium',
+  afterLabel,
+}: Props) => {
   const getMediumStyles = (): CSSProperties => ({
     width: '2.5rem',
     height: '1.215rem',
@@ -28,23 +39,43 @@ const Toggle = ({ checked, onChange, disabled, size = 'medium' }: Props) => {
 
   if (size === 'medium') {
     return (
-      <Switch
-        checked={checked}
-        onChange={onChange}
-        disabled={disabled}
-        style={getMediumStyles()}
-        className="custom-medium-switch"
-      />
+      <Box className="flex items-center gap-x-10">
+        {Boolean(label) && (
+          <Box className="flex items-center">
+            <Label>{label}</Label>
+
+            {afterLabel}
+          </Box>
+        )}
+
+        <Switch
+          checked={checked}
+          onChange={onChange}
+          disabled={disabled}
+          style={getMediumStyles()}
+          className="custom-medium-switch"
+        />
+      </Box>
     );
   }
 
   return (
-    <Switch
-      checked={checked}
-      onChange={onChange}
-      disabled={disabled}
-      size={size === 'large' ? 'default' : 'small'}
-    />
+    <Box className="flex items-center gap-x-10">
+      {Boolean(label) && (
+        <Box className="flex items-center">
+          <Label>{label}</Label>
+
+          {afterLabel}
+        </Box>
+      )}
+
+      <Switch
+        checked={checked}
+        onChange={onChange}
+        disabled={disabled}
+        size={size === 'large' ? 'default' : 'small'}
+      />
+    </Box>
   );
 };
 

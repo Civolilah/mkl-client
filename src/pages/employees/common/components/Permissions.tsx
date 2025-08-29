@@ -23,12 +23,14 @@ const permissionRows: PermissionRow[] = [
   { name: 'all', key: 'all' },
   { name: 'product', key: 'product' },
   { name: 'warehouse', key: 'warehouse' },
-  { name: 'supplier', key: 'supplier' },
   { name: 'subsidiary', key: 'subsidiary' },
+  { name: 'customer', key: 'customer' },
+  { name: 'supplier', key: 'supplier' },
   { name: 'brand', key: 'brand' },
   { name: 'category', key: 'category' },
   { name: 'label', key: 'label' },
   { name: 'label_category', key: 'label_category' },
+  { name: 'purchase_order', key: 'purchase_order' },
   { name: 'status', key: 'status' },
 ];
 
@@ -165,6 +167,14 @@ const Permissions = ({
         />
       </LabelElement>
 
+      <LabelElement label={t('view_orders')} withoutOptionalText twoGridColumns>
+        <Toggle
+          checked={isPermissionChecked('view_orders')}
+          onChange={(value) => handleChangePermissions(value, 'view_orders')}
+          disabled={isPermissionDisabled()}
+        />
+      </LabelElement>
+
       <LabelElement
         label={t('import_products')}
         withoutOptionalText
@@ -210,9 +220,9 @@ const Permissions = ({
       <Box className="flex flex-col space-y-3 mt-6">
         <Box className="grid grid-cols-4 gap-4">
           <Box></Box>
-          <Label className="text-center">{t('create')}</Label>
-          <Label className="text-center">{t('view')}</Label>
-          <Label className="text-center">{t('edit')}</Label>
+          <Label className="text-start">{t('create')}</Label>
+          <Label className="text-start">{t('view')}</Label>
+          <Label className="text-start">{t('edit')}</Label>
         </Box>
 
         <Box className="flex flex-col space-y-4">

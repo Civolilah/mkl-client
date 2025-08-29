@@ -86,3 +86,4 @@ export { default as MobileSearchAction } from '@components/table/MobileSearchAct
 export { default as AddCompanyAction } from '@components/company/AddCompanyAction';
 export { default as CountriesSelector } from '@components/selectors/CountriesSelector';
 export { default as AISearchAction } from '@components/layout/AISearchAction';
+export { default as LanguagesSelector } from '@components/selectors/LanguagesSelector';

@@ -11,19 +11,24 @@
 import { BLANK_SUPPLIER_CONTACT } from '@constants/index';
 import classNames from 'classnames';
 import { get } from 'lodash';
+import { useMediaQuery } from 'react-responsive';
 
 import {
   Box,
   Button,
   Card,
   Icon,
-  Label,
+  InformationLabel,
   Text,
   TextField,
   Toggle,
 } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import {
+  useColors,
+  useEnableInvoicingFeature,
+  useTranslation,
+} from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
 import { SupplierProps } from '../hooks/useTabs';
@@ -33,15 +38,17 @@ const Contacts = ({
   isLoading,
   errors,
   setSupplier,
+  editPage,
 }: SupplierProps) => {
   const t = useTranslation();
 
   const colors = useColors();
 
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+
   const handleChange = useHandleChange({ setSupplier });
 
-  // Enable invoicing feature for this component
-  const isEnabledInvoicing = true;
+  const isEnabledInvoicing = useEnableInvoicingFeature();
 
   const handleAddContact = () => {
     setSupplier(
@@ -105,8 +112,9 @@ const Contacts = ({
           >
             <TextField
               id={`supplier_contact_first_name_${index}`}
+              required
               label={t('first_name')}
-              placeHolder={t('supplier_contact_first_name_placeholder')}
+              placeHolder={t('first_name_placeholder')}
               value={contact.first_name}
               onValueChange={(value) =>
                 handleChange(`contacts.${index}.first_name`, value)
@@ -116,12 +124,11 @@ const Contacts = ({
                 get(errors, `contacts.${index}.first_name`) &&
                 t(get(errors, `contacts.${index}.first_name`))
               }
-              withoutOptionalText
             />
 
             <TextField
               label={t('last_name')}
-              placeHolder={t('supplier_contact_last_name_placeholder')}
+              placeHolder={t('last_name_placeholder')}
               value={contact.last_name}
               onValueChange={(value) =>
                 handleChange(`contacts.${index}.last_name`, value)
@@ -131,13 +138,13 @@ const Contacts = ({
                 get(errors, `contacts.${index}.last_name`) &&
                 t(get(errors, `contacts.${index}.last_name`))
               }
-              withoutOptionalText
             />
 
             <TextField
+              required
               type="email"
               label={t('email')}
-              placeHolder={t('supplier_contact_email_placeholder')}
+              placeHolder={t('email_placeholder')}
               value={contact.email}
               onValueChange={(value) =>
                 handleChange(`contacts.${index}.email`, value)
@@ -147,13 +154,12 @@ const Contacts = ({
                 get(errors, `contacts.${index}.email`) &&
                 t(get(errors, `contacts.${index}.email`))
               }
-              withoutOptionalText
             />
 
             <TextField
               type="tel"
               label={t('phone')}
-              placeHolder={t('supplier_contact_phone_placeholder')}
+              placeHolder={t('phone_placeholder')}
               value={contact.phone}
               onValueChange={(value) =>
                 handleChange(`contacts.${index}.phone`, value)
@@ -163,14 +169,18 @@ const Contacts = ({
                 get(errors, `contacts.${index}.phone`) &&
                 t(get(errors, `contacts.${index}.phone`))
               }
-              withoutOptionalText
             />
 
             {isEnabledInvoicing && (
               <>
                 <TextField
+                  required={contact.supplier_portal_access && !editPage}
                   type="password"
-                  label={t('password')}
+                  label={
+                    editPage && contact.has_password
+                      ? t('new_password')
+                      : t('password')
+                  }
                   placeHolder={t('password_placeholder')}
                   value={contact.password || ''}
                   onValueChange={(value) =>
@@ -181,19 +191,39 @@ const Contacts = ({
                     get(errors, `contacts.${index}.password`) &&
                     t(get(errors, `contacts.${index}.password`))
                   }
-                  withoutOptionalText
                 />
 
-                <Box className="flex items-center space-x-10">
-                  <Label>{t('send_email')}</Label>
+                <Toggle
+                  label={t('send_email')}
+                  checked={Boolean(contact.send_email)}
+                  onChange={(value) =>
+                    handleChange(`contacts.${index}.send_email`, value)
+                  }
+                />
 
-                  <Toggle
-                    checked={Boolean(contact.send_email)}
-                    onChange={(value) =>
-                      handleChange(`contacts.${index}.send_email`, value)
-                    }
-                  />
-                </Box>
+                <Toggle
+                  label={t('supplier_portal_access')}
+                  checked={Boolean(contact.supplier_portal_access)}
+                  onChange={(value) =>
+                    handleChange(
+                      `contacts.${index}.supplier_portal_access`,
+                      value
+                    )
+                  }
+                  afterLabel={
+                    <Box className="pl-1.5">
+                      <InformationLabel
+                        text={t('supplier_portal_access_helper')}
+                        onlyTooltip
+                        tooltipOverlayInnerStyle={{
+                          width: isSmallScreen ? undefined : '24rem',
+                          textAlign: 'center',
+                        }}
+                        iconSize="1.35rem"
+                      />
+                    </Box>
+                  }
+                />
               </>
             )}
 

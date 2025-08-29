@@ -23,6 +23,7 @@ export type Permission =
   | 'admin'
   | 'owner'
   | 'view_dashboard'
+  | 'view_orders'
   | 'import_products'
   | 'export_products'
   | 'manage_stock_counting'

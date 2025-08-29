@@ -10,13 +10,13 @@
 
 import React, { useState, useMemo } from 'react';
 
-import ReactQuill from 'react-quill';
+import ReactQuill from 'react-quill-new';
 
 import Box from '@components/general/Box';
 import Label from '@components/general/Label';
 import RequiredOptionalLabel from '@components/general/RequiredOptionalLabel';
 
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
 
 interface MarkdownEditorProps {
   value?: string;
@@ -43,7 +43,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   height = '10rem',
   withoutImageFormat = false,
 }) => {
-  const [content, setContent] = useState(value);
+  const [content, setContent] = useState<string>(value);
 
   const modules = useMemo(
     () => ({
@@ -55,7 +55,9 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
             [{ color: [] }, { background: [] }],
             [{ list: 'ordered' }, { list: 'bullet' }],
             [{ align: [] }],
-            ['link', 'image'],
+            ['link', 'image'].filter(
+              (format) => !withoutImageFormat || format !== 'image'
+            ),
             ['blockquote', 'code-block'],
             ['clean'],
           ],
@@ -101,7 +103,6 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           'color',
           'background',
           'list',
-          'bullet',
           'align',
           'link',
           'image',

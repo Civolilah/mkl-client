@@ -10,14 +10,12 @@
 
 import { Suspense } from 'react';
 
-import { Default, LoadingScreen, PermissionScreen } from '@components/index';
+import { LoadingScreen, PermissionScreen } from '@components/index';
 
 const Unauthorized = () => {
   return (
     <Suspense fallback={<LoadingScreen />}>
-      <Default>
-        <PermissionScreen unauthorizedAction />
-      </Default>
+      <PermissionScreen unauthorizedAction />
     </Suspense>
   );
 };

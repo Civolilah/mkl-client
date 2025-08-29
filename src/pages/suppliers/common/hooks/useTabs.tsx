@@ -27,6 +27,7 @@ export interface SupplierProps {
   isLoading: boolean | undefined;
   errors: ValidationErrors;
   setSupplier: Dispatch<SetStateAction<Supplier | undefined>>;
+  editPage?: boolean;
 }
 
 const useTabs = ({
@@ -34,6 +35,7 @@ const useTabs = ({
   isLoading,
   errors,
   setSupplier,
+  editPage,
 }: SupplierProps) => {
   const t = useTranslation();
 
@@ -95,6 +97,7 @@ const useTabs = ({
           isLoading={isLoading}
           errors={errors}
           setSupplier={setSupplier}
+          editPage={editPage}
         />
       ),
     },

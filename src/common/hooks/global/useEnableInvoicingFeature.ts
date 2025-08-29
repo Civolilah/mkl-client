@@ -18,7 +18,7 @@ const useEnableInvoicingFeature = () => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);
 
   return {
-    isEnabledInvoicing: ENABLED_COUNTRIES_IDS.includes(
+    isEnabledInvoicing: !ENABLED_COUNTRIES_IDS.includes(
       userCompanyDetails?.company.country_id || ''
     ),
   };

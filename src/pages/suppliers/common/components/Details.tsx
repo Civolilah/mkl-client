@@ -8,7 +8,13 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Box, Card, CurrenciesSelector, TextField } from '@components/index';
+import {
+  Box,
+  Card,
+  CurrenciesSelector,
+  LanguagesSelector,
+  TextField,
+} from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -45,7 +51,7 @@ const Details = ({
 
         <TextField
           label={t('number')}
-          placeHolder={t('supplier_number_placeholder')}
+          placeHolder={t('number_placeholder')}
           value={supplier?.number || ''}
           onValueChange={(value) => handleChange('number', value)}
           changeOnBlur
@@ -54,7 +60,7 @@ const Details = ({
 
         <TextField
           label={t('id_number')}
-          placeHolder={t('supplier_id_number_placeholder')}
+          placeHolder={t('id_number_placeholder')}
           value={supplier?.id_number || ''}
           onValueChange={(value) => handleChange('id_number', value)}
           changeOnBlur
@@ -63,7 +69,7 @@ const Details = ({
 
         <TextField
           label={t('vat_number')}
-          placeHolder={t('supplier_vat_number_placeholder')}
+          placeHolder={t('vat_number_placeholder')}
           value={supplier?.vat_number || ''}
           onValueChange={(value) => handleChange('vat_number', value)}
           changeOnBlur
@@ -72,7 +78,7 @@ const Details = ({
 
         <TextField
           label={t('routing_id')}
-          placeHolder={t('supplier_routing_id_placeholder')}
+          placeHolder={t('routing_id_placeholder')}
           value={supplier?.routing_id || ''}
           onValueChange={(value) => handleChange('routing_id', value)}
           changeOnBlur
@@ -81,7 +87,7 @@ const Details = ({
 
         <TextField
           label={t('website')}
-          placeHolder={t('supplier_website_placeholder')}
+          placeHolder={t('website_placeholder')}
           value={supplier?.website || ''}
           onValueChange={(value) => handleChange('website', value)}
           changeOnBlur
@@ -104,6 +110,14 @@ const Details = ({
           onChange={(value) => handleChange('currency_id', value)}
           onClear={() => handleChange('currency_id', '')}
           errorMessage={errors?.currency_id && t(errors.currency_id)}
+        />
+
+        <LanguagesSelector
+          label={t('language')}
+          placeholder={t('select_language')}
+          value={supplier?.language_id || ''}
+          onChange={(value) => handleChange('language_id', value)}
+          onClear={() => handleChange('language_id', '')}
         />
       </Box>
     </Card>

@@ -37,6 +37,7 @@ const SupplierForm = ({
   errors,
   isLoading,
   onlyFields,
+  editPage,
 }: Props) => {
   const t = useTranslation();
 
@@ -55,6 +56,7 @@ const SupplierForm = ({
     isLoading,
     errors,
     setSupplier,
+    editPage,
   });
 
   useEffect(() => {
