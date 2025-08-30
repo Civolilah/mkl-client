@@ -128,9 +128,22 @@ const Register = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      const passwordField = document.getElementById('passwordField');
+
+      if (passwordField) {
+        passwordField.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    }, 300);
+  }, []);
+
   return (
     <Box
-      className="flex justify-center items-center h-screen w-full"
+      className="flex justify-center items-center min-h-screen w-full py-4"
       style={{
         backgroundImage: 'url(/images/login-register-bg.jpg)',
         backgroundSize: 'cover',
@@ -228,6 +241,7 @@ const Register = () => {
             />
 
             <TextField
+              id="passwordField"
               type="password"
               label={t('confirm_password')}
               placeHolder={t('password_placeholder')}

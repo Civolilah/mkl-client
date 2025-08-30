@@ -36,7 +36,7 @@ export type Supplier = {
   zip_code?: string;
   contacts: SupplierContact[];
   currency_id?: string;
-  language_id?: string;
+  language?: string;
   country_id?: string;
   custom_field1?: string;
   custom_field2?: string;

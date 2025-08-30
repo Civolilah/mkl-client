@@ -12,13 +12,10 @@ import { Card, RefreshDataElement, Text } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
-import { ProductProps } from './Details';
+import { ProductProps } from './ProductForm';
 
-const QRCode = (props: ProductProps) => {
+const QRCode = ({ editPage, isLoading, onRefresh }: ProductProps) => {
   const t = useTranslation();
-
-  const { product, errors, editPage, isLoading, onRefresh, handleChange } =
-    props;
 
   return (
     <Card

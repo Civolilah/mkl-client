@@ -98,7 +98,7 @@ const NumberField = ({
       <InputNumber<number>
         min={min}
         max={max}
-        className="shadow-none"
+        className="shadow-none number-field-input"
         rootClassName="shadow-none"
         value={currentValue}
         formatter={(value) => {

@@ -115,9 +115,10 @@ const Details = ({
         <LanguagesSelector
           label={t('language')}
           placeholder={t('select_language')}
-          value={supplier?.language_id || ''}
-          onChange={(value) => handleChange('language_id', value)}
-          onClear={() => handleChange('language_id', '')}
+          value={supplier?.language || ''}
+          onChange={(value) => handleChange('language', value)}
+          onClear={() => handleChange('language', '')}
+          errorMessage={errors?.language && t(errors.language)}
         />
       </Box>
     </Card>

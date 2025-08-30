@@ -44,29 +44,27 @@ type Props = {
   addonAfter?: ReactNode;
 };
 
-const TextField = (props: Props) => {
-  const {
-    id,
-    value,
-    onValueChange,
-    label,
-    type = 'text',
-    placeHolder,
-    errorMessage,
-    onPressEnter,
-    required = false,
-    disabled = false,
-    maxLength,
-    size = 'large',
-    debounce,
-    withoutOptionalText,
-    autoComplete,
-    changeOnBlur = false,
-    readOnly = false,
-    onClick,
-    addonAfter,
-  } = props;
-
+const TextField = ({
+  id,
+  value,
+  onValueChange,
+  label,
+  type = 'text',
+  placeHolder,
+  errorMessage,
+  onPressEnter,
+  required = false,
+  disabled = false,
+  maxLength,
+  size = 'large',
+  debounce,
+  withoutOptionalText,
+  autoComplete,
+  changeOnBlur = false,
+  readOnly = false,
+  onClick,
+  addonAfter,
+}: Props) => {
   const [currentValue, setCurrentValue] = useState<string>(value);
 
   useDebounce(
@@ -98,7 +96,7 @@ const TextField = (props: Props) => {
 
       {type !== 'password' && type !== 'textarea' && (
         <Input
-          className="rounded-none text-sm-plus"
+          className="rounded-none text-sm-plus text-field-input"
           id={id}
           type={type}
           value={currentValue}
@@ -130,7 +128,7 @@ const TextField = (props: Props) => {
 
       {type === 'password' && (
         <Input.Password
-          className="rounded-none text-sm-plus"
+          className="rounded-none text-sm-plus text-field-input"
           id={id}
           type={type}
           value={currentValue}
@@ -163,7 +161,7 @@ const TextField = (props: Props) => {
         <TextArea
           id={id}
           rows={4}
-          className="rounded-none text-sm-plus"
+          className="rounded-none text-sm-plus text-field-input"
           value={currentValue}
           placeholder={placeHolder}
           onChange={(event) => setCurrentValue(event.target.value)}

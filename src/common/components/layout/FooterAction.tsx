@@ -55,7 +55,15 @@ const FooterAction = ({
             'cursor-pointer': !disabled,
           }
         )}
-        onClick={onClick}
+        onClick={() => {
+          if (text === 'save') {
+            setTimeout(() => {
+              onClick();
+            }, 50);
+          } else {
+            onClick();
+          }
+        }}
       >
         <Box>
           {Boolean(iconName && !icon) && (

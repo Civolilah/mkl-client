@@ -61,7 +61,7 @@ const Contacts = ({
 
     setTimeout(() => {
       const contactElements = document.querySelectorAll(
-        '[id^="supplier_contact_first_name_"]'
+        '[id^="supplier_contact_phone_"]'
       );
 
       if (contactElements.length > 1) {
@@ -111,7 +111,6 @@ const Contacts = ({
             style={{ borderColor: colors.$1 }}
           >
             <TextField
-              id={`supplier_contact_first_name_${index}`}
               required
               label={t('first_name')}
               placeHolder={t('first_name_placeholder')}
@@ -157,6 +156,7 @@ const Contacts = ({
             />
 
             <TextField
+              id={`supplier_contact_phone_${index}`}
               type="tel"
               label={t('phone')}
               placeHolder={t('phone_placeholder')}

@@ -63,13 +63,43 @@ const SupplierForm = ({
     if (Object.keys(errors).length && isEnabledInvoicing) {
       const isErrorFromDetailsPage = Object.keys(errors).some(
         (key) =>
-          key.includes('name') ||
-          key.includes('country_id') ||
-          key.includes('currency_id')
+          key === 'name' ||
+          key === 'number' ||
+          key === 'id_number' ||
+          key === 'vat_number' ||
+          key === 'routing_id' ||
+          key === 'website' ||
+          key === 'phone' ||
+          key === 'currency_id' ||
+          key === 'language'
+      );
+
+      const isErrorFromAddressPage = Object.keys(errors).some(
+        (key) =>
+          key === 'address' ||
+          key === 'address2' ||
+          key === 'city' ||
+          key === 'state' ||
+          key === 'zip_code' ||
+          key === 'country_id'
+      );
+
+      const isErrorFromContactsPage = Object.keys(errors).some(
+        (key) =>
+          key.includes('contacts') &&
+          (key.includes('first_name') ||
+            key.includes('last_name') ||
+            key.includes('email') ||
+            key.includes('phone') ||
+            key.includes('password'))
       );
 
       if (isErrorFromDetailsPage) {
         setActiveTab('details');
+      } else if (isErrorFromAddressPage) {
+        setActiveTab('address');
+      } else if (isErrorFromContactsPage) {
+        setActiveTab('contacts');
       }
     }
   }, [errors]);

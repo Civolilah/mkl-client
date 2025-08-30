@@ -446,5 +446,6 @@
   "select_language": "Select language",
   "view_orders": "View Orders",
   "purchase_order": "Purchase Order",
-  "customer": "Customer"
+  "customer": "Customer",
+  "password_with_supplier_portal_access_required": "To grant supplier portal login access, a password is needed for this contact."
 }

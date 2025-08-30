@@ -8,10 +8,11 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { CSSProperties, MouseEvent, ReactNode } from 'react';
+import { CSSProperties, MouseEvent, ReactNode, RefObject } from 'react';
 
 interface Props {
   id?: string;
+  innerRef?: RefObject<HTMLDivElement>;
   className?: string;
   children?: ReactNode;
   style?: CSSProperties;
@@ -23,6 +24,7 @@ interface Props {
 
 const Box = ({
   children,
+  innerRef,
   className,
   style,
   onClick,
@@ -35,6 +37,7 @@ const Box = ({
     return (
       <div
         id={id}
+        ref={innerRef}
         className={className}
         style={style}
         onClick={onClick}
@@ -47,6 +50,7 @@ const Box = ({
   return (
     <div
       id={id}
+      ref={innerRef}
       className={className}
       style={style}
       onClick={onClick}

@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
 import { route } from '@helpers/index';
@@ -75,13 +75,23 @@ const Default = ({
 }: Props) => {
   const t = useTranslation();
 
+  const navigate = useNavigate();
+
   const colors = useColors();
   const accentColor = useAccentColor();
 
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
-  const navigate = useNavigate();
+  const [isSaveClicked, setIsSaveClicked] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isSaveClicked) {
+      setIsSaveClicked(false);
+
+      onSaveClick?.();
+    }
+  }, [isSaveClicked]);
 
   return (
     <Box className="h-full w-full" style={{ backgroundColor: colors.$3 }}>
@@ -210,7 +220,11 @@ const Default = ({
                               <div>
                                 <Button
                                   type="primary"
-                                  onClick={onSaveClick}
+                                  onClick={() => {
+                                    setTimeout(() => {
+                                      setIsSaveClicked(true);
+                                    }, 50);
+                                  }}
                                   icon={
                                     <Icon name={saveButtonIcon} size="1.1rem" />
                                   }
@@ -226,7 +240,11 @@ const Default = ({
                           ) : (
                             <Button
                               type="primary"
-                              onClick={onSaveClick}
+                              onClick={() => {
+                                setTimeout(() => {
+                                  setIsSaveClicked(true);
+                                }, 50);
+                              }}
                               icon={
                                 <Icon
                                   name={saveButtonIcon}

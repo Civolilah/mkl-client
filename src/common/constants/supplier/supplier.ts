@@ -8,9 +8,12 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { v4 } from 'uuid';
+
 import { Supplier, SupplierContact } from '@interfaces/index';
 
 export const BLANK_SUPPLIER_CONTACT: SupplierContact = {
+  id: v4(),
   first_name: '',
   last_name: '',
   email: '',

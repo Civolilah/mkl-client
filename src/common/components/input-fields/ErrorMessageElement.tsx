@@ -25,7 +25,10 @@ const ErrorMessageElement = ({ errorMessage }: Props) => {
 
       if (errorMessageElement) {
         setTimeout(() => {
-          errorMessageElement.scrollIntoView({ behavior: 'smooth' });
+          errorMessageElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
         }, 200);
       }
     }
