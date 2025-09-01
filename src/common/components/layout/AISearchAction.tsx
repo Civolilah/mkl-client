@@ -124,7 +124,6 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
       open={isOpen}
       onOpenChange={handleOpenChange}
       placement="top"
-      overlayClassName="ai-search-popup"
       arrow={false}
       overlayInnerStyle={{
         backgroundColor: 'transparent',

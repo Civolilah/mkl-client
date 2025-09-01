@@ -87,3 +87,4 @@ export { default as AddCompanyAction } from '@components/company/AddCompanyActio
 export { default as CountriesSelector } from '@components/selectors/CountriesSelector';
 export { default as AISearchAction } from '@components/layout/AISearchAction';
 export { default as LanguagesSelector } from '@components/selectors/LanguagesSelector';
+export { default as FooterActionItem } from '@components/layout/FooterActionItem';

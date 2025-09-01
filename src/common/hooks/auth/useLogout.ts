@@ -15,11 +15,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
 
+import { pageLayoutAndActionsAtom } from '@hooks/global/usePageLayoutAndActions';
+
 const useLogout = () => {
   const toast = useToast();
   const queryClient = useQueryClient();
 
   const setUserCompanyDetails = useSetAtom(userCompanyAtom);
+  const setPageLayoutAndActions = useSetAtom(pageLayoutAndActionsAtom);
 
   const navigate = useNavigate();
 
@@ -28,6 +31,8 @@ const useLogout = () => {
 
     request('POST', '/api/users/logout').then(() => {
       toast.dismiss();
+
+      setPageLayoutAndActions(undefined);
 
       localStorage.removeItem('MKL-TOKEN');
       localStorage.removeItem('DEFAULT-MKL-COMPANY');

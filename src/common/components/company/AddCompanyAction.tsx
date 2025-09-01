@@ -117,7 +117,7 @@ const AddCompanyAction = () => {
       </Modal>
 
       <Modal
-        title={t('new_company')}
+        title={t('add_company')}
         visible={isModalVisible}
         onClose={handleClose}
         size="small"
@@ -172,7 +172,7 @@ const AddCompanyAction = () => {
           onClick={() => !isFormBusy && setIsModalVisible(true)}
         >
           <Icon name="add" size="1.5rem" />
-          <Text className="text-sm font-medium">{t('new_company')}</Text>
+          <Text className="text-sm font-medium">{t('add_company')}</Text>
         </Box>
       )}
     </>

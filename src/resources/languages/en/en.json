@@ -352,7 +352,7 @@
   "people": "People",
   "organization": "Organization",
   "companies": "Companies",
-  "new_company": "New Company",
+  "add_company": "Add Company",
   "import_export": "Import & Export",
   "reports": "Reports",
   "reload": "Reload",
@@ -447,5 +447,8 @@
   "view_orders": "View Orders",
   "purchase_order": "Purchase Order",
   "customer": "Customer",
-  "password_with_supplier_portal_access_required": "To grant supplier portal login access, a password is needed for this contact."
+  "password_with_supplier_portal_access_required": "To grant supplier portal login access, a password is needed for this contact.",
+  "supplier_contact_email_already_exists": "This email is already registered. Please use a different email to grant supplier portal access.",
+  "supplier_portal_access_denied": "You no longer have permission to grant supplier portal access. For more details, contact your director.",
+  "customer_portal_access_denied": "You no longer have permission to grant customer portal access. For more details, contact your director."
 }

@@ -8,14 +8,16 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
 import { route } from '@helpers/index';
+import { useSetAtom } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { Box, Button, Icon, Text, LoadingScreen } from '@components/index';
 
+import { pageLayoutAndActionsAtom } from '@hooks/global/usePageLayoutAndActions';
 import { useTranslation } from '@hooks/index';
 
 const NotFound = () => {
@@ -24,6 +26,12 @@ const NotFound = () => {
   const navigate = useNavigate();
 
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
+
+  const setPageLayoutAndActions = useSetAtom(pageLayoutAndActionsAtom);
+
+  useEffect(() => {
+    setPageLayoutAndActions(undefined);
+  }, []);
 
   return (
     <Suspense fallback={<LoadingScreen />}>

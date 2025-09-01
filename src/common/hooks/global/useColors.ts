@@ -46,6 +46,7 @@ const COLORS = {
   $36: '#f9fafb', // Variant combination background color
   $37: '#000000', // Absolute black hover color
   $38: '#ffffff', // Absolute white hover color
+  $39: '#ffffff', // Mobile action popover item background color
 };
 
 const useColors = () => {

@@ -8,14 +8,26 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
-import { LoadingScreen, PermissionScreen } from '@components/index';
+import { useSetAtom } from 'jotai';
+
+import { Default, LoadingScreen, PermissionScreen } from '@components/index';
+
+import { pageLayoutAndActionsAtom } from '@hooks/global/usePageLayoutAndActions';
 
 const Unauthorized = () => {
+  const setPageLayoutAndActions = useSetAtom(pageLayoutAndActionsAtom);
+
+  useEffect(() => {
+    setPageLayoutAndActions(undefined);
+  }, []);
+
   return (
     <Suspense fallback={<LoadingScreen />}>
-      <PermissionScreen unauthorizedAction />
+      <Default>
+        <PermissionScreen unauthorizedAction />
+      </Default>
     </Suspense>
   );
 };

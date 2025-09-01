@@ -26,21 +26,6 @@ interface Props {
   onClear?: () => void;
 }
 
-const LANGUAGES_NAMES = {
-  en: 'English',
-  de: 'Deutsch',
-  fr: 'Français',
-  it: 'Italiano',
-  es: 'Español',
-  pt: 'Português',
-  tr: 'Türkçe',
-  zh: '中文',
-  hi: 'हिन्दी',
-  bs: 'Bosanski',
-  hr: 'Hrvatski',
-  sr: 'Srpski',
-};
-
 const LanguagesSelector = ({
   value,
   onChange,
@@ -54,9 +39,19 @@ const LanguagesSelector = ({
 
   const [languages, setLanguages] = useState<Option[]>([]);
 
+  const getLanguageName = (languageCode: string) => {
+    const currentLocale = localStorage.getItem('MKL-LOCALE') || 'en';
+
+    const displayNames = new Intl.DisplayNames([currentLocale], {
+      type: 'language',
+    });
+
+    return displayNames.of(languageCode);
+  };
+
   useEffect(() => {
     const languageOptions: Option[] = AVAILABLE_LANGUAGES.map((language) => ({
-      label: LANGUAGES_NAMES[language],
+      label: getLanguageName(language) || '',
       value: language,
     }));
 

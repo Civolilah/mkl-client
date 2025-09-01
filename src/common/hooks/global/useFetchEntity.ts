@@ -50,6 +50,7 @@ const useFetchEntity = <T>({
     data: entityResponse,
     isLoading,
     refetch,
+    isFetching,
   } = useQuery(
     listQuery ? queryIdentifiers : [...queryIdentifiers, id],
     ({ signal }) =>
@@ -121,7 +122,7 @@ const useFetchEntity = <T>({
         )
       );
     }
-  }, [entityResponse, isLoading]);
+  }, [entityResponse, isLoading, isFetching]);
 
   useEffect(() => {
     if (companyPlan !== 'basic') {

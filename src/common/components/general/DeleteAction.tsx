@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { endpoint, request, useToast } from '@helpers/index';
 import { useAtomValue } from 'jotai';
@@ -39,6 +39,7 @@ type Props = {
   editPageAction?: boolean;
   mainPageURL?: string;
   resourceQueryIdentifier: RefetchEntity;
+  element?: ReactNode;
 };
 
 const DeleteAction = ({
@@ -50,6 +51,7 @@ const DeleteAction = ({
   mainPageURL,
   resourceName,
   resourceQueryIdentifier,
+  element,
 }: Props) => {
   const t = useTranslation();
 
@@ -112,11 +114,15 @@ const DeleteAction = ({
         isFormBusy={isFormBusy}
       />
 
-      <ActionElement
-        label={t('delete')}
-        iconName="delete"
-        onClick={() => setIsModalOpen(true)}
-      />
+      {element ? (
+        <Box onClick={() => setIsModalOpen(true)}>{element}</Box>
+      ) : (
+        <ActionElement
+          label={t('delete')}
+          iconName="delete"
+          onClick={() => setIsModalOpen(true)}
+        />
+      )}
 
       <Modal
         title={t('delete')}

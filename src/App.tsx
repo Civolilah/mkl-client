@@ -27,7 +27,7 @@ import pt from 'i18n-iso-countries/langs/pt.json';
 import sr from 'i18n-iso-countries/langs/sr.json';
 import tr from 'i18n-iso-countries/langs/tr.json';
 import zh from 'i18n-iso-countries/langs/zh.json';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation as useTranslationBase } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -39,6 +39,7 @@ import {
   Languages,
 } from '@components/layout/LanguageSwitcher';
 
+import { pageLayoutAndActionsAtom } from '@hooks/global/usePageLayoutAndActions';
 import { useSwitchLanguage, useTheme, useTranslation } from '@hooks/index';
 
 import { routes } from './routes';
@@ -69,6 +70,8 @@ const App = () => {
   const switchLanguage = useSwitchLanguage();
 
   const currentUserCompanyDetails = useAtomValue(userCompanyAtom);
+  const setPageLayoutAndActions = useSetAtom(pageLayoutAndActionsAtom);
+
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState<boolean>(false);
 
   const handleDisplayWelcomeModal = () => {
@@ -94,6 +97,8 @@ const App = () => {
   };
 
   const handleLogoutUser = () => {
+    setPageLayoutAndActions(undefined);
+
     localStorage.removeItem('MKL-TOKEN');
     localStorage.removeItem('DEFAULT-MKL-COMPANY');
 
