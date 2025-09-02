@@ -18,7 +18,7 @@ import {
   Text,
 } from '@components/index';
 
-import { useColors } from '@hooks/index';
+import { useAccentColor, useColors } from '@hooks/index';
 
 interface Props {
   entity: User;
@@ -27,6 +27,8 @@ interface Props {
 
 const MobileCard = ({ entity, refresh }: Props) => {
   const colors = useColors();
+
+  const accentColor = useAccentColor();
 
   return (
     <Box
@@ -59,7 +61,7 @@ const MobileCard = ({ entity, refresh }: Props) => {
       <Box className="flex flex-col gap-y-2">
         <Box className="flex items-center gap-x-2">
           <Box style={{ width: '1.5rem' }}>
-            <Icon name="email" size="1.3rem" style={{ color: '#3b82f6' }} />
+            <Icon name="email" size="1.3rem" style={{ color: accentColor }} />
           </Box>
 
           <CopyToClipboard text={entity.email} withoutClickOpenOnMobile>
@@ -70,7 +72,7 @@ const MobileCard = ({ entity, refresh }: Props) => {
         {entity.phone && (
           <Box className="flex items-center gap-x-2">
             <Box style={{ width: '1.5rem' }}>
-              <Icon name="phone" size="1rem" style={{ color: '#22c55e' }} />
+              <Icon name="phone" size="1rem" style={{ color: accentColor }} />
             </Box>
             <CopyToClipboard text={entity.phone} withoutClickOpenOnMobile>
               <Text className="text-sm-plus truncate flex-1">

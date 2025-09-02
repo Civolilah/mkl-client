@@ -67,7 +67,7 @@ const LabelCategoryForm = ({
 
   return (
     <Card
-      title={editPage ? t('edit_label_category') : t('new_label_category')}
+      title={t('details')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
       paddingBottom={!editPage ? '0rem' : undefined}

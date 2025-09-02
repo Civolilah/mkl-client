@@ -12,13 +12,14 @@ import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { endpoint, request, route, useToast } from '@helpers/index';
-import { cloneDeep, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Label, ValidationErrors } from '@interfaces/index';
 
 import {
+  ActionPopoverIcon,
   AISearchAction,
   Box,
   FooterAction,
@@ -58,7 +59,6 @@ const Edit = () => {
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const refetch = useRefetch();
-  const actions = useActions();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
@@ -79,6 +79,8 @@ const Edit = () => {
       hasPermission('view_label') ||
       hasPermission('edit_label'),
   });
+
+  const actions = useActions({ refresh });
 
   const handleSave = async () => {
     if (!isLoading && id && label) {
@@ -105,8 +107,6 @@ const Edit = () => {
           toast.success('updated_label');
 
           refetch(['labels']);
-
-          setInitialResponse(cloneDeep(label));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -157,14 +157,7 @@ const Edit = () => {
             }}
             iconName="tag"
             disabled={isLoading}
-            iconSize="1.05rem"
-          />
-
-          <FooterAction
-            text="reload"
-            onClick={refresh}
-            iconName="refresh"
-            disabled={isLoading}
+            iconSize="1rem"
           />
 
           <FooterAction
@@ -172,7 +165,14 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.3rem"
+            iconSize="1.2rem"
+          />
+
+          <FooterAction
+            text="actions"
+            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
+            disabled={isLoading}
+            actions={label ? actions(label) : []}
           />
 
           <AISearchAction disabled={isLoading} />

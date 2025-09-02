@@ -32,7 +32,6 @@ const BrandForm = ({
   brand,
   setBrand,
   errors,
-  editPage,
   isLoading,
   onlyFields,
 }: Props) => {
@@ -58,7 +57,7 @@ const BrandForm = ({
 
   return (
     <Card
-      title={editPage ? t('edit_brand') : t('new_brand')}
+      title={t('details')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
     >

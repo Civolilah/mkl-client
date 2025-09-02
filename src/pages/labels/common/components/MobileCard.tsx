@@ -12,7 +12,7 @@ import { Label } from '@interfaces/index';
 
 import { Box, Icon, TableActionsDropdown, Text } from '@components/index';
 
-import { useColors } from '@hooks/index';
+import { useAccentColor, useColors } from '@hooks/index';
 
 interface Props {
   entity: Label;
@@ -21,6 +21,8 @@ interface Props {
 
 const MobileCard = ({ entity, refresh }: Props) => {
   const colors = useColors();
+
+  const accentColor = useAccentColor();
 
   return (
     <Box
@@ -45,7 +47,7 @@ const MobileCard = ({ entity, refresh }: Props) => {
 
       <Box className="flex items-center gap-x-2">
         <Box style={{ width: '1.5rem' }}>
-          <Icon name="tags" size="1.25rem" />
+          <Icon name="tags" size="1.25rem" style={{ color: accentColor }} />
         </Box>
 
         <Text className="truncate text-sm-plus flex-1">

@@ -17,7 +17,7 @@ import { get } from 'lodash';
 
 import Icon, { IconName } from '@components/general/Icon';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 import { Box } from '..';
 
@@ -54,6 +54,7 @@ const FooterAction = ({
 
   const colors = useColors();
   const popoverRef = useRef(null);
+  const accentColor = useAccentColor();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -118,7 +119,7 @@ const FooterAction = ({
         getTooltipContainer={() => document.body}
       >
         <div
-          className="flex flex-1 h-full items-center overflow-hidden px-2"
+          className="flex flex-1 h-full items-center overflow-hidden px-2 select-none"
           style={{
             backgroundColor: isOpen ? colors.$17 : 'transparent',
           }}
@@ -146,7 +147,7 @@ const FooterAction = ({
                 <Icon
                   name={iconName as IconName}
                   size={iconSize}
-                  style={{ color: iconColor }}
+                  style={{ color: iconColor || accentColor }}
                 />
               )}
 
@@ -167,7 +168,7 @@ const FooterAction = ({
   return (
     <Box
       className={classNames(
-        'flex flex-1 h-full items-center overflow-hidden px-2',
+        'flex flex-1 h-full items-center overflow-hidden px-2 select-none',
         {
           'cursor-not-allowed opacity-75 pointer-events-none': disabled,
           'cursor-pointer': !disabled,
@@ -191,7 +192,7 @@ const FooterAction = ({
             <Icon
               name={iconName as IconName}
               size={iconSize}
-              style={{ color: iconColor }}
+              style={{ color: iconColor || accentColor }}
             />
           )}
 

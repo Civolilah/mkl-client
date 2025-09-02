@@ -19,6 +19,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { LabelCategory, ValidationErrors } from '@interfaces/index';
 
 import {
+  ActionPopoverIcon,
   AISearchAction,
   Box,
   FooterAction,
@@ -57,7 +58,6 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
-  const actions = useActions();
   const refetch = useRefetch();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
@@ -83,6 +83,8 @@ const Edit = () => {
       hasPermission('view_label_category') ||
       hasPermission('edit_label_category'),
   });
+
+  const actions = useActions({ refresh });
 
   const handleSave = async () => {
     if (!isLoading && id && labelCategory) {
@@ -170,14 +172,7 @@ const Edit = () => {
             }}
             iconName="tags"
             disabled={isLoading}
-            iconSize="1.3rem"
-          />
-
-          <FooterAction
-            text="reload"
-            onClick={refresh}
-            iconName="refresh"
-            disabled={isLoading}
+            iconSize="1.2rem"
           />
 
           <FooterAction
@@ -185,7 +180,14 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.3rem"
+            iconSize="1.2rem"
+          />
+
+          <FooterAction
+            text="actions"
+            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
+            disabled={isLoading}
+            actions={labelCategory ? actions(labelCategory) : []}
           />
 
           <AISearchAction disabled={isLoading} />

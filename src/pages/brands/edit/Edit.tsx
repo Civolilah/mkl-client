@@ -19,6 +19,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Brand, ValidationErrors } from '@interfaces/index';
 
 import {
+  ActionPopoverIcon,
   AISearchAction,
   Box,
   FooterAction,
@@ -57,7 +58,6 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
-  const actions = useActions();
   const refetch = useRefetch();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
@@ -79,6 +79,8 @@ const Edit = () => {
       hasPermission('view_brand') ||
       hasPermission('edit_brand'),
   });
+
+  const actions = useActions({ refresh });
 
   const handleSave = async () => {
     if (!isLoading && id && brand) {
@@ -157,25 +159,7 @@ const Edit = () => {
             }}
             iconName="brand"
             disabled={isLoading}
-            iconSize="1.05rem"
-          />
-
-          <FooterAction
-            text="new_brand"
-            onClick={() => {
-              navigate(route('/brands/new'));
-            }}
-            iconName="add"
-            disabled={isLoading}
-            iconSize="1.3rem"
-            visible={hasPermission('create_brand')}
-          />
-
-          <FooterAction
-            text="reload"
-            onClick={refresh}
-            iconName="refresh"
-            disabled={isLoading}
+            iconSize="1.1rem"
           />
 
           <FooterAction
@@ -183,7 +167,14 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.3rem"
+            iconSize="1.2rem"
+          />
+
+          <FooterAction
+            text="actions"
+            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
+            disabled={isLoading}
+            actions={brand ? actions(brand) : []}
           />
 
           <AISearchAction disabled={isLoading} />

@@ -12,17 +12,17 @@ import { useEffect, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { endpoint, request, route, useToast } from '@helpers/index';
-import { cloneDeep, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Status, ValidationErrors } from '@interfaces/index';
 
 import {
+  ActionPopoverIcon,
   AISearchAction,
   Box,
   FooterAction,
-  Icon,
   RefreshDataElement,
 } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -107,8 +107,6 @@ const Edit = () => {
           toast.success('updated_status');
 
           refetch(['statuses']);
-
-          setInitialResponse(cloneDeep(status));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -172,20 +170,7 @@ const Edit = () => {
 
           <FooterAction
             text="actions"
-            iconForPopover={(isOpen) => (
-              <Box className="flex relative">
-                <Box className="pr-3">
-                  <Icon name="menu" size="1.2rem" />
-                </Box>
-
-                <Box className="absolute -right-[0.6rem]">
-                  <Icon
-                    name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
-                    size="1.4rem"
-                  />
-                </Box>
-              </Box>
-            )}
+            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
             disabled={isLoading}
             actions={status ? actions(status) : []}
           />

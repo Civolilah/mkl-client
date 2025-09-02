@@ -12,7 +12,7 @@ import { Status } from '@interfaces/index';
 
 import { Box, Icon, TableActionsDropdown, Text } from '@components/index';
 
-import { useColors } from '@hooks/index';
+import { useAccentColor, useColors } from '@hooks/index';
 
 import ColorColumn from './ColorColumn';
 
@@ -23,6 +23,8 @@ interface Props {
 
 const MobileCard = ({ entity, refresh }: Props) => {
   const colors = useColors();
+
+  const accentColor = useAccentColor();
 
   return (
     <Box
@@ -49,8 +51,8 @@ const MobileCard = ({ entity, refresh }: Props) => {
         <Box style={{ width: '1.5rem' }}>
           <Icon
             name="colorPalette"
-            size="1.3rem"
-            style={{ color: '#3b82f6' }}
+            size="1.35rem"
+            style={{ color: accentColor }}
           />
         </Box>
 

@@ -168,13 +168,18 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
             icon={
               <Box className="flex relative">
                 <Box className="pr-3">
-                  <Icon name="robotLine" size="1.2rem" />
+                  <Icon
+                    name="robotLine"
+                    size="1.2rem"
+                    style={{ color: accentColor }}
+                  />
                 </Box>
 
                 <Box className="absolute -right-[0.6rem]">
                   <Icon
                     name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
                     size="1.4rem"
+                    style={{ color: accentColor }}
                   />
                 </Box>
               </Box>

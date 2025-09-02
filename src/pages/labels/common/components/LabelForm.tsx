@@ -92,7 +92,7 @@ const LabelForm = ({
 
   return (
     <Card
-      title={editPage ? t('edit_label') : t('new_label')}
+      title={t('details')}
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
       paddingBottom={!editPage ? '0rem' : undefined}

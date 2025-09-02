@@ -10,18 +10,57 @@
 
 import React from 'react';
 
+import { route } from '@helpers/index';
 import { MenuProps } from 'antd';
-import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { LabelCategory } from '@interfaces/index';
 
-import { DeleteAction } from '@components/index';
+import { DeleteAction, FooterActionItem } from '@components/index';
 
-const useActions = () => {
+import { useHasPermission } from '@hooks/index';
+
+interface Props {
+  refresh?: () => void;
+}
+
+const useActions = ({ refresh }: Props = {}) => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
+  const hasPermission = useHasPermission();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   return (currentResource: LabelCategory) => {
     const actions: MenuProps['items'] = [
+      ...(refresh && hasPermission('create_label_category') && !isLargeScreen
+        ? [
+            {
+              label: (
+                <FooterActionItem
+                  iconName="add"
+                  onClick={() => {
+                    navigate(route('/label_categories/new'));
+                  }}
+                  label="new_label_category"
+                />
+              ),
+              key: `new_label_category-${id}`,
+            },
+            {
+              label: (
+                <FooterActionItem
+                  iconName="refresh"
+                  onClick={refresh}
+                  label="reload"
+                />
+              ),
+              key: `refresh-${id}`,
+            },
+          ]
+        : []),
       {
         label: (
           <DeleteAction
@@ -32,6 +71,15 @@ const useActions = () => {
             mainPageURL="/label_categories"
             resourceName={currentResource.name}
             resourceQueryIdentifier="label_categories"
+            element={
+              !isLargeScreen && (
+                <FooterActionItem
+                  iconName="delete"
+                  iconColor="#ef4444"
+                  label="delete"
+                />
+              )
+            }
           />
         ),
         key: `delete-${id}`,

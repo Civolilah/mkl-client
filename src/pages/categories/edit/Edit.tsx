@@ -19,6 +19,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Category, Subsidiary, ValidationErrors } from '@interfaces/index';
 
 import {
+  ActionPopoverIcon,
   AISearchAction,
   Box,
   FooterAction,
@@ -58,7 +59,6 @@ const Edit = () => {
   const { id } = useParams();
 
   const refetch = useRefetch();
-  const actions = useActions();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
   const canEditEntity = useCanEditEntity();
@@ -81,6 +81,8 @@ const Edit = () => {
       hasPermission('view_category') ||
       hasPermission('edit_category'),
   });
+
+  const actions = useActions({ refresh });
 
   const handleSave = async () => {
     if (!isLoading && id && category) {
@@ -159,25 +161,7 @@ const Edit = () => {
             }}
             iconName="category"
             disabled={isLoading}
-            iconSize="1.05rem"
-          />
-
-          <FooterAction
-            text="new_category"
-            onClick={() => {
-              navigate(route('/categories/new'));
-            }}
-            iconName="add"
-            disabled={isLoading}
-            iconSize="1.3rem"
-            visible={hasPermission('create_category')}
-          />
-
-          <FooterAction
-            text="reload"
-            onClick={refresh}
-            iconName="refresh"
-            disabled={isLoading}
+            iconSize="1.1rem"
           />
 
           <FooterAction
@@ -186,6 +170,13 @@ const Edit = () => {
             iconName="save"
             disabled={isLoading}
             iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="actions"
+            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
+            disabled={isLoading}
+            actions={category ? actions(category) : []}
           />
 
           <AISearchAction disabled={isLoading} />

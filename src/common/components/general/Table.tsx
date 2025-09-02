@@ -155,6 +155,7 @@ const CustomBodyCell = ({
 };
 
 type FooterProps = {
+  className?: string;
   perPage: 10 | 20 | 50 | 100;
   currentPage: number;
   total: number;
@@ -168,6 +169,7 @@ type Data<T> = {
 };
 
 const Footer = ({
+  className,
   perPage,
   currentPage,
   total,
@@ -179,8 +181,6 @@ const Footer = ({
   const colors = useColors();
 
   const numberOfPages = Math.ceil(total / perPage) || 1;
-
-  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const actions: MenuProps['items'] = [
     {
@@ -210,7 +210,12 @@ const Footer = ({
   ];
 
   return (
-    <Box className="flex justify-between items-center w-full relative">
+    <Box
+      className={classNames(
+        'flex justify-between items-center w-full relative',
+        className
+      )}
+    >
       <Box className="flex items-center justify-center space-x-2">
         <Text className="text-sm font-medium">{t('total')}</Text>
 
@@ -231,14 +236,17 @@ const Footer = ({
             }}
             style={{
               borderColor: colors.$1,
-              height: isLargeScreen ? '2.2rem' : '1.925rem',
-              width: isLargeScreen ? '2.2rem' : '1.925rem',
+              // height: isLargeScreen ? '2.2rem' : '1.925rem',
+              // width: isLargeScreen ? '2.2rem' : '1.925rem',
+              height: '2.2rem',
+              width: '2.2rem',
             }}
           >
             <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <Icon
                 name="doubleArrowBack"
-                size={isLargeScreen ? '1.35rem' : '1.2rem'}
+                // size={isLargeScreen ? '1.35rem' : '1.2rem'}
+                size="1.35rem"
               />
             </Box>
           </PaginationArrowBox>
@@ -255,14 +263,17 @@ const Footer = ({
             }}
             style={{
               borderColor: colors.$1,
-              height: isLargeScreen ? '2.2rem' : '1.925rem',
-              width: isLargeScreen ? '2.2rem' : '1.925rem',
+              // height: isLargeScreen ? '2.2rem' : '1.925rem',
+              // width: isLargeScreen ? '2.2rem' : '1.925rem',
+              height: '2.2rem',
+              width: '2.2rem',
             }}
           >
             <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <Icon
                 name="arrowBack"
-                size={isLargeScreen ? '1.35rem' : '1.2rem'}
+                // size={isLargeScreen ? '1.35rem' : '1.2rem'}
+                size="1.35rem"
               />
             </Box>
           </PaginationArrowBox>
@@ -284,14 +295,17 @@ const Footer = ({
             }}
             style={{
               borderColor: colors.$1,
-              height: isLargeScreen ? '2.2rem' : '1.925rem',
-              width: isLargeScreen ? '2.2rem' : '1.925rem',
+              // height: isLargeScreen ? '2.2rem' : '1.925rem',
+              // width: isLargeScreen ? '2.2rem' : '1.925rem',
+              height: '2.2rem',
+              width: '2.2rem',
             }}
           >
             <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <Icon
                 name="arrowForward"
-                size={isLargeScreen ? '1.35rem' : '1.2rem'}
+                // size={isLargeScreen ? '1.35rem' : '1.2rem'}
+                size="1.35rem"
               />
             </Box>
           </PaginationArrowBox>
@@ -311,14 +325,17 @@ const Footer = ({
             }}
             style={{
               borderColor: colors.$1,
-              height: isLargeScreen ? '2.2rem' : '1.925rem',
-              width: isLargeScreen ? '2.2rem' : '1.925rem',
+              // height: isLargeScreen ? '2.2rem' : '1.925rem',
+              // width: isLargeScreen ? '2.2rem' : '1.925rem',
+              height: '2.2rem',
+              width: '2.2rem',
             }}
           >
             <Box className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
               <Icon
                 name="doubleArrowForward"
-                size={isLargeScreen ? '1.35rem' : '1.2rem'}
+                // size={isLargeScreen ? '1.35rem' : '1.2rem'}
+                size="1.35rem"
               />
             </Box>
           </PaginationArrowBox>
@@ -327,7 +344,7 @@ const Footer = ({
 
       <Dropdown menu={{ items: actions }}>
         <Box
-          className="flex items-center justify-between space-x-3 border px-2 py-1 md:px-3 md:py-1.5 cursor-pointer whitespace-nowrap w-full"
+          className="flex items-center justify-between space-x-3 border px-3 py-1.5 cursor-pointer whitespace-nowrap w-full"
           style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
         >
           <Text className="text-sm">{t(perPage.toString())}</Text>
@@ -569,7 +586,7 @@ const Table = <EntityType,>({
             </Box>
           ) : (
             <Box className="flex flex-col w-full items-start self-start gap-y-6">
-              <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+              <Box className="grid grid-cols-1 gap-4 w-full">
                 {Boolean(!isDataLoading && !currentData.data.length) && (
                   <Empty
                     image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -580,7 +597,7 @@ const Table = <EntityType,>({
                 {currentData.data.map((entity, index) => (
                   <Box
                     key={index}
-                    className="cursor-pointer hover:opacity-80 transition-opacity duration-300"
+                    className="cursor-pointer"
                     onClick={() => {
                       if (mobileModalRender) {
                         setCurrentEntity(entity);
@@ -596,6 +613,7 @@ const Table = <EntityType,>({
               </Box>
 
               <Footer
+                className="mt-6"
                 perPage={perPage}
                 currentPage={currentPage}
                 total={currentData.total}

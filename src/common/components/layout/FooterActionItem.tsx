@@ -12,7 +12,7 @@ import { ReactNode } from 'react';
 
 import Icon, { IconName } from '@components/general/Icon';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 import { Box } from '..';
 
@@ -29,6 +29,7 @@ export interface FooterActionProps {
 const FooterActionItem = ({
   label,
   iconName,
+  iconSize,
   onClick,
   iconColor,
   visible = true,
@@ -36,6 +37,7 @@ const FooterActionItem = ({
   const t = useTranslation();
 
   const colors = useColors();
+  const accentColor = useAccentColor();
 
   if (!visible) {
     return null;
@@ -52,8 +54,8 @@ const FooterActionItem = ({
       <Box>
         <Icon
           name={iconName as IconName}
-          size="1.35rem"
-          style={{ color: iconColor }}
+          size={iconSize || '1.35rem'}
+          style={{ color: iconColor || accentColor }}
         />
       </Box>
 

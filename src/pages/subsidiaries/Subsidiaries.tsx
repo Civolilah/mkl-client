@@ -100,6 +100,7 @@ const Subsidiaries = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
+            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading} />

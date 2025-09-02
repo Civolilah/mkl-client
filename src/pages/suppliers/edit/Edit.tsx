@@ -19,10 +19,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Supplier, ValidationErrors } from '@interfaces/index';
 
 import {
+  ActionPopoverIcon,
   AISearchAction,
   Box,
   FooterAction,
-  Icon,
   RefreshDataElement,
 } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -184,20 +184,7 @@ const Edit = () => {
 
           <FooterAction
             text="actions"
-            iconForPopover={(isOpen) => (
-              <Box className="flex relative">
-                <Box className="pr-3">
-                  <Icon name="menu" size="1.2rem" />
-                </Box>
-
-                <Box className="absolute -right-[0.6rem]">
-                  <Icon
-                    name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
-                    size="1.4rem"
-                  />
-                </Box>
-              </Box>
-            )}
+            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
             disabled={isLoading}
             actions={supplier ? actions(supplier) : []}
           />
