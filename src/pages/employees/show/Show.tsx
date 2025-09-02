@@ -111,7 +111,7 @@ const Show = () => {
             }}
             iconName="employees"
             disabled={isLoading}
-            iconSize="1.3rem"
+            iconSize="1.25rem"
           />
 
           <FooterAction
@@ -121,7 +121,7 @@ const Show = () => {
             }}
             iconName="edit"
             disabled={isLoading}
-            iconSize="1.3rem"
+            iconSize="1.25rem"
           />
 
           <FooterAction

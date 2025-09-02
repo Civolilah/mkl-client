@@ -11,6 +11,7 @@
 import { CSSProperties, ReactNode } from 'react';
 
 import { Switch } from 'antd';
+import classNames from 'classnames';
 
 import { Box, Label } from '@components/index';
 
@@ -39,7 +40,11 @@ const Toggle = ({
 
   if (size === 'medium') {
     return (
-      <Box className="flex items-center gap-x-10">
+      <Box
+        className={classNames('flex items-center', {
+          'gap-x-10': label,
+        })}
+      >
         {Boolean(label) && (
           <Box className="flex items-center">
             <Label>{label}</Label>
@@ -60,7 +65,11 @@ const Toggle = ({
   }
 
   return (
-    <Box className="flex items-center gap-x-10">
+    <Box
+      className={classNames('flex items-center', {
+        'gap-x-10': label,
+      })}
+    >
       {Boolean(label) && (
         <Box className="flex items-center">
           <Label>{label}</Label>

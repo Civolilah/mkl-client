@@ -22,6 +22,7 @@ import {
   AISearchAction,
   Box,
   FooterAction,
+  Icon,
   RefreshDataElement,
 } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -57,7 +58,6 @@ const Edit = () => {
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const refetch = useRefetch();
-  const actions = useActions();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
 
@@ -74,6 +74,8 @@ const Edit = () => {
     setInitialResponse,
     enableByPermission: hasPermission('admin'),
   });
+
+  const actions = useActions({ refresh });
 
   const handleSave = async () => {
     if (!isLoading && id && employee) {
@@ -166,20 +168,13 @@ const Edit = () => {
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="preview"
+            text="employees"
             onClick={() => {
-              navigate(route('/employees/:id/show', { id: id || '' }));
+              navigate(route('/employees'));
             }}
-            iconName="preview"
+            iconName="employees"
             disabled={isLoading}
             iconSize="1.3rem"
-          />
-
-          <FooterAction
-            text="reload"
-            onClick={refresh}
-            iconName="refresh"
-            disabled={isLoading}
           />
 
           <FooterAction
@@ -187,7 +182,27 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.3rem"
+            iconSize="1.2rem"
+          />
+
+          <FooterAction
+            text="actions"
+            iconForPopover={(isOpen) => (
+              <Box className="flex relative">
+                <Box className="pr-3">
+                  <Icon name="menu" size="1.2rem" />
+                </Box>
+
+                <Box className="absolute -right-[0.6rem]">
+                  <Icon
+                    name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
+                    size="1.4rem"
+                  />
+                </Box>
+              </Box>
+            )}
+            disabled={isLoading}
+            actions={employee ? actions(employee) : []}
           />
 
           <AISearchAction disabled={isLoading} />

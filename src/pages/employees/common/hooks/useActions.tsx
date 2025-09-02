@@ -10,18 +10,53 @@
 
 import React from 'react';
 
+import { route } from '@helpers/index';
 import { MenuProps } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { User } from '@interfaces/index';
 
-import { DeleteAction } from '@components/index';
+import { DeleteAction, FooterActionItem } from '@components/index';
 
-const useActions = () => {
+interface Props {
+  refresh?: () => void;
+}
+
+const useActions = ({ refresh }: Props) => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   return (currentResource: User) => {
     let actions: MenuProps['items'] = [
+      ...(refresh && !isLargeScreen
+        ? [
+            {
+              label: (
+                <FooterActionItem
+                  iconName="add"
+                  onClick={() => {
+                    navigate(route('/employees/new'));
+                  }}
+                  label="new_employee"
+                />
+              ),
+              key: `new_employee-${currentResource.id}`,
+            },
+            {
+              label: (
+                <FooterActionItem
+                  iconName="refresh"
+                  onClick={refresh}
+                  label="reload"
+                />
+              ),
+              key: `refresh-${currentResource.id}`,
+            },
+          ]
+        : []),
       {
         label: (
           <DeleteAction
@@ -39,6 +74,15 @@ const useActions = () => {
                 : currentResource.email
             }`}
             resourceQueryIdentifier="users"
+            element={
+              !isLargeScreen && (
+                <FooterActionItem
+                  iconName="delete"
+                  iconColor="#ef4444"
+                  label="delete"
+                />
+              )
+            }
           />
         ),
         key: `delete-${currentResource.id}`,

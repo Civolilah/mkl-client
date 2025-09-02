@@ -20,6 +20,7 @@ const AVAILABLE_PERMISSIONS = [
   'admin',
 
   'view_dashboard',
+  'manage_orders',
   'import_products',
   'export_products',
   'manage_stock_counting',
@@ -64,13 +65,13 @@ const AVAILABLE_PERMISSIONS = [
   'view_label_category',
   'edit_label_category',
 
-  'create_status',
-  'view_status',
-  'edit_status',
-
   'create_purchase_order',
   'view_purchase_order',
   'edit_purchase_order',
+
+  'create_status',
+  'view_status',
+  'edit_status',
 ];
 
 type ValidationOptions = {

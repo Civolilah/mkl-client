@@ -12,11 +12,12 @@ import { ReactNode } from 'react';
 
 import Icon, { IconName } from '@components/general/Icon';
 
-import { useColors } from '@hooks/index';
+import { useColors, useTranslation } from '@hooks/index';
 
 import { Box } from '..';
 
 export interface FooterActionProps {
+  label?: string;
   iconName?: IconName;
   iconSize?: string;
   iconColor?: string;
@@ -26,26 +27,37 @@ export interface FooterActionProps {
 }
 
 const FooterActionItem = ({
+  label,
   iconName,
   onClick,
   iconColor,
+  visible = true,
 }: FooterActionProps) => {
+  const t = useTranslation();
+
   const colors = useColors();
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Box
-      className="flex items-center justify-center p-3 cursor-pointer rounded-full border"
+      className="flex items-center justify-start px-4 py-2.5 gap-x-4 cursor-pointer w-full active:bg-[#d8d8d8]"
       onClick={onClick}
       style={{
         backgroundColor: colors.$39,
-        borderColor: colors.$1,
       }}
     >
-      <Icon
-        name={iconName as IconName}
-        size="1.5rem"
-        style={{ color: iconColor }}
-      />
+      <Box>
+        <Icon
+          name={iconName as IconName}
+          size="1.35rem"
+          style={{ color: iconColor }}
+        />
+      </Box>
+
+      {label && <Box className="text-sm">{t(label)}</Box>}
     </Box>
   );
 };

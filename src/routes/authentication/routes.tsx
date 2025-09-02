@@ -10,19 +10,15 @@
 
 import { Route } from 'react-router-dom';
 
-import { Login, Logout, Register } from '@pages/authentication';
+import { Login, Register } from '@pages/authentication';
 
-import { PrivateRoute, PublicRoute } from '@components/index';
+import { PublicRoute } from '@components/index';
 
 const Routes = (
   <>
     <Route element={<PublicRoute />}>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-    </Route>
-
-    <Route element={<PrivateRoute />}>
-      <Route path="/logout" element={<Logout />} />
     </Route>
   </>
 );

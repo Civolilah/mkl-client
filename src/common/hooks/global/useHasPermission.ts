@@ -23,7 +23,7 @@ export type Permission =
   | 'admin'
   | 'owner'
   | 'view_dashboard'
-  | 'view_orders'
+  | 'manage_orders'
   | 'import_products'
   | 'export_products'
   | 'manage_stock_counting'
@@ -51,7 +51,6 @@ export type Permission =
   | 'create_customer'
   | 'view_customer'
   | 'edit_customer'
-  | 'view_orders'
   | 'create_purchase_order'
   | 'view_purchase_order'
   | 'edit_purchase_order';

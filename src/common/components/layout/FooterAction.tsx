@@ -8,15 +8,16 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode, useRef, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 
 import { Popover } from 'antd';
 import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
+import { get } from 'lodash';
 
 import Icon, { IconName } from '@components/general/Icon';
 
-import { useTranslation } from '@hooks/index';
+import { useColors, useTranslation } from '@hooks/index';
 
 import { Box } from '..';
 
@@ -31,6 +32,8 @@ interface Props {
   iconForPopover?: (isOpen: boolean) => ReactNode;
   visible?: boolean;
   actions?: ItemType[];
+  withoutActiveEffect?: boolean;
+  style?: CSSProperties;
 }
 
 const FooterAction = ({
@@ -44,16 +47,28 @@ const FooterAction = ({
   iconForPopover,
   visible = true,
   actions,
+  withoutActiveEffect = false,
+  style,
 }: Props) => {
   const t = useTranslation();
 
+  const colors = useColors();
   const popoverRef = useRef(null);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const [isSavingEntity, setIsSavingEntity] = useState<boolean>(false);
+
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
   };
+
+  useEffect(() => {
+    if (isSavingEntity) {
+      setIsSavingEntity(false);
+      onClick?.();
+    }
+  }, [isSavingEntity]);
 
   if (!visible) {
     return null;
@@ -65,15 +80,28 @@ const FooterAction = ({
         ref={popoverRef}
         content={
           <Box
-            className="flex flex-col gap-y-3 p-2"
+            className="flex flex-col min-w-[9rem] divide-y"
             onClick={(event) => {
               event.stopPropagation();
               setIsOpen(false);
             }}
+            style={{
+              borderColor: colors.$1,
+            }}
           >
-            {actions.map(
-              (action) => action?.['label' as keyof typeof action] as ReactNode
-            )}
+            {actions
+              .filter((action) =>
+                get(
+                  action?.['label' as keyof typeof action],
+                  'props.visible',
+                  true
+                )
+              )
+              .map((action, index) => (
+                <Box key={index}>
+                  {action?.['label' as keyof typeof action] as ReactNode}
+                </Box>
+              ))}
           </Box>
         }
         trigger="click"
@@ -82,13 +110,19 @@ const FooterAction = ({
         placement="top"
         arrow={false}
         overlayInnerStyle={{
-          backgroundColor: 'transparent',
+          backgroundColor: colors.$39,
           paddingBottom: '1rem',
-          boxShadow: 'none',
+          padding: 0,
+          border: `1px solid ${colors.$1}`,
         }}
         getTooltipContainer={() => document.body}
       >
-        <Box className="flex flex-1 h-full items-center overflow-hidden px-2">
+        <div
+          className="flex flex-1 h-full items-center overflow-hidden px-2"
+          style={{
+            backgroundColor: isOpen ? colors.$17 : 'transparent',
+          }}
+        >
           <Box
             className={classNames(
               'flex flex-col w-full justify-between items-center h-9',
@@ -125,31 +159,33 @@ const FooterAction = ({
               {t(text)}
             </Box>
           </Box>
-        </Box>
+        </div>
       </Popover>
     );
   }
 
   return (
-    <Box className="flex flex-1 h-full items-center overflow-hidden px-2">
-      <Box
-        className={classNames(
-          'flex flex-col w-full justify-between items-center h-9',
-          {
-            'cursor-not-allowed opacity-75 pointer-events-none': disabled,
-            'cursor-pointer': !disabled,
-          }
-        )}
-        onClick={() => {
-          if (text === 'save') {
-            setTimeout(() => {
-              onClick?.();
-            }, 50);
-          } else {
-            onClick?.();
-          }
-        }}
-      >
+    <Box
+      className={classNames(
+        'flex flex-1 h-full items-center overflow-hidden px-2',
+        {
+          'cursor-not-allowed opacity-75 pointer-events-none': disabled,
+          'cursor-pointer': !disabled,
+          'active:bg-[#d8d8d8]': !withoutActiveEffect,
+        }
+      )}
+      onClick={() => {
+        if (text === 'save') {
+          setTimeout(() => {
+            setIsSavingEntity(true);
+          }, 100);
+        } else {
+          onClick?.();
+        }
+      }}
+      style={style}
+    >
+      <Box className="flex flex-col w-full justify-between items-center h-9">
         <Box>
           {Boolean(iconName && !icon) && (
             <Icon

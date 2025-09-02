@@ -167,10 +167,15 @@ const Permissions = ({
         />
       </LabelElement>
 
-      <LabelElement label={t('view_orders')} withoutOptionalText twoGridColumns>
+      <LabelElement
+        label={t('manage_orders')}
+        helpLabel={t('manage_orders_help')}
+        withoutOptionalText
+        twoGridColumns
+      >
         <Toggle
-          checked={isPermissionChecked('view_orders')}
-          onChange={(value) => handleChangePermissions(value, 'view_orders')}
+          checked={isPermissionChecked('manage_orders')}
+          onChange={(value) => handleChangePermissions(value, 'manage_orders')}
           disabled={isPermissionDisabled()}
         />
       </LabelElement>
@@ -205,6 +210,7 @@ const Permissions = ({
 
       <LabelElement
         label={t('manage_stock_counting')}
+        helpLabel={t('manage_stock_counting_help')}
         withoutOptionalText
         twoGridColumns
       >

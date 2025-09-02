@@ -51,7 +51,7 @@ const useNavItems = () => {
       label: 'orders',
       iconName: 'clipboardList',
       href: '/orders',
-      visible: hasPermission('view_orders') && isEnabledInvoicing,
+      visible: hasPermission('manage_orders') && isEnabledInvoicing,
       iconSize: '1.15rem',
     },
     {

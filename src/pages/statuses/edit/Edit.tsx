@@ -22,6 +22,7 @@ import {
   AISearchAction,
   Box,
   FooterAction,
+  Icon,
   RefreshDataElement,
 } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -57,7 +58,6 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
-  const actions = useActions();
   const refetch = useRefetch();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
@@ -79,6 +79,8 @@ const Edit = () => {
       hasPermission('view_status') ||
       hasPermission('edit_status'),
   });
+
+  const actions = useActions({ refresh });
 
   const handleSave = async () => {
     if (!isLoading && id && status) {
@@ -157,14 +159,7 @@ const Edit = () => {
             }}
             iconName="assignment"
             disabled={isLoading}
-            iconSize="1.3rem"
-          />
-
-          <FooterAction
-            text="reload"
-            onClick={refresh}
-            iconName="refresh"
-            disabled={isLoading}
+            iconSize="1.2rem"
           />
 
           <FooterAction
@@ -172,7 +167,27 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.3rem"
+            iconSize="1.25rem"
+          />
+
+          <FooterAction
+            text="actions"
+            iconForPopover={(isOpen) => (
+              <Box className="flex relative">
+                <Box className="pr-3">
+                  <Icon name="menu" size="1.2rem" />
+                </Box>
+
+                <Box className="absolute -right-[0.6rem]">
+                  <Icon
+                    name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
+                    size="1.4rem"
+                  />
+                </Box>
+              </Box>
+            )}
+            disabled={isLoading}
+            actions={status ? actions(status) : []}
           />
 
           <AISearchAction disabled={isLoading} />

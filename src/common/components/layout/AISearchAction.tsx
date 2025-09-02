@@ -65,6 +65,7 @@ const SearchItem = ({
 };
 
 const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
+  const colors = useColors();
   const location = useLocation();
   const accentColor = useAccentColor();
 
@@ -163,7 +164,7 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
         <div className="flex flex-1 h-full items-center">
           <FooterAction
             text="ai_search"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen((prev) => !prev)}
             icon={
               <Box className="flex relative">
                 <Box className="pr-3">
@@ -178,7 +179,11 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
                 </Box>
               </Box>
             }
+            style={{
+              backgroundColor: isOpen ? colors.$17 : 'transparent',
+            }}
             disabled={disabled}
+            withoutActiveEffect
           />
         </div>
       )}

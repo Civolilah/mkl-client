@@ -9,5 +9,4 @@
  */
 
 export { default as Login } from './login/Login';
-export { default as Logout } from './logout';
 export { default as Register } from './register/Register';

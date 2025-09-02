@@ -79,7 +79,7 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
     >
       <Dropdown menu={{ items: actions }}>
         <StyledBox
-          className="flex w-full justify-between items-center cursor-pointer pl-2 pr-0.5"
+          className="flex w-full justify-between items-center cursor-pointer pl-1.5 pr-0.5"
           style={{
             height: '2.5rem',
           }}

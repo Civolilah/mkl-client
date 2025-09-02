@@ -81,7 +81,7 @@ const MobileNavBar = (props: Props) => {
         styles={{ body: { padding: 0 } }}
       >
         <Box className="h-full" style={{ backgroundColor: colors.$6 }}>
-          <nav className="flex flex-col space-y-3 h-full">
+          <nav className="flex flex-col space-y-1 h-full">
             <NavBarLogoSection mobileSideBar />
 
             <Box className="flex flex-col flex-1 overflow-y-auto break-all px-1.5">
