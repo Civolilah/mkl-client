@@ -47,7 +47,7 @@ const ColorSelector = ({ colors, handleChange, addColor, images }: Props) => {
 
       <Button type="primary" onClick={addColor}>
         <Box>
-          <Icon name="add" size="1.3rem" />
+          <Icon name="add" size="1.3rem" style={{ color: 'white' }} />
         </Box>
       </Button>
     </Box>

@@ -21,6 +21,7 @@ import employeeRoutes from './employee/routes';
 import labelRoutes from './label/routes';
 import labelCategoryRoutes from './label-category/routes';
 import productRoutes from './product/routes';
+import settingsRoutes from './settings/routes';
 import statusRoutes from './status/routes';
 import subsidiaryRoutes from './subsidiary/routes';
 import supplierRoutes from './supplier/routes';
@@ -59,6 +60,8 @@ export const routes = (
       {employeeRoutes}
 
       {statusRoutes}
+
+      {settingsRoutes}
     </Route>
 
     <Route path="unauthorized" element={<Unauthorized />} />

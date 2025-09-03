@@ -89,3 +89,4 @@ export { default as AISearchAction } from '@components/layout/AISearchAction';
 export { default as LanguagesSelector } from '@components/selectors/LanguagesSelector';
 export { default as FooterActionItem } from '@components/layout/FooterActionItem';
 export { default as ActionPopoverIcon } from '@components/general/ActionPopoverIcon';
+export { default as SettingsNavItem } from '@components/layout/SettingsNavItem';

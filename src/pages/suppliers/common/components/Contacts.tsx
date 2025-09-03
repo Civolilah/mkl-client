@@ -174,7 +174,9 @@ const Contacts = ({
             {isEnabledInvoicing && (
               <>
                 <TextField
-                  required={contact.supplier_portal_access && !editPage}
+                  required={
+                    contact.supplier_portal_access && !contact.has_password
+                  }
                   type="password"
                   label={
                     editPage && contact.has_password
@@ -183,9 +185,16 @@ const Contacts = ({
                   }
                   placeHolder={t('password_placeholder')}
                   value={contact.password || ''}
-                  onValueChange={(value) =>
-                    handleChange(`contacts.${index}.password`, value)
-                  }
+                  onValueChange={(value) => {
+                    handleChange(`contacts.${index}.password`, value);
+
+                    if (value && !contact.supplier_portal_access) {
+                      handleChange(
+                        `contacts.${index}.supplier_portal_access`,
+                        true
+                      );
+                    }
+                  }}
                   changeOnBlur
                   errorMessage={
                     get(errors, `contacts.${index}.password`) &&

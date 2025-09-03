@@ -12,8 +12,11 @@ import { t } from 'i18next';
 
 import { IconName } from '@components/general/Icon';
 
-import useEnableInvoicingFeature from './useEnableInvoicingFeature';
-import useHasPermission from './useHasPermission';
+import {
+  useEnableInvoicingFeature,
+  useUserType,
+  useHasPermission,
+} from '@hooks/index';
 
 type RightIcon = {
   name: IconName;
@@ -36,6 +39,7 @@ const useNavItems = () => {
   const hasPermission = useHasPermission();
 
   const { isEnabledInvoicing } = useEnableInvoicingFeature();
+  const { isSupplier, isCustomer, isInventoryManager } = useUserType();
 
   const navItems: NavItem[] = [
     {
@@ -51,7 +55,8 @@ const useNavItems = () => {
       label: 'orders',
       iconName: 'clipboardList',
       href: '/orders',
-      visible: hasPermission('manage_orders') && isEnabledInvoicing,
+      visible:
+        (hasPermission('manage_orders') || isCustomer) && isEnabledInvoicing,
       iconSize: '1.15rem',
     },
     {
@@ -60,7 +65,9 @@ const useNavItems = () => {
       iconName: 'importExport',
       href: '/import',
       visible:
-        hasPermission('import_products') || hasPermission('export_products'),
+        (hasPermission('import_products') ||
+          hasPermission('export_products')) &&
+        isInventoryManager,
       iconSize: '1.4rem',
     },
     {
@@ -71,7 +78,8 @@ const useNavItems = () => {
       visible:
         hasPermission('create_product') ||
         hasPermission('view_product') ||
-        hasPermission('edit_product'),
+        hasPermission('edit_product') ||
+        isCustomer,
       iconSize: '1.29rem',
       rightIcon: {
         name: 'add',
@@ -88,9 +96,10 @@ const useNavItems = () => {
       href: '/warehouses',
       iconSize: '1.1rem',
       visible:
-        hasPermission('create_warehouse') ||
-        hasPermission('view_warehouse') ||
-        hasPermission('edit_warehouse'),
+        (hasPermission('create_warehouse') ||
+          hasPermission('view_warehouse') ||
+          hasPermission('edit_warehouse')) &&
+        isInventoryManager,
       rightIcon: {
         name: 'add',
         href: '/warehouses/new',
@@ -105,9 +114,10 @@ const useNavItems = () => {
       href: '/subsidiaries',
       iconSize: '1.021rem',
       visible:
-        hasPermission('create_subsidiary') ||
-        hasPermission('view_subsidiary') ||
-        hasPermission('edit_subsidiary'),
+        (hasPermission('create_subsidiary') ||
+          hasPermission('view_subsidiary') ||
+          hasPermission('edit_subsidiary')) &&
+        isInventoryManager,
       rightIcon: {
         name: 'add',
         href: '/subsidiaries/new',
@@ -122,9 +132,10 @@ const useNavItems = () => {
       href: '/customers',
       iconSize: '1.3rem',
       visible:
-        hasPermission('create_customer') ||
-        hasPermission('view_customer') ||
-        hasPermission('edit_customer'),
+        (hasPermission('create_customer') ||
+          hasPermission('view_customer') ||
+          hasPermission('edit_customer')) &&
+        isInventoryManager,
       rightIcon: {
         name: 'add',
         href: '/customers/new',
@@ -139,9 +150,10 @@ const useNavItems = () => {
       href: '/suppliers',
       iconSize: '1.075rem',
       visible:
-        hasPermission('create_supplier') ||
-        hasPermission('view_supplier') ||
-        hasPermission('edit_supplier'),
+        (hasPermission('create_supplier') ||
+          hasPermission('view_supplier') ||
+          hasPermission('edit_supplier')) &&
+        isInventoryManager,
       rightIcon: {
         name: 'add',
         href: '/suppliers/new',
@@ -157,9 +169,10 @@ const useNavItems = () => {
       href: '/brands',
       iconSize: '1.183rem',
       visible:
-        hasPermission('create_brand') ||
-        hasPermission('view_brand') ||
-        hasPermission('edit_brand'),
+        (hasPermission('create_brand') ||
+          hasPermission('view_brand') ||
+          hasPermission('edit_brand')) &&
+        isInventoryManager,
       rightIcon: {
         name: 'add',
         href: '/brands/new',
@@ -174,9 +187,10 @@ const useNavItems = () => {
       href: '/categories',
       iconSize: '1.129rem',
       visible:
-        hasPermission('create_category') ||
-        hasPermission('view_category') ||
-        hasPermission('edit_category'),
+        (hasPermission('create_category') ||
+          hasPermission('view_category') ||
+          hasPermission('edit_category')) &&
+        isInventoryManager,
       rightIcon: {
         name: 'add',
         href: '/categories/new',
@@ -190,9 +204,10 @@ const useNavItems = () => {
       iconName: 'tag',
       href: '/labels',
       visible:
-        hasPermission('create_label') ||
-        hasPermission('view_label') ||
-        hasPermission('edit_label'),
+        (hasPermission('create_label') ||
+          hasPermission('view_label') ||
+          hasPermission('edit_label')) &&
+        isInventoryManager,
       iconSize: '0.968rem',
       rightIcon: {
         name: 'add',
@@ -207,9 +222,10 @@ const useNavItems = () => {
       iconName: 'tags',
       href: '/label_categories',
       visible:
-        hasPermission('create_label_category') ||
-        hasPermission('view_label_category') ||
-        hasPermission('edit_label_category'),
+        (hasPermission('create_label_category') ||
+          hasPermission('view_label_category') ||
+          hasPermission('edit_label_category')) &&
+        isInventoryManager,
       iconSize: '1.129rem',
       rightIcon: {
         name: 'add',
@@ -226,7 +242,8 @@ const useNavItems = () => {
       visible:
         (hasPermission('create_purchase_order') ||
           hasPermission('view_purchase_order') ||
-          hasPermission('edit_purchase_order')) &&
+          hasPermission('edit_purchase_order') ||
+          isSupplier) &&
         isEnabledInvoicing,
       iconSize: '1.129rem',
       rightIcon: {
@@ -242,9 +259,10 @@ const useNavItems = () => {
       iconName: 'assignment',
       href: '/statuses',
       visible:
-        hasPermission('create_status') ||
-        hasPermission('view_status') ||
-        hasPermission('edit_status'),
+        (hasPermission('create_status') ||
+          hasPermission('view_status') ||
+          hasPermission('edit_status')) &&
+        isInventoryManager,
       iconSize: '1.129rem',
       rightIcon: {
         name: 'add',
@@ -258,7 +276,7 @@ const useNavItems = () => {
       label: 'employees',
       iconName: 'employees',
       href: '/employees',
-      visible: hasPermission('admin'),
+      visible: hasPermission('admin') && isInventoryManager,
       iconSize: '1.129rem',
       rightIcon: {
         name: 'add',
@@ -273,7 +291,7 @@ const useNavItems = () => {
       iconName: 'barChart',
       href: '/reports',
       iconSize: '1.344rem',
-      visible: true,
+      visible: hasPermission('admin') && isInventoryManager,
     },
     {
       key: 'settings',

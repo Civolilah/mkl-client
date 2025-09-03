@@ -27,8 +27,6 @@ const useTabs = ({
   isLoading,
   onRefresh,
   errors,
-  quantityByVariants,
-  setQuantityByVariants,
   setCurrentImages,
   setProduct,
 }: ProductProps) => {
@@ -75,8 +73,6 @@ const useTabs = ({
           isLoading={isLoading}
           onRefresh={onRefresh}
           errors={errors}
-          quantityByVariants={quantityByVariants}
-          setQuantityByVariants={setQuantityByVariants}
           setProduct={setProduct}
         />
       ),

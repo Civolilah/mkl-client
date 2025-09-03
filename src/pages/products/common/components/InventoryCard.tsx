@@ -14,7 +14,7 @@ import classNames from 'classnames';
 import colorString from 'color-string';
 import { cloneDeep, get, set } from 'lodash';
 
-import { LabelCategory, Product } from '@interfaces/index';
+import { LabelCategory, Product, QuantityByVariant } from '@interfaces/index';
 
 import {
   Box,
@@ -58,8 +58,6 @@ const InventoryCard = ({
   product,
   errors,
   setProduct,
-  setQuantityByVariants,
-  quantityByVariants,
   currentImages,
 }: ProductProps) => {
   const t = useTranslation();
@@ -99,15 +97,13 @@ const InventoryCard = ({
     field: string,
     value: string | number | boolean
   ) => {
-    if (!quantityByVariants || !setQuantityByVariants) {
+    if (!product?.quantity_by_variant) {
       return;
     }
 
-    const updatedCombinations = cloneDeep(quantityByVariants);
+    const updatedCombinations = cloneDeep(product?.quantity_by_variant);
 
     set(updatedCombinations, `${index}.${field}`, value);
-
-    setQuantityByVariants(updatedCombinations);
 
     handleChange('quantity_by_variant', updatedCombinations);
   };
@@ -353,7 +349,7 @@ const InventoryCard = ({
                       ))}
                     </Box>
 
-                    {Boolean(quantityByVariants?.length) && (
+                    {Boolean(product?.quantity_by_variant?.length) && (
                       <Divider
                         style={{
                           marginTop: '1.25rem',
@@ -362,39 +358,71 @@ const InventoryCard = ({
                       />
                     )}
 
-                    {Boolean(quantityByVariants?.length) && (
+                    {Boolean(product?.quantity_by_variant?.length) && (
                       <Box className="flex flex-col space-y-4 w-full">
                         <Text className="font-medium text-lg">
                           {t('quantity_by_variants')}
                         </Text>
 
                         <Box className="flex flex-col space-y-4">
-                          {quantityByVariants?.map((combination, index) => (
-                            <Box
-                              key={index}
-                              className="border overflow-hidden rounded-t-lg"
-                              style={{
-                                borderColor: colors.$1,
-                              }}
-                            >
+                          {product?.quantity_by_variant?.map(
+                            (combination, index) => (
                               <Box
-                                className="px-4 py-3 border-b"
+                                key={index}
+                                className="border overflow-hidden rounded-t-lg"
                                 style={{
                                   borderColor: colors.$1,
                                 }}
                               >
-                                <Box className="flex items-center flex-wrap gap-2">
-                                  {combination.label_ids.map(
-                                    (currentLabelId, combinationLabelIndex) => {
-                                      const isColor =
-                                        colorString.get.rgb(currentLabelId) !==
-                                        null;
+                                <Box
+                                  className="px-4 py-3 border-b"
+                                  style={{
+                                    borderColor: colors.$1,
+                                  }}
+                                >
+                                  <Box className="flex items-center flex-wrap gap-2">
+                                    {combination.label_ids?.map(
+                                      (
+                                        currentLabelId,
+                                        combinationLabelIndex
+                                      ) => {
+                                        const isColor =
+                                          colorString.get.rgb(
+                                            currentLabelId
+                                          ) !== null;
 
-                                      if (isColor) {
+                                        if (isColor) {
+                                          return (
+                                            <Box
+                                              key={combinationLabelIndex}
+                                              className="flex items-center gap-1"
+                                            >
+                                              {combinationLabelIndex > 0 && (
+                                                <Box>
+                                                  <Icon
+                                                    name="dotFill"
+                                                    size="1rem"
+                                                  />
+                                                </Box>
+                                              )}
+
+                                              <Box
+                                                className="rounded-full shadow-sm p-2"
+                                                style={{
+                                                  width: '1.4rem',
+                                                  height: '1.4rem',
+                                                  backgroundColor:
+                                                    currentLabelId,
+                                                }}
+                                              />
+                                            </Box>
+                                          );
+                                        }
+
                                         return (
                                           <Box
                                             key={combinationLabelIndex}
-                                            className="flex items-center gap-1"
+                                            className="flex items-center gap-x-2"
                                           >
                                             {combinationLabelIndex > 0 && (
                                               <Box>
@@ -406,133 +434,109 @@ const InventoryCard = ({
                                             )}
 
                                             <Box
-                                              className="rounded-full shadow-sm p-2"
+                                              className="px-2 py-1 rounded-md text-sm font-medium"
                                               style={{
-                                                width: '1.4rem',
-                                                height: '1.4rem',
-                                                backgroundColor: currentLabelId,
+                                                backgroundColor: colors.$1,
                                               }}
-                                            />
+                                            >
+                                              {getLabelNameByLabelId(
+                                                currentLabelId
+                                              )}
+                                            </Box>
                                           </Box>
                                         );
                                       }
-
-                                      return (
-                                        <Box
-                                          key={combinationLabelIndex}
-                                          className="flex items-center gap-x-2"
-                                        >
-                                          {combinationLabelIndex > 0 && (
-                                            <Box>
-                                              <Icon
-                                                name="dotFill"
-                                                size="1rem"
-                                              />
-                                            </Box>
-                                          )}
-
-                                          <Box
-                                            className="px-2 py-1 rounded-md text-sm font-medium"
-                                            style={{
-                                              backgroundColor: colors.$1,
-                                            }}
-                                          >
-                                            {getLabelNameByLabelId(
-                                              currentLabelId
-                                            )}
-                                          </Box>
-                                        </Box>
-                                      );
-                                    }
-                                  )}
+                                    )}
+                                  </Box>
                                 </Box>
-                              </Box>
 
-                              <Box
-                                className="p-4"
-                                style={{ backgroundColor: colors.$36 }}
-                              >
-                                <Box className="grid grid-cols-1 md:grid-cols-3 items-end gap-4">
-                                  <Box className="flex flex-col space-y-1">
-                                    <Box className="flex items-center space-x-2">
-                                      <Label>{t('unlimited_quantity')}</Label>
-                                      <Toggle
-                                        checked={combination.unlimited}
-                                        onChange={(value) => {
-                                          if (value) {
-                                            const updatedCombinations =
-                                              cloneDeep(quantityByVariants);
-                                            set(
-                                              updatedCombinations,
-                                              `${index}.unlimited`,
-                                              true
-                                            );
-                                            set(
-                                              updatedCombinations,
-                                              `${index}.quantity`,
-                                              0
-                                            );
-                                            setQuantityByVariants?.(
-                                              updatedCombinations
-                                            );
-                                          } else {
-                                            handleCombinationChange(
-                                              index,
-                                              'unlimited',
-                                              false
-                                            );
-                                          }
-                                        }}
+                                <Box
+                                  className="p-4"
+                                  style={{ backgroundColor: colors.$36 }}
+                                >
+                                  <Box className="grid grid-cols-1 md:grid-cols-3 items-end gap-4">
+                                    <Box className="flex flex-col space-y-1">
+                                      <Box className="flex items-center space-x-2">
+                                        <Label>{t('unlimited_quantity')}</Label>
+                                        <Toggle
+                                          checked={combination.unlimited}
+                                          onChange={(value) => {
+                                            if (value) {
+                                              const updatedCombinations =
+                                                cloneDeep(
+                                                  product?.quantity_by_variant
+                                                ) as QuantityByVariant[];
+                                              set(
+                                                updatedCombinations,
+                                                `${index}.unlimited`,
+                                                true
+                                              );
+                                              set(
+                                                updatedCombinations,
+                                                `${index}.quantity`,
+                                                0
+                                              );
+                                              handleChange(
+                                                'quantity_by_variant',
+                                                updatedCombinations
+                                              );
+                                            } else {
+                                              handleCombinationChange(
+                                                index,
+                                                'unlimited',
+                                                false
+                                              );
+                                            }
+                                          }}
+                                        />
+                                      </Box>
+
+                                      <NumberField
+                                        label={t('quantity')}
+                                        placeHolder={t('enter_quantity')}
+                                        value={combination.quantity}
+                                        onValueChange={(value) =>
+                                          handleCombinationChange(
+                                            index,
+                                            'quantity',
+                                            value
+                                          )
+                                        }
+                                        min={0}
+                                        disabled={combination.unlimited}
+                                        disablePlaceholderValue={
+                                          disablingNumberFieldSymbol
+                                        }
+                                        withoutOptionalText
                                       />
                                     </Box>
 
                                     <NumberField
-                                      label={t('quantity')}
-                                      placeHolder={t('enter_quantity')}
-                                      value={combination.quantity}
+                                      required
+                                      label={t('price')}
+                                      placeHolder={t('enter_price')}
+                                      value={combination.price}
                                       onValueChange={(value) =>
                                         handleCombinationChange(
                                           index,
-                                          'quantity',
+                                          'price',
                                           value
                                         )
                                       }
+                                      addonAfter={currencySymbol}
                                       min={0}
-                                      disabled={combination.unlimited}
-                                      disablePlaceholderValue={
-                                        disablingNumberFieldSymbol
-                                      }
-                                      withoutOptionalText
+                                    />
+
+                                    <DimensionsModal
+                                      product={product}
+                                      selectedCombinationIndex={index}
+                                      setProduct={setProduct}
                                     />
                                   </Box>
-
-                                  <NumberField
-                                    required
-                                    label={t('price')}
-                                    placeHolder={t('enter_price')}
-                                    value={combination.price}
-                                    onValueChange={(value) =>
-                                      handleCombinationChange(
-                                        index,
-                                        'price',
-                                        value
-                                      )
-                                    }
-                                    addonAfter={currencySymbol}
-                                    min={0}
-                                  />
-
-                                  <DimensionsModal
-                                    selectedCombinationIndex={index}
-                                    setQuantityByVariants={
-                                      setQuantityByVariants
-                                    }
-                                    quantityByVariants={quantityByVariants}
-                                  />
                                 </Box>
                               </Box>
-                            </Box>
-                          ))}
+                            )
+                          )}
                         </Box>
                       </Box>
                     )}

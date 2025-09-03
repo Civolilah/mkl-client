@@ -12,7 +12,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { cloneDeep } from 'lodash';
 
-import { QuantityByVariant } from '@interfaces/index';
+import { Product, QuantityByVariant } from '@interfaces/index';
 
 import {
   Box,
@@ -29,11 +29,13 @@ import {
   useTranslation,
 } from '@hooks/index';
 
+import useHandleChange from '../hooks/useHandleChange';
+
 type Props = {
   selectedCombinationIndex: number | null;
-  quantityByVariants: QuantityByVariant[];
+  product: Product;
   readOnlyFields?: boolean;
-  setQuantityByVariants?: Dispatch<SetStateAction<QuantityByVariant[]>>;
+  setProduct: Dispatch<SetStateAction<Product | undefined>>;
 };
 
 type InitialValues = {
@@ -46,11 +48,13 @@ type InitialValues = {
 
 const DimensionsModal = ({
   selectedCombinationIndex,
-  quantityByVariants,
+  product,
   readOnlyFields,
-  setQuantityByVariants,
+  setProduct,
 }: Props) => {
   const t = useTranslation();
+
+  const handleChange = useHandleChange({ setProduct });
 
   const { falsyValuePlaceholder } = useNumberFieldSymbols();
   const { weightSymbol, dimensionSymbol, diameterSymbol } = useSymbols();
@@ -78,15 +82,17 @@ const DimensionsModal = ({
 
   const handleDone = () => {
     if (typeof selectedCombinationIndex === 'number') {
-      if (setQuantityByVariants && !readOnlyFields) {
-        const updatedQuantityByVariants = cloneDeep(quantityByVariants);
+      if (!readOnlyFields) {
+        const updatedQuantityByVariants = cloneDeep(
+          product.quantity_by_variant || []
+        );
 
         updatedQuantityByVariants[selectedCombinationIndex] = {
           ...updatedQuantityByVariants[selectedCombinationIndex],
           ...currentValues,
         };
 
-        setQuantityByVariants(updatedQuantityByVariants);
+        handleChange('quantity_by_variant', updatedQuantityByVariants);
       }
 
       handleClose();
@@ -94,11 +100,13 @@ const DimensionsModal = ({
   };
 
   const formatDimensions = (
-    combination: QuantityByVariant,
+    combination: QuantityByVariant | undefined,
     weightSymbol: string,
     dimensionSymbol: string
   ) => {
     const parts = [];
+
+    if (!combination) return '--';
 
     parts.push(
       `${combination.weight || `${falsyValuePlaceholder} `}${weightSymbol}`
@@ -126,7 +134,7 @@ const DimensionsModal = ({
   useEffect(() => {
     if (typeof selectedCombinationIndex === 'number' && isModalOpen) {
       const { weight, height, width, length, diameter } =
-        quantityByVariants[selectedCombinationIndex];
+        product.quantity_by_variant?.[selectedCombinationIndex] || {};
 
       setCurrentValues({
         weight,
@@ -136,7 +144,7 @@ const DimensionsModal = ({
         diameter,
       });
     }
-  }, [quantityByVariants, selectedCombinationIndex, isModalOpen]);
+  }, [product.quantity_by_variant, selectedCombinationIndex, isModalOpen]);
 
   return (
     <>
@@ -145,7 +153,9 @@ const DimensionsModal = ({
         value={
           selectedCombinationIndex !== null
             ? formatDimensions(
-                quantityByVariants[selectedCombinationIndex],
+                product?.quantity_by_variant?.[
+                  selectedCombinationIndex
+                ] as QuantityByVariant,
                 weightSymbol,
                 dimensionSymbol
               )

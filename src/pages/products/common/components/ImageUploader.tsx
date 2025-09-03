@@ -310,7 +310,7 @@ const ImageUploader = ({
                     }
                   }}
                 >
-                  <Icon name="close" size={16} />
+                  <Icon name="close" size={16} style={{ color: 'white' }} />
                 </Box>
 
                 {image.isNew && (

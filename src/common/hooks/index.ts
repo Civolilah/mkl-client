@@ -38,3 +38,5 @@ export { default as useAccountPlan } from '@hooks/global/useAccountPlan';
 export { default as useResolveCountry } from '@hooks/global/useResolveCountry';
 export { default as useFindLabelCategory } from '@hooks/label-categories/useFindLabelCategory';
 export { default as useEnableInvoicingFeature } from '@hooks/global/useEnableInvoicingFeature';
+export { default as useUserType } from '@hooks/global/useUserType';
+export { default as useSettingsNavItems } from '@hooks/global/useSettingsNavItems';

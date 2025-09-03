@@ -19,11 +19,7 @@ import { cloneDeep, isEqual } from 'lodash';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Product,
-  QuantityByVariant,
-  ValidationErrors,
-} from '@interfaces/index';
+import { Product, ValidationErrors } from '@interfaces/index';
 
 import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -53,7 +49,6 @@ const Create = () => {
   const toast = useToast();
 
   const navigate = useNavigate();
-  const generateVariantCombinations = useGenerateVariantCombinations();
   const generateStatusVariantCombinations =
     useGenerateStatusVariantCombinations();
 
@@ -61,12 +56,13 @@ const Create = () => {
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [currentImages, setCurrentImages] = useState<string[]>([]);
   const [product, setProduct] = useState<Product | undefined>(INITIAL_PRODUCT);
-  const [quantityByVariants, setQuantityByVariants] = useState<
-    QuantityByVariant[]
-  >([]);
   const [lastInventoriesByVariant, setLastInventoriesByVariant] = useState<
     Product['inventory_by_variant']
   >(product?.inventory_by_variant || []);
+
+  const generateVariantCombinations = useGenerateVariantCombinations({
+    product,
+  });
 
   const cleanupPayload = (currentProduct: Product) => {
     return {
@@ -156,8 +152,14 @@ const Create = () => {
     ) {
       setLastInventoriesByVariant(cloneDeep(product.inventory_by_variant));
 
-      setQuantityByVariants(
-        generateVariantCombinations(product.inventory_by_variant)
+      setProduct(
+        (currentProduct) =>
+          currentProduct && {
+            ...currentProduct,
+            quantity_by_variant: generateVariantCombinations(
+              product.inventory_by_variant
+            ),
+          }
       );
 
       const statusByQuantity = generateStatusVariantCombinations(
@@ -193,8 +195,6 @@ const Create = () => {
       setProduct={setProduct}
       errors={errors}
       isLoading={isFormBusy}
-      quantityByVariants={quantityByVariants}
-      setQuantityByVariants={setQuantityByVariants}
       setCurrentImages={setCurrentImages}
       currentImages={currentImages}
     />

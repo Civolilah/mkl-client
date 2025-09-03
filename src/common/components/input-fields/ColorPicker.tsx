@@ -466,7 +466,11 @@ const ColorPicker = ({
                       onColorRemove?.(color);
                     }}
                   >
-                    <Icon name="close" size="0.9rem" />
+                    <Icon
+                      name="close"
+                      size="0.9rem"
+                      style={{ color: 'white' }}
+                    />
                   </Box>
                 </Box>
               ) : (

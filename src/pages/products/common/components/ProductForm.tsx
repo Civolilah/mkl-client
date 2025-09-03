@@ -12,11 +12,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
-import {
-  Product,
-  QuantityByVariant,
-  ValidationErrors,
-} from '@interfaces/index';
+import { Product, ValidationErrors } from '@interfaces/index';
 
 import { Box, StaticTabs } from '@components/index';
 
@@ -29,8 +25,6 @@ export interface ProductProps {
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
-  quantityByVariants?: QuantityByVariant[];
-  setQuantityByVariants?: Dispatch<SetStateAction<QuantityByVariant[]>>;
   setCurrentImages?: Dispatch<SetStateAction<string[]>>;
   currentImages?: string[];
 }
@@ -42,8 +36,6 @@ const ProductForm = ({
   isLoading,
   onRefresh,
   setProduct,
-  quantityByVariants,
-  setQuantityByVariants,
   setCurrentImages,
   currentImages,
 }: ProductProps) => {
@@ -59,8 +51,6 @@ const ProductForm = ({
     isLoading,
     onRefresh,
     errors,
-    quantityByVariants,
-    setQuantityByVariants,
     setCurrentImages,
     currentImages,
     setProduct,

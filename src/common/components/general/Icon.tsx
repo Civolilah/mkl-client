@@ -106,6 +106,8 @@ import { RxDotsHorizontal } from 'react-icons/rx';
 import { SiCashapp } from 'react-icons/si';
 import { TbPackageExport } from 'react-icons/tb';
 
+import { useAccentColor } from '@hooks/index';
+
 export type IconName =
   | 'facebook'
   | 'instagram'
@@ -201,6 +203,7 @@ type Props = {
   style?: CSSProperties;
   name: IconName;
   size?: number | string;
+  unsetColor?: boolean;
 };
 
 const DEFAULT_ICON_COLORS: Record<string, string> = {
@@ -208,17 +211,22 @@ const DEFAULT_ICON_COLORS: Record<string, string> = {
   delete: '#dc2626',
 };
 
-const Icon = (props: Props) => {
-  const { name } = props;
+const Icon = ({ name, size, onClick, style, unsetColor }: Props) => {
+  const accentColor = useAccentColor();
 
   const generateIconElement = (currentElement: IconType) => {
     const iconElement = createElement(currentElement);
 
     if (isValidElement(iconElement)) {
       return cloneElement(iconElement, {
-        fontSize: props.size || '1.125rem',
-        onClick: props.onClick,
-        style: { color: DEFAULT_ICON_COLORS[name], ...props.style },
+        fontSize: size || '1.125rem',
+        onClick,
+        style: {
+          color: unsetColor
+            ? undefined
+            : DEFAULT_ICON_COLORS[name] || accentColor,
+          ...style,
+        },
       });
     }
 

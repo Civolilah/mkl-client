@@ -46,7 +46,11 @@ const NotFound = () => {
 
         <Button
           icon={
-            <Icon name="home" size={isMiddleScreen ? '1.25rem' : '1.125rem'} />
+            <Icon
+              name="home"
+              size={isMiddleScreen ? '1.25rem' : '1.125rem'}
+              style={{ color: 'white' }}
+            />
           }
           onClick={() => navigate(route('/'))}
         >

@@ -31,6 +31,7 @@ export interface UserCompanyDetails {
   created_at: number;
   is_director: boolean;
   is_owner: boolean;
+  user_type: 'supplier' | 'customer' | 'inventory_manager';
   preference: {
     language: Languages;
     mini_sidebar: boolean | null;

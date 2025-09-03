@@ -9,20 +9,26 @@
  */
 
 import { route } from '@helpers/index';
-import { useSetAtom } from 'jotai';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Box, Icon, Text, Tooltip } from '@components/index';
+import { IconName } from '@components/general/Icon';
+import { Box, Icon, Text } from '@components/index';
 
-import { NavItem as NavItemType } from '@hooks/global/useNavItems';
 import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
-import { menuDrawerOpenedAtom } from './MobileNavBar';
+interface SettingsNavItemType {
+  key: string;
+  label: string;
+  iconName: IconName;
+  href: string;
+  visible: boolean;
+  iconSize?: string;
+}
 
-type Props = {
-  item: NavItemType;
-};
+interface Props {
+  item: SettingsNavItemType;
+}
 
 const Div = styled.div`
   background-color: ${(props) =>
@@ -47,7 +53,7 @@ const IconWrapper = styled.div`
   }
 `;
 
-const NavItem = ({ item }: Props) => {
+const SettingsNavItem = ({ item }: Props) => {
   const t = useTranslation();
 
   const navigate = useNavigate();
@@ -55,8 +61,6 @@ const NavItem = ({ item }: Props) => {
   const colors = useColors();
   const location = useLocation();
   const accentColor = useAccentColor();
-
-  const setIsMenuDrawerOpened = useSetAtom(menuDrawerOpenedAtom);
 
   return (
     <Div
@@ -69,7 +73,6 @@ const NavItem = ({ item }: Props) => {
       }}
       onClick={() => {
         navigate(route(item.href));
-        setIsMenuDrawerOpened(false);
       }}
       style={{ minHeight: '2.4rem' }}
     >
@@ -89,32 +92,9 @@ const NavItem = ({ item }: Props) => {
 
           <Text className="text-xs-mid">{t(item.label)}</Text>
         </Box>
-
-        {Boolean(item.rightIcon && item.rightIcon.visible) && (
-          <Tooltip
-            text={t(item.rightIcon!.tooltipText)}
-            withoutClickOpenOnMobile
-          >
-            <div
-              className="flex items-center justify-center"
-              onClick={(event) => {
-                event.stopPropagation();
-                navigate(route(item.rightIcon!.href));
-                setIsMenuDrawerOpened(false);
-              }}
-              style={{
-                borderRadius: '50%',
-                color: accentColor,
-                border: `1px solid ${accentColor}`,
-              }}
-            >
-              <Icon name={item.rightIcon!.name} size="0.95rem" />
-            </div>
-          </Tooltip>
-        )}
       </Box>
     </Div>
   );
 };
 
-export default NavItem;
+export default SettingsNavItem;
