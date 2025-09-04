@@ -297,7 +297,7 @@ const useNavItems = () => {
       key: 'settings',
       label: 'settings',
       iconName: 'settings',
-      href: '/settings',
+      href: '/settings/profile',
       iconSize: '1.263rem',
       visible: true,
     },

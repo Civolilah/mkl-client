@@ -17,18 +17,25 @@ import {
 
 import { IconType } from 'react-icons';
 import { AiOutlineCodeSandbox, AiOutlineShoppingCart } from 'react-icons/ai';
-import { BiImport, BiPackage, BiWorld } from 'react-icons/bi';
-import { BsBookmarkStarFill } from 'react-icons/bs';
+import {
+  BiDotsHorizontalRounded,
+  BiImport,
+  BiPackage,
+  BiWorld,
+} from 'react-icons/bi';
+import { BsBookmarkStarFill, BsCreditCard2FrontFill } from 'react-icons/bs';
 import { CiLogout } from 'react-icons/ci';
 import {
   FaAward,
   FaCheckCircle,
   FaClipboardCheck,
   FaClipboardList,
+  FaCogs,
   FaFacebook,
   FaFileImage,
   FaFileInvoiceDollar,
   FaInstagram,
+  FaPercentage,
   FaPhone,
   FaRuler,
   FaStore,
@@ -42,7 +49,7 @@ import {
 import { FaEyeDropper, FaLocationDot } from 'react-icons/fa6';
 import { GoDotFill } from 'react-icons/go';
 import { HiChevronUpDown } from 'react-icons/hi2';
-import { IoMdCloseCircleOutline } from 'react-icons/io';
+import { IoIosNotifications, IoMdCloseCircleOutline } from 'react-icons/io';
 import { IoInformationCircleOutline } from 'react-icons/io5';
 import {
   MdAdd,
@@ -68,6 +75,7 @@ import {
   MdOutlineShoppingCart,
   MdOutlineStar,
   MdOutlineViewColumn,
+  MdPayments,
   MdPreview,
   MdQrCode,
   MdRefresh,
@@ -195,7 +203,14 @@ export type IconName =
   | 'clipboardList'
   | 'fileInvoiceDollar'
   | 'locationDot'
-  | 'outlineViewColumn';
+  | 'outlineViewColumn'
+  | 'horizontalDotsRounded'
+  | 'percentage'
+  | 'payments'
+  | 'notifications'
+  | 'creditCard'
+  | 'cogs'
+  | 'key';
 
 type Props = {
   className?: string;
@@ -406,6 +421,19 @@ const Icon = ({ name, size, onClick, style, unsetColor }: Props) => {
       return generateIconElement(FaLocationDot);
     case 'outlineViewColumn':
       return generateIconElement(MdOutlineViewColumn);
+    case 'horizontalDotsRounded':
+      return generateIconElement(BiDotsHorizontalRounded);
+    case 'percentage':
+      return generateIconElement(FaPercentage);
+    case 'payments':
+      return generateIconElement(MdPayments);
+    case 'notifications':
+      return generateIconElement(IoIosNotifications);
+    case 'creditCard':
+      return generateIconElement(BsCreditCard2FrontFill);
+    case 'cogs':
+      return generateIconElement(FaCogs);
+
     default:
       return <></>;
   }

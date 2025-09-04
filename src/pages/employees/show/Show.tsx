@@ -33,6 +33,7 @@ import {
   useFindSubsidiary,
   useFindWarehouse,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useTranslation,
 } from '@hooks/index';
@@ -139,6 +140,19 @@ const Show = () => {
     [employee, isLoading]
   );
 
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/employees/new')),
+        visible: true,
+        disabled: isLoading,
+      },
+    ],
+    [isLoading, isLargeScreen]
+  );
+
   return (
     <Box className="flex w-full self-start md:w-full xl:w-3/4">
       <Card title={t('view_employee')} className="w-full">
@@ -215,6 +229,12 @@ const Show = () => {
                 {index < array.length - 1 && <Text className="mx-2">|</Text>}
               </Box>
             ))}
+
+            {employee?.permissions?.length === 0 && (
+              <Text className="font-medium">
+                {t('no_permissions_assigned')}
+              </Text>
+            )}
           </Box>
         </LabelElement>
       </Card>

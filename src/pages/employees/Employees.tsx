@@ -29,6 +29,7 @@ import {
 import {
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useTranslation,
 } from '@hooks/index';
@@ -82,16 +83,6 @@ const Employees = () => {
           />
 
           <FooterAction
-            text="new_employee"
-            onClick={() => {
-              navigate(route('/employees/new'));
-            }}
-            iconName="add"
-            disabled={isLoading}
-            iconSize="1.3rem"
-          />
-
-          <FooterAction
             text="reload"
             onClick={refresh}
             iconName="refresh"
@@ -103,6 +94,19 @@ const Employees = () => {
         </Box>
       ),
     },
+    [isLoading, isLargeScreen]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/employees/new')),
+        visible: true,
+        disabled: isLoading,
+      },
+    ],
     [isLoading, isLargeScreen]
   );
 

@@ -12,6 +12,7 @@ import React, { useRef, useState } from 'react';
 
 import { Popover } from 'antd';
 import classNames from 'classnames';
+import { atom, useAtom } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
 import { useLocation } from 'react-router-dom';
 
@@ -64,6 +65,8 @@ const SearchItem = ({
   );
 };
 
+export const isMobileAiPopoverOpenAtom = atom<boolean>(false);
+
 const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
   const colors = useColors();
   const location = useLocation();
@@ -73,7 +76,7 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
 
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useAtom(isMobileAiPopoverOpenAtom);
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
@@ -138,9 +141,12 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
           className={classNames(
             'flex fixed rounded-full pl-3 pr-5 py-[1.2rem] cursor-pointer',
             {
-              'bottom-[2rem] right-[2rem]': location.pathname.includes('/new'),
+              'bottom-[2rem] right-[2rem]':
+                location.pathname.includes('/new') ||
+                location.pathname.includes('/settings'),
               'bottom-[4.25rem] right-[2rem]':
-                !location.pathname.includes('/new'),
+                !location.pathname.includes('/new') &&
+                !location.pathname.includes('/settings'),
             }
           )}
           style={{

@@ -452,5 +452,16 @@
   "password_with_supplier_portal_access_required": "To grant supplier portal login access, a password is needed for this contact.",
   "supplier_contact_email_already_exists": "This email is already registered. Please use a different email to grant supplier portal access.",
   "supplier_portal_access_denied": "You no longer have permission to grant supplier portal access. For more details, contact your director.",
-  "customer_portal_access_denied": "You no longer have permission to grant customer portal access. For more details, contact your director."
+  "customer_portal_access_denied": "You no longer have permission to grant customer portal access. For more details, contact your director.",
+  "no_permissions_assigned": "No permissions assigned",
+  "supplier_number_already_exists": "A supplier with this number already exists.",
+  "notifications": "Notifications",
+  "payment_methods": "Payment methods",
+  "tax_rates": "Tax rates",
+  "shipping_methods": "Shipping methods",
+  "billing": "Billing",
+  "preferences": "Preferences",
+  "passwords": "Passwords",
+  "change_password": "Change password",
+  "change_security_password": "Change security password"
 }

@@ -10,10 +10,9 @@
 
 import React from 'react';
 
-import { route } from '@helpers/index';
 import { MenuProps } from 'antd';
 import { useMediaQuery } from 'react-responsive';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { User } from '@interfaces/index';
 
@@ -25,7 +24,6 @@ interface Props {
 
 const useActions = ({ refresh }: Props) => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
@@ -33,18 +31,6 @@ const useActions = ({ refresh }: Props) => {
     let actions: MenuProps['items'] = [
       ...(refresh && !isLargeScreen
         ? [
-            {
-              label: (
-                <FooterActionItem
-                  iconName="add"
-                  onClick={() => {
-                    navigate(route('/employees/new'));
-                  }}
-                  label="new_employee"
-                />
-              ),
-              key: `new_employee-${currentResource.id}`,
-            },
             {
               label: (
                 <FooterActionItem

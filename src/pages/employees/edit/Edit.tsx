@@ -30,6 +30,7 @@ import { BreadcrumbItem } from '@components/layout/Default';
 import {
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useRefetch,
   useTranslation,
@@ -197,6 +198,19 @@ const Edit = () => {
       ),
     },
     [employee, isLoading, handleSave]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/employees/new')),
+        visible: true,
+        disabled: isLoading,
+      },
+    ],
+    [isLoading, isLargeScreen]
   );
 
   return (

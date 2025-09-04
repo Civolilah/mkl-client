@@ -19,14 +19,14 @@ import { Box, StaticTabs } from '@components/index';
 import useHandleChange from '../hooks/useHandleChange';
 import useTabs from '../hooks/useTabs';
 
-type Props = {
+interface Props {
   employee: User | undefined;
   setEmployee: Dispatch<SetStateAction<User | undefined>>;
   errors: ValidationErrors;
   editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
-};
+}
 
 const EmployeeForm = ({
   employee,

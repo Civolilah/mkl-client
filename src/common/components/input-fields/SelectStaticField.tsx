@@ -95,7 +95,12 @@ const SelectStaticField = ({
     <Box className="flex flex-col space-y-1 w-full">
       {label && (
         <Box className="flex items-center space-x-1">
-          <Label>{label}</Label>
+          <Box className="flex items-center">
+            <Label>{label}</Label>
+
+            {required && <span className="text-red-500 mb-1 ml-0.5">*</span>}
+          </Box>
+
           <RequiredOptionalLabel
             required={Boolean(required)}
             withoutOptionalText={withoutOptionalText}

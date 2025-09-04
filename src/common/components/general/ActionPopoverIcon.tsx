@@ -24,11 +24,15 @@ const ActionPopoverIcon = ({ isOpen }: Props) => {
 
   return (
     <Box className="flex relative">
-      <Box className="pr-3">
-        <Icon name="menu" size="1.2rem" style={{ color: accentColor }} />
+      <Box className="absolute -right-[0.1rem] -top-[0.05rem]">
+        <Icon
+          name="horizontalDotsRounded"
+          size="1.5rem"
+          style={{ color: accentColor }}
+        />
       </Box>
 
-      <Box className="absolute -right-[0.6rem]">
+      <Box className="absolute -right-[1.5rem]">
         <Icon
           name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
           size="1.4rem"

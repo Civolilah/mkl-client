@@ -40,3 +40,4 @@ export { default as useFindLabelCategory } from '@hooks/label-categories/useFind
 export { default as useEnableInvoicingFeature } from '@hooks/global/useEnableInvoicingFeature';
 export { default as useUserType } from '@hooks/global/useUserType';
 export { default as useSettingsNavItems } from '@hooks/global/useSettingsNavItems';
+export { default as useMobileActions } from '@hooks/global/useMobileActions';

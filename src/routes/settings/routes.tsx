@@ -17,7 +17,7 @@ const Profile = lazy(() => import('@pages/settings/pages/profile/Profile'));
 
 const Routes = (
   <Route path="/settings" element={<Settings />}>
-    <Route path="" element={<Profile />} />
+    <Route path="profile" element={<Profile />} />
   </Route>
 );
 
