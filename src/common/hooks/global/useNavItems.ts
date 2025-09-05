@@ -25,11 +25,7 @@ type RightIcon = {
   visible: boolean;
 };
 
-export type NavGroup =
-  | 'partners_and_relations'
-  | 'locations_and_facilities'
-  | 'products_and_services'
-  | 'organization';
+export type NavGroup = 'inventory' | 'locations' | 'partners' | 'taxonomy';
 
 export type NavItem = {
   key: string;
@@ -64,20 +60,7 @@ const useNavItems = () => {
       href: '/orders',
       visible:
         (hasPermission('manage_orders') || isCustomer) && isEnabledInvoicing,
-      iconSize: '1.15rem',
-      group: 'products_and_services',
-    },
-    {
-      key: 'import_export',
-      label: 'import_export',
-      iconName: 'importExport',
-      href: '/import',
-      visible:
-        (hasPermission('import_products') ||
-          hasPermission('export_products')) &&
-        isInventoryManager,
-      iconSize: '1.4rem',
-      group: 'products_and_services',
+      iconSize: '1.1rem',
     },
     {
       key: 'products',
@@ -96,161 +79,7 @@ const useNavItems = () => {
         tooltipText: 'new_product',
         visible: hasPermission('create_product'),
       },
-      group: 'products_and_services',
-    },
-
-    {
-      key: 'warehouses',
-      label: 'warehouses',
-      iconName: 'warehouse',
-      href: '/warehouses',
-      iconSize: '1.1rem',
-      visible:
-        (hasPermission('create_warehouse') ||
-          hasPermission('view_warehouse') ||
-          hasPermission('edit_warehouse')) &&
-        isInventoryManager,
-      rightIcon: {
-        name: 'add',
-        href: '/warehouses/new',
-        tooltipText: 'new_warehouse',
-        visible: hasPermission('create_warehouse'),
-      },
-      group: 'locations_and_facilities',
-    },
-    {
-      key: 'subsidiaries',
-      label: 'subsidiaries',
-      iconName: 'subsidiary',
-      href: '/subsidiaries',
-      iconSize: '1.021rem',
-      visible:
-        (hasPermission('create_subsidiary') ||
-          hasPermission('view_subsidiary') ||
-          hasPermission('edit_subsidiary')) &&
-        isInventoryManager,
-      rightIcon: {
-        name: 'add',
-        href: '/subsidiaries/new',
-        tooltipText: 'new_subsidiary',
-        visible: hasPermission('create_subsidiary'),
-      },
-      group: 'locations_and_facilities',
-    },
-    {
-      key: 'customers',
-      label: 'customers',
-      iconName: 'customer',
-      href: '/customers',
-      iconSize: '1.3rem',
-      visible:
-        (hasPermission('create_customer') ||
-          hasPermission('view_customer') ||
-          hasPermission('edit_customer')) &&
-        isInventoryManager,
-      rightIcon: {
-        name: 'add',
-        href: '/customers/new',
-        tooltipText: 'new_customer',
-        visible: hasPermission('create_customer'),
-      },
-      group: 'partners_and_relations',
-    },
-    {
-      key: 'suppliers',
-      label: 'suppliers',
-      iconName: 'truck',
-      href: '/suppliers',
-      iconSize: '1.075rem',
-      visible:
-        (hasPermission('create_supplier') ||
-          hasPermission('view_supplier') ||
-          hasPermission('edit_supplier')) &&
-        isInventoryManager,
-      rightIcon: {
-        name: 'add',
-        href: '/suppliers/new',
-        tooltipText: 'new_supplier',
-        visible: hasPermission('create_supplier'),
-      },
-      group: 'partners_and_relations',
-    },
-
-    {
-      key: 'brands',
-      label: 'brands',
-      iconName: 'brand',
-      href: '/brands',
-      iconSize: '1.183rem',
-      visible:
-        (hasPermission('create_brand') ||
-          hasPermission('view_brand') ||
-          hasPermission('edit_brand')) &&
-        isInventoryManager,
-      rightIcon: {
-        name: 'add',
-        href: '/brands/new',
-        tooltipText: 'new_brand',
-        visible: hasPermission('create_brand'),
-      },
-      group: 'organization',
-    },
-    {
-      key: 'categories',
-      label: 'categories',
-      iconName: 'category',
-      href: '/categories',
-      iconSize: '1.129rem',
-      visible:
-        (hasPermission('create_category') ||
-          hasPermission('view_category') ||
-          hasPermission('edit_category')) &&
-        isInventoryManager,
-      rightIcon: {
-        name: 'add',
-        href: '/categories/new',
-        tooltipText: 'new_category',
-        visible: hasPermission('create_category'),
-      },
-      group: 'organization',
-    },
-    {
-      key: 'labels',
-      label: 'labels',
-      iconName: 'tag',
-      href: '/labels',
-      visible:
-        (hasPermission('create_label') ||
-          hasPermission('view_label') ||
-          hasPermission('edit_label')) &&
-        isInventoryManager,
-      iconSize: '0.968rem',
-      rightIcon: {
-        name: 'add',
-        href: '/labels/new',
-        tooltipText: 'new_label',
-        visible: hasPermission('create_label'),
-      },
-      group: 'organization',
-    },
-    {
-      key: 'label_categories',
-      label: 'label_categories',
-      iconName: 'tags',
-      href: '/label_categories',
-      visible:
-        (hasPermission('create_label_category') ||
-          hasPermission('view_label_category') ||
-          hasPermission('edit_label_category')) &&
-        isInventoryManager,
-      iconSize: '1.129rem',
-      rightIcon: {
-        name: 'add',
-        href: '/label_categories/new',
-        tooltipText: 'new_label_category',
-        visible: hasPermission('create_label_category'),
-      },
-      group: 'organization',
+      group: 'inventory',
     },
     {
       key: 'purchase_orders',
@@ -270,6 +99,19 @@ const useNavItems = () => {
         tooltipText: 'new_purchase_order',
         visible: hasPermission('create_purchase_order'),
       },
+      group: 'inventory',
+    },
+    {
+      key: 'import_export',
+      label: 'import_export',
+      iconName: 'importExport',
+      href: '/import',
+      visible:
+        (hasPermission('import_products') ||
+          hasPermission('export_products')) &&
+        isInventoryManager,
+      iconSize: '1.4rem',
+      group: 'inventory',
     },
     {
       key: 'statuses',
@@ -281,14 +123,186 @@ const useNavItems = () => {
           hasPermission('view_status') ||
           hasPermission('edit_status')) &&
         isInventoryManager,
-      iconSize: '1.129rem',
+      iconSize: '1.2rem',
       rightIcon: {
         name: 'add',
         href: '/statuses/new',
         tooltipText: 'new_status',
         visible: hasPermission('create_status'),
       },
-      group: 'organization',
+      group: 'inventory',
+    },
+    {
+      key: 'brands',
+      label: 'brands',
+      iconName: 'brand',
+      href: '/brands',
+      iconSize: '1.183rem',
+      visible:
+        (hasPermission('create_brand') ||
+          hasPermission('view_brand') ||
+          hasPermission('edit_brand')) &&
+        isInventoryManager,
+      rightIcon: {
+        name: 'add',
+        href: '/brands/new',
+        tooltipText: 'new_brand',
+        visible: hasPermission('create_brand'),
+      },
+      group: 'taxonomy',
+    },
+    {
+      key: 'categories',
+      label: 'categories',
+      iconName: 'category',
+      href: '/categories',
+      iconSize: '1.129rem',
+      visible:
+        (hasPermission('create_category') ||
+          hasPermission('view_category') ||
+          hasPermission('edit_category')) &&
+        isInventoryManager,
+      rightIcon: {
+        name: 'add',
+        href: '/categories/new',
+        tooltipText: 'new_category',
+        visible: hasPermission('create_category'),
+      },
+      group: 'taxonomy',
+    },
+    {
+      key: 'labels',
+      label: 'labels',
+      iconName: 'tag',
+      href: '/labels',
+      visible:
+        (hasPermission('create_label') ||
+          hasPermission('view_label') ||
+          hasPermission('edit_label')) &&
+        isInventoryManager,
+      iconSize: '0.968rem',
+      rightIcon: {
+        name: 'add',
+        href: '/labels/new',
+        tooltipText: 'new_label',
+        visible: hasPermission('create_label'),
+      },
+      group: 'taxonomy',
+    },
+    {
+      key: 'label_categories',
+      label: 'label_categories',
+      iconName: 'tags',
+      href: '/label_categories',
+      visible:
+        (hasPermission('create_label_category') ||
+          hasPermission('view_label_category') ||
+          hasPermission('edit_label_category')) &&
+        isInventoryManager,
+      iconSize: '1.129rem',
+      rightIcon: {
+        name: 'add',
+        href: '/label_categories/new',
+        tooltipText: 'new_label_category',
+        visible: hasPermission('create_label_category'),
+      },
+      group: 'taxonomy',
+    },
+
+    {
+      key: 'customers',
+      label: 'customers',
+      iconName: 'customer',
+      href: '/customers',
+      iconSize: '1.3rem',
+      visible:
+        (hasPermission('create_customer') ||
+          hasPermission('view_customer') ||
+          hasPermission('edit_customer')) &&
+        isInventoryManager,
+      rightIcon: {
+        name: 'add',
+        href: '/customers/new',
+        tooltipText: 'new_customer',
+        visible: hasPermission('create_customer'),
+      },
+      group: 'partners',
+    },
+    {
+      key: 'suppliers',
+      label: 'suppliers',
+      iconName: 'truck',
+      href: '/suppliers',
+      iconSize: '1.075rem',
+      visible:
+        (hasPermission('create_supplier') ||
+          hasPermission('view_supplier') ||
+          hasPermission('edit_supplier')) &&
+        isInventoryManager,
+      rightIcon: {
+        name: 'add',
+        href: '/suppliers/new',
+        tooltipText: 'new_supplier',
+        visible: hasPermission('create_supplier'),
+      },
+      group: 'partners',
+    },
+    {
+      key: 'subsidiaries',
+      label: 'subsidiaries',
+      iconName: 'subsidiary',
+      href: '/subsidiaries',
+      iconSize: '1.021rem',
+      visible:
+        (hasPermission('create_subsidiary') ||
+          hasPermission('view_subsidiary') ||
+          hasPermission('edit_subsidiary')) &&
+        isInventoryManager,
+      rightIcon: {
+        name: 'add',
+        href: '/subsidiaries/new',
+        tooltipText: 'new_subsidiary',
+        visible: hasPermission('create_subsidiary'),
+      },
+      group: 'locations',
+    },
+    {
+      key: 'warehouses',
+      label: 'warehouses',
+      iconName: 'warehouse',
+      href: '/warehouses',
+      iconSize: '1rem',
+      visible:
+        (hasPermission('create_warehouse') ||
+          hasPermission('view_warehouse') ||
+          hasPermission('edit_warehouse')) &&
+        isInventoryManager,
+      rightIcon: {
+        name: 'add',
+        href: '/warehouses/new',
+        tooltipText: 'new_warehouse',
+        visible: hasPermission('create_warehouse'),
+      },
+      group: 'locations',
+    },
+    {
+      key: 'bins',
+      label: 'bins',
+      iconName: 'boxAlignTopRightFilled',
+      href: '/bins',
+      iconSize: '1.25rem',
+      visible:
+        (hasPermission('create_bin') ||
+          hasPermission('view_bin') ||
+          hasPermission('edit_bin')) &&
+        isInventoryManager,
+      rightIcon: {
+        name: 'add',
+        href: '/bins/new',
+        tooltipText: 'new_bin',
+        visible: hasPermission('create_bin'),
+      },
+      group: 'locations',
     },
     {
       key: 'employees',
@@ -303,7 +317,6 @@ const useNavItems = () => {
         tooltipText: 'new_employee',
         visible: hasPermission('admin'),
       },
-      group: 'organization',
     },
     {
       key: 'reports',

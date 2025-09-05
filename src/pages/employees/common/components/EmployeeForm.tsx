@@ -14,8 +14,10 @@ import { useSearchParams } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
-import { Box, StaticTabs } from '@components/index';
+import { Box } from '@components/index';
 
+import Details from './Details';
+import Permissions from './Permissions';
 import useHandleChange from '../hooks/useHandleChange';
 import useTabs from '../hooks/useTabs';
 
@@ -90,11 +92,23 @@ const EmployeeForm = ({
   }, [searchParams]);
 
   return (
-    <Box className="flex w-full self-start md:w-full xl:w-3/4">
-      <StaticTabs
-        tabs={tabs}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
+    <Box className="flex justify-center flex-col xxl:flex-row gap-4 self-start w-full lg:w-3/4 xxl:w-full pb-20">
+      <Details
+        employee={employee}
+        editPage={editPage}
+        isLoading={isLoading}
+        errors={errors}
+        handleChange={handleChange}
+        setEmployee={setEmployee}
+      />
+
+      <Permissions
+        employee={employee}
+        editPage={editPage}
+        isLoading={isLoading}
+        errors={errors}
+        handleChange={handleChange}
+        setEmployee={setEmployee}
       />
     </Box>
   );

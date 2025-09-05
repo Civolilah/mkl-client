@@ -10,7 +10,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@constants/index';
 import { route } from '@helpers/index';
 import classNames from 'classnames';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -20,7 +20,12 @@ import { IconName } from '@components/general/Icon';
 import { Box, Icon, NavItem as NavItemElement, Text } from '@components/index';
 
 import { NavGroup, NavItem as NavItemType } from '@hooks/global/useNavItems';
-import { useAccentColor, useColors, useNavItems } from '@hooks/index';
+import {
+  useAccentColor,
+  useColors,
+  useNavItems,
+  useTranslation,
+} from '@hooks/index';
 
 const Div = styled.div`
   background-color: ${(props) =>
@@ -53,29 +58,29 @@ interface NavigationGroup {
 }
 
 const NAVIGATION_GROUPS: Record<NavGroup, NavigationGroup> = {
-  products_and_services: {
-    label: 'Products & Services',
-    icon: 'product',
+  inventory: {
+    label: 'inventory',
+    icon: 'inventory',
     iconSize: '1.1rem',
     defaultNavigation: '/products',
   },
-  locations_and_facilities: {
-    label: 'Locations & Facilities',
-    icon: 'locationDot',
-    iconSize: '1.1rem',
-    defaultNavigation: '/warehouses',
-  },
-  partners_and_relations: {
-    label: 'Partners & Relations',
-    icon: 'customer',
-    iconSize: '1.1rem',
-    defaultNavigation: '/customers',
-  },
-  organization: {
-    label: 'Organization',
-    icon: 'category',
+  taxonomy: {
+    label: 'taxonomy',
+    icon: 'organization',
     iconSize: '1.1rem',
     defaultNavigation: '/brands',
+  },
+  partners: {
+    label: 'partners',
+    icon: 'handshake',
+    iconSize: '1.2rem',
+    defaultNavigation: '/customers',
+  },
+  locations: {
+    label: 'locations',
+    icon: 'locationDot',
+    iconSize: '1.1rem',
+    defaultNavigation: '/subsidiaries',
   },
 };
 
@@ -95,6 +100,8 @@ const GroupedNavItems = ({
   onToggle,
   hasActiveItem,
 }: GroupedNavItemsProps) => {
+  const t = useTranslation();
+
   const colors = useColors();
   const accentColor = useAccentColor();
 
@@ -104,7 +111,11 @@ const GroupedNavItems = ({
   if (!groupConfig) return null;
 
   return (
-    <>
+    <Box
+      className={classNames({
+        'pb-3': hasActiveItem,
+      })}
+    >
       <Div
         className="flex items-center justify-between pl-1 pr-1.5 py-2.5 rounded cursor-pointer transition-all duration-200"
         onClick={(e) => {
@@ -118,7 +129,7 @@ const GroupedNavItems = ({
           isActive: hasActiveItem,
         }}
       >
-        <Box className="flex items-center space-x-3">
+        <Box className="flex items-center space-x-2">
           <Box className="flex justify-center items-center min-w-8">
             <IconWrapper
               theme={{
@@ -140,7 +151,7 @@ const GroupedNavItems = ({
               'font-medium': hasActiveItem,
             })}
           >
-            {groupConfig.label}
+            {t(groupConfig.label)}
           </Text>
         </Box>
 
@@ -173,7 +184,7 @@ const GroupedNavItems = ({
           ))}
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
@@ -183,8 +194,10 @@ const NavigationBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [expandedGroup, setExpandedGroup] = useState<NavGroup>(
-    'products_and_services'
+  const processedGroups = new Set<string>();
+  const orderedNavElements: JSX.Element[] = [];
+  const [expandedGroup, setExpandedGroup] = useState<NavGroup | null>(
+    'inventory'
   );
 
   const getActiveItemKey = () => {
@@ -219,10 +232,7 @@ const NavigationBar = () => {
       {} as Record<string, NavItemType[]>
     );
 
-  const orderedNavElements: JSX.Element[] = [];
-  const processedGroups = new Set<string>();
-
-  const toggleGroup = (group: string) => {
+  const toggleGroup = (group: NavGroup) => {
     setExpandedGroup((prev) => (prev === group ? null : group));
 
     navigate(
@@ -251,7 +261,7 @@ const NavigationBar = () => {
             group={item.group}
             items={groupItems}
             isExpanded={expandedGroup === item.group}
-            onToggle={() => toggleGroup(item.group)}
+            onToggle={() => toggleGroup(item.group as NavGroup)}
             hasActiveItem={hasActiveItem}
             activeItemKey={activeItemKey}
           />
@@ -266,7 +276,7 @@ const NavigationBar = () => {
   useEffect(() => {
     Object.entries(groupedItems).forEach(([group, items]) => {
       if (hasActiveItemInGroup(items)) {
-        setExpandedGroup(group);
+        setExpandedGroup(group as NavGroup);
       }
     });
   }, [activeItemKey]);
@@ -276,8 +286,8 @@ const NavigationBar = () => {
       className="flex flex-col space-y-1 border-r shadow-md pt-1 w-full"
       style={{
         backgroundColor: colors.$6,
-        height: 'calc(100vh - 3.5rem)',
-        width: MAN_LARGE_SIDEBAR_WIDTH,
+        height: `calc(100vh - ${HEADER_HEIGHT})`,
+        width: SIDEBAR_WIDTH,
         borderColor: colors.$1,
       }}
     >

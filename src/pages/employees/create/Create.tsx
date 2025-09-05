@@ -26,6 +26,7 @@ import { BreadcrumbItem } from '@components/layout/Default';
 import {
   usePageLayoutAndActions,
   useRefetch,
+  useSaveAndDiscardActions,
   useTranslation,
 } from '@hooks/index';
 
@@ -124,18 +125,19 @@ const Create = () => {
     }
   }, [employee]);
 
+  useSaveAndDiscardActions(
+    {
+      disabledSaveButton: isFormBusy,
+      disabledDiscardButton: isFormBusy,
+      onSaveClick: handleSave,
+      onDiscardClick: () => navigate(route('/employees')),
+    },
+    [employee, isFormBusy, handleSave]
+  );
+
   usePageLayoutAndActions(
     {
       title: t('new_employee'),
-      breadcrumbs: {
-        breadcrumbs,
-      },
-      buttonAction: {
-        isLoading: isFormBusy,
-        isDisabled: isFormBusy,
-        onClick: handleSave,
-        disabledWithLoadingIcon: isFormBusy,
-      },
       footer: isLargeScreen ? undefined : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
@@ -160,7 +162,7 @@ const Create = () => {
         </Box>
       ),
     },
-    [employee, isFormBusy, handleSave]
+    [employee, isFormBusy]
   );
 
   useEffect(() => {

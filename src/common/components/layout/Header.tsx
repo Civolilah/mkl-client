@@ -10,6 +10,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { HEADER_HEIGHT } from '@constants/index';
 import { route } from '@helpers/index';
 import { Drawer } from 'antd';
 import classNames from 'classnames';
@@ -22,6 +23,7 @@ import { userCompanyAtom } from '@components/general/PrivateRoute';
 import {
   Avatar,
   Box,
+  Button,
   Icon,
   MobileNavBar,
   NavBarLogoSection,
@@ -29,6 +31,8 @@ import {
   Text,
 } from '@components/index';
 
+import { areChangesMadeAtom } from '@hooks/global/useHandleEntityChanges';
+import { saveAndDiscardActionsAtom } from '@hooks/global/useSaveAndDiscardActions';
 import {
   useAccentColor,
   useColors,
@@ -65,6 +69,9 @@ const Header = ({ title }: Props) => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
+  const areChangesMade = useAtomValue(areChangesMadeAtom);
+  const saveAndDiscardActions = useAtomValue(saveAndDiscardActionsAtom);
+
   const onClose = () => {
     setIsDrawerOpened(false);
   };
@@ -78,7 +85,7 @@ const Header = ({ title }: Props) => {
   return (
     <Box
       className={classNames(
-        'flex items-center justify-center w-full border-b py-4',
+        'flex items-center justify-center w-full border-b py-4 relative',
         {
           'shadow-sm':
             !location.pathname.includes('/new') &&
@@ -87,7 +94,7 @@ const Header = ({ title }: Props) => {
         }
       )}
       style={{
-        height: '3.5rem',
+        height: HEADER_HEIGHT,
         borderColor: colors.$1,
         backgroundColor: colors.$6,
       }}
@@ -100,10 +107,50 @@ const Header = ({ title }: Props) => {
         <MobileNavBar items={navItems} />
       </Box>
 
-      <Box className="flex w-full justify-between items-center px-2 md:px-6">
+      <Box className="flex w-full justify-between items-center px-2 md:px-6 relative">
         <Text className="text-lg md:text-xl font-medium whitespace-nowrap">
           {title}
         </Text>
+
+        {saveAndDiscardActions && (
+          <Box
+            className="flex items-center gap-x-20 absolute right-[54%] -top-[0.45rem] translate-x-1/2 border rounded-md py-1.5 px-2 bg-white animate-box-shake"
+            style={{
+              borderColor: colors.$1,
+            }}
+          >
+            <Box className="flex items-center gap-x-2">
+              <Box>
+                <Icon
+                  name="warning"
+                  size="1.35rem"
+                  style={{ color: 'orange' }}
+                />
+              </Box>
+
+              <Text className="text-xs-mid font-medium">
+                {t('unsaved_changes')}
+              </Text>
+            </Box>
+            <Box className="flex items-center space-x-2">
+              <Button
+                size="middle"
+                type="default"
+                onClick={saveAndDiscardActions.onDiscardClick}
+              >
+                {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
+              </Button>
+
+              <Button
+                size="middle"
+                type="primary"
+                onClick={saveAndDiscardActions.onSaveClick}
+              >
+                {t(saveAndDiscardActions.saveButtonLabel || 'save')}
+              </Button>
+            </Box>
+          </Box>
+        )}
 
         <Box className="flex w-full justify-end">
           {isSmallScreen ? (

@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@constants/index';
 import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
 import { useAtomValue } from 'jotai';
@@ -72,9 +72,9 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
         }
       )}
       style={{
-        height: '3.5rem',
+        height: HEADER_HEIGHT,
         borderColor: colors.$1,
-        width: mobileSideBar ? '100%' : MAN_LARGE_SIDEBAR_WIDTH,
+        width: mobileSideBar ? '100%' : SIDEBAR_WIDTH,
       }}
     >
       <Dropdown menu={{ items: actions }}>

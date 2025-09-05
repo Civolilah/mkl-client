@@ -10,7 +10,7 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 
-import { MAN_LARGE_SIDEBAR_WIDTH } from '@constants/index';
+import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@constants/index';
 import { route } from '@helpers/index';
 import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
@@ -142,7 +142,7 @@ const Default = ({
 
           <Box
             className="flex w-full"
-            style={{ height: 'calc(100% - 3.5rem)' }}
+            style={{ height: `calc(100% - ${HEADER_HEIGHT})` }}
           >
             <Box className="hidden lg:flex lg:justify-start">
               <MainNavBar />
@@ -151,9 +151,7 @@ const Default = ({
             <Box
               className="flex flex-col justify-center items-center flex-1"
               style={{
-                width: isLargeScreen
-                  ? `calc(100% - ${MAN_LARGE_SIDEBAR_WIDTH})`
-                  : '100%',
+                width: isLargeScreen ? `calc(100% - ${SIDEBAR_WIDTH})` : '100%',
               }}
             >
               {Boolean(breadcrumbs.length || onCancelClick || onSaveClick) &&
@@ -163,7 +161,7 @@ const Default = ({
                     style={{
                       borderColor: colors.$1,
                       backgroundColor: colors.$6,
-                      height: '3.5rem',
+                      height: HEADER_HEIGHT,
                     }}
                   >
                     <Box className="flex-1 hidden sm:flex">

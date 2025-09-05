@@ -72,6 +72,10 @@ const AVAILABLE_PERMISSIONS = [
   'create_status',
   'view_status',
   'edit_status',
+
+  'create_bin',
+  'view_bin',
+  'edit_bin',
 ];
 
 type ValidationOptions = {

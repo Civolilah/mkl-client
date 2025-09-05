@@ -34,6 +34,7 @@ import {
   FaFacebook,
   FaFileImage,
   FaFileInvoiceDollar,
+  FaHandshake,
   FaInstagram,
   FaPercentage,
   FaPhone,
@@ -112,7 +113,8 @@ import {
 import { RxPerson } from 'react-icons/rx';
 import { RxDotsHorizontal } from 'react-icons/rx';
 import { SiCashapp } from 'react-icons/si';
-import { TbPackageExport } from 'react-icons/tb';
+import { SlOrganization } from 'react-icons/sl';
+import { TbBoxAlignTopRightFilled, TbPackageExport } from 'react-icons/tb';
 
 import { useAccentColor } from '@hooks/index';
 
@@ -210,7 +212,10 @@ export type IconName =
   | 'notifications'
   | 'creditCard'
   | 'cogs'
-  | 'key';
+  | 'key'
+  | 'organization'
+  | 'boxAlignTopRightFilled'
+  | 'handshake';
 
 type Props = {
   className?: string;
@@ -433,7 +438,12 @@ const Icon = ({ name, size, onClick, style, unsetColor }: Props) => {
       return generateIconElement(BsCreditCard2FrontFill);
     case 'cogs':
       return generateIconElement(FaCogs);
-
+    case 'organization':
+      return generateIconElement(SlOrganization);
+    case 'boxAlignTopRightFilled':
+      return generateIconElement(TbBoxAlignTopRightFilled);
+    case 'handshake':
+      return generateIconElement(FaHandshake);
     default:
       return <></>;
   }
