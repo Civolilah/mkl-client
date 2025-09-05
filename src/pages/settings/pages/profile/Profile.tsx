@@ -8,102 +8,73 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useEffect, useState } from 'react';
-
-import { useSearchParams } from 'react-router-dom';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 import { ValidationErrors } from '@interfaces/index';
 
-import { Box, StaticTabs } from '@components/index';
-import { BreadcrumbItem } from '@components/layout/Default';
+import { Box } from '@components/index';
 
 import { usePageLayoutAndActions, useTranslation } from '@hooks/index';
 
-import useTabs, { Profile as ProfileType } from './common/hooks/useTabs';
+import Details from './common/components/Details';
+import Passwords from './common/components/Passwords';
+import Preferences from './common/components/Preferences';
+
+interface ProfileType {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  password: string;
+  password_confirmation: string;
+  subsidiaries_ids: string[];
+  warehouses_ids: string[];
+  permissions: string[];
+  company_id: string;
+}
+
+export interface ProfileProps {
+  profile: ProfileType | undefined;
+  setProfile: Dispatch<SetStateAction<ProfileType | undefined>>;
+  errors: ValidationErrors;
+  isLoading: boolean;
+}
 
 const Profile = () => {
   const t = useTranslation();
-
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      title: t('settings'),
-      href: '/settings',
-    },
-    {
-      title: t('profile'),
-      href: '/settings/profile',
-    },
-  ];
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState<string>(
-    searchParams.get('tab') ?? 'details'
-  );
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileType | undefined>(undefined);
 
-  const tabs = useTabs({
-    profile,
-    isLoading,
-    errors,
-    setProfile,
-  });
-
-  useEffect(() => {
-    if (Object.keys(errors).length) {
-      const isErrorFromDetailsPage = Object.keys(errors).some(
-        (key) =>
-          key.includes('first_name') ||
-          key.includes('last_name') ||
-          key.includes('email') ||
-          key.includes('password') ||
-          key.includes('subsidiaries')
-      );
-
-      const isErrorFromPermissionsPage = Object.keys(errors).some((key) =>
-        key.includes('permissions')
-      );
-
-      if (isErrorFromDetailsPage) {
-        setActiveTab('details');
-      } else if (isErrorFromPermissionsPage) {
-        setActiveTab('permissions');
-      }
-    }
-  }, [errors]);
-
-  useEffect(() => {
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-      newParams.set('tab', activeTab);
-      return newParams;
-    });
-  }, [activeTab]);
-
-  useEffect(() => {
-    if (searchParams.get('tab') && searchParams.get('tab') !== activeTab) {
-      setActiveTab(searchParams.get('tab') as string);
-    }
-  }, [searchParams]);
-
   usePageLayoutAndActions(
     {
       title: t('profile'),
-      breadcrumbs: {
-        breadcrumbs,
-      },
     },
     []
   );
 
   return (
-    <Box className="flex w-full">
-      <StaticTabs
-        tabs={tabs}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
+    <Box className="flex flex-col gap-y-4 w-full pb-20">
+      <Details
+        profile={profile}
+        setProfile={setProfile}
+        errors={errors}
+        isLoading={isLoading}
+      />
+
+      <Preferences
+        profile={profile}
+        errors={errors}
+        setProfile={setProfile}
+        isLoading={isLoading}
+      />
+
+      <Passwords
+        profile={profile}
+        errors={errors}
+        setProfile={setProfile}
+        isLoading={isLoading}
       />
     </Box>
   );

@@ -14,8 +14,8 @@ import { Button, Card, LabelElement } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
+import { ProfileProps } from '../../Profile';
 import useHandleChange from '../hooks/useHandleChange';
-import { ProfileProps } from '../hooks/useTabs';
 
 const Passwords = ({ profile, errors, setProfile }: ProfileProps) => {
   const t = useTranslation();
@@ -23,7 +23,7 @@ const Passwords = ({ profile, errors, setProfile }: ProfileProps) => {
   const handleChange = useHandleChange({ setProfile });
 
   return (
-    <Card title={t('password')} className="w-full">
+    <Card title={t('passwords')} className="w-full" paddingBottom="0">
       <LabelElement label={t('password')} withoutOptionalText>
         <Button>{t('change_password')}</Button>
       </LabelElement>

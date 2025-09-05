@@ -10,12 +10,12 @@
 
 import React from 'react';
 
-import { Box, Card, LabelElement, TextField } from '@components/index';
+import { Box, Card, TextField } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
+import { ProfileProps } from '../../Profile';
 import useHandleChange from '../hooks/useHandleChange';
-import { ProfileProps } from '../hooks/useTabs';
 
 const Details = ({ profile, errors, setProfile }: ProfileProps) => {
   const t = useTranslation();
@@ -24,42 +24,46 @@ const Details = ({ profile, errors, setProfile }: ProfileProps) => {
 
   return (
     <Card title={t('details')} className="w-full">
-      <Box className="flex flex-col">
-        <LabelElement label={t('first_name')} required>
+      <Box className="flex flex-col gap-y-4">
+        <Box className="flex gap-x-4">
           <TextField
+            required
+            label={t('first_name')}
             placeHolder={t('first_name_placeholder')}
             value={profile?.first_name || ''}
             onValueChange={(value) => handleChange('first_name', value)}
             errorMessage={errors?.first_name && t(errors.first_name)}
           />
-        </LabelElement>
 
-        <LabelElement label={t('last_name')}>
           <TextField
+            label={t('last_name')}
             placeHolder={t('last_name_placeholder')}
             value={profile?.last_name || ''}
             onValueChange={(value) => handleChange('last_name', value)}
             errorMessage={errors?.last_name && t(errors.last_name)}
           />
-        </LabelElement>
+        </Box>
 
-        <LabelElement label={t('email')} required>
+        <Box className="flex gap-x-4">
           <TextField
+            required
+            type="email"
+            label={t('email')}
             placeHolder={t('email_placeholder')}
             value={profile?.email || ''}
             onValueChange={(value) => handleChange('email', value)}
             errorMessage={errors?.email && t(errors.email)}
           />
-        </LabelElement>
 
-        <LabelElement label={t('phone')}>
           <TextField
+            type="tel"
+            label={t('phone')}
             placeHolder={t('phone_placeholder')}
             value={profile?.phone || ''}
             onValueChange={(value) => handleChange('phone', value)}
             errorMessage={errors?.phone && t(errors.phone)}
           />
-        </LabelElement>
+        </Box>
       </Box>
     </Card>
   );

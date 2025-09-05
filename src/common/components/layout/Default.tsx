@@ -343,7 +343,7 @@ const Default = ({
                 className="flex w-full overflow-y-auto flex-1"
               >
                 <Box
-                  className="flex items-center justify-center w-full pt-4 px-2 md:px-6 md:pt-6 pb-12"
+                  className="flex items-center justify-center w-full pt-4 px-2 md:px-6 md:pt-6"
                   style={{ minHeight: 'min-content' }}
                 >
                   {children}

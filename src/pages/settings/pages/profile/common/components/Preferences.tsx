@@ -10,12 +10,12 @@
 
 import React from 'react';
 
-import { Card } from '@components/index';
+import { Box, Card, LanguagesSelector, NumberField } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
+import { ProfileProps } from '../../Profile';
 import useHandleChange from '../hooks/useHandleChange';
-import { ProfileProps } from '../hooks/useTabs';
 
 const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
   const t = useTranslation();
@@ -24,7 +24,20 @@ const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
 
   return (
     <Card title={t('preferences')} className="w-full">
-      Preferences
+      <Box className="flex gap-x-4">
+        <LanguagesSelector
+          required
+          value={profile?.language || ''}
+          onChange={(value) => handleChange('language', value)}
+        />
+
+        <NumberField
+          required
+          label={t('number_precision')}
+          value={profile?.number_precision || 2}
+          onValueChange={(value) => handleChange('number_precision', value)}
+        />
+      </Box>
     </Card>
   );
 };

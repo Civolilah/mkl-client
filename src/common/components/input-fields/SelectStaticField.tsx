@@ -96,9 +96,15 @@ const SelectStaticField = ({
       {label && (
         <Box className="flex items-center space-x-1">
           <Box className="flex items-center">
-            <Label>{label}</Label>
+            <Label className="relative">
+              {label}
 
-            {required && <span className="text-red-500 mb-1 ml-0.5">*</span>}
+              {required && (
+                <span className="text-red-500 absolute -top-0.5 -right-[0.45rem]">
+                  *
+                </span>
+              )}
+            </Label>
           </Box>
 
           <RequiredOptionalLabel

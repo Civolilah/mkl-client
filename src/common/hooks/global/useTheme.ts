@@ -19,7 +19,7 @@ const useTheme = () => {
     token: {
       colorPrimary: accentColor,
       colorPrimaryHover: '#2E6CBD',
-      borderRadius: 0,
+      borderRadius: 6,
       colorBgContainer: colors.$26,
       fontFamily: 'Roboto, system-ui, -apple-system, sans-serif',
     },

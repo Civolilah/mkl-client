@@ -106,7 +106,6 @@ const CustomHeaderCell = ({
       style={{
         ...style,
         backgroundColor: accentColor,
-        borderRadius: 0,
         color: 'white',
         whiteSpace: 'nowrap',
         paddingLeft: '0.75rem',

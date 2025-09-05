@@ -30,7 +30,7 @@ const Settings = () => {
 
   return (
     <Box className="flex h-full items-start justify-start w-full md:gap-x-10">
-      <Box className="flex flex-col space-y-1">
+      <Box className="flex flex-col">
         {navItems.map((item) => (
           <SettingsNavItem key={item.key} item={item} />
         ))}

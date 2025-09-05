@@ -94,7 +94,6 @@ const GroupedNavItems = ({
   isExpanded,
   onToggle,
   hasActiveItem,
-  activeItemKey,
 }: GroupedNavItemsProps) => {
   const colors = useColors();
   const accentColor = useAccentColor();
@@ -184,7 +183,9 @@ const NavigationBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  const [expandedGroup, setExpandedGroup] = useState<NavGroup>(
+    'products_and_services'
+  );
 
   const getActiveItemKey = () => {
     const path = location.pathname;
