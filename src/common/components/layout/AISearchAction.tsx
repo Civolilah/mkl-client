@@ -139,7 +139,7 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
       {isLargeScreen ? (
         <div
           className={classNames(
-            'flex fixed rounded-full pl-3 pr-5 py-[1.2rem] cursor-pointer',
+            'flex fixed rounded-full p-5 py-[1.2rem] cursor-pointer',
             {
               'bottom-[2rem] right-[2rem]':
                 location.pathname.includes('/new') ||
@@ -150,19 +150,16 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
             }
           )}
           style={{
-            backgroundColor: accentColor,
+            backgroundColor: isOpen ? 'white' : accentColor,
+            border: `1px solid ${colors.$1}`,
           }}
           onClick={() => setIsOpen(!isOpen)}
         >
-          <Box className="pr-1.5">
-            <Icon name="robotLine" size="1.5rem" style={{ color: 'white' }} />
-          </Box>
-
-          <Box className="absolute top-[1.3rem] right-[0.2rem]">
+          <Box>
             <Icon
-              name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
-              size="1.4rem"
-              style={{ color: 'white' }}
+              name="robotLine"
+              size="1.5rem"
+              style={{ color: isOpen ? accentColor : 'white' }}
             />
           </Box>
         </div>
@@ -172,22 +169,12 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
             text="ai_search"
             onClick={() => setIsOpen((prev) => !prev)}
             icon={
-              <Box className="flex relative">
-                <Box className="pr-3">
-                  <Icon
-                    name="robotLine"
-                    size="1.2rem"
-                    style={{ color: accentColor }}
-                  />
-                </Box>
-
-                <Box className="absolute -right-[0.6rem]">
-                  <Icon
-                    name={isOpen ? 'arrowDownFill' : 'arrowUpFill'}
-                    size="1.4rem"
-                    style={{ color: accentColor }}
-                  />
-                </Box>
+              <Box>
+                <Icon
+                  name="robotLine"
+                  size="1.2rem"
+                  style={{ color: accentColor }}
+                />
               </Box>
             }
             style={{

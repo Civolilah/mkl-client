@@ -100,7 +100,7 @@ const TextField = ({
 
       {type !== 'password' && type !== 'textarea' && (
         <Input
-          className="rounded-none text-sm-plus text-field-input"
+          className="rounded-lg text-sm-plus text-field-input"
           id={id}
           type={type}
           value={currentValue}
@@ -132,7 +132,7 @@ const TextField = ({
 
       {type === 'password' && (
         <Input.Password
-          className="rounded-none text-sm-plus text-field-input"
+          className="rounded-lg text-sm-plus text-field-input"
           id={id}
           type={type}
           value={currentValue}
@@ -165,7 +165,7 @@ const TextField = ({
         <TextArea
           id={id}
           rows={4}
-          className="rounded-none text-sm-plus text-field-input"
+          className="rounded-lg text-sm-plus text-field-input"
           value={currentValue}
           placeholder={placeHolder}
           onChange={(event) => setCurrentValue(event.target.value)}

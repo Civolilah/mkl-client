@@ -17,7 +17,6 @@ import { useMediaQuery } from 'react-responsive';
 import Icon from '@components/general/Icon';
 import {
   Box,
-  NavBarIconsBox,
   NavBarLogoSection,
   NavItem as NavItemElement,
 } from '@components/index';
@@ -25,15 +24,13 @@ import {
 import { NavItem } from '@hooks/global/useNavItems';
 import { useColors } from '@hooks/index';
 
-type Props = {
+interface Props {
   items: NavItem[];
-};
+}
 
 export const menuDrawerOpenedAtom = atom<boolean>(false);
 
-const MobileNavBar = (props: Props) => {
-  const { items } = props;
-
+const MobileNavBar = ({ items }: Props) => {
   const colors = useColors();
 
   const [open, setOpen] = useAtom(menuDrawerOpenedAtom);
@@ -86,13 +83,15 @@ const MobileNavBar = (props: Props) => {
 
             <Box className="flex flex-col flex-1 overflow-y-auto break-all px-1.5">
               {items
-                .filter((item) => item.visible)
+                .filter((item) => item.visible && item.key !== 'settings')
                 .map((item) => (
                   <NavItemElement key={item.key} item={item} />
                 ))}
             </Box>
 
-            <NavBarIconsBox />
+            <Box className="px-1.5 pb-1.5">
+              <NavItemElement item={items[items.length - 1]} />
+            </Box>
           </nav>
         </Box>
       </Drawer>

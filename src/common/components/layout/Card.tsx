@@ -33,22 +33,20 @@ type Props = {
   paddingBottom?: string;
 };
 
-const Card = (props: Props) => {
+const Card = ({
+  children,
+  title,
+  className,
+  onSaveClick,
+  saveButtonText,
+  isLoading = false,
+  topRight,
+  actions = [],
+  childrenParentClassName,
+  childrenParentStyle,
+  paddingBottom,
+}: Props) => {
   const t = useTranslation();
-
-  const {
-    children,
-    title,
-    className,
-    onSaveClick,
-    saveButtonText,
-    isLoading = false,
-    topRight,
-    actions = [],
-    childrenParentClassName,
-    childrenParentStyle,
-    paddingBottom,
-  } = props;
 
   const colors = useColors();
 
@@ -58,7 +56,7 @@ const Card = (props: Props) => {
         className={classNames('shadow-sm', className)}
         style={{
           borderColor: colors.$1,
-          borderRadius: 0,
+          borderRadius: '0.5rem',
           paddingBottom: paddingBottom ?? '1rem',
         }}
         styles={{

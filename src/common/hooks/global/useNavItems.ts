@@ -25,6 +25,12 @@ type RightIcon = {
   visible: boolean;
 };
 
+export type NavGroup =
+  | 'partners_and_relations'
+  | 'locations_and_facilities'
+  | 'products_and_services'
+  | 'organization';
+
 export type NavItem = {
   key: string;
   label: string;
@@ -33,6 +39,7 @@ export type NavItem = {
   visible: boolean;
   rightIcon?: RightIcon;
   iconSize?: string;
+  group?: NavGroup;
 };
 
 const useNavItems = () => {
@@ -58,6 +65,7 @@ const useNavItems = () => {
       visible:
         (hasPermission('manage_orders') || isCustomer) && isEnabledInvoicing,
       iconSize: '1.15rem',
+      group: 'products_and_services',
     },
     {
       key: 'import_export',
@@ -69,6 +77,7 @@ const useNavItems = () => {
           hasPermission('export_products')) &&
         isInventoryManager,
       iconSize: '1.4rem',
+      group: 'products_and_services',
     },
     {
       key: 'products',
@@ -87,6 +96,7 @@ const useNavItems = () => {
         tooltipText: 'new_product',
         visible: hasPermission('create_product'),
       },
+      group: 'products_and_services',
     },
 
     {
@@ -106,6 +116,7 @@ const useNavItems = () => {
         tooltipText: 'new_warehouse',
         visible: hasPermission('create_warehouse'),
       },
+      group: 'locations_and_facilities',
     },
     {
       key: 'subsidiaries',
@@ -124,6 +135,7 @@ const useNavItems = () => {
         tooltipText: 'new_subsidiary',
         visible: hasPermission('create_subsidiary'),
       },
+      group: 'locations_and_facilities',
     },
     {
       key: 'customers',
@@ -142,6 +154,7 @@ const useNavItems = () => {
         tooltipText: 'new_customer',
         visible: hasPermission('create_customer'),
       },
+      group: 'partners_and_relations',
     },
     {
       key: 'suppliers',
@@ -160,6 +173,7 @@ const useNavItems = () => {
         tooltipText: 'new_supplier',
         visible: hasPermission('create_supplier'),
       },
+      group: 'partners_and_relations',
     },
 
     {
@@ -179,6 +193,7 @@ const useNavItems = () => {
         tooltipText: 'new_brand',
         visible: hasPermission('create_brand'),
       },
+      group: 'organization',
     },
     {
       key: 'categories',
@@ -197,6 +212,7 @@ const useNavItems = () => {
         tooltipText: 'new_category',
         visible: hasPermission('create_category'),
       },
+      group: 'organization',
     },
     {
       key: 'labels',
@@ -215,6 +231,7 @@ const useNavItems = () => {
         tooltipText: 'new_label',
         visible: hasPermission('create_label'),
       },
+      group: 'organization',
     },
     {
       key: 'label_categories',
@@ -233,6 +250,7 @@ const useNavItems = () => {
         tooltipText: 'new_label_category',
         visible: hasPermission('create_label_category'),
       },
+      group: 'organization',
     },
     {
       key: 'purchase_orders',
@@ -270,6 +288,7 @@ const useNavItems = () => {
         tooltipText: 'new_status',
         visible: hasPermission('create_status'),
       },
+      group: 'organization',
     },
     {
       key: 'employees',
@@ -284,6 +303,7 @@ const useNavItems = () => {
         tooltipText: 'new_employee',
         visible: hasPermission('admin'),
       },
+      group: 'organization',
     },
     {
       key: 'reports',

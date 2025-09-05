@@ -65,7 +65,7 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
   return (
     <Box
       className={classNames(
-        'flex items-center px-3 company-switcher-dropdown',
+        'flex items-center pl-3 pr-2 company-switcher-dropdown',
         {
           'border-r': !mobileSideBar,
           'border-b': mobileSideBar,
@@ -79,7 +79,7 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
     >
       <Dropdown menu={{ items: actions }}>
         <StyledBox
-          className="flex w-full justify-between items-center cursor-pointer pl-1.5 pr-0.5"
+          className="flex w-full justify-between items-center cursor-pointer pl-1.5 pr-0.5 rounded"
           style={{
             height: '2.5rem',
           }}

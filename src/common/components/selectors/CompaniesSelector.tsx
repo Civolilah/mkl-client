@@ -8,6 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
+import { ReactNode } from 'react';
 import SelectDataField from '@components/input-fields/SelectDataField';
 
 import { useHasPermission, useTranslation } from '@hooks/index';
@@ -21,7 +22,7 @@ type Props = {
   errorMessage: string;
   mode?: 'single' | 'multiple';
   withRefreshButton?: boolean;
-  afterSelectorLabel?: React.ReactNode;
+  afterSelectorLabel?: ReactNode;
 };
 
 const CompaniesSelector = ({

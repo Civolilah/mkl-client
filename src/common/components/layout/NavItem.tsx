@@ -60,7 +60,7 @@ const NavItem = ({ item }: Props) => {
 
   return (
     <Div
-      className="flex items-center cursor-pointer pl-1 pr-2"
+      className="flex items-center cursor-pointer pl-1 pr-2 rounded"
       theme={{
         hoverBackgroundColor: colors.$30,
         backgroundColor: colors.$7,

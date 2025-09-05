@@ -92,7 +92,7 @@ const Button = (props: Props) => {
   return (
     <StyledBaseButton
       className={classNames(
-        'transition-none rounded-none shadow-sm',
+        'transition-none rounded-lg shadow-sm',
         {
           'border-none': type !== 'default',
           'text-sm-plus': size === 'large',
