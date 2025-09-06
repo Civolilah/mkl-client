@@ -65,7 +65,7 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
   return (
     <Box
       className={classNames(
-        'flex items-center pl-3 pr-2 company-switcher-dropdown',
+        'flex items-center px-1.5 company-switcher-dropdown',
         {
           'border-r': !mobileSideBar,
           'border-b': mobileSideBar,
@@ -81,7 +81,7 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
         <StyledBox
           className="flex w-full justify-between items-center cursor-pointer pl-1.5 pr-0.5 rounded"
           style={{
-            height: '2.5rem',
+            height: '3rem',
           }}
           theme={{
             backgroundColor: colors.$2,

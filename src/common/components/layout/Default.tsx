@@ -341,7 +341,7 @@ const Default = ({
                 className="flex w-full overflow-y-auto flex-1"
               >
                 <Box
-                  className="flex items-center justify-center w-full pt-4 px-2 md:px-6 md:pt-6"
+                  className="flex items-center justify-center w-full pt-4 px-2 lg:px-6 lg:pt-6"
                   style={{ minHeight: 'min-content' }}
                 >
                   {children}
@@ -350,7 +350,7 @@ const Default = ({
 
               {footer && (
                 <Box
-                  className="flex w-full items-center border-t shadow-sm md:px-6 mt-3"
+                  className="flex w-full items-center border-t shadow-sm lg:px-6 mt-3"
                   style={{
                     borderColor: colors.$1,
                     backgroundColor: colors.$6,

@@ -35,31 +35,35 @@ type Props = {
   size?: 'large' | 'middle' | 'small';
   style?: CSSProperties;
   icon?: ReactNode;
+  handleHoverWithOpacity?: boolean;
 };
 
 const StyledBaseButton = styled(BaseButton)`
-  background-color: ${(props) => props.theme.backgroundColor} !important;
+  transition: opacity 0.3s ease;
+
+  background-color: ${({ theme }) => theme.backgroundColor} !important;
 
   &:hover {
-    background-color: ${(props) => props.theme.hoverBackgroundColor} !important;
+    background-color: ${({ theme }) => theme.hoverBackgroundColor} !important;
+    opacity: ${({ theme }) => theme.hoverBackgroundColorOpacity} !important;
   }
 `;
 
-const Button = (props: Props) => {
-  const {
-    disabled,
-    onClick,
-    children,
-    size = 'large',
-    type = 'primary',
-    style,
-    disabledWithLoadingIcon,
-    className,
-    icon,
-  } = props;
-
+const Button = ({
+  disabled,
+  onClick,
+  children,
+  size = 'large',
+  type = 'primary',
+  style,
+  disabledWithLoadingIcon,
+  className,
+  icon,
+  handleHoverWithOpacity,
+}: Props) => {
   const colors = useColors();
   const accentColor = useAccentColor();
+
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
   const getButtonStyle = () => {
@@ -96,6 +100,7 @@ const Button = (props: Props) => {
         {
           'border-none': type !== 'default',
           'text-sm-plus': size === 'large',
+          'hover:opacity-75': handleHoverWithOpacity,
         },
         className
       )}
@@ -108,12 +113,14 @@ const Button = (props: Props) => {
       size={size}
       theme={{
         backgroundColor: type === 'default' && disabled ? 'transparent' : '',
-        hoverBackgroundColor:
-          type === 'default' && !disabled
+        hoverBackgroundColor: handleHoverWithOpacity
+          ? style?.backgroundColor
+          : type === 'default' && !disabled
             ? colors.$18
             : type === 'primary' && disabled
               ? accentColor
               : '',
+        hoverBackgroundColorOpacity: handleHoverWithOpacity ? 0.75 : 1,
       }}
     >
       {children}

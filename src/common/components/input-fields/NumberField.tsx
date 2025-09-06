@@ -84,7 +84,17 @@ const NumberField = ({
     <Box className="flex flex-col space-y-1 w-full">
       {label && (
         <Box className="flex items-center space-x-1">
-          <Label>{label}</Label>
+          <Box className="flex items-center">
+            <Label className="relative">
+              {label}
+
+              {required && (
+                <span className="text-red-500 absolute -top-0.5 -right-[0.45rem]">
+                  *
+                </span>
+              )}
+            </Label>
+          </Box>
 
           <RequiredOptionalLabel
             required={Boolean(required)}

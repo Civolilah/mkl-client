@@ -12,14 +12,14 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { cloneDeep, set } from 'lodash';
 
-import { Profile } from './useTabs';
+import { ProfileType } from '../../Profile';
 
 interface Params {
-  setProfile: Dispatch<SetStateAction<Profile | undefined>>;
+  setProfile: Dispatch<SetStateAction<ProfileType | undefined>>;
 }
 
 const useHandleChange = ({ setProfile }: Params) => {
-  return (property: keyof Profile, value: string) => {
+  return (property: keyof ProfileType, value: string | number | boolean) => {
     setProfile((currentProfile) => {
       if (!currentProfile) return currentProfile;
 

@@ -38,13 +38,13 @@ const Dropdown = ({
               style: {
                 ...item.style,
                 padding: 0,
-                borderRadius: 0,
+                borderRadius: '0.25rem',
               },
             }
         ),
 
         style: {
-          borderRadius: 0,
+          borderRadius: '0.5rem',
           minWidth: 'fit-content',
           ...style,
         },

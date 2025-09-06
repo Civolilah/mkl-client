@@ -56,7 +56,10 @@ export type Permission =
   | 'edit_purchase_order'
   | 'create_bin'
   | 'view_bin'
-  | 'edit_bin';
+  | 'edit_bin'
+  | 'create_tax_rate'
+  | 'view_tax_rate'
+  | 'edit_tax_rate';
 
 const useHasPermission = () => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);

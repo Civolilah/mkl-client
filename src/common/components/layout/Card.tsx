@@ -56,7 +56,7 @@ const Card = ({
         className={classNames('shadow-sm', className)}
         style={{
           borderColor: colors.$1,
-          borderRadius: '0.5rem',
+          borderRadius: '0.75rem',
           paddingBottom: paddingBottom ?? '1rem',
         }}
         styles={{

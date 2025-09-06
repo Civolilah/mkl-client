@@ -466,5 +466,12 @@
   "edit_bin": "Edit Bin",
   "partners": "Partners",
   "unsaved_changes": "Unsaved changes",
-  "discard": "Discard"
+  "discard": "Discard",
+  "number_precision": "Number Precision",
+  "enable_security_password": "Enable security password",
+  "enable_security_password_help": "When enabled, delete actions require password confirmation.",
+  "delete_account": "Delete account",
+  "delete_account_help": "Deleting your account will permanently remove all your data from the system. This action cannot be undone.",
+  "new_tax_rate": "New Tax Rate",
+  "edit_tax_rate": "Edit Tax Rate"
 }

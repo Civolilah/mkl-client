@@ -68,6 +68,7 @@ const Header = ({ title }: Props) => {
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const areChangesMade = useAtomValue(areChangesMadeAtom);
   const saveAndDiscardActions = useAtomValue(saveAndDiscardActionsAtom);
@@ -85,7 +86,7 @@ const Header = ({ title }: Props) => {
   return (
     <Box
       className={classNames(
-        'flex items-center justify-center w-full border-b py-4 relative',
+        'flex items-center justify-center w-full border-b relative',
         {
           'shadow-sm':
             !location.pathname.includes('/new') &&
@@ -112,9 +113,9 @@ const Header = ({ title }: Props) => {
           {title}
         </Text>
 
-        {saveAndDiscardActions && (
+        {saveAndDiscardActions && isLargeScreen && (
           <Box
-            className="flex items-center gap-x-20 absolute right-[54%] -top-[0.45rem] translate-x-1/2 border rounded-md py-1.5 px-2 bg-white animate-box-shake"
+            className="flex items-center gap-x-20 absolute right-[54%] -top-[0.2rem] translate-x-1/2 border rounded-md py-1.5 px-2 bg-gray-50 animate-box-shake"
             style={{
               borderColor: colors.$1,
             }}
@@ -450,7 +451,11 @@ const Header = ({ title }: Props) => {
                 </Box>
               }
             >
-              <Avatar className="cursor-pointer uppercase">
+              <Avatar
+                size="large"
+                className="cursor-pointer uppercase"
+                fontSize="1.2rem"
+              >
                 {userCompanyDetails?.email?.[0]}
               </Avatar>
             </Popover>

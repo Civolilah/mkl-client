@@ -14,19 +14,21 @@ import { Card } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
-import ChangePasswordModal from './ChangePasswordModal';
-import ChangeSecurityPasswordModal from './ChangeSecurityPasswordModal';
+import { ProfileProps } from '../../Profile';
 
-const Passwords = () => {
+const Notifications = ({
+  profile,
+  errors,
+  setProfile,
+  isLoading,
+}: ProfileProps) => {
   const t = useTranslation();
 
   return (
-    <Card title={t('passwords')} className="w-full" paddingBottom="0">
-      <ChangePasswordModal />
-
-      <ChangeSecurityPasswordModal />
+    <Card title={t('notifications')} className="w-full">
+      Notifications
     </Card>
   );
 };
 
-export default Passwords;
+export default Notifications;

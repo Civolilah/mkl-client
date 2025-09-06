@@ -21,6 +21,7 @@ const AVAILABLE_PERMISSIONS = [
 
   'view_dashboard',
   'manage_orders',
+  'view_import_export',
   'import_products',
   'export_products',
   'manage_stock_counting',
@@ -76,6 +77,10 @@ const AVAILABLE_PERMISSIONS = [
   'create_bin',
   'view_bin',
   'edit_bin',
+
+  'create_tax_rate',
+  'view_tax_rate',
+  'edit_tax_rate',
 ];
 
 type ValidationOptions = {

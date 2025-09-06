@@ -305,6 +305,20 @@ const useNavItems = () => {
       group: 'locations',
     },
     {
+      key: 'tax_rates',
+      label: 'tax_rates',
+      iconName: 'percentage',
+      href: '/settings/tax_rates',
+      visible: isInventoryManager,
+      iconSize: '1.1rem',
+      rightIcon: {
+        name: 'add',
+        href: '/tax_rates/new',
+        tooltipText: 'new_tax_rate',
+        visible: hasPermission('create_tax_rate'),
+      },
+    },
+    {
       key: 'employees',
       label: 'employees',
       iconName: 'employees',

@@ -10,17 +10,26 @@
 
 import { Dispatch, SetStateAction, useState } from 'react';
 
+import { route } from '@helpers/index';
+import { useNavigate } from 'react-router-dom';
+
 import { ValidationErrors } from '@interfaces/index';
 
 import { Box } from '@components/index';
 
-import { usePageLayoutAndActions, useTranslation } from '@hooks/index';
+import {
+  usePageLayoutAndActions,
+  useSaveAndDiscardActions,
+  useTranslation,
+} from '@hooks/index';
 
+import DeleteAccount from './common/components/DeleteAccount';
 import Details from './common/components/Details';
+import Notifications from './common/components/Notifications';
 import Passwords from './common/components/Passwords';
 import Preferences from './common/components/Preferences';
 
-interface ProfileType {
+export interface ProfileType {
   first_name: string;
   last_name: string;
   email: string;
@@ -31,6 +40,9 @@ interface ProfileType {
   warehouses_ids: string[];
   permissions: string[];
   company_id: string;
+  language: string;
+  number_precision: number;
+  enable_security_password: boolean;
 }
 
 export interface ProfileProps {
@@ -43,15 +55,34 @@ export interface ProfileProps {
 const Profile = () => {
   const t = useTranslation();
 
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [profile, setProfile] = useState<ProfileType | undefined>(undefined);
+
+  const handleSave = async () => {
+    if (!profile) {
+      return;
+    }
+  };
 
   usePageLayoutAndActions(
     {
       title: t('profile'),
     },
     []
+  );
+
+  useSaveAndDiscardActions(
+    {
+      disabledSaveButton: isFormBusy,
+      disabledDiscardButton: isFormBusy,
+      onSaveClick: handleSave,
+      onDiscardClick: () => navigate(route('/employees')),
+    },
+    [profile, isFormBusy, handleSave]
   );
 
   return (
@@ -70,12 +101,16 @@ const Profile = () => {
         isLoading={isLoading}
       />
 
-      <Passwords
+      <Passwords />
+
+      <Notifications
         profile={profile}
         errors={errors}
         setProfile={setProfile}
         isLoading={isLoading}
       />
+
+      <DeleteAccount />
     </Box>
   );
 };
