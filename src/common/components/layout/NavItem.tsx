@@ -16,7 +16,12 @@ import styled from 'styled-components';
 import { Box, Icon, Text, Tooltip } from '@components/index';
 
 import { NavItem as NavItemType } from '@hooks/global/useNavItems';
-import { useAccentColor, useColors, useTranslation } from '@hooks/index';
+import {
+  useAccentColor,
+  useColors,
+  usePreventAction,
+  useTranslation,
+} from '@hooks/index';
 
 import { menuDrawerOpenedAtom } from './MobileNavBar';
 
@@ -56,6 +61,8 @@ const NavItem = ({ item }: Props) => {
   const location = useLocation();
   const accentColor = useAccentColor();
 
+  const preventAction = usePreventAction();
+
   const setIsMenuDrawerOpened = useSetAtom(menuDrawerOpenedAtom);
 
   return (
@@ -68,8 +75,12 @@ const NavItem = ({ item }: Props) => {
         isActive: location.pathname.startsWith(item.href),
       }}
       onClick={() => {
-        navigate(route(item.href));
-        setIsMenuDrawerOpened(false);
+        preventAction({
+          action: () => {
+            navigate(route(item.href));
+            setIsMenuDrawerOpened(false);
+          },
+        });
       }}
       style={{ minHeight: '2.4rem' }}
     >
@@ -99,8 +110,13 @@ const NavItem = ({ item }: Props) => {
               className="flex items-center justify-center"
               onClick={(event) => {
                 event.stopPropagation();
-                navigate(route(item.rightIcon!.href));
-                setIsMenuDrawerOpened(false);
+
+                preventAction({
+                  action: () => {
+                    navigate(route(item.rightIcon!.href));
+                    setIsMenuDrawerOpened(false);
+                  },
+                });
               }}
               style={{
                 borderRadius: '50%',

@@ -473,5 +473,9 @@
   "delete_account": "Delete account",
   "delete_account_help": "Deleting your account will permanently remove all your data from the system. This action cannot be undone.",
   "new_tax_rate": "New Tax Rate",
-  "edit_tax_rate": "Edit Tax Rate"
+  "edit_tax_rate": "Edit Tax Rate",
+  "date_format": "Date Format",
+  "military_time": "24 Hour Time",
+  "comma_decimal": "Decimal Comma",
+  "comma_decimal_help": "Use comma (,) instead of period (.) for decimal numbers (e.g., 1,50 instead of 1.50)."
 }

@@ -24,6 +24,7 @@ import {
   useAccentColor,
   useColors,
   useNavItems,
+  usePreventAction,
   useTranslation,
 } from '@hooks/index';
 
@@ -105,6 +106,8 @@ const GroupedNavItems = ({
   const colors = useColors();
   const accentColor = useAccentColor();
 
+  const preventAction = usePreventAction();
+
   const groupConfig =
     NAVIGATION_GROUPS[group as keyof typeof NAVIGATION_GROUPS];
 
@@ -120,7 +123,12 @@ const GroupedNavItems = ({
         className="flex items-center justify-between pl-1 pr-1.5 py-2.5 rounded cursor-pointer transition-all duration-200"
         onClick={(e) => {
           e.stopPropagation();
-          onToggle();
+
+          preventAction({
+            action: () => {
+              onToggle();
+            },
+          });
         }}
         theme={{
           hoverBackgroundColor: colors.$30,

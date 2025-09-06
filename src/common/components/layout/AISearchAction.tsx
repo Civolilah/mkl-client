@@ -19,7 +19,7 @@ import { useLocation } from 'react-router-dom';
 import { IconName } from '@components/general/Icon';
 import { Box, Icon } from '@components/index';
 
-import { useAccentColor, useColors } from '@hooks/index';
+import { useAccentColor, useColors, usePreventAction } from '@hooks/index';
 
 import FooterAction from './FooterAction';
 
@@ -71,6 +71,8 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
   const colors = useColors();
   const location = useLocation();
   const accentColor = useAccentColor();
+
+  const preventAction = usePreventAction();
 
   const popoverRef = useRef(null);
 
@@ -126,7 +128,13 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
       }
       trigger="click"
       open={isOpen}
-      onOpenChange={handleOpenChange}
+      onOpenChange={(open) => {
+        preventAction({
+          action: () => {
+            handleOpenChange(open);
+          },
+        });
+      }}
       placement="top"
       arrow={false}
       overlayInnerStyle={{
@@ -153,7 +161,6 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
             backgroundColor: isOpen ? 'white' : accentColor,
             border: `1px solid ${colors.$1}`,
           }}
-          onClick={() => setIsOpen(!isOpen)}
         >
           <Box>
             <Icon
@@ -167,7 +174,6 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
         <div className="flex flex-1 h-full items-center">
           <FooterAction
             text="ai_search"
-            onClick={() => setIsOpen((prev) => !prev)}
             icon={
               <Box>
                 <Icon

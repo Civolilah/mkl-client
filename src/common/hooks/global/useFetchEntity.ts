@@ -27,7 +27,8 @@ type Params<T> = {
   setInitialResponse?: Dispatch<SetStateAction<T | undefined>>;
   listQuery?: boolean;
   formatRecords?: (data: T[]) => T[];
-  enableByPermission: boolean;
+  enableByPermission?: boolean;
+  withoutQueryId?: boolean;
 };
 
 const useFetchEntity = <T>({
@@ -39,7 +40,8 @@ const useFetchEntity = <T>({
   setEntities,
   listQuery,
   formatRecords,
-  enableByPermission,
+  enableByPermission = true,
+  withoutQueryId = false,
 }: Params<T>) => {
   const { id } = useParams();
   const queryClient = useQueryClient();
@@ -52,11 +54,11 @@ const useFetchEntity = <T>({
     refetch,
     isFetching,
   } = useQuery(
-    listQuery ? queryIdentifiers : [...queryIdentifiers, id],
+    listQuery || withoutQueryId ? queryIdentifiers : [...queryIdentifiers, id],
     ({ signal }) =>
       request(
         'GET',
-        listQuery
+        listQuery || withoutQueryId
           ? endpoint
           : endpointHelper(`${endpoint}/:id`, {
               id: id as string,
@@ -65,7 +67,8 @@ const useFetchEntity = <T>({
         { signal }
       ).then((response) => response.data),
     {
-      enabled: (Boolean(id) || listQuery) && enableByPermission,
+      enabled:
+        (Boolean(id) || listQuery || withoutQueryId) && enableByPermission,
       staleTime: Infinity,
       refetchOnWindowFocus: false,
     }
@@ -97,7 +100,7 @@ const useFetchEntity = <T>({
   };
 
   useEffect(() => {
-    if (!id && !listQuery) {
+    if (!id && !listQuery && !withoutQueryId) {
       window.dispatchEvent(new CustomEvent('navigate_not_found_page'));
       return;
     }

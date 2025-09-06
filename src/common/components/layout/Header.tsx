@@ -32,6 +32,7 @@ import {
 } from '@components/index';
 
 import { areChangesMadeAtom } from '@hooks/global/useHandleEntityChanges';
+import { preventedActionAtom } from '@hooks/global/usePreventAction';
 import { saveAndDiscardActionsAtom } from '@hooks/global/useSaveAndDiscardActions';
 import {
   useAccentColor,
@@ -71,6 +72,7 @@ const Header = ({ title }: Props) => {
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const areChangesMade = useAtomValue(areChangesMadeAtom);
+  const preventedAction = useAtomValue(preventedActionAtom);
   const saveAndDiscardActions = useAtomValue(saveAndDiscardActionsAtom);
 
   const onClose = () => {
@@ -113,9 +115,10 @@ const Header = ({ title }: Props) => {
           {title}
         </Text>
 
-        {saveAndDiscardActions && isLargeScreen && (
+        {saveAndDiscardActions && isLargeScreen && areChangesMade && (
           <Box
-            className="flex items-center gap-x-20 absolute right-[54%] -top-[0.2rem] translate-x-1/2 border rounded-md py-1.5 px-2 bg-gray-50 animate-box-shake"
+            id="discardSaveBox"
+            className="flex items-center gap-x-20 absolute right-[54%] -top-[0.2rem] translate-x-1/2 border rounded-md py-1.5 px-2 bg-gray-50"
             style={{
               borderColor: colors.$1,
             }}
@@ -129,7 +132,7 @@ const Header = ({ title }: Props) => {
                 />
               </Box>
 
-              <Text className="text-xs-mid font-medium">
+              <Text className="text-xs-mid font-medium whitespace-nowrap">
                 {t('unsaved_changes')}
               </Text>
             </Box>
@@ -137,7 +140,13 @@ const Header = ({ title }: Props) => {
               <Button
                 size="middle"
                 type="default"
-                onClick={saveAndDiscardActions.onDiscardClick}
+                onClick={() => {
+                  if (preventedAction) {
+                    preventedAction?.action();
+                  } else {
+                    saveAndDiscardActions.onDiscardClick();
+                  }
+                }}
               >
                 {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
               </Button>

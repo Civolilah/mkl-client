@@ -90,3 +90,4 @@ export { default as LanguagesSelector } from '@components/selectors/LanguagesSel
 export { default as FooterActionItem } from '@components/layout/FooterActionItem';
 export { default as ActionPopoverIcon } from '@components/general/ActionPopoverIcon';
 export { default as SettingsNavItem } from '@components/layout/SettingsNavItem';
+export { default as DateFormatsSelector } from '@components/selectors/DateFormatsSelector';

@@ -13,6 +13,7 @@ import React from 'react';
 import {
   Box,
   Card,
+  DateFormatsSelector,
   LabelElement,
   LanguagesSelector,
   NumberField,
@@ -34,20 +35,52 @@ const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
       <Box className="flex flex-col gap-y-4">
         <Box className="flex gap-x-4">
           <LanguagesSelector
-            required
             value={profile?.language || ''}
             onChange={(value) => handleChange('language', value)}
             errorMessage={errors.language && t(errors.language)}
           />
 
+          <DateFormatsSelector
+            label={t('date_format')}
+            value={profile?.date_format || ''}
+            onValueChange={(value) => handleChange('date_format', value)}
+            errorMessage={errors.date_format && t(errors.date_format)}
+          />
+        </Box>
+
+        <Box className="flex gap-x-4">
           <NumberField
-            required
             label={t('number_precision')}
             value={profile?.number_precision || 2}
             onValueChange={(value) => handleChange('number_precision', value)}
             errorMessage={errors.number_precision && t(errors.number_precision)}
           />
         </Box>
+
+        <LabelElement
+          label={t('military_time')}
+          withoutOptionalText
+          twoGridColumns
+        >
+          <Toggle
+            checked={profile?.is_military_time || false}
+            onChange={(value) => handleChange('is_military_time', value)}
+          />
+        </LabelElement>
+
+        <LabelElement
+          label={t('comma_decimal')}
+          helpLabel={t('comma_decimal_help')}
+          withoutOptionalText
+          twoGridColumns
+        >
+          <Toggle
+            checked={profile?.comma_as_decimal_separator || false}
+            onChange={(value) =>
+              handleChange('comma_as_decimal_separator', value)
+            }
+          />
+        </LabelElement>
 
         <LabelElement
           label={t('enable_security_password')}

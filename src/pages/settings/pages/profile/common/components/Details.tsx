@@ -27,7 +27,6 @@ const Details = ({ profile, errors, setProfile }: ProfileProps) => {
       <Box className="flex flex-col gap-y-4">
         <Box className="flex gap-x-4">
           <TextField
-            required
             label={t('first_name')}
             placeHolder={t('first_name_placeholder')}
             value={profile?.first_name || ''}

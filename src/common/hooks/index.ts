@@ -42,3 +42,5 @@ export { default as useUserType } from '@hooks/global/useUserType';
 export { default as useSettingsNavItems } from '@hooks/global/useSettingsNavItems';
 export { default as useMobileActions } from '@hooks/global/useMobileActions';
 export { default as useSaveAndDiscardActions } from '@hooks/global/useSaveAndDiscardActions';
+export { default as useDetectChanges } from '@hooks/global/useDetectChanges';
+export { default as usePreventAction } from '@hooks/global/usePreventAction';

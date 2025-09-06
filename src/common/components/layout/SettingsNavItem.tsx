@@ -15,7 +15,12 @@ import styled from 'styled-components';
 import { IconName } from '@components/general/Icon';
 import { Box, Icon, Text } from '@components/index';
 
-import { useAccentColor, useColors, useTranslation } from '@hooks/index';
+import {
+  useAccentColor,
+  useColors,
+  usePreventAction,
+  useTranslation,
+} from '@hooks/index';
 
 interface SettingsNavItemType {
   key: string;
@@ -57,6 +62,7 @@ const SettingsNavItem = ({ item }: Props) => {
   const t = useTranslation();
 
   const navigate = useNavigate();
+  const preventAction = usePreventAction();
 
   const colors = useColors();
   const location = useLocation();
@@ -72,7 +78,11 @@ const SettingsNavItem = ({ item }: Props) => {
         isActive: location.pathname.startsWith(item.href),
       }}
       onClick={() => {
-        navigate(route(item.href));
+        preventAction({
+          action: () => {
+            navigate(route(item.href));
+          },
+        });
       }}
       style={{ minHeight: '2.4rem' }}
     >
