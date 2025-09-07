@@ -10,9 +10,14 @@
 
 import { CSSProperties, ReactNode } from 'react';
 
+import { route } from '@helpers/index';
 import classNames from 'classnames';
-import { Link as BaseLink } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
+import { Link as BaseLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { areChangesMadeAtom } from '@hooks/global/useHandleEntityChanges';
+import { usePreventAction } from '@hooks/index';
 
 type Props = {
   to: string;
@@ -32,9 +37,15 @@ const StyledLink = styled(BaseLink)`
 `;
 
 const Link = ({ children, to, target, className, style }: Props) => {
+  const navigate = useNavigate();
+
+  const preventAction = usePreventAction();
+
+  const areChangesMade = useAtomValue(areChangesMadeAtom);
+
   return (
     <StyledLink
-      to={to}
+      to={areChangesMade ? '' : target !== '_blank' ? route(to) : to}
       className={classNames(
         'transition-colors duration-200 hover:underline',
         className
@@ -45,6 +56,17 @@ const Link = ({ children, to, target, className, style }: Props) => {
         hoverColor: '#2E6CBD',
       }}
       style={style}
+      onClick={() => {
+        preventAction({
+          action: () => {
+            if (target !== '_blank') {
+              navigate(route(to));
+            } else {
+              window.open(to, '_blank');
+            }
+          },
+        });
+      }}
     >
       {children}
     </StyledLink>

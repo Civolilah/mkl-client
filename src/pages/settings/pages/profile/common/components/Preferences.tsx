@@ -12,6 +12,7 @@ import React from 'react';
 
 import {
   Box,
+  Button,
   Card,
   DateFormatsSelector,
   LabelElement,
@@ -26,13 +27,18 @@ import { useTranslation } from '@hooks/index';
 import { ProfileProps } from '../../Profile';
 import useHandleChange from '../hooks/useHandleChange';
 
-const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
+const Preferences = ({
+  profile,
+  errors,
+  setProfile,
+  isLoading,
+}: ProfileProps) => {
   const t = useTranslation();
 
   const handleChange = useHandleChange({ setProfile });
 
   return (
-    <Card title={t('preferences')} className="w-full">
+    <Card title={t('preferences')} className="w-full" isLoading={isLoading}>
       <Box className="flex flex-col gap-y-4">
         <Box className="flex gap-x-4">
           <LanguagesSelector
@@ -54,6 +60,7 @@ const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
         <Box className="flex gap-x-4">
           <TimezonesSelector
             label={t('timezone')}
+            placeholder={t('select_timezone')}
             value={profile?.time_zone || ''}
             onChange={(value) => handleChange('time_zone', value)}
             errorMessage={errors.time_zone && t(errors.time_zone)}
@@ -63,7 +70,9 @@ const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
           <NumberField
             label={t('number_precision')}
             value={profile?.number_precision || 2}
-            onValueChange={(value) => handleChange('number_precision', value)}
+            onValueChange={(value) =>
+              handleChange('number_precision', value || 2)
+            }
             errorMessage={errors.number_precision && t(errors.number_precision)}
             withoutOptionalText
             precision={0}
@@ -72,6 +81,7 @@ const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
 
         <LabelElement
           label={t('military_time')}
+          helpLabel={t('military_time_help')}
           withoutOptionalText
           twoGridColumns
         >
@@ -101,12 +111,31 @@ const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
           withoutOptionalText
           twoGridColumns
         >
-          <Toggle
-            checked={profile?.enable_security_password || false}
-            onChange={(value) =>
-              handleChange('enable_security_password', value)
-            }
-          />
+          {profile?.has_security_password ? (
+            <Toggle
+              checked={profile?.enabled_security_password || false}
+              onChange={(value) =>
+                handleChange('enabled_security_password', value)
+              }
+            />
+          ) : (
+            <Button
+              onClick={() => {
+                const setSecurityPasswordButton = document.getElementById(
+                  'set-security-password-button'
+                );
+
+                if (setSecurityPasswordButton) {
+                  setSecurityPasswordButton.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                  });
+                }
+              }}
+            >
+              {t('set_security_password')}
+            </Button>
+          )}
         </LabelElement>
       </Box>
     </Card>

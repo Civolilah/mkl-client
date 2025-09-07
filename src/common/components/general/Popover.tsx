@@ -24,7 +24,7 @@ const Popover = ({ children, content, trigger = ['click'] }: Props) => {
       content={content}
       trigger={trigger}
       arrow={false}
-      overlayInnerStyle={{ borderRadius: 0, padding: 0 }}
+      overlayInnerStyle={{ borderRadius: '0.5rem', padding: 0 }}
     >
       <div>{children}</div>
     </PopoverBase>

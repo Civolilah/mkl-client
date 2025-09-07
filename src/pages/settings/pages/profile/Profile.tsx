@@ -39,7 +39,7 @@ export interface ProfileType {
   phone: string;
   language: string;
   number_precision: number;
-  enable_security_password: boolean;
+  enabled_security_password: boolean;
   has_security_password: boolean;
   is_military_time: boolean;
   date_format: string;
@@ -161,7 +161,7 @@ const Profile = () => {
         isLoading={isLoading}
       />
 
-      <Passwords />
+      <Passwords profile={profile} isLoading={isLoading} />
     </Box>
   );
 };

@@ -10,6 +10,7 @@
 
 import { useEffect } from 'react';
 
+import { route } from '@helpers/index';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { Box, SettingsNavItem } from '@components/index';
@@ -24,7 +25,7 @@ const Settings = () => {
 
   useEffect(() => {
     if (location.pathname === '/settings') {
-      navigate('/settings/profile');
+      navigate(route('/settings/profile'));
     }
   }, [location.pathname]);
 

@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 
-import { useAccentColor, useColors } from '@hooks/index';
+import { useAccentColor, useColors, usePreventAction } from '@hooks/index';
 
 import Box from './Box';
 
@@ -24,7 +24,8 @@ const largeButtonStyle = {
   padding: '0.5rem 0.6875rem',
 };
 
-type Props = {
+interface Props {
+  id?: string;
   htmlType?: 'submit' | 'button' | 'reset';
   type?: 'primary' | 'default' | 'link' | 'text' | 'dashed';
   className?: string;
@@ -36,7 +37,8 @@ type Props = {
   style?: CSSProperties;
   icon?: ReactNode;
   handleHoverWithOpacity?: boolean;
-};
+  disablePreventAction?: boolean;
+}
 
 const StyledBaseButton = styled(BaseButton)`
   transition: opacity 0.3s ease;
@@ -50,6 +52,7 @@ const StyledBaseButton = styled(BaseButton)`
 `;
 
 const Button = ({
+  id,
   disabled,
   onClick,
   children,
@@ -60,9 +63,12 @@ const Button = ({
   className,
   icon,
   handleHoverWithOpacity,
+  disablePreventAction,
 }: Props) => {
   const colors = useColors();
   const accentColor = useAccentColor();
+
+  const preventAction = usePreventAction();
 
   const isMiddleScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
@@ -72,9 +78,10 @@ const Button = ({
         ...largeButtonStyle,
         color: type === 'default' ? 'black' : 'white',
         cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.8 : 1,
+        opacity: disabled ? 0.75 : 1,
         transition: 'background-color 0.3s ease',
         borderColor: type === 'default' ? colors.$17 : '',
+        minWidth: '5rem',
         ...style,
       };
     }
@@ -82,7 +89,7 @@ const Button = ({
     return {
       color: type === 'default' ? 'black' : 'white',
       cursor: disabled ? 'not-allowed' : 'pointer',
-      opacity: disabled ? 0.8 : 1,
+      opacity: disabled ? 0.75 : 1,
       transition: 'background-color 0.3s ease',
       borderColor: type === 'default' ? colors.$17 : '',
       paddingTop: isMiddleScreen ? '0.5rem' : '0.5rem',
@@ -104,23 +111,35 @@ const Button = ({
         },
         className
       )}
+      id={id}
       type={type}
       icon={icon ? <Box>{icon}</Box> : null}
       disabled={disabled && !disabledWithLoadingIcon}
       loading={disabled && disabledWithLoadingIcon}
-      onClick={onClick}
+      onClick={() => {
+        if (disablePreventAction) {
+          onClick?.();
+        } else {
+          preventAction({
+            action: () => {
+              onClick?.();
+            },
+          });
+        }
+      }}
       style={getButtonStyle()}
       size={size}
       theme={{
-        backgroundColor: type === 'default' && disabled ? 'transparent' : '',
+        backgroundColor: type === 'primary' ? accentColor : 'transparent',
         hoverBackgroundColor: handleHoverWithOpacity
           ? style?.backgroundColor
-          : type === 'default' && !disabled
+          : type === 'default'
             ? colors.$18
-            : type === 'primary' && disabled
+            : type === 'primary'
               ? accentColor
               : '',
-        hoverBackgroundColorOpacity: handleHoverWithOpacity ? 0.75 : 1,
+        hoverBackgroundColorOpacity:
+          handleHoverWithOpacity || disabled ? 0.75 : 1,
       }}
     >
       {children}

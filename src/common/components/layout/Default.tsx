@@ -22,7 +22,7 @@ import Icon, { IconName } from '@components/general/Icon';
 import { Box, EntityActions, Header, Text, Tooltip } from '@components/index';
 
 import { mobileActionsAtom } from '@hooks/global/useMobileActions';
-import { useAccentColor, useColors, useTranslation } from '@hooks/index';
+import { useAccentColor, useColors, usePreventAction } from '@hooks/index';
 
 import { isMobileAiPopoverOpenAtom } from './AISearchAction';
 import MainNavBar from './MainNavBar';
@@ -69,9 +69,8 @@ const Default = ({
   tooltipPermissionMessage,
   displayPermissionTooltip = false,
 }: Props) => {
-  const t = useTranslation();
-
   const navigate = useNavigate();
+  const preventAction = usePreventAction();
 
   const colors = useColors();
   const accentColor = useAccentColor();
@@ -160,7 +159,13 @@ const Default = ({
                             <Box className="flex items-center space-x-1 md:space-x-2">
                               <Box
                                 className="flex items-center space-x-1 md:space-x-2 cursor-pointer"
-                                onClick={() => navigate(route('/'))}
+                                onClick={() => {
+                                  preventAction({
+                                    action: () => {
+                                      navigate(route('/'));
+                                    },
+                                  });
+                                }}
                               >
                                 <Icon
                                   name="home"
@@ -192,7 +197,13 @@ const Default = ({
                                         item.href &&
                                         index !== breadcrumbs.length - 1
                                       ) {
-                                        navigate(item.href);
+                                        preventAction({
+                                          action: () => {
+                                            navigate(
+                                              route(item.href as string)
+                                            );
+                                          },
+                                        });
                                       }
                                     }}
                                     style={{

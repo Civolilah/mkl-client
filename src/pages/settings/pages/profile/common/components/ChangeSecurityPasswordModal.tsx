@@ -19,6 +19,7 @@ import { Box, Button, LabelElement, Modal, TextField } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
+import { ProfileType } from '../../Profile';
 import { validateChangeSecurityPassword } from '../helpers/validation';
 
 export interface PasswordPayload {
@@ -26,7 +27,11 @@ export interface PasswordPayload {
   password_confirmation: string;
 }
 
-const ChangeSecurityPasswordModal = () => {
+interface Props {
+  profile: ProfileType | undefined;
+}
+
+const ChangeSecurityPasswordModal = ({ profile }: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
@@ -83,8 +88,15 @@ const ChangeSecurityPasswordModal = () => {
   return (
     <>
       <LabelElement label={t('security_password')} withoutOptionalText>
-        <Button onClick={() => setIsModalVisible(true)}>
-          {t('change_security_password')}
+        <Button
+          id="set-security-password-button"
+          onClick={() => setIsModalVisible(true)}
+        >
+          {t(
+            profile?.has_security_password
+              ? 'change_security_password'
+              : 'set_security_password'
+          )}
         </Button>
       </LabelElement>
 

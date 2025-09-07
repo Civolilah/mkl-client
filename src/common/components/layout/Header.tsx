@@ -34,6 +34,7 @@ import {
 import { areChangesMadeAtom } from '@hooks/global/useHandleEntityChanges';
 import { preventedActionAtom } from '@hooks/global/usePreventAction';
 import { saveAndDiscardActionsAtom } from '@hooks/global/useSaveAndDiscardActions';
+import { usePreventAction } from '@hooks/index';
 import {
   useAccentColor,
   useColors,
@@ -62,6 +63,7 @@ const Header = ({ title }: Props) => {
 
   const logout = useLogout();
   const navigate = useNavigate();
+  const preventAction = usePreventAction();
 
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false);
 
@@ -147,6 +149,7 @@ const Header = ({ title }: Props) => {
                     saveAndDiscardActions.onDiscardClick();
                   }
                 }}
+                disablePreventAction
               >
                 {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
               </Button>
@@ -155,6 +158,7 @@ const Header = ({ title }: Props) => {
                 size="middle"
                 type="primary"
                 onClick={saveAndDiscardActions.onSaveClick}
+                disablePreventAction
               >
                 {t(saveAndDiscardActions.saveButtonLabel || 'save')}
               </Button>
@@ -348,7 +352,7 @@ const Header = ({ title }: Props) => {
           ) : (
             <Popover
               content={
-                <Box className="flex flex-col w-full bg-white">
+                <Box className="flex flex-col w-full bg-white rounded-lg">
                   <Box className="flex flex-col items-center py-4 px-5 border-b border-gray-100">
                     <Box
                       className="w-10 h-10 rounded-full flex items-center justify-center mb-2"
@@ -367,7 +371,13 @@ const Header = ({ title }: Props) => {
                   <Box className="flex flex-col w-full py-2">
                     <StyledBox
                       className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
-                      onClick={() => navigate(route('/settings/profile'))}
+                      onClick={() =>
+                        preventAction({
+                          action: () => {
+                            navigate(route('/settings/profile'));
+                          },
+                        })
+                      }
                       theme={{
                         hoverBackgroundColor: colors.$19,
                       }}
@@ -390,7 +400,11 @@ const Header = ({ title }: Props) => {
                     <StyledBox
                       className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
                       onClick={() => {
-                        // Handle contact us
+                        preventAction({
+                          action: () => {
+                            // Handle contact us
+                          },
+                        });
                       }}
                       theme={{
                         hoverBackgroundColor: colors.$19,
@@ -414,7 +428,11 @@ const Header = ({ title }: Props) => {
                     <StyledBox
                       className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
                       onClick={() => {
-                        // Handle feedback
+                        preventAction({
+                          action: () => {
+                            // Handle feedback
+                          },
+                        });
                       }}
                       theme={{
                         hoverBackgroundColor: colors.$19,
@@ -437,7 +455,13 @@ const Header = ({ title }: Props) => {
 
                     <StyledBox
                       className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
-                      onClick={logout}
+                      onClick={() => {
+                        preventAction({
+                          action: () => {
+                            logout();
+                          },
+                        });
+                      }}
                       theme={{
                         hoverBackgroundColor: colors.$19,
                       }}

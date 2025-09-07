@@ -17,13 +17,13 @@ import { useTranslation } from '@hooks/index';
 import { ProfileProps } from '../../Profile';
 import useHandleChange from '../hooks/useHandleChange';
 
-const Details = ({ profile, errors, setProfile }: ProfileProps) => {
+const Details = ({ profile, errors, setProfile, isLoading }: ProfileProps) => {
   const t = useTranslation();
 
   const handleChange = useHandleChange({ setProfile });
 
   return (
-    <Card title={t('details')} className="w-full">
+    <Card title={t('details')} className="w-full" isLoading={isLoading}>
       <Box className="flex flex-col gap-y-4">
         <Box className="flex gap-x-4">
           <TextField
