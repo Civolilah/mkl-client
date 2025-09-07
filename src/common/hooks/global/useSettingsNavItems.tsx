@@ -92,10 +92,10 @@ const useSettingsNavItems = () => {
       iconSize: '1.325rem',
     },
     {
-      key: 'billing',
-      label: 'billing',
+      key: 'account_and_billing',
+      label: 'account_and_billing',
       iconName: 'creditCard',
-      href: '/settings/billing',
+      href: '/settings/account_and_billing',
       visible: hasPermission('owner'),
       iconSize: '1.2rem',
     },

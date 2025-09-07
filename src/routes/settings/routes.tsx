@@ -14,10 +14,14 @@ import { Route } from 'react-router-dom';
 
 const Settings = lazy(() => import('@pages/settings/Settings'));
 const Profile = lazy(() => import('@pages/settings/pages/profile/Profile'));
+const Notifications = lazy(
+  () => import('@pages/settings/pages/notifications/Notifications')
+);
 
 const Routes = (
   <Route path="/settings" element={<Settings />}>
     <Route path="profile" element={<Profile />} />
+    <Route path="notifications" element={<Notifications />} />
   </Route>
 );
 

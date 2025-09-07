@@ -17,6 +17,7 @@ import {
   LabelElement,
   LanguagesSelector,
   NumberField,
+  TimezonesSelector,
   Toggle,
 } from '@components/index';
 
@@ -38,6 +39,7 @@ const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
             value={profile?.language || ''}
             onChange={(value) => handleChange('language', value)}
             errorMessage={errors.language && t(errors.language)}
+            withoutOptionalText
           />
 
           <DateFormatsSelector
@@ -45,15 +47,26 @@ const Preferences = ({ profile, errors, setProfile }: ProfileProps) => {
             value={profile?.date_format || ''}
             onValueChange={(value) => handleChange('date_format', value)}
             errorMessage={errors.date_format && t(errors.date_format)}
+            withoutOptionalText
           />
         </Box>
 
         <Box className="flex gap-x-4">
+          <TimezonesSelector
+            label={t('timezone')}
+            value={profile?.time_zone || ''}
+            onChange={(value) => handleChange('time_zone', value)}
+            errorMessage={errors.time_zone && t(errors.time_zone)}
+            withoutOptionalText
+          />
+
           <NumberField
             label={t('number_precision')}
             value={profile?.number_precision || 2}
             onValueChange={(value) => handleChange('number_precision', value)}
             errorMessage={errors.number_precision && t(errors.number_precision)}
+            withoutOptionalText
+            precision={0}
           />
         </Box>
 

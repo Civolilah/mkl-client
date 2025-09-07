@@ -28,11 +28,9 @@ import {
   useTranslation,
 } from '@hooks/index';
 
-import Details from './common/components/Details';
-import Passwords from './common/components/Passwords';
-import Preferences from './common/components/Preferences';
+import NotificationsCard from './common/components/NotificationsCard';
 
-export interface ProfileType {
+export interface NotificationsType {
   first_name: string;
   last_name: string;
   email: string;
@@ -49,14 +47,14 @@ export interface ProfileType {
   enabled_web_notifications: boolean;
 }
 
-export interface ProfileProps {
-  profile: ProfileType | undefined;
-  setProfile: Dispatch<SetStateAction<ProfileType | undefined>>;
+export interface NotificationsProps {
+  notifications: NotificationsType | undefined;
+  setNotifications: Dispatch<SetStateAction<NotificationsType | undefined>>;
   errors: ValidationErrors;
   isLoading: boolean;
 }
 
-const Profile = () => {
+const Notifications = () => {
   const t = useTranslation();
 
   const breadcrumbs: BreadcrumbItem[] = [
@@ -65,8 +63,8 @@ const Profile = () => {
       href: '/settings',
     },
     {
-      title: t('profile'),
-      href: '/settings/profile',
+      title: t('notifications'),
+      href: '/settings/notifications',
     },
   ];
 
@@ -78,27 +76,30 @@ const Profile = () => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
-  const [profile, setProfile] = useState<ProfileType | undefined>(undefined);
-  const [initialProfile, setInitialProfile] = useState<ProfileType | undefined>(
-    undefined
-  );
+  const [notifications, setNotifications] = useState<
+    NotificationsType | undefined
+  >(undefined);
+  const [initialProfile, setInitialProfile] = useState<
+    NotificationsType | undefined
+  >(undefined);
 
-  useFetchEntity<ProfileType>({
-    queryIdentifiers: ['/api/users/profile'],
-    endpoint: '/api/users/profile',
-    setEntity: setProfile,
+  useFetchEntity<NotificationsType>({
+    queryIdentifiers: ['/api/users/notifications'],
+    endpoint: '/api/users/notifications',
+    setEntity: setNotifications,
     setIsLoading,
     setInitialResponse: setInitialProfile,
     withoutQueryId: true,
+    enableByPermission: false,
   });
 
   useDetectChanges({
     initialEntityValue: initialProfile,
-    currentEntityValue: profile,
+    currentEntityValue: notifications,
   });
 
   const handleSave = async () => {
-    if (!profile) {
+    if (!notifications) {
       return;
     }
 
@@ -109,7 +110,7 @@ const Profile = () => {
 
       setIsFormBusy(true);
 
-      request('PATCH', '/api/users/profile', profile)
+      request('PATCH', '/api/users/notifications', notifications)
         .then(() => {
           toast.success('updated_profile');
 
@@ -127,7 +128,7 @@ const Profile = () => {
 
   usePageLayoutAndActions(
     {
-      title: t('profile'),
+      title: t('notifications'),
       breadcrumbs: {
         breadcrumbs,
       },
@@ -140,30 +141,21 @@ const Profile = () => {
       disabledSaveButton: isFormBusy,
       disabledDiscardButton: isFormBusy,
       onSaveClick: handleSave,
-      onDiscardClick: () => navigate(route('/employees')),
+      onDiscardClick: () => navigate(route('/settings/profile')),
     },
-    [profile, isFormBusy, handleSave]
+    [notifications, isFormBusy, handleSave]
   );
 
   return (
     <Box className="flex flex-col gap-y-4 w-full pb-20">
-      <Details
-        profile={profile}
-        setProfile={setProfile}
+      <NotificationsCard
+        notifications={notifications}
+        setNotifications={setNotifications}
         errors={errors}
         isLoading={isLoading}
       />
-
-      <Preferences
-        profile={profile}
-        errors={errors}
-        setProfile={setProfile}
-        isLoading={isLoading}
-      />
-
-      <Passwords />
     </Box>
   );
 };
 
-export default Profile;
+export default Notifications;

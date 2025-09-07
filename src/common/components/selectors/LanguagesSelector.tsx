@@ -24,6 +24,7 @@ interface Props {
   required?: boolean;
   placeholder?: string;
   onClear?: () => void;
+  withoutOptionalText?: boolean;
 }
 
 const LanguagesSelector = ({
@@ -34,6 +35,7 @@ const LanguagesSelector = ({
   required,
   placeholder,
   onClear,
+  withoutOptionalText,
 }: Props) => {
   const t = useTranslation();
 
@@ -69,6 +71,7 @@ const LanguagesSelector = ({
       errorMessage={errorMessage}
       placeholder={placeholder}
       onClear={onClear}
+      withoutOptionalText={withoutOptionalText}
     />
   );
 };

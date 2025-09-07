@@ -19,14 +19,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import Icon, { IconName } from '@components/general/Icon';
-import {
-  Box,
-  Button,
-  EntityActions,
-  Header,
-  Text,
-  Tooltip,
-} from '@components/index';
+import { Box, EntityActions, Header, Text, Tooltip } from '@components/index';
 
 import { mobileActionsAtom } from '@hooks/global/useMobileActions';
 import { useAccentColor, useColors, useTranslation } from '@hooks/index';
@@ -154,192 +147,112 @@ const Default = ({
                 width: isLargeScreen ? `calc(100% - ${SIDEBAR_WIDTH})` : '100%',
               }}
             >
-              {Boolean(breadcrumbs.length || onCancelClick || onSaveClick) &&
-                isLargeScreen && (
-                  <Box
-                    className="flex items-center justify-end sm:justify-between w-full px-2 md:px-6 py-2 border-b shadow-sm space-x-2"
-                    style={{
-                      borderColor: colors.$1,
-                      backgroundColor: colors.$6,
-                      height: HEADER_HEIGHT,
-                    }}
-                  >
-                    <Box className="flex-1 hidden sm:flex">
-                      {Boolean(breadcrumbs.length) && (
-                        <Box className="flex justify-start w-full">
-                          <Box className="flex items-center space-x-1 md:space-x-2">
-                            <Box
-                              className="flex items-center space-x-1 md:space-x-2 cursor-pointer"
-                              onClick={() => navigate(route('/'))}
-                            >
-                              <Icon
-                                name="home"
-                                size={isMiddleScreen ? '1.3rem' : '1.1rem'}
-                                style={{ color: accentColor }}
-                              />
-
-                              <Box>
-                                <Icon
-                                  name="arrowForward"
-                                  size={isMiddleScreen ? '1.3rem' : '1.1rem'}
-                                  style={{ color: colors.$12 }}
-                                />
-                              </Box>
-                            </Box>
-
-                            {breadcrumbs.map((item, index) => (
+              <Box
+                id="scrollable-content-box"
+                className="flex flex-col w-full overflow-y-auto flex-1"
+              >
+                {Boolean(breadcrumbs.length || actions.length) &&
+                  isLargeScreen && (
+                    <Box className="flex items-center justify-end sm:justify-between w-full pl-6 pt-5 space-x-2">
+                      <Box className="flex-1 hidden sm:flex">
+                        {Boolean(breadcrumbs.length) && (
+                          <Box className="flex justify-start w-full">
+                            <Box className="flex items-center space-x-1 md:space-x-2">
                               <Box
-                                key={index}
-                                className="flex items-center space-x-1 md:space-x-2"
+                                className="flex items-center space-x-1 md:space-x-2 cursor-pointer"
+                                onClick={() => navigate(route('/'))}
                               >
-                                <Text
-                                  className={classNames('text-sm', {
-                                    'cursor-pointer hover:underline':
-                                      index !== breadcrumbs.length - 1,
-                                  })}
-                                  onClick={() => {
-                                    if (
-                                      item.href &&
-                                      index !== breadcrumbs.length - 1
-                                    ) {
-                                      navigate(item.href);
-                                    }
-                                  }}
-                                  style={{
-                                    color:
-                                      index !== breadcrumbs.length - 1
-                                        ? colors.$11
-                                        : colors.$13,
-                                  }}
-                                >
-                                  {item.title}
-                                </Text>
+                                <Icon
+                                  name="home"
+                                  size={isMiddleScreen ? '1.3rem' : '1.1rem'}
+                                  style={{ color: accentColor }}
+                                />
 
-                                {index !== breadcrumbs.length - 1 && (
-                                  <Box>
-                                    <Icon
-                                      name="arrowForward"
-                                      size={
-                                        isMiddleScreen ? '1.3rem' : '1.1rem'
-                                      }
-                                      style={{ color: colors.$12 }}
-                                    />
-                                  </Box>
-                                )}
+                                <Box>
+                                  <Icon
+                                    name="arrowForward"
+                                    size={isMiddleScreen ? '1.3rem' : '1.1rem'}
+                                    style={{ color: colors.$12 }}
+                                  />
+                                </Box>
                               </Box>
-                            ))}
+
+                              {breadcrumbs.map((item, index) => (
+                                <Box
+                                  key={index}
+                                  className="flex items-center space-x-1 md:space-x-2"
+                                >
+                                  <Text
+                                    className={classNames('text-xs-mid', {
+                                      'cursor-pointer hover:underline':
+                                        index !== breadcrumbs.length - 1,
+                                    })}
+                                    onClick={() => {
+                                      if (
+                                        item.href &&
+                                        index !== breadcrumbs.length - 1
+                                      ) {
+                                        navigate(item.href);
+                                      }
+                                    }}
+                                    style={{
+                                      color:
+                                        index !== breadcrumbs.length - 1
+                                          ? colors.$11
+                                          : colors.$13,
+                                    }}
+                                  >
+                                    {item.title}
+                                  </Text>
+
+                                  {index !== breadcrumbs.length - 1 && (
+                                    <Box>
+                                      <Icon
+                                        name="arrowForward"
+                                        size={
+                                          isMiddleScreen ? '1.3rem' : '1.1rem'
+                                        }
+                                        style={{ color: colors.$12 }}
+                                      />
+                                    </Box>
+                                  )}
+                                </Box>
+                              ))}
+                            </Box>
                           </Box>
+                        )}
+                      </Box>
+
+                      {Boolean(actions.length) && (
+                        <Box
+                          className="flex items-center space-x-2 md:space-x-4"
+                          style={{
+                            height: '2.25rem',
+                            borderColor: colors.$1,
+                            backgroundColor: colors.$6,
+                          }}
+                        >
+                          {displayPermissionTooltip &&
+                          tooltipPermissionMessage ? (
+                            <Tooltip text={tooltipPermissionMessage}>
+                              <div>
+                                <EntityActions
+                                  actions={actions}
+                                  disabled={disabledSaveButton}
+                                />
+                              </div>
+                            </Tooltip>
+                          ) : (
+                            <EntityActions
+                              actions={actions}
+                              disabled={disabledSaveButton}
+                            />
+                          )}
                         </Box>
                       )}
                     </Box>
+                  )}
 
-                    {(onSaveClick || onCancelClick) && (
-                      <Box
-                        className="flex items-center space-x-2 md:space-x-4"
-                        style={{
-                          height: '2.25rem',
-                          borderColor: colors.$1,
-                          backgroundColor: colors.$6,
-                        }}
-                      >
-                        {onCancelClick && (
-                          <Button
-                            className="h-full"
-                            type="default"
-                            onClick={onCancelClick}
-                            icon={<Icon name="close" size="1rem" />}
-                            disabled={disabledCancelButton}
-                            disabledWithLoadingIcon={
-                              disabledCancelButtonWithLoadingIcon
-                            }
-                          >
-                            {t('cancel')}
-                          </Button>
-                        )}
-
-                        {onSaveClick && (
-                          <>
-                            {tooltipPermissionMessage &&
-                            displayPermissionTooltip ? (
-                              <Tooltip text={tooltipPermissionMessage}>
-                                <div>
-                                  <Button
-                                    type="primary"
-                                    onClick={() => {
-                                      setTimeout(() => {
-                                        setIsSaveClicked(true);
-                                      }, 50);
-                                    }}
-                                    icon={
-                                      <Icon
-                                        name={saveButtonIcon}
-                                        size="1.1rem"
-                                      />
-                                    }
-                                    disabled={disabledSaveButton}
-                                    disabledWithLoadingIcon={
-                                      disabledSaveButtonWithLoadingIcon
-                                    }
-                                  >
-                                    {t(saveButtonLabel)}
-                                  </Button>
-                                </div>
-                              </Tooltip>
-                            ) : (
-                              <Button
-                                type="primary"
-                                onClick={() => {
-                                  setTimeout(() => {
-                                    setIsSaveClicked(true);
-                                  }, 50);
-                                }}
-                                icon={
-                                  <Icon
-                                    name={saveButtonIcon}
-                                    size="1.1rem"
-                                    style={{ color: saveButtonIconColor }}
-                                  />
-                                }
-                                disabled={disabledSaveButton}
-                                disabledWithLoadingIcon={
-                                  disabledSaveButtonWithLoadingIcon
-                                }
-                              >
-                                {t(saveButtonLabel)}
-                              </Button>
-                            )}
-                          </>
-                        )}
-
-                        {Boolean(actions.length) && (
-                          <>
-                            {displayPermissionTooltip &&
-                            tooltipPermissionMessage ? (
-                              <Tooltip text={tooltipPermissionMessage}>
-                                <div>
-                                  <EntityActions
-                                    actions={actions}
-                                    disabled={disabledSaveButton}
-                                  />
-                                </div>
-                              </Tooltip>
-                            ) : (
-                              <EntityActions
-                                actions={actions}
-                                disabled={disabledSaveButton}
-                              />
-                            )}
-                          </>
-                        )}
-                      </Box>
-                    )}
-                  </Box>
-                )}
-
-              <Box
-                id="scrollable-content-box"
-                className="flex w-full overflow-y-auto flex-1"
-              >
                 <Box
                   className="flex items-center justify-center w-full pt-4 px-2 lg:px-6 lg:pt-6"
                   style={{ minHeight: 'min-content' }}

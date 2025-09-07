@@ -43,6 +43,7 @@ type Props = {
   falsyValuePlaceholder?: string;
   readOnly?: boolean;
   afterLabel?: ReactNode;
+  precision?: number;
 };
 
 const NumberField = ({
@@ -63,6 +64,7 @@ const NumberField = ({
   falsyValuePlaceholder,
   readOnly = false,
   afterLabel,
+  precision,
 }: Props) => {
   const userCompany = useAtomValue(userCompanyAtom);
 
@@ -138,7 +140,7 @@ const NumberField = ({
           boxShadow: 'none',
         }}
         readOnly={readOnly}
-        precision={userCompany?.preference.number_precision || 2}
+        precision={precision || userCompany?.preference.number_precision || 2}
       />
 
       <ErrorMessageElement errorMessage={errorMessage} />
