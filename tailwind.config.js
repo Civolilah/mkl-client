@@ -23,9 +23,19 @@ module.exports = {
             transform: 'translateX(calc(50% + 3px)) translateY(0)',
           },
         },
+        'box-shake-mobile': {
+          '0%, 100%': { transform: 'translateX(0) translateY(0)' },
+          '10%, 30%, 50%, 70%, 90%': {
+            transform: 'translateX(-3px) translateY(0)',
+          },
+          '20%, 40%, 60%, 80%': {
+            transform: 'translateX(3px) translateY(0)',
+          },
+        },
       },
       animation: {
         'box-shake': 'box-shake 0.6s ease-in-out',
+        'box-shake-mobile': 'box-shake-mobile 0.6s ease-in-out',
       },
     },
   },

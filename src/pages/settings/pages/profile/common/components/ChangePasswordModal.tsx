@@ -28,7 +28,11 @@ export interface PasswordPayload {
   current_password: string;
 }
 
-const ChangePasswordModal = () => {
+interface Props {
+  isFormBusy: boolean;
+}
+
+const ChangePasswordModal = ({ isFormBusy: isSaveProfileFormBusy }: Props) => {
   const t = useTranslation();
 
   const toast = useToast();
@@ -88,7 +92,10 @@ const ChangePasswordModal = () => {
   return (
     <>
       <LabelElement label={t('password')} withoutOptionalText>
-        <Button onClick={() => setIsModalVisible(true)}>
+        <Button
+          onClick={() => setIsModalVisible(true)}
+          disabled={isSaveProfileFormBusy}
+        >
           {t('change_password')}
         </Button>
       </LabelElement>
@@ -145,6 +152,7 @@ const ChangePasswordModal = () => {
               }
               onPressEnter={handleChangePassword}
               withoutOptionalText
+              readOnly={isFormBusy}
             />
           )}
 

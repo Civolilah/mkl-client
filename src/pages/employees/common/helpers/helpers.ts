@@ -97,8 +97,8 @@ export const validateEmployee = async (
   const validationSchema = Yup.object().shape({
     first_name: Yup.string()
       .required('first_name_required')
-      .max(150, 'first_name_max_length'),
-    last_name: Yup.string().optional().max(150, 'last_name_max_length'),
+      .max(200, 'first_name_max_length'),
+    last_name: Yup.string().optional().max(200, 'last_name_max_length'),
     email: Yup.string()
       .test('is-email-valid', 'invalid_email', (value) =>
         Boolean(value && isEmail(value))

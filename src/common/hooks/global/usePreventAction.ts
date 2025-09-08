@@ -9,6 +9,7 @@
  */
 
 import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { useMediaQuery } from 'react-responsive';
 
 import { areChangesMadeAtom } from './useHandleEntityChanges';
 
@@ -20,23 +21,33 @@ interface PreventedAction {
   action: () => void;
 }
 
+export const isMobileDiscardBoxOpenAtom = atom<boolean>(false);
 export const preventedActionAtom = atom<PreventedAction | null>(null);
 
 const usePreventAction = () => {
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
   const areChangesMade = useAtomValue(areChangesMadeAtom);
+
   const setPreventedAction = useSetAtom(preventedActionAtom);
+  const setIsMobileDiscardBoxOpen = useSetAtom(isMobileDiscardBoxOpenAtom);
 
   return ({ action }: Params) => {
     if (areChangesMade) {
       setPreventedAction({ action });
+      setIsMobileDiscardBoxOpen(true);
 
       const discardSaveBox = document.getElementById('discardSaveBox');
 
       if (discardSaveBox) {
-        discardSaveBox.classList.remove('animate-box-shake');
+        discardSaveBox.classList.remove(
+          isLargeScreen ? 'animate-box-shake' : 'animate-box-shake-mobile'
+        );
 
         setTimeout(() => {
-          discardSaveBox.classList.add('animate-box-shake');
+          discardSaveBox.classList.add(
+            isLargeScreen ? 'animate-box-shake' : 'animate-box-shake-mobile'
+          );
         }, 50);
       }
 

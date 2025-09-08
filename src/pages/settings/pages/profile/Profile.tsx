@@ -12,11 +12,13 @@ import { Dispatch, SetStateAction, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { isEqual } from 'lodash';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
-import { Box } from '@components/index';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -31,6 +33,7 @@ import {
 import Details from './common/components/Details';
 import Passwords from './common/components/Passwords';
 import Preferences from './common/components/Preferences';
+import { validateProfile } from './common/helpers/validation';
 
 export interface ProfileType {
   first_name: string;
@@ -46,7 +49,6 @@ export interface ProfileType {
   comma_as_decimal_separator: boolean;
   accent_color: string;
   time_zone: string;
-  enabled_web_notifications: boolean;
 }
 
 export interface ProfileProps {
@@ -54,6 +56,7 @@ export interface ProfileProps {
   setProfile: Dispatch<SetStateAction<ProfileType | undefined>>;
   errors: ValidationErrors;
   isLoading: boolean;
+  isFormBusy: boolean;
 }
 
 const Profile = () => {
@@ -71,6 +74,8 @@ const Profile = () => {
   ];
 
   const toast = useToast();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const refetch = useRefetch();
   const navigate = useNavigate();
@@ -102,8 +107,20 @@ const Profile = () => {
       return;
     }
 
-    if (!isFormBusy) {
+    if (!isFormBusy && !isLoading) {
+      if (isEqual(initialProfile, profile)) {
+        toast.info('no_profile_changes');
+        return;
+      }
+
       setErrors({});
+
+      const validationErrors = await validateProfile(profile);
+
+      if (validationErrors) {
+        setErrors(validationErrors);
+        return;
+      }
 
       toast.loading();
 
@@ -131,8 +148,31 @@ const Profile = () => {
       breadcrumbs: {
         breadcrumbs,
       },
+      footer: !isLargeScreen && (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="products"
+            onClick={() => {
+              navigate(route('/products'));
+            }}
+            iconName="product"
+            disabled={isLoading || isFormBusy}
+            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading || isFormBusy}
+            iconSize="1.2rem"
+          />
+
+          <AISearchAction disabled={isLoading || isFormBusy} />
+        </Box>
+      ),
     },
-    []
+    [profile, isLoading, isFormBusy, handleSave]
   );
 
   useSaveAndDiscardActions(
@@ -140,7 +180,7 @@ const Profile = () => {
       disabledSaveButton: isFormBusy,
       disabledDiscardButton: isFormBusy,
       onSaveClick: handleSave,
-      onDiscardClick: () => navigate(route('/employees')),
+      onDiscardClick: () => setProfile(initialProfile),
     },
     [profile, isFormBusy, handleSave]
   );
@@ -152,6 +192,7 @@ const Profile = () => {
         setProfile={setProfile}
         errors={errors}
         isLoading={isLoading}
+        isFormBusy={isFormBusy}
       />
 
       <Preferences
@@ -159,9 +200,14 @@ const Profile = () => {
         errors={errors}
         setProfile={setProfile}
         isLoading={isLoading}
+        isFormBusy={isFormBusy}
       />
 
-      <Passwords profile={profile} isLoading={isLoading} />
+      <Passwords
+        profile={profile}
+        isLoading={isLoading}
+        isFormBusy={isFormBusy}
+      />
     </Box>
   );
 };

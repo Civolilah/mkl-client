@@ -491,5 +491,9 @@
   "current_password": "Current Password",
   "enter_current_password": "Enter Current Password",
   "back": "Back",
-  "changed_password": "Successfully changed password."
+  "changed_password": "Successfully changed password.",
+  "profile_email_change": "Email can only be changed for accounts using credential-based login.",
+  "no_profile_changes": "No profile changes yet - everything's up to date!",
+  "changed_security_password": "Successfully changed security password.",
+  "profile_email_already_exists": "This email is already registered. Please use a different email."
 }

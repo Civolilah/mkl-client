@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
+import { CSSProperties, ReactNode, useRef, useState } from 'react';
 
 import { Popover } from 'antd';
 import { ItemType } from 'antd/es/menu/interface';
@@ -17,7 +17,12 @@ import { get } from 'lodash';
 
 import Icon, { IconName } from '@components/general/Icon';
 
-import { useAccentColor, useColors, useTranslation } from '@hooks/index';
+import {
+  useAccentColor,
+  useColors,
+  usePreventAction,
+  useTranslation,
+} from '@hooks/index';
 
 import { Box } from '..';
 
@@ -55,21 +60,13 @@ const FooterAction = ({
   const colors = useColors();
   const popoverRef = useRef(null);
   const accentColor = useAccentColor();
+  const preventAction = usePreventAction();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const [isSavingEntity, setIsSavingEntity] = useState<boolean>(false);
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
   };
-
-  useEffect(() => {
-    if (isSavingEntity) {
-      setIsSavingEntity(false);
-      onClick?.();
-    }
-  }, [isSavingEntity]);
 
   if (!visible) {
     return null;
@@ -134,11 +131,13 @@ const FooterAction = ({
             )}
             onClick={() => {
               if (text === 'save') {
-                setTimeout(() => {
-                  onClick?.();
-                }, 50);
-              } else {
                 onClick?.();
+              } else {
+                preventAction({
+                  action: () => {
+                    onClick?.();
+                  },
+                });
               }
             }}
           >
@@ -177,11 +176,13 @@ const FooterAction = ({
       )}
       onClick={() => {
         if (text === 'save') {
-          setTimeout(() => {
-            setIsSavingEntity(true);
-          }, 100);
-        } else {
           onClick?.();
+        } else {
+          preventAction({
+            action: () => {
+              onClick?.();
+            },
+          });
         }
       }}
       style={style}

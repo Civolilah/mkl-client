@@ -32,6 +32,7 @@ const Preferences = ({
   errors,
   setProfile,
   isLoading,
+  isFormBusy,
 }: ProfileProps) => {
   const t = useTranslation();
 
@@ -40,12 +41,13 @@ const Preferences = ({
   return (
     <Card title={t('preferences')} className="w-full" isLoading={isLoading}>
       <Box className="flex flex-col gap-y-4">
-        <Box className="flex gap-x-4">
+        <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
           <LanguagesSelector
             value={profile?.language || ''}
             onChange={(value) => handleChange('language', value)}
             errorMessage={errors.language && t(errors.language)}
             withoutOptionalText
+            disabled={isFormBusy}
           />
 
           <DateFormatsSelector
@@ -54,10 +56,11 @@ const Preferences = ({
             onValueChange={(value) => handleChange('date_format', value)}
             errorMessage={errors.date_format && t(errors.date_format)}
             withoutOptionalText
+            disabled={isFormBusy}
           />
         </Box>
 
-        <Box className="flex gap-x-4">
+        <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
           <TimezonesSelector
             label={t('timezone')}
             placeholder={t('select_timezone')}
@@ -65,6 +68,7 @@ const Preferences = ({
             onChange={(value) => handleChange('time_zone', value)}
             errorMessage={errors.time_zone && t(errors.time_zone)}
             withoutOptionalText
+            disabled={isFormBusy}
           />
 
           <NumberField
@@ -76,6 +80,7 @@ const Preferences = ({
             errorMessage={errors.number_precision && t(errors.number_precision)}
             withoutOptionalText
             precision={0}
+            readOnly={isFormBusy}
           />
         </Box>
 
@@ -88,6 +93,7 @@ const Preferences = ({
           <Toggle
             checked={profile?.is_military_time || false}
             onChange={(value) => handleChange('is_military_time', value)}
+            disabled={isFormBusy}
           />
         </LabelElement>
 
@@ -102,6 +108,7 @@ const Preferences = ({
             onChange={(value) =>
               handleChange('comma_as_decimal_separator', value)
             }
+            disabled={isFormBusy}
           />
         </LabelElement>
 
@@ -117,6 +124,7 @@ const Preferences = ({
               onChange={(value) =>
                 handleChange('enabled_security_password', value)
               }
+              disabled={isFormBusy}
             />
           ) : (
             <Button
@@ -132,6 +140,7 @@ const Preferences = ({
                   });
                 }
               }}
+              disabled={isFormBusy}
             >
               {t('set_security_password')}
             </Button>

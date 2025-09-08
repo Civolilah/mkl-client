@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 
 import { HEADER_HEIGHT, SIDEBAR_WIDTH } from '@constants/index';
 import { route } from '@helpers/index';
@@ -55,15 +55,7 @@ const Default = ({
   title,
   children,
   breadcrumbs = [],
-  onSaveClick,
-  onCancelClick,
   disabledSaveButton = false,
-  saveButtonLabel = 'save',
-  saveButtonIcon = 'save',
-  saveButtonIconColor,
-  disabledSaveButtonWithLoadingIcon = false,
-  disabledCancelButton = false,
-  disabledCancelButtonWithLoadingIcon = false,
   footer,
   actions = [],
   tooltipPermissionMessage,
@@ -80,16 +72,7 @@ const Default = ({
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const mobileActions = useAtomValue(mobileActionsAtom);
-  const [isSaveClicked, setIsSaveClicked] = useState<boolean>(false);
   const isMobileAiPopoverOpen = useAtomValue(isMobileAiPopoverOpenAtom);
-
-  useEffect(() => {
-    if (isSaveClicked) {
-      setIsSaveClicked(false);
-
-      onSaveClick?.();
-    }
-  }, [isSaveClicked]);
 
   return (
     <>

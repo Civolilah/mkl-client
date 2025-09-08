@@ -39,6 +39,7 @@ type Props = {
   onClear?: () => void;
   options: Option[];
   size?: 'large' | 'middle' | 'small';
+  disabled?: boolean;
 };
 
 const SelectStaticField = ({
@@ -53,6 +54,7 @@ const SelectStaticField = ({
   onClear,
   size = 'large',
   options,
+  disabled,
 }: Props) => {
   const [filteredOptions, setFilteredOptions] = useState<Option[]>(options);
 
@@ -135,6 +137,7 @@ const SelectStaticField = ({
             }
           }}
           allowClear={Boolean(onClear)}
+          disabled={disabled}
         />
       )}
 
@@ -159,6 +162,7 @@ const SelectStaticField = ({
             }
           }}
           allowClear={Boolean(onClear)}
+          disabled={disabled}
         />
       )}
 

@@ -10,10 +10,11 @@
 
 import { useEffect } from 'react';
 
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { isEqual } from 'lodash';
 
 import { areChangesMadeAtom } from './useHandleEntityChanges';
+import { isMobileDiscardBoxOpenAtom } from './usePreventAction';
 
 interface Params<T> {
   initialEntityValue: T;
@@ -24,17 +25,26 @@ const useDetectChanges = <T>({
   initialEntityValue,
   currentEntityValue,
 }: Params<T>) => {
-  const setAreChangesMade = useSetAtom(areChangesMadeAtom);
+  const [areChangesMade, setAreChangesMade] = useAtom(areChangesMadeAtom);
+  const setIsMobileDiscardBoxOpen = useSetAtom(isMobileDiscardBoxOpenAtom);
 
   useEffect(() => {
     if (initialEntityValue && currentEntityValue) {
       setAreChangesMade(!isEqual(initialEntityValue, currentEntityValue));
     }
+  }, [initialEntityValue, currentEntityValue]);
 
+  useEffect(() => {
+    if (!areChangesMade) {
+      setIsMobileDiscardBoxOpen(false);
+    }
+  }, [areChangesMade]);
+
+  useEffect(() => {
     return () => {
       setAreChangesMade(false);
     };
-  }, [initialEntityValue, currentEntityValue]);
+  }, []);
 };
 
 export default useDetectChanges;

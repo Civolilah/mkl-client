@@ -32,6 +32,7 @@ export interface UserCompanyDetails {
   is_director: boolean;
   is_owner: boolean;
   user_type: 'supplier' | 'customer' | 'inventory_manager';
+  login_type: 'credentials' | 'google' | 'apple';
   preference: {
     language: Languages;
     mini_sidebar: boolean | null;

@@ -23,6 +23,7 @@ interface Props {
   errorMessage?: string;
   required?: boolean;
   withoutOptionalText?: boolean;
+  disabled?: boolean;
 }
 
 const DateFormatsSelector = ({
@@ -34,6 +35,7 @@ const DateFormatsSelector = ({
   errorMessage,
   required,
   withoutOptionalText,
+  disabled,
 }: Props) => {
   const dateFormatOptions = useMemo(() => {
     const today = dayjs();
@@ -68,6 +70,7 @@ const DateFormatsSelector = ({
       errorMessage={errorMessage}
       onClear={onClear}
       withoutOptionalText={withoutOptionalText}
+      disabled={disabled}
     />
   );
 };

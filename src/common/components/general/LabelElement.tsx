@@ -73,8 +73,8 @@ const LabelElement = (props: Props) => {
       <Box
         className={classNames({
           'flex flex-col sm:flex-row sm:justify-end': props.pushContentToRight,
-          'sm:col-span-1': props.twoGridColumns,
-          'sm:col-span-2': !props.twoGridColumns,
+          'sm:col-span-1 sm:self-center': props.twoGridColumns,
+          'sm:col-span-2 sm:self-center': !props.twoGridColumns,
         })}
       >
         {props.children}

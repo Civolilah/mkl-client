@@ -24,6 +24,7 @@ type Props = {
   defaultActiveKey?: string;
   activeTab?: string;
   setActiveTab?: Dispatch<SetStateAction<string>>;
+  onTabChange?: (activeTab: string) => void;
 };
 
 const StaticTabs = ({
@@ -31,6 +32,7 @@ const StaticTabs = ({
   defaultActiveKey,
   activeTab,
   setActiveTab,
+  onTabChange,
 }: Props) => {
   const isMediumScreen = useMediaQuery({ query: '(min-width: 768px)' });
 
@@ -41,7 +43,10 @@ const StaticTabs = ({
       defaultActiveKey={defaultActiveKey}
       style={{ width: '100%' }}
       activeKey={activeTab}
-      onChange={(activeKey) => setActiveTab?.(activeKey)}
+      onChange={(activeKey) => {
+        setActiveTab?.(activeKey);
+        onTabChange?.(activeKey);
+      }}
       size="small"
       className="mobile-sticky-tabs"
     />

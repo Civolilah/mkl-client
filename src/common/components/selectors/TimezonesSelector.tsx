@@ -23,6 +23,7 @@ interface Props {
   placeholder?: string;
   onClear?: () => void;
   withoutOptionalText?: boolean;
+  disabled?: boolean;
 }
 
 const TimezonesSelector = ({
@@ -34,6 +35,7 @@ const TimezonesSelector = ({
   placeholder,
   onClear,
   withoutOptionalText,
+  disabled,
 }: Props) => {
   const timezones = useMemo(() => {
     const timezoneNames = moment.tz.names();
@@ -58,6 +60,7 @@ const TimezonesSelector = ({
       placeholder={placeholder}
       onClear={onClear}
       withoutOptionalText={withoutOptionalText}
+      disabled={disabled}
     />
   );
 };

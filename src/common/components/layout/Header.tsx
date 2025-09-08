@@ -32,7 +32,10 @@ import {
 } from '@components/index';
 
 import { areChangesMadeAtom } from '@hooks/global/useHandleEntityChanges';
-import { preventedActionAtom } from '@hooks/global/usePreventAction';
+import {
+  isMobileDiscardBoxOpenAtom,
+  preventedActionAtom,
+} from '@hooks/global/usePreventAction';
 import { saveAndDiscardActionsAtom } from '@hooks/global/useSaveAndDiscardActions';
 import { usePreventAction } from '@hooks/index';
 import {
@@ -76,6 +79,7 @@ const Header = ({ title }: Props) => {
   const areChangesMade = useAtomValue(areChangesMadeAtom);
   const preventedAction = useAtomValue(preventedActionAtom);
   const saveAndDiscardActions = useAtomValue(saveAndDiscardActionsAtom);
+  const isMobileDiscardBoxOpen = useAtomValue(isMobileDiscardBoxOpenAtom);
 
   const onClose = () => {
     setIsDrawerOpened(false);
@@ -116,6 +120,49 @@ const Header = ({ title }: Props) => {
         <Text className="text-lg md:text-xl font-medium whitespace-nowrap">
           {title}
         </Text>
+
+        {saveAndDiscardActions && !isLargeScreen && isMobileDiscardBoxOpen && (
+          <Box
+            id="discardSaveBox"
+            className="fixed flex justify-center w-full bottom-20 left-0 z-50"
+          >
+            <Box
+              className="flex items-center gap-x-20 border rounded-md py-1.5 px-2 bg-gray-50 max-w-max shadow-lg"
+              style={{
+                borderColor: colors.$1,
+              }}
+            >
+              <Box className="flex items-center gap-x-2">
+                <Box>
+                  <Icon
+                    name="warning"
+                    size="1.35rem"
+                    style={{ color: 'orange' }}
+                  />
+                </Box>
+
+                <Text className="text-xs-mid font-medium whitespace-nowrap">
+                  {t('unsaved_changes')}
+                </Text>
+              </Box>
+
+              <Button
+                size="middle"
+                type="default"
+                onClick={() => {
+                  if (preventedAction) {
+                    preventedAction?.action();
+                  }
+
+                  saveAndDiscardActions.onDiscardClick();
+                }}
+                disablePreventAction
+              >
+                {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
+              </Button>
+            </Box>
+          </Box>
+        )}
 
         {saveAndDiscardActions && isLargeScreen && areChangesMade && (
           <Box

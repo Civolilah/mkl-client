@@ -15,14 +15,14 @@ import classNames from 'classnames';
 
 import { Box, Label } from '@components/index';
 
-type Props = {
+interface Props {
   label?: string;
   checked: boolean;
   onChange?: (value: boolean) => void;
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
   afterLabel?: ReactNode;
-};
+}
 
 const Toggle = ({
   label,

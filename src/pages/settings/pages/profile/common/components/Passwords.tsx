@@ -21,9 +21,10 @@ import { ProfileType } from '../../Profile';
 interface Props {
   profile: ProfileType | undefined;
   isLoading: boolean;
+  isFormBusy: boolean;
 }
 
-const Passwords = ({ profile, isLoading }: Props) => {
+const Passwords = ({ profile, isLoading, isFormBusy }: Props) => {
   const t = useTranslation();
 
   return (
@@ -33,9 +34,9 @@ const Passwords = ({ profile, isLoading }: Props) => {
       paddingBottom="0"
       isLoading={isLoading}
     >
-      <ChangePasswordModal />
+      <ChangePasswordModal isFormBusy={isFormBusy} />
 
-      <ChangeSecurityPasswordModal profile={profile} />
+      <ChangeSecurityPasswordModal profile={profile} isFormBusy={isFormBusy} />
     </Card>
   );
 };
