@@ -65,7 +65,7 @@ const useSettingsNavItems = () => {
       iconName: 'percentage',
       href: '/settings/tax_rates',
       visible: isInventoryManager,
-      iconSize: '1.3rem',
+      iconSize: '1.2rem',
     },
     {
       key: 'product',
@@ -92,12 +92,20 @@ const useSettingsNavItems = () => {
       iconSize: '1.325rem',
     },
     {
+      key: 'balance_and_earnings',
+      label: 'balance_and_earnings',
+      iconName: 'cashStack',
+      href: '/settings/balance',
+      visible: hasPermission('owner'),
+      iconSize: '1.175rem',
+    },
+    {
       key: 'account_and_billing',
       label: 'account_and_billing',
       iconName: 'creditCard',
-      href: '/settings/account_and_billing',
+      href: '/settings/account',
       visible: hasPermission('owner'),
-      iconSize: '1.2rem',
+      iconSize: '1.175rem',
     },
   ];
 

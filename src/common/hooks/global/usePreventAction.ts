@@ -49,6 +49,21 @@ const usePreventAction = () => {
             isLargeScreen ? 'animate-box-shake' : 'animate-box-shake-mobile'
           );
         }, 50);
+      } else {
+        setTimeout(() => {
+          const currentDiscardSaveBox =
+            document.getElementById('discardSaveBox');
+
+          if (currentDiscardSaveBox) {
+            currentDiscardSaveBox.classList.remove(
+              isLargeScreen ? 'animate-box-shake' : 'animate-box-shake-mobile'
+            );
+
+            currentDiscardSaveBox.classList.add(
+              isLargeScreen ? 'animate-box-shake' : 'animate-box-shake-mobile'
+            );
+          }
+        }, 50);
       }
 
       return;

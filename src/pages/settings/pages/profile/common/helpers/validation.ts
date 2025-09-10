@@ -47,7 +47,8 @@ export const validateChangePassword = async (
 };
 
 export const validateChangeSecurityPassword = async (
-  passwordPayload: PasswordPayload
+  passwordPayload: PasswordPayload,
+  hasSecurityPassword: boolean
 ) => {
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -57,6 +58,9 @@ export const validateChangeSecurityPassword = async (
       [Yup.ref('password')],
       'passwords_not_match'
     ),
+    current_password: hasSecurityPassword
+      ? Yup.string().required('password_required')
+      : Yup.string().optional(),
   });
 
   try {

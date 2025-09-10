@@ -23,7 +23,11 @@ import {
   BiPackage,
   BiWorld,
 } from 'react-icons/bi';
-import { BsBookmarkStarFill, BsCreditCard2FrontFill } from 'react-icons/bs';
+import {
+  BsBookmarkStarFill,
+  BsCashStack,
+  BsCreditCard2FrontFill,
+} from 'react-icons/bs';
 import { CiLogout } from 'react-icons/ci';
 import {
   FaAward,
@@ -51,7 +55,7 @@ import { FaEyeDropper, FaLocationDot } from 'react-icons/fa6';
 import { GoDotFill } from 'react-icons/go';
 import { HiChevronUpDown } from 'react-icons/hi2';
 import { IoIosNotifications, IoMdCloseCircleOutline } from 'react-icons/io';
-import { IoInformationCircleOutline } from 'react-icons/io5';
+import { IoInformationCircleOutline, IoKeySharp } from 'react-icons/io5';
 import {
   MdAdd,
   MdBusiness,
@@ -215,7 +219,8 @@ export type IconName =
   | 'key'
   | 'organization'
   | 'boxAlignTopRightFilled'
-  | 'handshake';
+  | 'handshake'
+  | 'cashStack';
 
 type Props = {
   className?: string;
@@ -444,6 +449,10 @@ const Icon = ({ name, size, onClick, style, unsetColor }: Props) => {
       return generateIconElement(TbBoxAlignTopRightFilled);
     case 'handshake':
       return generateIconElement(FaHandshake);
+    case 'cashStack':
+      return generateIconElement(BsCashStack);
+    case 'key':
+      return generateIconElement(IoKeySharp);
     default:
       return <></>;
   }

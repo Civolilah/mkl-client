@@ -15,9 +15,11 @@ import {
   Button,
   Card,
   DateFormatsSelector,
+  Icon,
   LabelElement,
   LanguagesSelector,
   NumberField,
+  Text,
   TimezonesSelector,
   Toggle,
 } from '@components/index';
@@ -39,7 +41,19 @@ const Preferences = ({
   const handleChange = useHandleChange({ setProfile });
 
   return (
-    <Card title={t('preferences')} className="w-full" isLoading={isLoading}>
+    <Card
+      titleElement={
+        <Box className="flex items-center gap-x-2">
+          <Box>
+            <Icon name="cogs" size="1.4rem" />
+          </Box>
+
+          <Text>{t('preferences')}</Text>
+        </Box>
+      }
+      className="w-full"
+      isLoading={isLoading}
+    >
       <Box className="flex flex-col gap-y-4">
         <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
           <LanguagesSelector

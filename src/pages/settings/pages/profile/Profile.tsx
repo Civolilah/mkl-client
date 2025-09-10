@@ -65,7 +65,7 @@ const Profile = () => {
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: t('settings'),
-      href: '/settings',
+      href: '/settings/profile',
     },
     {
       title: t('profile'),
@@ -151,13 +151,13 @@ const Profile = () => {
       footer: !isLargeScreen && (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="products"
+            text="dashboard"
             onClick={() => {
-              navigate(route('/products'));
+              navigate(route('/dashboard'));
             }}
-            iconName="product"
+            iconName="dashboard"
             disabled={isLoading || isFormBusy}
-            iconSize="1.3rem"
+            iconSize="1.2rem"
           />
 
           <FooterAction
@@ -181,6 +181,7 @@ const Profile = () => {
       disabledDiscardButton: isFormBusy,
       onSaveClick: handleSave,
       onDiscardClick: () => setProfile(initialProfile),
+      changesLabel: 'unsaved_profile',
     },
     [profile, isFormBusy, handleSave]
   );

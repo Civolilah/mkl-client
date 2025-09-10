@@ -21,7 +21,6 @@ import styled from 'styled-components';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
 import {
-  Avatar,
   Box,
   Button,
   Icon,
@@ -142,7 +141,7 @@ const Header = ({ title }: Props) => {
                 </Box>
 
                 <Text className="text-xs-mid font-medium whitespace-nowrap">
-                  {t('unsaved_changes')}
+                  {t(saveAndDiscardActions.changesLabel || 'unsaved_changes')}
                 </Text>
               </Box>
 
@@ -182,7 +181,7 @@ const Header = ({ title }: Props) => {
               </Box>
 
               <Text className="text-xs-mid font-medium whitespace-nowrap">
-                {t('unsaved_changes')}
+                {t(saveAndDiscardActions.changesLabel || 'unsaved_changes')}
               </Text>
             </Box>
             <Box className="flex items-center space-x-2">
@@ -192,9 +191,9 @@ const Header = ({ title }: Props) => {
                 onClick={() => {
                   if (preventedAction) {
                     preventedAction?.action();
-                  } else {
-                    saveAndDiscardActions.onDiscardClick();
                   }
+
+                  saveAndDiscardActions.onDiscardClick();
                 }}
                 disablePreventAction
               >
@@ -216,12 +215,18 @@ const Header = ({ title }: Props) => {
         <Box className="flex w-full justify-end">
           {isSmallScreen ? (
             <>
-              <Avatar
-                className="cursor-pointer uppercase"
+              <Box
+                className="flex items-center justify-center cursor-pointer rounded-full px-3 py-2"
                 onClick={() => setIsDrawerOpened(true)}
+                style={{ backgroundColor: accentColor }}
               >
-                {userCompanyDetails?.email?.[0]}
-              </Avatar>
+                <Text
+                  className="text-sm uppercase text-white"
+                  style={{ fontSize: '1.2rem' }}
+                >
+                  {userCompanyDetails?.email?.[0]}
+                </Text>
+              </Box>
 
               <Drawer
                 placement="bottom"
@@ -531,13 +536,17 @@ const Header = ({ title }: Props) => {
                 </Box>
               }
             >
-              <Avatar
-                size="large"
-                className="cursor-pointer uppercase"
-                fontSize="1.2rem"
+              <Box
+                className="flex items-center justify-center cursor-pointer rounded-full px-3 py-2"
+                style={{ backgroundColor: accentColor }}
               >
-                {userCompanyDetails?.email?.[0]}
-              </Avatar>
+                <Text
+                  className="text-sm uppercase text-white"
+                  style={{ fontSize: '1.2rem' }}
+                >
+                  {userCompanyDetails?.email?.[0]}
+                </Text>
+              </Box>
             </Popover>
           )}
         </Box>

@@ -13,9 +13,11 @@ import React, { useState } from 'react';
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, useToast } from '@helpers/index';
 import classNames from 'classnames';
+import { useAtomValue } from 'jotai';
 
 import { ValidationErrors } from '@interfaces/index';
 
+import { userCompanyAtom } from '@components/general/PrivateRoute';
 import { Box, Button, LabelElement, Modal, TextField } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
@@ -34,6 +36,8 @@ interface Props {
 
 const ChangePasswordModal = ({ isFormBusy: isSaveProfileFormBusy }: Props) => {
   const t = useTranslation();
+
+  const userCompany = useAtomValue(userCompanyAtom);
 
   const toast = useToast();
 
@@ -91,14 +95,16 @@ const ChangePasswordModal = ({ isFormBusy: isSaveProfileFormBusy }: Props) => {
 
   return (
     <>
-      <LabelElement label={t('password')} withoutOptionalText>
-        <Button
-          onClick={() => setIsModalVisible(true)}
-          disabled={isSaveProfileFormBusy}
-        >
-          {t('change_password')}
-        </Button>
-      </LabelElement>
+      {Boolean(userCompany?.login_type === 'credentials') && (
+        <LabelElement label={t('password')} withoutOptionalText>
+          <Button
+            onClick={() => setIsModalVisible(true)}
+            disabled={isSaveProfileFormBusy}
+          >
+            {t('change_password')}
+          </Button>
+        </LabelElement>
+      )}
 
       <Modal
         title={step === 1 ? t('change_password') : t('enter_current_password')}
@@ -111,7 +117,7 @@ const ChangePasswordModal = ({ isFormBusy: isSaveProfileFormBusy }: Props) => {
             <>
               <TextField
                 type="password"
-                label={t('password')}
+                label={t('new_password')}
                 value={payload.password}
                 onValueChange={(value) =>
                   setPayload((prev) => ({ ...prev, password: value }))

@@ -21,6 +21,7 @@ interface Params {
   discardButtonLabel?: string;
   disabledSaveButtonWithLoadingIcon?: boolean;
   disabledDiscardButtonWithLoadingIcon?: boolean;
+  changesLabel?: string;
 }
 
 export const saveAndDiscardActionsAtom = atom<Params | undefined>(undefined);

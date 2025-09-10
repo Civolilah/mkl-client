@@ -21,6 +21,7 @@ import { useColors, useTranslation } from '@hooks/index';
 type Props = {
   className?: string;
   title?: string;
+  titleElement?: ReactNode;
   children: ReactNode;
   width?: 'full';
   saveButtonText?: string;
@@ -36,6 +37,7 @@ type Props = {
 const Card = ({
   children,
   title,
+  titleElement,
   className,
   onSaveClick,
   saveButtonText,
@@ -69,7 +71,15 @@ const Card = ({
             className="flex items-center justify-between border-b px-3 md:px-5 py-3 md:py-3.5"
             style={{ borderColor: colors.$1 }}
           >
-            <Text className="text-base md:text-lg font-medium">{title}</Text>
+            <Box className="text-base md:text-lg font-medium">
+              {titleElement ? (
+                titleElement
+              ) : (
+                <Text className="text-base md:text-lg font-medium">
+                  {title}
+                </Text>
+              )}
+            </Box>
 
             {topRight}
           </Box>

@@ -481,7 +481,7 @@
   "comma_decimal": "Decimal Comma",
   "comma_decimal_help": "Use comma (,) instead of period (.) for decimal numbers (e.g., 1,50 instead of 1.50).",
   "enable_notifications": "Enable Notifications",
-  "enable_notifications_help": "When enabled, you will receive notifications for new orders, product updates, and other important updates.",
+  "enable_notifications_help": "When enabled, you'll receive notifications for new orders, product updates, and other important information.",
   "timezone": "Timezone",
   "select_timezone": "Select timezone",
   "invalid_timezone": "Invalid timezone.",
@@ -495,5 +495,11 @@
   "profile_email_change": "Email can only be changed for accounts using credential-based login.",
   "no_profile_changes": "No profile changes yet - everything's up to date!",
   "changed_security_password": "Successfully changed security password.",
-  "profile_email_already_exists": "This email is already registered. Please use a different email."
+  "profile_email_already_exists": "This email is already registered. Please use a different email.",
+  "current_security_password": "Current Security Password",
+  "no_notifications_changes": "No notifications changes yet - everything's up to date!",
+  "unsaved_notifications": "Unsaved notifications",
+  "unsaved_profile": "Unsaved profile",
+  "updated_notifications": "Successfully updated notifications.",
+  "balance_and_earnings": "Balance & Earnings"
 }

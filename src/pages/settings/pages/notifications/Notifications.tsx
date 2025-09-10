@@ -12,11 +12,13 @@ import { Dispatch, SetStateAction, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
+import { isEqual } from 'lodash';
+import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
-import { Box } from '@components/index';
+import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -31,20 +33,8 @@ import {
 import NotificationsCard from './common/components/NotificationsCard';
 
 export interface NotificationsType {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  language: string;
-  number_precision: number;
-  enable_security_password: boolean;
-  has_security_password: boolean;
-  is_military_time: boolean;
-  date_format: string;
-  comma_as_decimal_separator: boolean;
-  accent_color: string;
-  time_zone: string;
   enabled_web_notifications: boolean;
+  enabled_mobile_notifications: boolean;
 }
 
 export interface NotificationsProps {
@@ -52,6 +42,7 @@ export interface NotificationsProps {
   setNotifications: Dispatch<SetStateAction<NotificationsType | undefined>>;
   errors: ValidationErrors;
   isLoading: boolean;
+  isFormBusy: boolean;
 }
 
 const Notifications = () => {
@@ -60,7 +51,7 @@ const Notifications = () => {
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: t('settings'),
-      href: '/settings',
+      href: '/settings/profile',
     },
     {
       title: t('notifications'),
@@ -69,6 +60,8 @@ const Notifications = () => {
   ];
 
   const toast = useToast();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const refetch = useRefetch();
   const navigate = useNavigate();
@@ -79,7 +72,7 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState<
     NotificationsType | undefined
   >(undefined);
-  const [initialProfile, setInitialProfile] = useState<
+  const [initialNotifications, setInitialNotifications] = useState<
     NotificationsType | undefined
   >(undefined);
 
@@ -88,13 +81,12 @@ const Notifications = () => {
     endpoint: '/api/users/notifications',
     setEntity: setNotifications,
     setIsLoading,
-    setInitialResponse: setInitialProfile,
+    setInitialResponse: setInitialNotifications,
     withoutQueryId: true,
-    enableByPermission: false,
   });
 
   useDetectChanges({
-    initialEntityValue: initialProfile,
+    initialEntityValue: initialNotifications,
     currentEntityValue: notifications,
   });
 
@@ -103,7 +95,12 @@ const Notifications = () => {
       return;
     }
 
-    if (!isFormBusy) {
+    if (!isFormBusy && !isLoading) {
+      if (isEqual(initialNotifications, notifications)) {
+        toast.info('no_notifications_changes');
+        return;
+      }
+
       setErrors({});
 
       toast.loading();
@@ -112,9 +109,9 @@ const Notifications = () => {
 
       request('PATCH', '/api/users/notifications', notifications)
         .then(() => {
-          toast.success('updated_profile');
+          toast.success('updated_notifications');
 
-          refetch(['profile']);
+          refetch(['notifications']);
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -132,8 +129,31 @@ const Notifications = () => {
       breadcrumbs: {
         breadcrumbs,
       },
+      footer: !isLargeScreen && (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="dashboard"
+            onClick={() => {
+              navigate(route('/dashboard'));
+            }}
+            iconName="dashboard"
+            disabled={isLoading || isFormBusy}
+            iconSize="1.2rem"
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading || isFormBusy}
+            iconSize="1.2rem"
+          />
+
+          <AISearchAction disabled={isLoading || isFormBusy} />
+        </Box>
+      ),
     },
-    []
+    [notifications, isLoading, isFormBusy, handleSave]
   );
 
   useSaveAndDiscardActions(
@@ -141,7 +161,8 @@ const Notifications = () => {
       disabledSaveButton: isFormBusy,
       disabledDiscardButton: isFormBusy,
       onSaveClick: handleSave,
-      onDiscardClick: () => navigate(route('/settings/profile')),
+      onDiscardClick: () => setNotifications(initialNotifications),
+      changesLabel: 'unsaved_notifications',
     },
     [notifications, isFormBusy, handleSave]
   );
@@ -153,6 +174,7 @@ const Notifications = () => {
         setNotifications={setNotifications}
         errors={errors}
         isLoading={isLoading}
+        isFormBusy={isFormBusy}
       />
     </Box>
   );

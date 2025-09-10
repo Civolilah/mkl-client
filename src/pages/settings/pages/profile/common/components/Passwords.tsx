@@ -10,7 +10,7 @@
 
 import React from 'react';
 
-import { Card } from '@components/index';
+import { Box, Card, Icon, Text } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -29,7 +29,15 @@ const Passwords = ({ profile, isLoading, isFormBusy }: Props) => {
 
   return (
     <Card
-      title={t('passwords')}
+      titleElement={
+        <Box className="flex items-center gap-x-2">
+          <Box>
+            <Icon name="key" size="1.45rem" />
+          </Box>
+
+          <Text>{t('passwords')}</Text>
+        </Box>
+      }
       className="w-full"
       paddingBottom="0"
       isLoading={isLoading}

@@ -18,7 +18,7 @@ import { ValidationErrors } from '@interfaces/index';
 
 import { Box, Button, LabelElement, Modal, TextField } from '@components/index';
 
-import { useTranslation } from '@hooks/index';
+import { useRefetch, useTranslation } from '@hooks/index';
 
 import { ProfileType } from '../../Profile';
 import { validateChangeSecurityPassword } from '../helpers/validation';
@@ -39,6 +39,8 @@ const ChangeSecurityPasswordModal = ({
   isFormBusy: isSaveProfileFormBusy,
 }: Props) => {
   const t = useTranslation();
+
+  const refetch = useRefetch();
 
   const toast = useToast();
 
@@ -67,7 +69,10 @@ const ChangeSecurityPasswordModal = ({
     if (!isFormBusy) {
       setErrors({});
 
-      const validationErrors = await validateChangeSecurityPassword(payload);
+      const validationErrors = await validateChangeSecurityPassword(
+        payload,
+        Boolean(profile?.has_security_password)
+      );
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -81,6 +86,8 @@ const ChangeSecurityPasswordModal = ({
       request('POST', '/api/users/change_security_password', payload)
         .then(() => {
           toast.success('changed_security_password');
+
+          refetch(['profile']);
 
           handleClose();
         })
@@ -111,17 +118,97 @@ const ChangeSecurityPasswordModal = ({
       </LabelElement>
 
       <Modal
-        title={t('change_security_password')}
+        title={
+          profile?.has_security_password
+            ? t('change_security_password')
+            : t('set_security_password')
+        }
         visible={isModalVisible}
         onClose={handleClose}
         disableClosing={isFormBusy}
       >
         <Box className="flex flex-col space-y-4 w-full">
-          {step === 1 ? (
+          {profile?.has_security_password ? (
+            <>
+              {step === 1 ? (
+                <>
+                  <TextField
+                    type="password"
+                    label={t('new_password')}
+                    value={payload.password}
+                    onValueChange={(value) =>
+                      setPayload((prev) => ({ ...prev, password: value }))
+                    }
+                    errorMessage={errors.password && t(errors.password)}
+                    onPressEnter={() => setStep(2)}
+                    withoutOptionalText
+                  />
+
+                  <TextField
+                    type="password"
+                    label={t('confirm_password')}
+                    value={payload.password_confirmation}
+                    onValueChange={(value) =>
+                      setPayload((prev) => ({
+                        ...prev,
+                        password_confirmation: value,
+                      }))
+                    }
+                    onPressEnter={() => setStep(2)}
+                    errorMessage={
+                      errors.password_confirmation &&
+                      t(errors.password_confirmation)
+                    }
+                    withoutOptionalText
+                  />
+                </>
+              ) : (
+                <TextField
+                  type="password"
+                  label={t('current_security_password')}
+                  value={payload.current_password}
+                  onValueChange={(value) =>
+                    setPayload((prev) => ({ ...prev, current_password: value }))
+                  }
+                  errorMessage={
+                    errors.current_password && t(errors.current_password)
+                  }
+                  onPressEnter={handleChangeSecurityPassword}
+                  withoutOptionalText
+                  readOnly={isFormBusy}
+                />
+              )}
+
+              <Box className="flex justify-between w-full">
+                {step === 2 && (
+                  <Button type="default" onClick={() => setStep(1)}>
+                    {t('back')}
+                  </Button>
+                )}
+
+                <Button
+                  className={classNames({
+                    'w-full': step === 1,
+                  })}
+                  onClick={() =>
+                    step === 1 ? setStep(2) : handleChangeSecurityPassword()
+                  }
+                  disabled={
+                    (step === 1
+                      ? !payload.password || !payload.password_confirmation
+                      : !payload.current_password) || isFormBusy
+                  }
+                  disabledWithLoadingIcon={isFormBusy}
+                >
+                  {step === 1 ? t('next') : t('confirm')}
+                </Button>
+              </Box>
+            </>
+          ) : (
             <>
               <TextField
                 type="password"
-                label={t('password')}
+                label={t('new_password')}
                 value={payload.password}
                 onValueChange={(value) =>
                   setPayload((prev) => ({ ...prev, password: value }))
@@ -148,48 +235,21 @@ const ChangeSecurityPasswordModal = ({
                 }
                 withoutOptionalText
               />
-            </>
-          ) : (
-            <TextField
-              type="password"
-              label={t('current_password')}
-              value={payload.current_password}
-              onValueChange={(value) =>
-                setPayload((prev) => ({ ...prev, current_password: value }))
-              }
-              errorMessage={
-                errors.current_password && t(errors.current_password)
-              }
-              onPressEnter={handleChangeSecurityPassword}
-              withoutOptionalText
-              readOnly={isFormBusy}
-            />
-          )}
 
-          <Box className="flex justify-between w-full">
-            {step === 2 && (
-              <Button type="default" onClick={() => setStep(1)}>
-                {t('back')}
+              <Button
+                className="w-full"
+                onClick={handleChangeSecurityPassword}
+                disabled={
+                  !payload.password ||
+                  !payload.password_confirmation ||
+                  isFormBusy
+                }
+                disabledWithLoadingIcon={isFormBusy}
+              >
+                {t('confirm')}
               </Button>
-            )}
-
-            <Button
-              className={classNames({
-                'w-full': step === 1,
-              })}
-              onClick={() =>
-                step === 1 ? setStep(2) : handleChangeSecurityPassword()
-              }
-              disabled={
-                (step === 1
-                  ? !payload.password || !payload.password_confirmation
-                  : !payload.current_password) || isFormBusy
-              }
-              disabledWithLoadingIcon={isFormBusy}
-            >
-              {step === 1 ? t('next') : t('confirm')}
-            </Button>
-          </Box>
+            </>
+          )}
         </Box>
       </Modal>
     </>

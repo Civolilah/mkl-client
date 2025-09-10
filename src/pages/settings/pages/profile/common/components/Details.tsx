@@ -14,7 +14,7 @@ import { useAtomValue } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
-import { Box, Card, TextField, Tooltip } from '@components/index';
+import { Box, Card, Icon, Text, TextField, Tooltip } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -37,7 +37,19 @@ const Details = ({
   const handleChange = useHandleChange({ setProfile });
 
   return (
-    <Card title={t('details')} className="w-full" isLoading={isLoading}>
+    <Card
+      titleElement={
+        <Box className="flex items-center gap-x-2">
+          <Box>
+            <Icon name="person" size="1.4rem" />
+          </Box>
+
+          <Text>{t('details')}</Text>
+        </Box>
+      }
+      className="w-full"
+      isLoading={isLoading}
+    >
       <Box className="flex flex-col gap-y-4">
         <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
           <TextField

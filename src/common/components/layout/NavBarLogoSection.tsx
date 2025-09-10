@@ -15,16 +15,9 @@ import { useAtomValue } from 'jotai';
 import styled from 'styled-components';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
-import {
-  AddCompanyAction,
-  Avatar,
-  Box,
-  Dropdown,
-  Icon,
-  Text,
-} from '@components/index';
+import { AddCompanyAction, Box, Dropdown, Icon, Text } from '@components/index';
 
-import { useColors, useTranslation } from '@hooks/index';
+import { useAccentColor, useColors, useTranslation } from '@hooks/index';
 
 interface Props {
   mobileSideBar?: boolean;
@@ -43,6 +36,7 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
   const t = useTranslation();
 
   const colors = useColors();
+  const accentColor = useAccentColor();
 
   const userCompany = useAtomValue(userCompanyAtom);
 
@@ -89,9 +83,17 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
           }}
         >
           <Box className="flex items-center gap-x-4 cursor-pointer flex-1">
-            <Avatar className="uppercase" fontSize="1.05rem">
-              {(userCompany?.company.name || t('untitled_company'))[0]}
-            </Avatar>
+            <Box
+              className="rounded-full flex items-center justify-center px-2.5 py-1"
+              style={{ backgroundColor: accentColor }}
+            >
+              <Text
+                className="text-white uppercase"
+                style={{ fontSize: '0.875rem' }}
+              >
+                {(userCompany?.company.name?.[0] || t('untitled_company'))[0]}
+              </Text>
+            </Box>
 
             <Box className="flex-1 truncate max-w-[8.25rem]">
               <Text className="text-sm font-medium">
