@@ -48,7 +48,7 @@ const useSettingsNavItems = () => {
       label: 'company_details',
       iconName: 'company',
       href: '/settings/company_details',
-      visible: hasPermission('owner'),
+      visible: hasPermission('admin'),
       iconSize: '1.2rem',
     },
     {
@@ -56,7 +56,7 @@ const useSettingsNavItems = () => {
       label: 'payment_methods',
       iconName: 'payments',
       href: '/settings/payment_methods',
-      visible: hasPermission('owner'),
+      visible: hasPermission('admin'),
       iconSize: '1.24rem',
     },
     {
@@ -64,7 +64,7 @@ const useSettingsNavItems = () => {
       label: 'tax_rates',
       iconName: 'percentage',
       href: '/settings/tax_rates',
-      visible: isInventoryManager,
+      visible: isInventoryManager && hasPermission('admin'),
       iconSize: '1.2rem',
     },
     {
@@ -72,7 +72,7 @@ const useSettingsNavItems = () => {
       label: 'product',
       iconName: 'product',
       href: '/settings/product',
-      visible: true,
+      visible: hasPermission('admin'),
       iconSize: '1.3rem',
     },
     {
@@ -80,7 +80,7 @@ const useSettingsNavItems = () => {
       label: 'custom_fields',
       iconName: 'outlineViewColumn',
       href: '/settings/custom_fields',
-      visible: isInventoryManager,
+      visible: isInventoryManager && hasPermission('admin'),
       iconSize: '1.3rem',
     },
     {

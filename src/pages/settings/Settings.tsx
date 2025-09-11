@@ -40,6 +40,12 @@ const Settings = () => {
     if (location.pathname === '/settings') {
       navigate(route('/settings/profile'));
     }
+
+    const currentActiveTab = location.pathname.split('/')?.[2];
+
+    if (currentActiveTab) {
+      setActiveTab(currentActiveTab);
+    }
   }, [location.pathname]);
 
   return (

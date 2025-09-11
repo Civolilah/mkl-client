@@ -17,11 +17,15 @@ const Profile = lazy(() => import('@pages/settings/pages/profile/Profile'));
 const Notifications = lazy(
   () => import('@pages/settings/pages/notifications/Notifications')
 );
+const CustomFields = lazy(
+  () => import('@pages/settings/pages/custom-fields/CustomFields')
+);
 
 const Routes = (
   <Route path="/settings" element={<Settings />}>
     <Route path="profile" element={<Profile />} />
     <Route path="notifications" element={<Notifications />} />
+    <Route path="custom_fields" element={<CustomFields />} />
   </Route>
 );
 

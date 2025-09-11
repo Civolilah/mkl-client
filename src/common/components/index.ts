@@ -92,3 +92,4 @@ export { default as ActionPopoverIcon } from '@components/general/ActionPopoverI
 export { default as SettingsNavItem } from '@components/layout/SettingsNavItem';
 export { default as DateFormatsSelector } from '@components/selectors/DateFormatsSelector';
 export { default as TimezonesSelector } from '@components/selectors/TimezonesSelector';
+export { default as CustomFieldTypesSelector } from '@components/selectors/CustomFieldTypesSelector';

@@ -23,7 +23,8 @@ export type RefetchEntity =
   | 'warehouses'
   | 'companies'
   | 'profile'
-  | 'notifications';
+  | 'notifications'
+  | 'custom_fields';
 
 type Endpoint =
   | '/api/brands'
@@ -38,7 +39,8 @@ type Endpoint =
   | '/api/warehouses'
   | '/api/companies'
   | '/api/users/profile'
-  | '/api/users/notifications';
+  | '/api/users/notifications'
+  | '/api/companies/custom_fields';
 
 type RefetchObject = {
   mainEndpoint: Endpoint;
@@ -96,6 +98,10 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   },
   notifications: {
     mainEndpoint: '/api/users/notifications',
+    dependencies: [],
+  },
+  custom_fields: {
+    mainEndpoint: '/api/companies/custom_fields',
     dependencies: [],
   },
 };

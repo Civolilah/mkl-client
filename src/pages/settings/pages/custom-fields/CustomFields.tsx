@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
+import { IconName } from '@components/general/Icon';
 import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
@@ -31,36 +32,30 @@ import {
   useTranslation,
 } from '@hooks/index';
 
-import Details from './common/components/Details';
-import Passwords from './common/components/Passwords';
-import Preferences from './common/components/Preferences';
-import { validateProfile } from './common/helpers/validation';
+import CustomFieldsCard from './common/components/CustomFieldsCard';
 
-export interface ProfileType {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  language: string;
-  number_precision: number;
-  enabled_security_password: boolean;
-  has_security_password: boolean;
-  is_military_time: boolean;
-  date_format: string;
-  comma_as_decimal_separator: boolean;
-  accent_color: string;
-  time_zone: string;
+interface CustomField {
+  label: string;
+  type: string;
+  value: string;
 }
 
-export interface ProfileProps {
-  profile: ProfileType | undefined;
-  setProfile: Dispatch<SetStateAction<ProfileType | undefined>>;
-  errors: ValidationErrors;
-  isLoading: boolean;
-  isFormBusy: boolean;
+export interface CustomFieldsType {
+  order_custom_fields: CustomField[];
+  product_custom_fields: CustomField[];
+  customer_custom_fields: CustomField[];
+  purchase_order_custom_fields: CustomField[];
+  supplier_custom_fields: CustomField[];
 }
 
-const Profile = () => {
+interface CustomFieldsCard {
+  iconName: IconName;
+  title: string;
+  iconSize: string;
+  entity: 'order' | 'product' | 'customer' | 'purchase_order' | 'supplier';
+}
+
+const CustomFields = () => {
   const t = useTranslation();
 
   const breadcrumbs: BreadcrumbItem[] = [
@@ -85,54 +80,50 @@ const Profile = () => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
-  const [profile, setProfile] = useState<ProfileType | undefined>(undefined);
-  const [initialProfile, setInitialProfile] = useState<ProfileType | undefined>(
-    undefined
-  );
+  const [customFields, setCustomFields] = useState<
+    CustomFieldsType | undefined
+  >(undefined);
+  const [initialCustomFields, setInitialCustomFields] = useState<
+    CustomFieldsType | undefined
+  >(undefined);
 
-  useFetchEntity<ProfileType>({
-    queryIdentifiers: ['/api/users/profile'],
-    endpoint: '/api/users/profile',
-    setEntity: setProfile,
+  useFetchEntity<CustomFieldsType>({
+    queryIdentifiers: ['/api/companies/custom_fields'],
+    endpoint: '/api/companies/custom_fields',
+    setEntity: setCustomFields,
     setIsLoading,
-    setInitialResponse: setInitialProfile,
+    setInitialResponse: setInitialCustomFields,
     withoutQueryId: true,
+    enableByPermission: hasPermission('admin'),
   });
 
   useDetectChanges({
-    initialEntityValue: initialProfile,
-    currentEntityValue: profile,
+    initialEntityValue: initialCustomFields,
+    currentEntityValue: customFields,
   });
 
   const handleSave = async () => {
-    if (!profile) {
+    if (!customFields) {
       return;
     }
 
     if (!isFormBusy && !isLoading) {
-      if (isEqual(initialProfile, profile)) {
-        toast.info('no_profile_changes');
+      if (isEqual(initialCustomFields, customFields)) {
+        toast.info('no_custom_fields_changes');
         return;
       }
 
       setErrors({});
 
-      const validationErrors = await validateProfile(profile);
-
-      if (validationErrors) {
-        setErrors(validationErrors);
-        return;
-      }
-
       toast.loading();
 
       setIsFormBusy(true);
 
-      request('PATCH', '/api/users/profile', profile)
+      request('PATCH', '/api/companies/custom_fields', customFields)
         .then(() => {
-          toast.success('updated_profile');
+          toast.success('updated_custom_fields');
 
-          refetch(['profile']);
+          refetch(['custom_fields']);
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -146,7 +137,7 @@ const Profile = () => {
 
   usePageLayoutAndActions(
     {
-      title: t('profile'),
+      title: t('custom_fields'),
       breadcrumbs: {
         breadcrumbs,
       },
@@ -175,7 +166,7 @@ const Profile = () => {
         </Box>
       ),
     },
-    [profile, isLoading, isFormBusy, handleSave]
+    [customFields, isLoading, isFormBusy, handleSave]
   );
 
   useSaveAndDiscardActions(
@@ -183,37 +174,66 @@ const Profile = () => {
       disabledSaveButton: isFormBusy,
       disabledDiscardButton: isFormBusy,
       onSaveClick: handleSave,
-      onDiscardClick: () => setProfile(initialProfile),
-      changesLabel: 'unsaved_profile',
+      onDiscardClick: () => setCustomFields(initialCustomFields),
+      changesLabel: 'unsaved_custom_fields',
     },
-    [profile, isFormBusy, handleSave]
+    [customFields, isFormBusy, handleSave]
+  );
+
+  const customFieldsCards = useMemo<CustomFieldsCard[]>(
+    () => [
+      {
+        iconName: 'clipboardList',
+        title: 'order_custom_fields',
+        iconSize: '1.25rem',
+        entity: 'order',
+      },
+      {
+        iconName: 'product',
+        title: 'product_custom_fields',
+        iconSize: '1.4rem',
+        entity: 'product',
+      },
+      {
+        iconName: 'fileInvoiceDollar',
+        title: 'purchase_order_custom_fields',
+        iconSize: '1.2rem',
+        entity: 'purchase_order',
+      },
+      {
+        iconName: 'customer',
+        title: 'customer_custom_fields',
+        iconSize: '1.4rem',
+        entity: 'customer',
+      },
+      {
+        iconName: 'truck',
+        title: 'supplier_custom_fields',
+        iconSize: '1.2rem',
+        entity: 'supplier',
+      },
+    ],
+    []
   );
 
   return (
     <Box className="flex flex-col gap-y-4 w-full pb-20">
-      <Details
-        profile={profile}
-        setProfile={setProfile}
-        errors={errors}
-        isLoading={isLoading}
-        isFormBusy={isFormBusy}
-      />
-
-      <Preferences
-        profile={profile}
-        errors={errors}
-        setProfile={setProfile}
-        isLoading={isLoading}
-        isFormBusy={isFormBusy}
-      />
-
-      <Passwords
-        profile={profile}
-        isLoading={isLoading}
-        isFormBusy={isFormBusy}
-      />
+      {customFieldsCards.map((card) => (
+        <CustomFieldsCard
+          key={card.entity}
+          customFields={customFields}
+          errors={errors}
+          isLoading={isLoading}
+          isFormBusy={isFormBusy}
+          setCustomFields={setCustomFields}
+          iconName={card.iconName}
+          title={card.title}
+          iconSize={card.iconSize}
+          entity={card.entity}
+        />
+      ))}
     </Box>
   );
 };
 
-export default Profile;
+export default CustomFields;
