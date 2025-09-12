@@ -93,3 +93,4 @@ export { default as SettingsNavItem } from '@components/layout/SettingsNavItem';
 export { default as DateFormatsSelector } from '@components/selectors/DateFormatsSelector';
 export { default as TimezonesSelector } from '@components/selectors/TimezonesSelector';
 export { default as CustomFieldTypesSelector } from '@components/selectors/CustomFieldTypesSelector';
+export { default as NumberTaxRatesSelector } from '@components/selectors/NumberTaxRatesSelector';

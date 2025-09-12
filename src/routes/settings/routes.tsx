@@ -20,10 +20,18 @@ const Notifications = lazy(
 const CustomFields = lazy(
   () => import('@pages/settings/pages/custom-fields/CustomFields')
 );
+const Product = lazy(() => import('@pages/settings/pages/product/Product'));
+const TaxRates = lazy(() => import('@pages/settings/pages/tax-rates/TaxRates'));
+const CompanyDetails = lazy(
+  () => import('@pages/settings/pages/company-details/CompanyDetails')
+);
 
 const Routes = (
   <Route path="/settings" element={<Settings />}>
     <Route path="profile" element={<Profile />} />
+    <Route path="company_details" element={<CompanyDetails />} />
+    <Route path="tax_rates" element={<TaxRates />} />
+    <Route path="product" element={<Product />} />
     <Route path="notifications" element={<Notifications />} />
     <Route path="custom_fields" element={<CustomFields />} />
   </Route>

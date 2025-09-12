@@ -28,11 +28,11 @@ type Props = {
   size?: 'large' | 'middle' | 'small';
   type?: 'text' | 'password' | 'email' | 'textarea';
   label?: string;
-  value: number;
+  value: number | undefined;
   required?: boolean;
   disabled?: boolean;
   placeHolder?: string;
-  onValueChange?: (value: number) => void;
+  onValueChange?: (value: number | undefined) => void;
   errorMessage?: string;
   onPressEnter?: (event: KeyboardEvent<HTMLInputElement> | undefined) => void;
   debounce?: number;
@@ -68,7 +68,7 @@ const NumberField = ({
 }: Props) => {
   const userCompany = useAtomValue(userCompanyAtom);
 
-  const [currentValue, setCurrentValue] = useState<number>(value);
+  const [currentValue, setCurrentValue] = useState<number | undefined>(value);
 
   useDebounce(
     () => {

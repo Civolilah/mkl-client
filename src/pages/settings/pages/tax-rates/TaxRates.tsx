@@ -1,0 +1,206 @@
+/**
+ * MKL (https://mkl.ba).
+ *
+ * @link https://github.com/mkl source repository
+ *
+ * @copyright Copyright (c) 2024. MKL (https://mkl.ba)
+ *
+ * @license https://www.elastic.co/licensing/elastic-license
+ */
+
+import { useState } from 'react';
+
+import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
+import { request, route, useToast } from '@helpers/index';
+import { isEqual } from 'lodash';
+import { useMediaQuery } from 'react-responsive';
+import { useNavigate } from 'react-router-dom';
+
+import { ValidationErrors } from '@interfaces/index';
+
+import { AISearchAction, Box, FooterAction } from '@components/index';
+import { BreadcrumbItem } from '@components/layout/Default';
+
+import {
+  useDetectChanges,
+  useFetchEntity,
+  useHasPermission,
+  usePageLayoutAndActions,
+  useRefetch,
+  useSaveAndDiscardActions,
+  useTranslation,
+} from '@hooks/index';
+
+import InvoiceDefaultTaxesCard from './common/components/InvoiceDefaultTaxesCard';
+import ProductDefaultTaxesCard from './common/components/ProductDefaultTaxesCard';
+import PurchaseOrderDefaultTaxesCard from './common/components/PurchaseOrderDefaultTaxesCard';
+import TaxRatesCard from './common/components/TaxRatesCard';
+
+export interface TaxRatesType {
+  number_of_order_taxes: number;
+  number_of_product_taxes: number;
+  number_of_purchase_order_taxes: number;
+  inclusive_tax: boolean;
+}
+
+const TaxRates = () => {
+  const t = useTranslation();
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('settings'),
+      href: '/settings/profile',
+    },
+    {
+      title: t('tax_rates'),
+      href: '/settings/tax_rates',
+    },
+  ];
+
+  const toast = useToast();
+
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
+  const refetch = useRefetch();
+  const navigate = useNavigate();
+  const hasPermission = useHasPermission();
+
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
+  const [taxRates, setTaxRates] = useState<TaxRatesType | undefined>(undefined);
+  const [initialTaxRates, setInitialTaxRates] = useState<
+    TaxRatesType | undefined
+  >(undefined);
+
+  useFetchEntity<TaxRatesType>({
+    queryIdentifiers: ['/api/companies/tax_rates'],
+    endpoint: '/api/companies/tax_rates',
+    setEntity: setTaxRates,
+    setIsLoading,
+    setInitialResponse: setInitialTaxRates,
+    withoutQueryId: true,
+    enableByPermission: false,
+  });
+
+  useDetectChanges({
+    initialEntityValue: initialTaxRates,
+    currentEntityValue: taxRates,
+  });
+
+  const handleSave = async () => {
+    if (!taxRates) {
+      return;
+    }
+
+    if (!isFormBusy && !isLoading) {
+      if (isEqual(initialTaxRates, taxRates)) {
+        toast.info('no_tax_rates_changes');
+        return;
+      }
+
+      setErrors({});
+
+      toast.loading();
+
+      setIsFormBusy(true);
+
+      request('PATCH', '/api/companies/tax_rates', taxRates)
+        .then(() => {
+          toast.success('updated_tax_rates');
+
+          refetch(['tax_rates']);
+        })
+        .catch((error) => {
+          if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
+            toast.dismiss();
+            setErrors(error.response.data.errors);
+          }
+        })
+        .finally(() => setIsFormBusy(false));
+    }
+  };
+
+  usePageLayoutAndActions(
+    {
+      title: t('tax_rates'),
+      breadcrumbs: {
+        breadcrumbs,
+      },
+      footer: !isLargeScreen && (
+        <Box className="flex w-full items-center justify-end h-full">
+          <FooterAction
+            text="dashboard"
+            onClick={() => {
+              navigate(route('/dashboard'));
+            }}
+            iconName="dashboard"
+            disabled={isLoading || isFormBusy}
+            iconSize="1.2rem"
+            visible={hasPermission('view_dashboard')}
+          />
+
+          <FooterAction
+            text="save"
+            onClick={handleSave}
+            iconName="save"
+            disabled={isLoading || isFormBusy}
+            iconSize="1.2rem"
+          />
+
+          <AISearchAction disabled={isLoading || isFormBusy} />
+        </Box>
+      ),
+    },
+    [taxRates, isLoading, isFormBusy, handleSave]
+  );
+
+  useSaveAndDiscardActions(
+    {
+      disabledSaveButton: isFormBusy,
+      disabledDiscardButton: isFormBusy,
+      onSaveClick: handleSave,
+      onDiscardClick: () => setTaxRates(initialTaxRates),
+      changesLabel: 'unsaved_tax_rates',
+    },
+    [taxRates, isFormBusy, handleSave]
+  );
+
+  return (
+    <Box className="flex flex-col gap-y-4 w-full pb-20">
+      <TaxRatesCard
+        taxRates={taxRates}
+        errors={errors}
+        isLoading={isLoading}
+        isFormBusy={isFormBusy}
+        setTaxRates={setTaxRates}
+      />
+
+      <InvoiceDefaultTaxesCard
+        taxRates={taxRates}
+        errors={errors}
+        isLoading={isLoading}
+        isFormBusy={isFormBusy}
+        setTaxRates={setTaxRates}
+      />
+
+      <ProductDefaultTaxesCard
+        taxRates={taxRates}
+        isLoading={isLoading}
+        errors={errors}
+        isFormBusy={isFormBusy}
+        setTaxRates={setTaxRates}
+      />
+
+      <PurchaseOrderDefaultTaxesCard
+        taxRates={taxRates}
+        isLoading={isLoading}
+        errors={errors}
+        isFormBusy={isFormBusy}
+        setTaxRates={setTaxRates}
+      />
+    </Box>
+  );
+};
+
+export default TaxRates;

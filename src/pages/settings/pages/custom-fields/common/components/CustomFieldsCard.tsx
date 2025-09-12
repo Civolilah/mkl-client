@@ -95,8 +95,8 @@ const CustomFieldsCard = ({
                 }
                 withoutOptionalText
                 errorMessage={
-                  get(errors, `${entity}_custom_fields.${index}.label`) &&
-                  t(get(errors, `${entity}_custom_fields.${index}.label`))
+                  get(errors, `${entity}_custom_fields_${index}_label`) &&
+                  t(get(errors, `${entity}_custom_fields_${index}_label`))
                 }
                 readOnly={isFormBusy}
               />
@@ -122,8 +122,8 @@ const CustomFieldsCard = ({
                 }
                 withoutOptionalText
                 errorMessage={
-                  get(errors, `${entity}_custom_fields.${index}.value`) &&
-                  t(get(errors, `${entity}_custom_fields.${index}.value`))
+                  get(errors, `${entity}_custom_fields_${index}_value`) &&
+                  t(get(errors, `${entity}_custom_fields_${index}_value`))
                 }
                 readOnly={isFormBusy}
               />

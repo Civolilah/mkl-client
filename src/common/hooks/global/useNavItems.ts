@@ -308,7 +308,7 @@ const useNavItems = () => {
       key: 'tax_rates',
       label: 'tax_rates',
       iconName: 'percentage',
-      href: '/settings/tax_rates',
+      href: '/tax_rates',
       visible: isInventoryManager,
       iconSize: '1.1rem',
       rightIcon: {
