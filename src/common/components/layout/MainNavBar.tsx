@@ -179,7 +179,7 @@ const GroupedNavItems = ({
           'max-h-0 opacity-0': !isExpanded,
         })}
       >
-        <Box className="px-1.5">
+        <Box className="px-2.5">
           {items.map((item, index) => (
             <Box
               key={index}
@@ -187,7 +187,7 @@ const GroupedNavItems = ({
                 'mt-1': index === 0,
               })}
             >
-              <NavItemElement item={item} />
+              <NavItemElement item={item} subItem />
             </Box>
           ))}
         </Box>

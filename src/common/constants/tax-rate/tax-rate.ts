@@ -12,5 +12,5 @@ import { TaxRate } from '@interfaces/index';
 
 export const INITIAL_TAX_RATE: TaxRate = {
   name: '',
-  rate: 0,
+  rate: 1,
 };

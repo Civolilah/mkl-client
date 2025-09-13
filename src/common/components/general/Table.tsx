@@ -225,10 +225,13 @@ const Footer = ({
       <Box className="flex items-center space-x-2">
         <Box className="flex items-center shadow-sm">
           <PaginationArrowBox
-            className={classNames('relative border-l border-t border-b', {
-              'opacity-50 cursor-not-allowed': currentPage === 1,
-              'cursor-pointer': currentPage !== 1,
-            })}
+            className={classNames(
+              'relative border-l border-t border-b rounded-l-lg',
+              {
+                'opacity-50 cursor-not-allowed': currentPage === 1,
+                'cursor-pointer': currentPage !== 1,
+              }
+            )}
             onClick={() => currentPage !== 1 && setCurrentPage(1)}
             theme={{
               backgroundColor: colors.$23,
@@ -311,10 +314,13 @@ const Footer = ({
           </PaginationArrowBox>
 
           <PaginationArrowBox
-            className={classNames('relative border-t border-b border-r', {
-              'opacity-50 cursor-not-allowed': currentPage === numberOfPages,
-              'cursor-pointer': currentPage !== numberOfPages,
-            })}
+            className={classNames(
+              'relative border-t border-b border-r rounded-r-lg',
+              {
+                'opacity-50 cursor-not-allowed': currentPage === numberOfPages,
+                'cursor-pointer': currentPage !== numberOfPages,
+              }
+            )}
             onClick={() =>
               currentPage !== numberOfPages && setCurrentPage(numberOfPages)
             }
@@ -344,7 +350,7 @@ const Footer = ({
 
       <Dropdown menu={{ items: actions }}>
         <Box
-          className="flex items-center justify-between space-x-3 border px-3 py-1.5 cursor-pointer whitespace-nowrap w-full"
+          className="flex items-center justify-between space-x-3 border px-3 py-1.5 cursor-pointer whitespace-nowrap w-full rounded"
           style={{ backgroundColor: colors.$2, borderColor: colors.$1 }}
         >
           <Text className="text-sm">{t(perPage.toString())}</Text>
@@ -587,6 +593,18 @@ const Table = <EntityType,>({
           ) : (
             <Box className="flex flex-col w-full items-start self-start gap-y-6">
               <Box className="grid grid-cols-1 gap-4 w-full">
+                {Boolean(!isDataLoading && data.length) && (
+                  <Box className="w-full pb-2">
+                    <TextField
+                      placeHolder={filterFieldPlaceHolder}
+                      value={filter}
+                      onValueChange={setFilter}
+                      debounce={200}
+                      disabled={isDataLoading}
+                    />
+                  </Box>
+                )}
+
                 {Boolean(!isDataLoading && !currentData.data.length) && (
                   <Empty
                     image={Empty.PRESENTED_IMAGE_SIMPLE}

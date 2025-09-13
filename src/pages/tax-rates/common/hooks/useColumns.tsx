@@ -51,6 +51,17 @@ const useColumns = (props: Props) => {
       }),
     },
     {
+      title: t('rate'),
+      dataIndex: 'rate',
+      render: (value) => (
+        <Box className="min-w-32 max-w-96 truncate">
+          <Text>
+            {value} {t('percent_symbol')}
+          </Text>
+        </Box>
+      ),
+    },
+    {
       title: t('created_at'),
       dataIndex: 'created_at',
       render: (value) => (
@@ -104,12 +115,12 @@ const useColumns = (props: Props) => {
       render: (_, resource) => (
         <TableActionsDropdown
           resource={resource}
-          editPageLink="/label_categories/:id/edit"
-          resourceType="label_category"
-          deleteEndpoint="/api/label_categories/:id"
+          editPageLink="/tax_rates/:id/edit"
+          resourceType="tax_rate"
+          deleteEndpoint="/api/tax_rates/:id"
           refresh={refresh}
           resourceName={resource.name}
-          resourceQueryIdentifier="label_categories"
+          resourceQueryIdentifier="tax_rates"
         />
       ),
       fixed: 'right',

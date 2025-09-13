@@ -112,7 +112,6 @@ const Show = () => {
             }}
             iconName="employees"
             disabled={isLoading}
-            iconSize="1.25rem"
           />
 
           <FooterAction
@@ -122,7 +121,6 @@ const Show = () => {
             }}
             iconName="edit"
             disabled={isLoading}
-            iconSize="1.25rem"
           />
 
           <FooterAction
@@ -130,7 +128,6 @@ const Show = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading} />

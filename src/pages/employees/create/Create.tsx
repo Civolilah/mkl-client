@@ -156,7 +156,6 @@ const Create = () => {
             }}
             iconName="employees"
             disabled={isFormBusy}
-            iconSize="1.3rem"
           />
 
           <FooterAction
@@ -164,7 +163,6 @@ const Create = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isFormBusy}
-            iconSize="1.3rem"
           />
 
           <AISearchAction disabled={isFormBusy} />

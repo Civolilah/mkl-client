@@ -102,6 +102,7 @@ const TaxRateForm = ({
           placeHolder={t('tax_rate_rate_placeholder')}
           value={taxRate?.rate || 0}
           onValueChange={(value) => handleChange('rate', Number(value))}
+          addonAfter={t('percent_symbol')}
           errorMessage={errors?.rate && t(errors.rate)}
         />
       </Box>

@@ -9,6 +9,7 @@
  */
 
 import { route } from '@helpers/index';
+import classNames from 'classnames';
 import { useSetAtom } from 'jotai';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -25,9 +26,10 @@ import {
 
 import { menuDrawerOpenedAtom } from './MobileNavBar';
 
-type Props = {
+interface Props {
   item: NavItemType;
-};
+  subItem?: boolean;
+}
 
 const Div = styled.div`
   background-color: ${(props) =>
@@ -52,7 +54,7 @@ const IconWrapper = styled.div`
   }
 `;
 
-const NavItem = ({ item }: Props) => {
+const NavItem = ({ item, subItem }: Props) => {
   const t = useTranslation();
 
   const navigate = useNavigate();
@@ -85,7 +87,12 @@ const NavItem = ({ item }: Props) => {
       style={{ minHeight: '2.4rem' }}
     >
       <Box className="flex w-full items-center justify-between">
-        <Box className="flex items-center space-x-2">
+        <Box
+          className={classNames('flex items-center', {
+            'space-x-1': subItem,
+            'space-x-2': !subItem,
+          })}
+        >
           <Box className="flex justify-center items-center min-w-8">
             <IconWrapper
               theme={{
@@ -98,7 +105,14 @@ const NavItem = ({ item }: Props) => {
             </IconWrapper>
           </Box>
 
-          <Text className="text-xs-mid">{t(item.label)}</Text>
+          <Text
+            className={classNames({
+              'text-[0.813rem]': subItem,
+              'text-xs-mid': !subItem,
+            })}
+          >
+            {t(item.label)}
+          </Text>
         </Box>
 
         {Boolean(item.rightIcon && item.rightIcon.visible) && (

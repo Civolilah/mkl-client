@@ -169,7 +169,7 @@ const Header = ({ title }: Props) => {
           !saveAndDiscardActions.hideBox && (
             <Box
               id="discardSaveBox"
-              className="flex items-center gap-x-20 absolute right-[54%] -top-[0.3rem] translate-x-1/2 border rounded-md p-1.5 bg-gray-50"
+              className="flex items-center gap-x-20 absolute right-[54%] top-[0.375rem] translate-x-1/2 border rounded-md p-[0.275rem] bg-gray-50"
               style={{
                 borderColor: colors.$1,
               }}

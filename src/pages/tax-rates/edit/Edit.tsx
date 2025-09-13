@@ -32,6 +32,7 @@ import {
   useDetectChanges,
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useRefetch,
   useSaveAndDiscardActions,
@@ -148,7 +149,6 @@ const Edit = () => {
             }}
             iconName="percentage"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <FooterAction
@@ -156,7 +156,6 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <FooterAction
@@ -202,6 +201,19 @@ const Edit = () => {
       hideBox: !canEditEntity('edit_tax_rate', 'create_tax_rate', taxRate),
     },
     [taxRate, isLoading, handleSave]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/tax_rates/new')),
+        visible: hasPermission('create_tax_rate'),
+        disabled: isLoading,
+      },
+    ],
+    [isLoading, isLargeScreen]
   );
 
   return (

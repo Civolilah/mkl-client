@@ -136,7 +136,6 @@ const TaxRates = () => {
             }}
             iconName="dashboard"
             disabled={isLoading || isFormBusy}
-            iconSize="1.2rem"
             visible={hasPermission('view_dashboard')}
           />
 
@@ -145,7 +144,6 @@ const TaxRates = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading || isFormBusy}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading || isFormBusy} />

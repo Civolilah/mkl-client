@@ -21,7 +21,6 @@ import {
   AISearchAction,
   Box,
   FooterAction,
-  MobileSearchAction,
   RefreshDataElement,
   Table,
 } from '@components/index';
@@ -76,10 +75,12 @@ const Employees = () => {
         </Box>
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
-          <MobileSearchAction
+          <FooterAction
+            text="dashboard"
+            onClick={() => navigate(route('/dashboard'))}
+            iconName="dashboard"
             disabled={isLoading}
-            iconSize="1.3rem"
-            searchPlaceholder="search_employee_by"
+            visible={hasPermission('view_dashboard')}
           />
 
           <FooterAction
@@ -87,7 +88,6 @@ const Employees = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading} />

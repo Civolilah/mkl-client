@@ -122,6 +122,13 @@ const useNavItems = () => {
         isInventoryManager,
       iconSize: '1.4rem',
       group: 'inventory',
+      rightIcon: {
+        name: 'add',
+        href: '/import_export/new',
+        tooltipText: 'new_import_export',
+        visible:
+          hasPermission('import_products') || hasPermission('export_products'),
+      },
     },
     {
       key: 'statuses',
@@ -141,6 +148,25 @@ const useNavItems = () => {
         visible: hasPermission('create_status'),
       },
       group: 'inventory',
+    },
+    {
+      key: 'transfers',
+      label: 'transfers',
+      iconName: 'arrowsRightLeft',
+      href: '/transfers',
+      visible:
+        (hasPermission('create_transfer') ||
+          hasPermission('view_transfer') ||
+          hasPermission('edit_transfer')) &&
+        isInventoryManager,
+      iconSize: '1.2rem',
+      group: 'inventory',
+      rightIcon: {
+        name: 'add',
+        href: '/transfers/new',
+        tooltipText: 'new_transfer',
+        visible: hasPermission('create_transfer'),
+      },
     },
     {
       key: 'brands',

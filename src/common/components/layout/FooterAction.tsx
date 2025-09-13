@@ -30,7 +30,6 @@ interface Props {
   text: string;
   onClick?: () => void;
   iconName?: IconName;
-  iconSize?: string;
   disabled?: boolean;
   iconColor?: string;
   icon?: ReactNode;
@@ -41,11 +40,20 @@ interface Props {
   style?: CSSProperties;
 }
 
+const ICON_SIZE: Record<string, string> = {
+  dashboard: '1.15rem',
+  save: '1.175rem',
+  refresh: '1.2rem',
+  percentage: '1.2rem',
+  tags: '1.2rem',
+  employees: '1.215rem',
+  edit: '1.2rem',
+};
+
 const FooterAction = ({
   text,
   onClick,
   iconName,
-  iconSize = '1.25rem',
   disabled = false,
   iconColor,
   icon,
@@ -145,7 +153,7 @@ const FooterAction = ({
               {Boolean(iconName && !icon) && (
                 <Icon
                   name={iconName as IconName}
-                  size={iconSize}
+                  size={ICON_SIZE[iconName as IconName]}
                   style={{ color: iconColor || accentColor }}
                 />
               )}
@@ -192,7 +200,7 @@ const FooterAction = ({
           {Boolean(iconName && !icon) && (
             <Icon
               name={iconName as IconName}
-              size={iconSize}
+              size={ICON_SIZE[iconName as IconName]}
               style={{ color: iconColor || accentColor }}
             />
           )}

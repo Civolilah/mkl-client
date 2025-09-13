@@ -540,5 +540,13 @@
   "created_tax_rate": "Successfully created tax rate",
   "updated_tax_rate": "Successfully updated tax rate",
   "tax_rate_name_placeholder": "e.g., VAT, Sales Tax, GST",
-  "no_tax_rate_changes": "No tax rate changes yet - everything's up to date!"
+  "no_tax_rate_changes": "No tax rate changes yet - everything's up to date!",
+  "tax_rate_rate_placeholder": "e.g., 3.50",
+  "tax_rate_name_required": "Tax rate name is required.",
+  "tax_rate_rate_required": "Tax rate is required.",
+  "tax_rate": "Tax rate",
+  "percent_symbol": "%",
+  "new_import_export": "New Import/Export",
+  "new_transfer": "New Transfer",
+  "transfers": "Transfers"
 }

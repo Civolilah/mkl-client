@@ -58,11 +58,12 @@ export type ResourceType =
   | 'supplier'
   | 'brand'
   | 'product'
-  | 'warehouse';
+  | 'warehouse'
+  | 'tax_rate';
 
 type CustomActions = (resource: Resource) => MenuProps['items'];
 
-type Props = {
+interface Props {
   resourceQueryIdentifier: RefetchEntity;
   resourceName: string;
   editPageLink?: string;
@@ -71,7 +72,7 @@ type Props = {
   resourceType?: ResourceType;
   refresh?: () => void;
   customActions?: CustomActions;
-};
+}
 
 const TableActionsDropdown = ({
   resource,

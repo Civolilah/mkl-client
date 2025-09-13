@@ -55,9 +55,9 @@ const MobileNavBar = ({ items }: Props) => {
   return (
     <>
       <Box
-        className="flex items-center justify-center py-4 px-4 cursor-pointer border-r"
+        className="flex items-center justify-center py-4 px-4 cursor-pointer border-r shadow-sm"
         style={{
-          height: '3.75rem',
+          height: '3.45rem',
           borderColor: colors.$1,
           backgroundColor: colors.$6,
         }}
@@ -81,7 +81,7 @@ const MobileNavBar = ({ items }: Props) => {
           <nav className="flex flex-col space-y-1 h-full">
             <NavBarLogoSection mobileSideBar />
 
-            <Box className="flex flex-col flex-1 overflow-y-auto break-all px-1.5">
+            <Box className="flex flex-col flex-1 overflow-y-auto break-all px-2">
               {items
                 .filter((item) => item.visible && item.key !== 'settings')
                 .map((item) => (

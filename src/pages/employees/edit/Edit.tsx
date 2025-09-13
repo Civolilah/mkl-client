@@ -171,7 +171,6 @@ const Edit = () => {
             }}
             iconName="employees"
             disabled={isLoading}
-            iconSize="1.3rem"
           />
 
           <FooterAction
@@ -179,7 +178,6 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <FooterAction

@@ -10,16 +10,13 @@
 
 import React from 'react';
 
-import { route } from '@helpers/index';
 import { MenuProps } from 'antd';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import { LabelCategory } from '@interfaces/index';
+import { TaxRate } from '@interfaces/index';
 
 import { DeleteAction, FooterActionItem } from '@components/index';
-
-import { useHasPermission } from '@hooks/index';
 
 interface Props {
   refresh?: () => void;
@@ -28,27 +25,12 @@ interface Props {
 const useActions = ({ refresh }: Props = {}) => {
   const { id } = useParams();
 
-  const navigate = useNavigate();
-  const hasPermission = useHasPermission();
-
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
-  return (currentResource: LabelCategory) => {
+  return (currentResource: TaxRate) => {
     const actions: MenuProps['items'] = [
-      ...(refresh && hasPermission('create_label_category') && !isLargeScreen
+      ...(refresh && !isLargeScreen
         ? [
-            {
-              label: (
-                <FooterActionItem
-                  iconName="add"
-                  onClick={() => {
-                    navigate(route('/label_categories/new'));
-                  }}
-                  label="new_label_category"
-                />
-              ),
-              key: `new_label_category-${id}`,
-            },
             {
               label: (
                 <FooterActionItem
@@ -64,13 +46,13 @@ const useActions = ({ refresh }: Props = {}) => {
       {
         label: (
           <DeleteAction
-            resourceType="label_category"
-            deleteEndpoint="/api/label_categories/:id"
+            resourceType="tax_rate"
+            deleteEndpoint="/api/tax_rates/:id"
             resourceId={id as string}
             editPageAction
-            mainPageURL="/label_categories"
+            mainPageURL="/tax_rates"
             resourceName={currentResource.name}
-            resourceQueryIdentifier="label_categories"
+            resourceQueryIdentifier="tax_rates"
             element={
               !isLargeScreen && (
                 <FooterActionItem

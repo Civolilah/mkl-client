@@ -147,7 +147,7 @@ const Details = ({
 
         {(!selectedExistingEmployee || editPage) && (
           <>
-            <Box className="flex gap-x-4">
+            <Box className="flex flex-col gap-y-4 md:flex-row md:gap-y-0 md:gap-x-4">
               <TextField
                 required
                 label={t('first_name')}
@@ -168,7 +168,7 @@ const Details = ({
               />
             </Box>
 
-            <Box className="flex gap-x-4">
+            <Box className="flex flex-col gap-y-4 md:flex-row md:gap-y-0 md:gap-x-4">
               <TextField
                 required
                 label={t('email')}
@@ -224,7 +224,7 @@ const Details = ({
           </Box>
         )}
 
-        <Box className="flex gap-x-4">
+        <Box className="flex flex-col gap-y-4 md:flex-row md:gap-y-0 md:gap-x-4">
           <SubsidiariesSelector
             label={t('subsidiaries')}
             placeholder={t('select_subsidiaries')}

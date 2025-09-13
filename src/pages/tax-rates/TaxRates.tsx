@@ -20,7 +20,6 @@ import {
   AISearchAction,
   Box,
   FooterAction,
-  MobileSearchAction,
   RefreshDataElement,
   Table,
 } from '@components/index';
@@ -28,6 +27,7 @@ import {
 import {
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useTranslation,
 } from '@hooks/index';
@@ -35,7 +35,7 @@ import {
 import MobileCard from './common/components/MobileCard';
 import useColumns from './common/hooks/useColumns';
 
-const LabelCategories = () => {
+const TaxRates = () => {
   const t = useTranslation();
 
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
@@ -75,21 +75,12 @@ const LabelCategories = () => {
         </Box>
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
-          <MobileSearchAction
-            disabled={isLoading}
-            iconSize="1.3rem"
-            searchPlaceholder="search_by_name"
-          />
-
           <FooterAction
-            text="new_tax_rate"
-            onClick={() => {
-              navigate(route('/tax_rates/new'));
-            }}
-            iconName="add"
+            text="dashboard"
+            onClick={() => navigate(route('/dashboard'))}
+            iconName="dashboard"
             disabled={isLoading}
-            iconSize="1.3rem"
-            visible={hasPermission('create_tax_rate')}
+            visible={hasPermission('view_dashboard')}
           />
 
           <FooterAction
@@ -97,13 +88,25 @@ const LabelCategories = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading} />
         </Box>
       ),
     },
+    [isLoading, isLargeScreen]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/tax_rates/new')),
+        visible: hasPermission('create_tax_rate'),
+        disabled: isLoading,
+      },
+    ],
     [isLoading, isLargeScreen]
   );
 
@@ -128,4 +131,4 @@ const LabelCategories = () => {
   );
 };
 
-export default LabelCategories;
+export default TaxRates;
