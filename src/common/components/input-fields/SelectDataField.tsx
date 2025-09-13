@@ -174,7 +174,7 @@ const SelectDataField = ({
         </Box>
       )}
 
-      <Box className="flex items-center w-full space-x-3">
+      <Box className="flex items-center w-full space-x-2">
         {mode === 'multiple' && (
           <Select
             className="w-full"

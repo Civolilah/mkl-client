@@ -26,6 +26,7 @@ import {
   Divider,
   LabelElement,
   Text,
+  Icon,
 } from '@components/index';
 
 import { useAccountPlan, useFetchEntity, useTranslation } from '@hooks/index';
@@ -93,7 +94,15 @@ const Details = ({
 
   return (
     <Card
-      title={t('details')}
+      titleElement={
+        <Box className="flex items-center gap-x-2">
+          <Box>
+            <Icon name="person" size="1.3rem" />
+          </Box>
+
+          <Text>{t('details')}</Text>
+        </Box>
+      }
       className="w-full"
       isLoading={isLoading || isLoadingExistingEmployees}
     >
@@ -145,7 +154,6 @@ const Details = ({
                 placeHolder={t('first_name_placeholder')}
                 value={employee?.first_name || ''}
                 onValueChange={(value) => handleChange('first_name', value)}
-                changeOnBlur
                 errorMessage={errors?.first_name && t(errors.first_name)}
                 disabled={isLoading}
               />
@@ -155,7 +163,6 @@ const Details = ({
                 placeHolder={t('last_name_placeholder')}
                 value={employee?.last_name || ''}
                 onValueChange={(value) => handleChange('last_name', value)}
-                changeOnBlur
                 errorMessage={errors?.last_name && t(errors.last_name)}
                 disabled={isLoading}
               />
@@ -168,7 +175,6 @@ const Details = ({
                 placeHolder={t('email_placeholder')}
                 value={employee?.email || ''}
                 onValueChange={(value) => handleChange('email', value)}
-                changeOnBlur
                 errorMessage={errors?.email && t(errors.email)}
                 disabled={isLoading}
               />
@@ -179,7 +185,6 @@ const Details = ({
                 placeHolder={t('phone_placeholder')}
                 value={employee?.phone || ''}
                 onValueChange={(value) => handleChange('phone', value)}
-                changeOnBlur
                 disabled={isLoading}
               />
             </Box>
@@ -191,7 +196,6 @@ const Details = ({
               placeHolder={t('password_placeholder')}
               value={employee?.password || ''}
               onValueChange={(value) => handleChange('password', value)}
-              changeOnBlur
               errorMessage={errors?.password && t(errors.password)}
               disabled={isLoading}
             />

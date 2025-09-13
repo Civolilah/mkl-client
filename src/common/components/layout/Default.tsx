@@ -19,10 +19,22 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import Icon, { IconName } from '@components/general/Icon';
-import { Box, EntityActions, Header, Text, Tooltip } from '@components/index';
+import {
+  Box,
+  Button,
+  EntityActions,
+  Header,
+  Text,
+  Tooltip,
+} from '@components/index';
 
 import { mobileActionsAtom } from '@hooks/global/useMobileActions';
-import { useAccentColor, useColors, usePreventAction } from '@hooks/index';
+import {
+  useAccentColor,
+  useColors,
+  usePreventAction,
+  useTranslation,
+} from '@hooks/index';
 
 import { isMobileAiPopoverOpenAtom } from './AISearchAction';
 import MainNavBar from './MainNavBar';
@@ -60,7 +72,13 @@ const Default = ({
   actions = [],
   tooltipPermissionMessage,
   displayPermissionTooltip = false,
+  onSaveClick,
+  saveButtonLabel,
+  saveButtonIcon,
+  saveButtonIconColor,
 }: Props) => {
+  const t = useTranslation();
+
   const navigate = useNavigate();
   const preventAction = usePreventAction();
 
@@ -133,9 +151,9 @@ const Default = ({
                 id="scrollable-content-box"
                 className="flex flex-col w-full overflow-y-auto flex-1"
               >
-                {Boolean(breadcrumbs.length || actions.length) &&
+                {Boolean(breadcrumbs.length || actions.length || onSaveClick) &&
                   isLargeScreen && (
-                    <Box className="flex items-center justify-end sm:justify-between w-full pl-6 pt-5 space-x-2">
+                    <Box className="flex items-center justify-end sm:justify-between w-full px-6 pt-5 space-x-2">
                       <Box className="flex-1 hidden sm:flex">
                         {Boolean(breadcrumbs.length) && (
                           <Box className="flex justify-start w-full">
@@ -216,6 +234,26 @@ const Default = ({
                           </Box>
                         )}
                       </Box>
+
+                      {onSaveClick && (
+                        <Box className="flex items-center">
+                          <Button
+                            type="primary"
+                            icon={
+                              <Box>
+                                <Icon
+                                  name={saveButtonIcon || 'save'}
+                                  size="1.2rem"
+                                  style={{ color: saveButtonIconColor }}
+                                />
+                              </Box>
+                            }
+                            onClick={onSaveClick}
+                          >
+                            {t(saveButtonLabel || 'save')}
+                          </Button>
+                        </Box>
+                      )}
 
                       {Boolean(actions.length) && (
                         <Box

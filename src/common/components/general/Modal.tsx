@@ -93,10 +93,10 @@ const Modal = ({
       >
         {!withoutTitleAndClose && (
           <Box
-            className="flex w-full items-center justify-between self-start px-4 py-3.5 border-b"
+            className="flex w-full items-center justify-between self-start px-4 py-3 border-b"
             style={{ borderColor: colors.$1 }}
           >
-            <Text className="text-lg font-medium">{title}</Text>
+            <Text className="text-base font-medium">{title}</Text>
 
             <Box className="cursor-pointer">
               <Icon
@@ -106,7 +106,7 @@ const Modal = ({
                     onClose?.();
                   }
                 }}
-                size="1.3rem"
+                size="1.2rem"
               />
             </Box>
           </Box>

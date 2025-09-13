@@ -4,8 +4,10 @@ import {
   Box,
   Card,
   ErrorMessageElement,
+  Icon,
   Label,
   LabelElement,
+  Text,
   Toggle,
 } from '@components/index';
 
@@ -21,6 +23,7 @@ interface PermissionRow {
 
 const permissionRows: PermissionRow[] = [
   { name: 'all', key: 'all' },
+  { name: 'order', key: 'order' },
   { name: 'product', key: 'product' },
   { name: 'warehouse', key: 'warehouse' },
   { name: 'subsidiary', key: 'subsidiary' },
@@ -142,7 +145,19 @@ const Permissions = ({
   };
 
   return (
-    <Card title={t('permissions')} className="w-full">
+    <Card
+      id="permissions-card"
+      titleElement={
+        <Box className="flex items-center gap-x-2">
+          <Box>
+            <Icon name="shieldCheck" size="1.35rem" />
+          </Box>
+
+          <Text>{t('permissions')}</Text>
+        </Box>
+      }
+      className="w-full"
+    >
       <LabelElement
         label={t('administrator')}
         helpLabel={t('administrator_help')}
@@ -163,19 +178,6 @@ const Permissions = ({
         <Toggle
           checked={isPermissionChecked('view_dashboard')}
           onChange={(value) => handleChangePermissions(value, 'view_dashboard')}
-          disabled={isPermissionDisabled()}
-        />
-      </LabelElement>
-
-      <LabelElement
-        label={t('manage_orders')}
-        helpLabel={t('manage_orders_help')}
-        withoutOptionalText
-        twoGridColumns
-      >
-        <Toggle
-          checked={isPermissionChecked('manage_orders')}
-          onChange={(value) => handleChangePermissions(value, 'manage_orders')}
           disabled={isPermissionDisabled()}
         />
       </LabelElement>
@@ -215,11 +217,16 @@ const Permissions = ({
         twoGridColumns
       >
         <Toggle
-          checked={isPermissionChecked('manage_stock_counting')}
+          checked={
+            isPermissionChecked('manage_stock_counting') ||
+            isPermissionChecked('edit_product')
+          }
           onChange={(value) =>
             handleChangePermissions(value, 'manage_stock_counting')
           }
-          disabled={isPermissionDisabled()}
+          disabled={
+            isPermissionDisabled() || isPermissionChecked('edit_product')
+          }
         />
       </LabelElement>
 

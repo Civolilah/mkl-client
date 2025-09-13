@@ -155,6 +155,7 @@ const Header = ({ title }: Props) => {
 
                   saveAndDiscardActions.onDiscardClick();
                 }}
+                disabled={saveAndDiscardActions.disabledDiscardButton}
                 disablePreventAction
               >
                 {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
@@ -163,54 +164,61 @@ const Header = ({ title }: Props) => {
           </Box>
         )}
 
-        {saveAndDiscardActions && isLargeScreen && areChangesMade && (
-          <Box
-            id="discardSaveBox"
-            className="flex items-center gap-x-20 absolute right-[54%] -top-[0.2rem] translate-x-1/2 border rounded-md py-1.5 px-2 bg-gray-50"
-            style={{
-              borderColor: colors.$1,
-            }}
-          >
-            <Box className="flex items-center gap-x-2">
-              <Box>
-                <Icon
-                  name="warning"
-                  size="1.35rem"
-                  style={{ color: 'orange' }}
-                />
+        {saveAndDiscardActions &&
+          isLargeScreen &&
+          (areChangesMade || saveAndDiscardActions.creationPage) && (
+            <Box
+              id="discardSaveBox"
+              className="flex items-center gap-x-20 absolute right-[54%] -top-[0.3rem] translate-x-1/2 border rounded-md p-1.5 bg-gray-50"
+              style={{
+                borderColor: colors.$1,
+              }}
+            >
+              <Box className="flex items-center gap-x-2">
+                <Box>
+                  <Icon
+                    name="warning"
+                    size="1.35rem"
+                    style={{ color: 'orange' }}
+                  />
+                </Box>
+
+                <Text className="text-xs-mid font-medium whitespace-nowrap">
+                  {t(saveAndDiscardActions.changesLabel || 'unsaved_changes')}
+                </Text>
               </Box>
+              <Box className="flex items-center space-x-2">
+                <Button
+                  size="middle"
+                  type="default"
+                  onClick={() => {
+                    if (preventedAction) {
+                      preventedAction?.action();
+                    }
 
-              <Text className="text-xs-mid font-medium whitespace-nowrap">
-                {t(saveAndDiscardActions.changesLabel || 'unsaved_changes')}
-              </Text>
-            </Box>
-            <Box className="flex items-center space-x-2">
-              <Button
-                size="middle"
-                type="default"
-                onClick={() => {
-                  if (preventedAction) {
-                    preventedAction?.action();
+                    saveAndDiscardActions.onDiscardClick();
+                  }}
+                  disabled={saveAndDiscardActions.disabledDiscardButton}
+                  disablePreventAction
+                >
+                  {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
+                </Button>
+
+                <Button
+                  size="middle"
+                  type="primary"
+                  onClick={saveAndDiscardActions.onSaveClick}
+                  disabled={saveAndDiscardActions.disabledSaveButton}
+                  disabledWithLoadingIcon={
+                    saveAndDiscardActions.disabledWithLoadingIcon
                   }
-
-                  saveAndDiscardActions.onDiscardClick();
-                }}
-                disablePreventAction
-              >
-                {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
-              </Button>
-
-              <Button
-                size="middle"
-                type="primary"
-                onClick={saveAndDiscardActions.onSaveClick}
-                disablePreventAction
-              >
-                {t(saveAndDiscardActions.saveButtonLabel || 'save')}
-              </Button>
+                  disablePreventAction
+                >
+                  {t(saveAndDiscardActions.saveButtonLabel || 'save')}
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
 
         <Box className="flex w-full justify-end">
           {isSmallScreen ? (

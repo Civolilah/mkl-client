@@ -10,8 +10,6 @@
 
 import { Dispatch, SetStateAction } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
-
 import { Box, Button, Icon, Modal, Text } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
@@ -24,8 +22,6 @@ interface Props {
 
 const PermissionAlertModal = ({ visible, setVisible, saveEmployee }: Props) => {
   const t = useTranslation();
-
-  const [searchParams, setSearchParams] = useSearchParams();
 
   return (
     <Modal
@@ -51,29 +47,18 @@ const PermissionAlertModal = ({ visible, setVisible, saveEmployee }: Props) => {
               setVisible(false);
 
               setTimeout(() => {
-                const tab = searchParams.get('tab');
-                if (tab === 'permissions') {
-                  return;
-                }
+                const permissionsCard =
+                  document.getElementById('permissions-card');
 
-                setSearchParams((prev) => {
-                  const newParams = new URLSearchParams(prev);
-                  newParams.set('tab', 'permissions');
-                  return newParams;
-                });
-
-                const scrollableContentBox = document.getElementById(
-                  'scrollable-content-box'
-                );
-
-                if (scrollableContentBox) {
-                  scrollableContentBox.scrollTo({
-                    top: 0,
+                if (permissionsCard) {
+                  permissionsCard.scrollIntoView({
                     behavior: 'smooth',
+                    block: 'center',
                   });
                 }
               }, 100);
             }}
+            disablePreventAction
           >
             {t('manage_permissions')}
           </Button>
@@ -87,6 +72,7 @@ const PermissionAlertModal = ({ visible, setVisible, saveEmployee }: Props) => {
                 saveEmployee();
               }, 100);
             }}
+            disablePreventAction
           >
             {t('save_employee')}
           </Button>

@@ -136,7 +136,7 @@ const Button = ({
           : type === 'default'
             ? colors.$18
             : type === 'primary'
-              ? accentColor
+              ? colors.$4
               : '',
         hoverBackgroundColorOpacity:
           handleHoverWithOpacity || disabled ? 0.75 : 1,

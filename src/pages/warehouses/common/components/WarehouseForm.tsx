@@ -24,6 +24,7 @@ type Props = {
   errors: ValidationErrors;
   isLoading?: boolean;
   onlyFields?: boolean;
+  onMainFieldsEnterPress?: () => void;
 };
 
 const WarehouseForm = ({
@@ -32,6 +33,7 @@ const WarehouseForm = ({
   errors,
   isLoading,
   onlyFields,
+  onMainFieldsEnterPress,
 }: Props) => {
   const t = useTranslation();
 
@@ -46,7 +48,7 @@ const WarehouseForm = ({
           placeHolder={t('warehouse_name_placeholder')}
           value={warehouse?.name || ''}
           onValueChange={(value) => handleChange('name', value)}
-          changeOnBlur
+          onPressEnter={onMainFieldsEnterPress}
           errorMessage={errors?.name && t(errors.name)}
         />
       </>

@@ -24,6 +24,7 @@ interface Props {
   errors: ValidationErrors;
   isLoading?: boolean;
   onlyFields?: boolean;
+  onMainFieldsEnterPress?: () => void;
 }
 
 const SubsidiaryForm = ({
@@ -32,6 +33,7 @@ const SubsidiaryForm = ({
   errors,
   isLoading,
   onlyFields,
+  onMainFieldsEnterPress,
 }: Props) => {
   const t = useTranslation();
 
@@ -46,7 +48,7 @@ const SubsidiaryForm = ({
           placeHolder={t('subsidiary_name_placeholder')}
           value={subsidiary?.name || ''}
           onValueChange={(value) => handleChange('name', value)}
-          changeOnBlur
+          onPressEnter={onMainFieldsEnterPress}
           errorMessage={errors?.name && t(errors.name)}
         />
       </>

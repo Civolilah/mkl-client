@@ -38,7 +38,7 @@ const EntityActions = (props: Props) => {
     <Dropdown menu={{ items: actions }} disabled={disabled}>
       <StyledBox
         className={classNames(
-          'flex items-center space-x-1 border h-full py-1.5 px-2',
+          'flex items-center space-x-1 border h-full py-1.5 px-2 rounded-lg',
           {
             'cursor-not-allowed opacity-75': disabled,
             'cursor-pointer': !disabled,

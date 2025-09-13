@@ -28,11 +28,13 @@ import {
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
+  useDetectChanges,
   useFetchEntity,
   useHasPermission,
   useMobileActions,
   usePageLayoutAndActions,
   useRefetch,
+  useSaveAndDiscardActions,
   useTranslation,
 } from '@hooks/index';
 
@@ -149,12 +151,6 @@ const Edit = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      buttonAction: {
-        isLoading: isLoading,
-        isDisabled: isLoading,
-        onClick: handleSave,
-        disabledWithLoadingIcon: isLoading,
-      },
       actions: {
         list: employee ? actions(employee) : [],
       },
@@ -196,6 +192,23 @@ const Edit = () => {
           <AISearchAction disabled={isLoading} />
         </Box>
       ),
+    },
+    [employee, isLoading, handleSave]
+  );
+
+  useDetectChanges({
+    initialEntityValue: initialResponse,
+    currentEntityValue: employee,
+  });
+
+  useSaveAndDiscardActions(
+    {
+      disabledSaveButton: isLoading,
+      disabledDiscardButton: isLoading,
+      disabledWithLoadingIcon: isLoading,
+      onSaveClick: handleSave,
+      onDiscardClick: () => setEmployee(initialResponse),
+      changesLabel: 'unsaved_employee',
     },
     [employee, isLoading, handleSave]
   );

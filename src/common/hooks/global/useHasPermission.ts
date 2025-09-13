@@ -23,7 +23,6 @@ export type Permission =
   | 'admin'
   | 'owner'
   | 'view_dashboard'
-  | 'manage_orders'
   | 'import_products'
   | 'export_products'
   | 'manage_stock_counting'
@@ -59,7 +58,10 @@ export type Permission =
   | 'edit_bin'
   | 'create_tax_rate'
   | 'view_tax_rate'
-  | 'edit_tax_rate';
+  | 'edit_tax_rate'
+  | 'create_order'
+  | 'view_order'
+  | 'edit_order';
 
 const useHasPermission = () => {
   const userCompanyDetails = useAtomValue(userCompanyAtom);

@@ -18,7 +18,8 @@ import { Box, Button, Text } from '@components/index';
 
 import { useColors, useTranslation } from '@hooks/index';
 
-type Props = {
+interface Props {
+  id?: string;
   className?: string;
   title?: string;
   titleElement?: ReactNode;
@@ -32,9 +33,10 @@ type Props = {
   childrenParentClassName?: string;
   childrenParentStyle?: CSSProperties;
   paddingBottom?: string;
-};
+}
 
 const Card = ({
+  id,
   children,
   title,
   titleElement,
@@ -53,7 +55,7 @@ const Card = ({
   const colors = useColors();
 
   return (
-    <Box className="flex w-full h-full justify-center items-start">
+    <Box id={id} className="flex w-full h-full justify-center items-start">
       <CardBase
         className={classNames('shadow-sm', className)}
         style={{
@@ -68,16 +70,14 @@ const Card = ({
       >
         <Box className="flex flex-col">
           <Box
-            className="flex items-center justify-between border-b px-3 md:px-5 py-3 md:py-3.5"
+            className="flex items-center justify-between border-b px-3 md:px-4 py-3"
             style={{ borderColor: colors.$1 }}
           >
-            <Box className="text-base md:text-lg font-medium">
+            <Box className="text-base font-medium">
               {titleElement ? (
                 titleElement
               ) : (
-                <Text className="text-base md:text-lg font-medium">
-                  {title}
-                </Text>
+                <Text className="text-base font-medium">{title}</Text>
               )}
             </Box>
 
@@ -86,7 +86,7 @@ const Card = ({
 
           <Box
             className={classNames(
-              'px-3 md:px-5 pt-4 md:pt-5 pb-4',
+              'px-3 md:px-4 pt-4 md:pt-5 pb-4',
               childrenParentClassName
             )}
             style={childrenParentStyle}

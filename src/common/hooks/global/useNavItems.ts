@@ -59,8 +59,18 @@ const useNavItems = () => {
       iconName: 'clipboardList',
       href: '/orders',
       visible:
-        (hasPermission('manage_orders') || isCustomer) && isEnabledInvoicing,
+        (hasPermission('create_order') ||
+          hasPermission('view_order') ||
+          hasPermission('edit_order') ||
+          isCustomer) &&
+        isEnabledInvoicing,
       iconSize: '1.1rem',
+      rightIcon: {
+        name: 'add',
+        href: '/orders/new',
+        tooltipText: 'new_order',
+        visible: hasPermission('create_order'),
+      },
     },
     {
       key: 'products',

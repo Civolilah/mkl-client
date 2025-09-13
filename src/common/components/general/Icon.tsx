@@ -53,7 +53,7 @@ import {
 } from 'react-icons/fa';
 import { FaEyeDropper, FaLocationDot } from 'react-icons/fa6';
 import { GoDotFill } from 'react-icons/go';
-import { HiChevronUpDown } from 'react-icons/hi2';
+import { HiChevronUpDown, HiShieldCheck } from 'react-icons/hi2';
 import { IoIosNotifications, IoMdCloseCircleOutline } from 'react-icons/io';
 import { IoInformationCircleOutline, IoKeySharp } from 'react-icons/io5';
 import {
@@ -220,7 +220,8 @@ export type IconName =
   | 'organization'
   | 'boxAlignTopRightFilled'
   | 'handshake'
-  | 'cashStack';
+  | 'cashStack'
+  | 'shieldCheck';
 
 type Props = {
   className?: string;
@@ -453,6 +454,8 @@ const Icon = ({ name, size, onClick, style, unsetColor }: Props) => {
       return generateIconElement(BsCashStack);
     case 'key':
       return generateIconElement(IoKeySharp);
+    case 'shieldCheck':
+      return generateIconElement(HiShieldCheck);
     default:
       return <></>;
   }

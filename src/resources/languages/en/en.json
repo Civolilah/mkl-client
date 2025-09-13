@@ -443,8 +443,6 @@
   "supplier_portal_access_helper": "If enabled, the contact will be able to log in to the supplier portal using the email and password above.",
   "language": "Language",
   "select_language": "Select language",
-  "manage_orders": "Manage Orders",
-  "manage_orders_help": "Allow user to view, process and track customer orders.",
   "purchase_order": "Purchase Order",
   "customer": "Customer",
   "password_with_supplier_portal_access_required": "To grant supplier portal login access, a password is needed for this contact.",
@@ -545,5 +543,8 @@
   "exclusive_tax_help": "When disabled, displayed prices exclude tax amounts (e.g., $100 product price + $15 tax, customer pays $115 total)",
   "default_order_taxes": "Default Invoice/Order Taxes",
   "default_product_taxes": "Default Product Taxes",
-  "default_purchase_order_taxes": "Default Purchase Order Taxes"
+  "default_purchase_order_taxes": "Default Purchase Order Taxes",
+  "unsaved_employee": "Unsaved employee",
+  "order": "Order",
+  "new_order": "New Order"
 }

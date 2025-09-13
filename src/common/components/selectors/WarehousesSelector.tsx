@@ -104,13 +104,13 @@ const WarehousesSelector = ({
 
       request('POST', '/api/warehouses', warehousePayload)
         .then((response) => {
+          handleCloseModal();
+
           toast.success('created_warehouse');
 
           refetch(['warehouses']);
 
           onCreatedWarehouse?.(response.data.id);
-
-          handleCloseModal();
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -131,19 +131,21 @@ const WarehousesSelector = ({
         disableClosing={isFormBusy}
         size="regular"
       >
-        <Box className="flex flex-col space-y-4 w-full">
+        <Box className="flex flex-col space-y-6 w-full">
           <WarehouseForm
             warehouse={warehousePayload}
             setWarehouse={setWarehousePayload}
             errors={errors}
+            onMainFieldsEnterPress={handleCreateWarehouse}
             onlyFields
           />
 
           <Button
             type="primary"
             onClick={handleCreateWarehouse}
-            disabled={isFormBusy}
+            disabled={isFormBusy || !warehousePayload?.name}
             disabledWithLoadingIcon={isFormBusy}
+            disablePreventAction
           >
             {t('done')}
           </Button>
@@ -173,6 +175,7 @@ const WarehousesSelector = ({
               className="w-full"
               type="primary"
               onClick={() => setTimeout(handleOpenModal, 200)}
+              disablePreventAction
             >
               {t('new_warehouse')}
             </Button>

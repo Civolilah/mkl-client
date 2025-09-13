@@ -20,7 +20,6 @@ const AVAILABLE_PERMISSIONS = [
   'admin',
 
   'view_dashboard',
-  'manage_orders',
   'view_import_export',
   'import_products',
   'export_products',
@@ -29,6 +28,10 @@ const AVAILABLE_PERMISSIONS = [
   'create_all',
   'view_all',
   'edit_all',
+
+  'create_order',
+  'view_order',
+  'edit_order',
 
   'create_product',
   'view_product',

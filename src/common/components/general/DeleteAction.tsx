@@ -132,7 +132,7 @@ const DeleteAction = ({
         size="small"
       >
         <Box className="flex flex-col space-y-6 w-full">
-          <Text className="text-center text-base break-words">
+          <Text className="text-center text-sm-plus break-words">
             {reactStringReplace(
               reactStringReplace(
                 t('are_you_sure_you_want_to_delete_resource', {
@@ -141,7 +141,7 @@ const DeleteAction = ({
                 }),
                 ':resourceName',
                 () => (
-                  <Text key={resourceName} className="text-base font-medium">
+                  <Text key={resourceName} className="text-sm-plus font-medium">
                     {`"${resourceName}"`}
                   </Text>
                 )

@@ -24,6 +24,7 @@ import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
+  useDetectChanges,
   usePageLayoutAndActions,
   useRefetch,
   useSaveAndDiscardActions,
@@ -125,12 +126,19 @@ const Create = () => {
     }
   }, [employee]);
 
+  useDetectChanges({
+    initialEntityValue: INITIAL_EMPLOYEE,
+    currentEntityValue: employee,
+  });
+
   useSaveAndDiscardActions(
     {
-      disabledSaveButton: isFormBusy,
-      disabledDiscardButton: isFormBusy,
+      disabledSaveButton: Boolean(isFormBusy || Object.keys(errors).length),
+      disabledDiscardButton: Boolean(isFormBusy || Object.keys(errors).length),
       onSaveClick: handleSave,
-      onDiscardClick: () => navigate(route('/employees')),
+      onDiscardClick: () => setEmployee(INITIAL_EMPLOYEE),
+      changesLabel: 'unsaved_employee',
+      creationPage: true,
     },
     [employee, isFormBusy, handleSave]
   );
@@ -138,6 +146,7 @@ const Create = () => {
   usePageLayoutAndActions(
     {
       title: t('new_employee'),
+      breadcrumbs: { breadcrumbs },
       footer: isLargeScreen ? undefined : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction

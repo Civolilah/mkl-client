@@ -22,6 +22,8 @@ interface Params {
   disabledSaveButtonWithLoadingIcon?: boolean;
   disabledDiscardButtonWithLoadingIcon?: boolean;
   changesLabel?: string;
+  creationPage?: boolean;
+  disabledWithLoadingIcon?: boolean;
 }
 
 export const saveAndDiscardActionsAtom = atom<Params | undefined>(undefined);

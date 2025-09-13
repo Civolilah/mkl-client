@@ -24,7 +24,7 @@ type Props = {
 const RefreshDataElement = ({
   isLoading,
   refresh,
-  iconSize = '1.4rem',
+  iconSize = '1.35rem',
   tooltipPlacement = 'top',
 }: Props) => {
   const t = useTranslation();

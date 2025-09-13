@@ -104,13 +104,13 @@ const SubsidiariesSelector = ({
 
       request('POST', '/api/subsidiaries', subsidiaryPayload)
         .then((response) => {
+          handleCloseModal();
+
           toast.success('created_subsidiary');
 
           refetch(['subsidiaries']);
 
           onCreatedSubsidiary?.(response.data.id);
-
-          handleCloseModal();
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -131,19 +131,21 @@ const SubsidiariesSelector = ({
         disableClosing={isFormBusy}
         size="regular"
       >
-        <Box className="flex flex-col space-y-4 w-full">
+        <Box className="flex flex-col space-y-6 w-full">
           <SubsidiaryForm
             subsidiary={subsidiaryPayload}
             setSubsidiary={setSubsidiaryPayload}
             errors={errors}
+            onMainFieldsEnterPress={handleCreateSubsidiary}
             onlyFields
           />
 
           <Button
             type="primary"
             onClick={handleCreateSubsidiary}
-            disabled={isFormBusy}
+            disabled={isFormBusy || !subsidiaryPayload?.name}
             disabledWithLoadingIcon={isFormBusy}
+            disablePreventAction
           >
             {t('done')}
           </Button>
@@ -173,6 +175,7 @@ const SubsidiariesSelector = ({
               className="w-full"
               type="primary"
               onClick={() => setTimeout(handleOpenModal, 200)}
+              disablePreventAction
             >
               {t('new_subsidiary')}
             </Button>
