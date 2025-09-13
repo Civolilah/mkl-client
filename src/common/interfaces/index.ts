@@ -34,3 +34,5 @@ export type { Brand } from '@interfaces/brand/brand';
 export type { Product, QuantityByVariant } from '@interfaces/product/product';
 
 export type { Warehouse } from '@interfaces/warehouse/warehouse';
+
+export type { TaxRate } from '@interfaces/tax-rate/tax-rate';

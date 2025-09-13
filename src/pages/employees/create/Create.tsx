@@ -138,7 +138,7 @@ const Create = () => {
       onSaveClick: handleSave,
       onDiscardClick: () => setEmployee(INITIAL_EMPLOYEE),
       changesLabel: 'unsaved_employee',
-      creationPage: true,
+      visibleBox: true,
     },
     [employee, isFormBusy, handleSave]
   );

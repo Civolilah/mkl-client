@@ -48,7 +48,8 @@ export type CreationRoute =
   | '/suppliers/new'
   | '/brands/new'
   | '/products/new'
-  | '/warehouses/new';
+  | '/warehouses/new'
+  | '/tax_rates/new';
 
 export type EntityColumnType<EntityType> = {
   title: string;
@@ -85,11 +86,11 @@ interface Props<EntityType> {
   propsWithAdjustedFilteringValues?: PropsWithAdjustedFilteringValues<EntityType>[];
 }
 
-type CustomHeaderCellProps = {
+interface CustomHeaderCellProps {
   children: ReactNode;
   style: CSSProperties;
   className?: string;
-};
+}
 
 const CustomHeaderCell = ({
   children,
@@ -119,12 +120,12 @@ const CustomHeaderCell = ({
   );
 };
 
-type CustomBodyCellProps = {
+interface CustomBodyCellProps {
   children: ReactNode;
   onClick?: () => void;
   className?: string;
   style?: CSSProperties;
-};
+}
 
 const CustomBodyCell = ({
   children,

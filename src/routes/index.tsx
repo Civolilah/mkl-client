@@ -17,6 +17,7 @@ import { PrivateRoute } from '@components/index';
 import authenticationRoutes from './authentication/routes';
 import brandRoutes from './brand/routes';
 import categoryRoutes from './category/routes';
+import customerRoutes from './customer/routes';
 import employeeRoutes from './employee/routes';
 import labelRoutes from './label/routes';
 import labelCategoryRoutes from './label-category/routes';
@@ -25,6 +26,7 @@ import settingsRoutes from './settings/routes';
 import statusRoutes from './status/routes';
 import subsidiaryRoutes from './subsidiary/routes';
 import supplierRoutes from './supplier/routes';
+import taxRateRoutes from './tax-rate/routes';
 import warehouseRoutes from './warehouse/routes';
 
 const IndexPage = lazy(() => import('@pages/index'));
@@ -51,6 +53,8 @@ export const routes = (
 
       {subsidiaryRoutes}
 
+      {customerRoutes}
+
       {categoryRoutes}
 
       {labelRoutes}
@@ -58,6 +62,8 @@ export const routes = (
       {labelCategoryRoutes}
 
       {employeeRoutes}
+
+      {taxRateRoutes}
 
       {statusRoutes}
 

@@ -98,7 +98,8 @@ const Header = ({ title }: Props) => {
           'shadow-sm':
             !location.pathname.includes('/new') &&
             !location.pathname.includes('/edit') &&
-            !location.pathname.includes('/show'),
+            !location.pathname.includes('/show') &&
+            !location.pathname.split('/')[1],
         }
       )}
       style={{
@@ -115,10 +116,8 @@ const Header = ({ title }: Props) => {
         <MobileNavBar items={navItems} />
       </Box>
 
-      <Box className="flex w-full justify-between items-center px-2 md:px-6 relative">
-        <Text className="text-lg md:text-xl font-medium whitespace-nowrap">
-          {title}
-        </Text>
+      <Box className="flex w-full justify-between items-center px-2 md:px-6 relative h-full shadow-sm">
+        <Text className="text-lg font-medium whitespace-nowrap">{title}</Text>
 
         {saveAndDiscardActions && !isLargeScreen && isMobileDiscardBoxOpen && (
           <Box
@@ -166,7 +165,8 @@ const Header = ({ title }: Props) => {
 
         {saveAndDiscardActions &&
           isLargeScreen &&
-          (areChangesMade || saveAndDiscardActions.creationPage) && (
+          (areChangesMade || saveAndDiscardActions.visibleBox) &&
+          !saveAndDiscardActions.hideBox && (
             <Box
               id="discardSaveBox"
               className="flex items-center gap-x-20 absolute right-[54%] -top-[0.3rem] translate-x-1/2 border rounded-md p-1.5 bg-gray-50"

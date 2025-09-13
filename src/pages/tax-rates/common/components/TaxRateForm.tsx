@@ -10,16 +10,13 @@
 
 import { Dispatch, SetStateAction } from 'react';
 
-import classNames from 'classnames';
-import reactStringReplace from 'react-string-replace';
-
-import { LabelCategory, ValidationErrors } from '@interfaces/index';
+import { TaxRate, ValidationErrors } from '@interfaces/index';
 
 import {
   Box,
   Card,
   Icon,
-  InformationLabel,
+  NumberField,
   Text,
   TextField,
 } from '@components/index';
@@ -28,29 +25,27 @@ import { useTranslation } from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
 
-type Props = {
-  labelCategory: LabelCategory | undefined;
-  setLabelCategory: Dispatch<SetStateAction<LabelCategory | undefined>>;
+interface Props {
+  taxRate: TaxRate | undefined;
+  setTaxRate: Dispatch<SetStateAction<TaxRate | undefined>>;
   errors: ValidationErrors;
-  editPage?: boolean;
   isLoading?: boolean;
   onRefresh?: () => void;
   onlyFields?: boolean;
   onMainFieldsEnterPress?: () => void;
-};
+}
 
-const LabelCategoryForm = ({
-  labelCategory,
-  setLabelCategory,
+const TaxRateForm = ({
+  taxRate,
+  setTaxRate,
   errors,
-  editPage,
   isLoading,
   onlyFields,
   onMainFieldsEnterPress,
 }: Props) => {
   const t = useTranslation();
 
-  const handleChange = useHandleChange({ setLabelCategory });
+  const handleChange = useHandleChange({ setTaxRate });
 
   if (onlyFields) {
     return (
@@ -58,11 +53,20 @@ const LabelCategoryForm = ({
         <TextField
           required
           label={t('name')}
-          placeHolder={t('label_category_name_placeholder')}
-          value={labelCategory?.name || ''}
+          placeHolder={t('tax_rate_name_placeholder')}
+          value={taxRate?.name || ''}
           onValueChange={(value) => handleChange('name', value)}
           onPressEnter={onMainFieldsEnterPress}
           errorMessage={errors?.name && t(errors.name)}
+        />
+
+        <NumberField
+          required
+          label={t('rate')}
+          placeHolder={t('tax_rate_rate_placeholder')}
+          value={taxRate?.rate || 0}
+          onValueChange={(value) => handleChange('rate', Number(value))}
+          errorMessage={errors?.rate && t(errors.rate)}
         />
       </>
     );
@@ -73,7 +77,7 @@ const LabelCategoryForm = ({
       titleElement={
         <Box className="flex items-center gap-x-2">
           <Box>
-            <Icon name="tags" size="1.2rem" />
+            <Icon name="percentage" size="1.2rem" />
           </Box>
 
           <Text>{t('details')}</Text>
@@ -81,39 +85,28 @@ const LabelCategoryForm = ({
       }
       className="w-full md:w-3/4 xl:w-1/2"
       isLoading={isLoading}
-      paddingBottom={!editPage ? '0rem' : undefined}
     >
-      <Box
-        className={classNames('flex flex-col space-y-7', { 'pb-2': editPage })}
-      >
+      <Box className="flex flex-col space-y-4 pb-2">
         <TextField
           required
           label={t('name')}
-          placeHolder={t('label_category_name_placeholder')}
-          value={labelCategory?.name || ''}
+          placeHolder={t('tax_rate_name_placeholder')}
+          value={taxRate?.name || ''}
           onValueChange={(value) => handleChange('name', value)}
           errorMessage={errors?.name && t(errors.name)}
         />
 
-        {!editPage && (
-          <InformationLabel
-            text={reactStringReplace(
-              t('label_category_helper'),
-              ':labelCategory',
-              () => (
-                <Text
-                  key="labelCategoryBolded"
-                  className="text-xs font-bold lowercase"
-                >
-                  {t('label_category')}
-                </Text>
-              )
-            )}
-          />
-        )}
+        <NumberField
+          required
+          label={t('rate')}
+          placeHolder={t('tax_rate_rate_placeholder')}
+          value={taxRate?.rate || 0}
+          onValueChange={(value) => handleChange('rate', Number(value))}
+          errorMessage={errors?.rate && t(errors.rate)}
+        />
       </Box>
     </Card>
   );
 };
 
-export default LabelCategoryForm;
+export default TaxRateForm;

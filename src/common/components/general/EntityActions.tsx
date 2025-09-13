@@ -16,12 +16,14 @@ import { Box, Dropdown, Icon, Text } from '@components/index';
 
 import { useColors, useTranslation } from '@hooks/index';
 
-type Props = {
+interface Props {
   actions: ItemType[];
   disabled?: boolean;
-};
+}
 
 const StyledBox = styled(Box)`
+  background-color: ${({ theme }) => theme.backgroundColor};
+
   &:hover {
     background-color: ${({ theme }) => theme.backgroundColor};
   }
@@ -44,12 +46,12 @@ const EntityActions = (props: Props) => {
             'cursor-pointer': !disabled,
           }
         )}
-        theme={{ backgroundColor: colors.$18 }}
-        style={{ borderColor: colors.$1, height: '2.5rem' }}
+        theme={{ backgroundColor: colors.$6, hoverBackgroundColor: colors.$18 }}
+        style={{ borderColor: colors.$1, height: '2rem' }}
       >
-        <Text className="text-sm-plus">{t('actions')}</Text>
+        <Text className="text-sm">{t('actions')}</Text>
 
-        <Icon name="arrowDown" size="1.5rem" />
+        <Icon name="arrowDown" size="1.3rem" />
       </StyledBox>
     </Dropdown>
   );

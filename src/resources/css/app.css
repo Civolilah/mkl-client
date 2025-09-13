@@ -65,6 +65,10 @@ td::before {
   width: 100% !important;
 }
 
+.ant-dropdown-trigger {
+  background-color: transparent !important;
+}
+
 @media (max-width: 768px) {
   .mobile-sticky-tabs .ant-tabs-nav-list {
     width: 100%;

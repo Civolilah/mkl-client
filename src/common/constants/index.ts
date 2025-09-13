@@ -42,3 +42,5 @@ export {
 } from './global/global';
 
 export { INITIAL_WAREHOUSE } from './warehouse/warehouse';
+
+export { INITIAL_TAX_RATE } from './tax-rate/tax-rate';

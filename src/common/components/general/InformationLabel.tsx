@@ -14,12 +14,12 @@ import { Text, Box, Icon, Tooltip } from '@components/index';
 
 import { useColors } from '@hooks/index';
 
-type Props = {
+interface Props {
   text: string | ReactNode;
   onlyTooltip?: boolean;
   tooltipOverlayInnerStyle?: CSSProperties;
   iconSize?: string;
-};
+}
 
 const InformationLabel = ({
   text,
@@ -42,11 +42,11 @@ const InformationLabel = ({
   return (
     <Box className="flex items-center space-x-2">
       <Box className="mt-0.5">
-        <Icon name="information" size="1.5rem" />
+        <Icon name="information" size="1.4rem" />
       </Box>
 
       <Text
-        className="text-xs-mid font-light"
+        className="text-xs font-light"
         style={{ color: colors.$16, lineHeight: '1rem' }}
       >
         {text}

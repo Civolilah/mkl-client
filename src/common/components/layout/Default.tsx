@@ -19,14 +19,7 @@ import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import Icon, { IconName } from '@components/general/Icon';
-import {
-  Box,
-  Button,
-  EntityActions,
-  Header,
-  Text,
-  Tooltip,
-} from '@components/index';
+import { Box, Button, EntityActions, Header, Text } from '@components/index';
 
 import { mobileActionsAtom } from '@hooks/global/useMobileActions';
 import {
@@ -59,8 +52,6 @@ interface Props {
   disabledCancelButtonWithLoadingIcon?: boolean;
   footer?: ReactNode;
   actions?: ItemType[];
-  tooltipPermissionMessage?: string;
-  displayPermissionTooltip?: boolean;
 }
 
 const Default = ({
@@ -70,8 +61,6 @@ const Default = ({
   disabledSaveButton = false,
   footer,
   actions = [],
-  tooltipPermissionMessage,
-  displayPermissionTooltip = false,
   onSaveClick,
   saveButtonLabel,
   saveButtonIcon,
@@ -153,7 +142,15 @@ const Default = ({
               >
                 {Boolean(breadcrumbs.length || actions.length || onSaveClick) &&
                   isLargeScreen && (
-                    <Box className="flex items-center justify-end sm:justify-between w-full px-6 pt-5 space-x-2">
+                    <Box
+                      className={classNames(
+                        'flex items-center justify-end sm:justify-between w-full px-6 space-x-2',
+                        {
+                          'pt-5': !actions.length,
+                          'pt-3': actions.length,
+                        }
+                      )}
+                    >
                       <Box className="flex-1 hidden sm:flex">
                         {Boolean(breadcrumbs.length) && (
                           <Box className="flex justify-start w-full">
@@ -256,30 +253,11 @@ const Default = ({
                       )}
 
                       {Boolean(actions.length) && (
-                        <Box
-                          className="flex items-center space-x-2 md:space-x-4"
-                          style={{
-                            height: '2.25rem',
-                            borderColor: colors.$1,
-                            backgroundColor: colors.$6,
-                          }}
-                        >
-                          {displayPermissionTooltip &&
-                          tooltipPermissionMessage ? (
-                            <Tooltip text={tooltipPermissionMessage}>
-                              <div>
-                                <EntityActions
-                                  actions={actions}
-                                  disabled={disabledSaveButton}
-                                />
-                              </div>
-                            </Tooltip>
-                          ) : (
-                            <EntityActions
-                              actions={actions}
-                              disabled={disabledSaveButton}
-                            />
-                          )}
+                        <Box className="flex items-center">
+                          <EntityActions
+                            actions={actions}
+                            disabled={disabledSaveButton}
+                          />
                         </Box>
                       )}
                     </Box>

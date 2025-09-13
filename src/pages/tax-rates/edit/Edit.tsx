@@ -16,7 +16,7 @@ import { cloneDeep, isEqual } from 'lodash';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { LabelCategory, ValidationErrors } from '@interfaces/index';
+import { TaxRate, ValidationErrors } from '@interfaces/index';
 
 import {
   ActionPopoverIcon,
@@ -38,8 +38,8 @@ import {
   useTranslation,
 } from '@hooks/index';
 
-import LabelCategoryForm from '../common/components/LabelCategoryForm';
-import { validateLabelCategory } from '../common/helpers/helpers';
+import TaxRateForm from '../common/components/TaxRateForm';
+import { validateTaxRate } from '../common/helpers/helpers';
 import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
@@ -49,11 +49,11 @@ const Edit = () => {
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('label_categories'),
-      href: '/label_categories',
+      title: t('tax_rates'),
+      href: '/tax_rates',
     },
     {
-      title: t('edit_label_category'),
+      title: t('edit_tax_rate'),
     },
   ];
 
@@ -67,37 +67,33 @@ const Edit = () => {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [labelCategory, setLabelCategory] = useState<
-    LabelCategory | undefined
-  >();
-  const [initialResponse, setInitialResponse] = useState<
-    LabelCategory | undefined
-  >();
+  const [taxRate, setTaxRate] = useState<TaxRate | undefined>();
+  const [initialResponse, setInitialResponse] = useState<TaxRate | undefined>();
 
-  const { refresh } = useFetchEntity<LabelCategory>({
-    queryIdentifiers: ['/api/label_categories'],
-    endpoint: '/api/label_categories',
-    setEntity: setLabelCategory,
+  const { refresh } = useFetchEntity<TaxRate>({
+    queryIdentifiers: ['/api/tax_rates'],
+    endpoint: '/api/tax_rates',
+    setEntity: setTaxRate,
     setIsLoading,
     setInitialResponse,
     enableByPermission:
-      hasPermission('create_label_category') ||
-      hasPermission('view_label_category') ||
-      hasPermission('edit_label_category'),
+      hasPermission('create_tax_rate') ||
+      hasPermission('view_tax_rate') ||
+      hasPermission('edit_tax_rate'),
   });
 
   const actions = useActions({ refresh });
 
   const handleSave = async () => {
-    if (!isLoading && id && labelCategory) {
-      if (isEqual(initialResponse, labelCategory)) {
-        toast.info('no_label_category_changes');
+    if (!isLoading && id && taxRate) {
+      if (isEqual(initialResponse, taxRate)) {
+        toast.info('no_tax_rate_changes');
         return;
       }
 
       setErrors({});
 
-      const validationErrors = await validateLabelCategory(labelCategory);
+      const validationErrors = await validateTaxRate(taxRate);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -108,17 +104,13 @@ const Edit = () => {
 
       setIsLoading(true);
 
-      request(
-        'PATCH',
-        endpoint('/api/label_categories/:id', { id }),
-        labelCategory
-      )
+      request('PATCH', endpoint('/api/tax_rates/:id', { id }), taxRate)
         .then(() => {
-          toast.success('updated_label_category');
+          toast.success('updated_tax_rate');
 
-          refetch(['label_categories']);
+          refetch(['tax_rates']);
 
-          setInitialResponse(cloneDeep(labelCategory));
+          setInitialResponse(cloneDeep(taxRate));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -132,12 +124,12 @@ const Edit = () => {
 
   usePageLayoutAndActions(
     {
-      title: t('edit_label_category'),
+      title: t('edit_tax_rate'),
       breadcrumbs: {
         breadcrumbs,
       },
       actions: {
-        list: labelCategory ? actions(labelCategory) : [],
+        list: taxRate ? actions(taxRate) : [],
       },
       footer: isLargeScreen ? (
         <Box className="flex w-full items-center justify-end">
@@ -150,11 +142,11 @@ const Edit = () => {
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="label_categories"
+            text="tax_rates"
             onClick={() => {
-              navigate(route('/label_categories'));
+              navigate(route('/tax_rates'));
             }}
-            iconName="tags"
+            iconName="percentage"
             disabled={isLoading}
             iconSize="1.2rem"
           />
@@ -171,58 +163,53 @@ const Edit = () => {
             text="actions"
             iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
             disabled={isLoading}
-            actions={labelCategory ? actions(labelCategory) : []}
+            actions={taxRate ? actions(taxRate) : []}
           />
 
           <AISearchAction disabled={isLoading} />
         </Box>
       ),
     },
-    [labelCategory, isLoading, handleSave]
+    [taxRate, isLoading, handleSave]
   );
 
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
     }
-  }, [labelCategory]);
+  }, [taxRate]);
 
   useEffect(() => {
     return () => {
       setErrors({});
-      setLabelCategory(undefined);
+      setTaxRate(undefined);
     };
   }, []);
 
   useDetectChanges({
     initialEntityValue: initialResponse,
-    currentEntityValue: labelCategory,
+    currentEntityValue: taxRate,
   });
 
   useSaveAndDiscardActions(
     {
       disabledSaveButton: Boolean(isLoading || Object.keys(errors).length),
       disabledDiscardButton: Boolean(isLoading || Object.keys(errors).length),
-      disabledWithLoadingIcon: Boolean(isLoading && labelCategory),
+      disabledWithLoadingIcon: Boolean(isLoading && taxRate),
       onSaveClick: handleSave,
-      onDiscardClick: () => setLabelCategory(initialResponse),
-      changesLabel: 'unsaved_label_category',
-      hideBox: !canEditEntity(
-        'edit_label_category',
-        'create_label_category',
-        labelCategory
-      ),
+      onDiscardClick: () => setTaxRate(initialResponse),
+      changesLabel: 'unsaved_tax_rate',
+      hideBox: !canEditEntity('edit_tax_rate', 'create_tax_rate', taxRate),
     },
-    [labelCategory, isLoading, handleSave]
+    [taxRate, isLoading, handleSave]
   );
 
   return (
-    <LabelCategoryForm
-      labelCategory={labelCategory}
-      setLabelCategory={setLabelCategory}
+    <TaxRateForm
+      taxRate={taxRate}
+      setTaxRate={setTaxRate}
       errors={errors}
-      editPage
-      isLoading={isLoading && !labelCategory}
+      isLoading={isLoading && !taxRate}
       onRefresh={refresh}
     />
   );

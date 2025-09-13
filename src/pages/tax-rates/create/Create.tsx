@@ -11,14 +11,14 @@
 import { useEffect, useState } from 'react';
 
 import {
-  INITIAL_LABEL_CATEGORY,
+  INITIAL_TAX_RATE,
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
-import { LabelCategory, ValidationErrors } from '@interfaces/index';
+import { TaxRate, ValidationErrors } from '@interfaces/index';
 
 import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -31,8 +31,8 @@ import {
   useTranslation,
 } from '@hooks/index';
 
-import LabelCategoryForm from '../common/components/LabelCategoryForm';
-import { validateLabelCategory } from '../common/helpers/helpers';
+import TaxRateForm from '../common/components/TaxRateForm';
+import { validateTaxRate } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
@@ -41,11 +41,11 @@ const Create = () => {
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('label_categories'),
-      href: '/label_categories',
+      title: t('tax_rates'),
+      href: '/tax_rates',
     },
     {
-      title: t('new_label_category'),
+      title: t('new_tax_rate'),
     },
   ];
 
@@ -56,19 +56,17 @@ const Create = () => {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
-  const [labelCategory, setLabelCategory] = useState<LabelCategory | undefined>(
-    INITIAL_LABEL_CATEGORY
-  );
+  const [taxRate, setTaxRate] = useState<TaxRate | undefined>(INITIAL_TAX_RATE);
 
   const handleSave = async () => {
-    if (!labelCategory) {
+    if (!taxRate) {
       return;
     }
 
     if (!isFormBusy) {
       setErrors({});
 
-      const validationErrors = await validateLabelCategory(labelCategory);
+      const validationErrors = await validateTaxRate(taxRate);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -79,15 +77,13 @@ const Create = () => {
 
       setIsFormBusy(true);
 
-      request('POST', '/api/label_categories', labelCategory)
+      request('POST', '/api/tax_rates', taxRate)
         .then((response) => {
-          toast.success('created_label_category');
+          toast.success('created_tax_rate');
 
-          refetch(['label_categories']);
+          refetch(['tax_rates']);
 
-          navigate(
-            route('/label_categories/:id/edit', { id: response.data.id })
-          );
+          navigate(route('/tax_rates/:id/edit', { id: response.data.id }));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -101,16 +97,16 @@ const Create = () => {
 
   usePageLayoutAndActions(
     {
-      title: t('new_label_category'),
+      title: t('new_tax_rate'),
       breadcrumbs: {
         breadcrumbs,
       },
       footer: isLargeScreen ? undefined : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="label_categories"
+            text="tax_rates"
             onClick={() => {
-              navigate(route('/label_categories'));
+              navigate(route('/tax_rates'));
             }}
             iconName="tags"
             disabled={isFormBusy}
@@ -129,25 +125,25 @@ const Create = () => {
         </Box>
       ),
     },
-    [labelCategory, isFormBusy, handleSave]
+    [taxRate, isFormBusy, handleSave]
   );
 
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
     }
-  }, [labelCategory]);
+  }, [taxRate]);
 
   useEffect(() => {
     return () => {
       setErrors({});
-      setLabelCategory(INITIAL_LABEL_CATEGORY);
+      setTaxRate(INITIAL_TAX_RATE);
     };
   }, []);
 
   useDetectChanges({
-    initialEntityValue: INITIAL_LABEL_CATEGORY,
-    currentEntityValue: labelCategory,
+    initialEntityValue: INITIAL_TAX_RATE,
+    currentEntityValue: taxRate,
   });
 
   useSaveAndDiscardActions(
@@ -155,19 +151,15 @@ const Create = () => {
       disabledSaveButton: Boolean(isFormBusy || Object.keys(errors).length),
       disabledDiscardButton: Boolean(isFormBusy || Object.keys(errors).length),
       onSaveClick: handleSave,
-      onDiscardClick: () => setLabelCategory(INITIAL_LABEL_CATEGORY),
-      changesLabel: 'unsaved_label_category',
+      onDiscardClick: () => setTaxRate(INITIAL_TAX_RATE),
+      changesLabel: 'unsaved_tax_rate',
       visibleBox: true,
     },
-    [labelCategory, isFormBusy, handleSave]
+    [taxRate, isFormBusy, handleSave]
   );
 
   return (
-    <LabelCategoryForm
-      labelCategory={labelCategory}
-      setLabelCategory={setLabelCategory}
-      errors={errors}
-    />
+    <TaxRateForm taxRate={taxRate} setTaxRate={setTaxRate} errors={errors} />
   );
 };
 

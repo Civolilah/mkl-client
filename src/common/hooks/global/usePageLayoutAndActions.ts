@@ -24,8 +24,6 @@ interface PageButtonActionProps {
   label?: string;
   iconName?: IconName;
   iconColor?: string;
-  displayPermissionTooltip?: boolean;
-  tooltipPermissionMessage?: string;
 }
 
 interface PageActionsProps {
