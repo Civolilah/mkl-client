@@ -49,7 +49,8 @@ export type CreationRoute =
   | '/brands/new'
   | '/products/new'
   | '/warehouses/new'
-  | '/tax_rates/new';
+  | '/tax_rates/new'
+  | '/bins/new';
 
 export type EntityColumnType<EntityType> = {
   title: string;

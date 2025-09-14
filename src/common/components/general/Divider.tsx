@@ -19,6 +19,8 @@ type Props = {
   orientation?: 'left' | 'right' | 'center';
   className?: string;
   style?: CSSProperties;
+  nonDashed?: boolean;
+  dividerSize?: string;
 };
 
 const Divider = ({
@@ -26,6 +28,8 @@ const Divider = ({
   orientation = 'center',
   className,
   style,
+  nonDashed,
+  dividerSize = '1px',
 }: Props) => {
   const colors = useColors();
 
@@ -36,7 +40,7 @@ const Divider = ({
       className={className}
       style={{
         margin: 0,
-        border: `1px dashed ${colors.$35}`,
+        border: `${dividerSize} ${nonDashed ? 'solid' : 'dashed'} ${colors.$35}`,
         ...style,
       }}
     />

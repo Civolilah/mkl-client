@@ -25,6 +25,7 @@ interface Props {
   isLoading?: boolean;
   onlyFields?: boolean;
   onMainFieldsEnterPress?: () => void;
+  nameFieldDebounce?: number;
 }
 
 const SubsidiaryForm = ({
@@ -34,6 +35,7 @@ const SubsidiaryForm = ({
   isLoading,
   onlyFields,
   onMainFieldsEnterPress,
+  nameFieldDebounce,
 }: Props) => {
   const t = useTranslation();
 
@@ -43,6 +45,7 @@ const SubsidiaryForm = ({
     return (
       <>
         <TextField
+          className="subsidiary-modal-name-field"
           required
           label={t('name')}
           placeHolder={t('subsidiary_name_placeholder')}
@@ -50,6 +53,7 @@ const SubsidiaryForm = ({
           onValueChange={(value) => handleChange('name', value)}
           onPressEnter={onMainFieldsEnterPress}
           errorMessage={errors?.name && t(errors.name)}
+          debounce={nameFieldDebounce}
         />
       </>
     );

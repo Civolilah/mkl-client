@@ -44,10 +44,11 @@ const ICON_SIZE: Record<string, string> = {
   dashboard: '1.15rem',
   save: '1.175rem',
   refresh: '1.2rem',
-  percentage: '1.2rem',
+  percentage: '1.15rem',
   tags: '1.2rem',
   employees: '1.215rem',
   edit: '1.2rem',
+  boxAlignTopRightFilled: '1.15rem',
 };
 
 const FooterAction = ({

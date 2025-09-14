@@ -13,6 +13,7 @@ import { MenuProps } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import {
+  Bin,
   Brand,
   Category,
   Label,
@@ -31,10 +32,11 @@ import {
   ActionElement,
   ActionLabelElement,
   DeleteAction,
+  Divider,
 } from '@components/index';
 
 import { RefetchEntity } from '@hooks/global/useRefetch';
-import { useColors, useTranslation } from '@hooks/index';
+import { useTranslation } from '@hooks/index';
 
 export type Resource =
   | Subsidiary
@@ -46,7 +48,8 @@ export type Resource =
   | Supplier
   | Brand
   | Product
-  | Warehouse;
+  | Warehouse
+  | Bin;
 
 export type ResourceType =
   | 'subsidiary'
@@ -59,7 +62,8 @@ export type ResourceType =
   | 'brand'
   | 'product'
   | 'warehouse'
-  | 'tax_rate';
+  | 'tax_rate'
+  | 'bin';
 
 type CustomActions = (resource: Resource) => MenuProps['items'];
 
@@ -86,8 +90,6 @@ const TableActionsDropdown = ({
 }: Props) => {
   const t = useTranslation();
 
-  const colors = useColors();
-
   const navigate = useNavigate();
 
   const actions: MenuProps['items'] = [
@@ -106,10 +108,37 @@ const TableActionsDropdown = ({
       key: `edit-${resource.id}`,
       style: {
         paddingLeft: 0,
-        ...(customActions && { borderBottom: `1px solid ${colors.$1}` }),
       },
     },
+    ...(customActions
+      ? [
+          {
+            label: (
+              <Divider
+                nonDashed
+                dividerSize="0.5px"
+                style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
+              />
+            ),
+            key: `divider-first-${resource.id}`,
+          },
+        ]
+      : []),
     ...(customActions?.(resource) ?? []),
+    ...(customActions
+      ? [
+          {
+            label: (
+              <Divider
+                nonDashed
+                dividerSize="0.5px"
+                style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}
+              />
+            ),
+            key: `divider-last-${resource.id}`,
+          },
+        ]
+      : []),
     {
       label: Boolean(deleteEndpoint && resourceType) && (
         <DeleteAction
@@ -124,7 +153,6 @@ const TableActionsDropdown = ({
       key: `delete-${resource.id}`,
       style: {
         paddingLeft: 0,
-        ...(customActions && { borderTop: `1px solid ${colors.$1}` }),
       },
     },
   ];

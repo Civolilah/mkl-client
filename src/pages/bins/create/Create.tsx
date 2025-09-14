@@ -10,15 +10,12 @@
 
 import { useEffect, useState } from 'react';
 
-import {
-  INITIAL_TAX_RATE,
-  VALIDATION_ERROR_STATUS_CODE,
-} from '@constants/index';
+import { INITIAL_BIN, VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
-import { TaxRate, ValidationErrors } from '@interfaces/index';
+import { Bin, ValidationErrors } from '@interfaces/index';
 
 import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
@@ -31,8 +28,8 @@ import {
   useTranslation,
 } from '@hooks/index';
 
-import TaxRateForm from '../common/components/TaxRateForm';
-import { validateTaxRate } from '../common/helpers/helpers';
+import BinForm from '../common/components/BinForm';
+import { validateBin } from '../common/helpers/helpers';
 
 const Create = () => {
   const t = useTranslation();
@@ -41,11 +38,11 @@ const Create = () => {
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('tax_rates'),
-      href: '/tax_rates',
+      title: t('bins'),
+      href: '/bins',
     },
     {
-      title: t('new_tax_rate'),
+      title: t('new_bin'),
     },
   ];
 
@@ -56,17 +53,17 @@ const Create = () => {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
-  const [taxRate, setTaxRate] = useState<TaxRate | undefined>(INITIAL_TAX_RATE);
+  const [bin, setBin] = useState<Bin | undefined>(INITIAL_BIN);
 
   const handleSave = async () => {
-    if (!taxRate) {
+    if (!bin) {
       return;
     }
 
     if (!isFormBusy) {
       setErrors({});
 
-      const validationErrors = await validateTaxRate(taxRate);
+      const validationErrors = await validateBin(bin);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -77,13 +74,13 @@ const Create = () => {
 
       setIsFormBusy(true);
 
-      request('POST', '/api/tax_rates', taxRate)
+      request('POST', '/api/bins', bin)
         .then((response) => {
-          toast.success('created_tax_rate');
+          toast.success('created_bin');
 
-          refetch(['tax_rates']);
+          refetch(['bins']);
 
-          navigate(route('/tax_rates/:id/edit', { id: response.data.id }));
+          navigate(route('/bins/:id/edit', { id: response.data.id }));
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -97,18 +94,18 @@ const Create = () => {
 
   usePageLayoutAndActions(
     {
-      title: t('new_tax_rate'),
+      title: t('new_bin'),
       breadcrumbs: {
         breadcrumbs,
       },
       footer: isLargeScreen ? undefined : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="tax_rates"
+            text="bins"
             onClick={() => {
-              navigate(route('/tax_rates'));
+              navigate(route('/bins'));
             }}
-            iconName="percentage"
+            iconName="boxAlignTopRightFilled"
             disabled={isFormBusy}
           />
 
@@ -123,25 +120,25 @@ const Create = () => {
         </Box>
       ),
     },
-    [taxRate, isFormBusy, handleSave]
+    [bin, isFormBusy, handleSave]
   );
 
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
     }
-  }, [taxRate]);
+  }, [bin]);
 
   useEffect(() => {
     return () => {
       setErrors({});
-      setTaxRate(INITIAL_TAX_RATE);
+      setBin(INITIAL_BIN);
     };
   }, []);
 
   useDetectChanges({
-    initialEntityValue: INITIAL_TAX_RATE,
-    currentEntityValue: taxRate,
+    initialEntityValue: INITIAL_BIN,
+    currentEntityValue: bin,
   });
 
   useSaveAndDiscardActions(
@@ -149,16 +146,14 @@ const Create = () => {
       disabledSaveButton: Boolean(isFormBusy || Object.keys(errors).length),
       disabledDiscardButton: Boolean(isFormBusy || Object.keys(errors).length),
       onSaveClick: handleSave,
-      onDiscardClick: () => setTaxRate(INITIAL_TAX_RATE),
-      changesLabel: 'unsaved_tax_rate',
+      onDiscardClick: () => setBin(INITIAL_BIN),
+      changesLabel: 'unsaved_bin',
       visibleBox: true,
     },
-    [taxRate, isFormBusy, handleSave]
+    [bin, isFormBusy, handleSave]
   );
 
-  return (
-    <TaxRateForm taxRate={taxRate} setTaxRate={setTaxRate} errors={errors} />
-  );
+  return <BinForm bin={bin} setBin={setBin} errors={errors} />;
 };
 
 export default Create;

@@ -11,6 +11,7 @@
 import { KeyboardEvent, ReactNode, useEffect, useState } from 'react';
 
 import { Input } from 'antd';
+import classNames from 'classnames';
 import { useDebounce } from 'react-use';
 
 import {
@@ -22,8 +23,9 @@ import {
 
 const { TextArea } = Input;
 
-type Props = {
+interface Props {
   id?: string;
+  className?: string;
   maxLength?: number;
   size?: 'large' | 'middle' | 'small';
   type?: 'text' | 'password' | 'email' | 'textarea' | 'tel';
@@ -42,10 +44,11 @@ type Props = {
   readOnly?: boolean;
   onClick?: () => void;
   addonAfter?: ReactNode;
-};
+}
 
 const TextField = ({
   id,
+  className,
   value,
   onValueChange,
   label,
@@ -106,7 +109,10 @@ const TextField = ({
 
       {type !== 'password' && type !== 'textarea' && (
         <Input
-          className="rounded text-sm-plus text-field-input"
+          className={classNames(
+            'rounded text-sm-plus text-field-input',
+            className
+          )}
           id={id}
           type={type}
           value={currentValue}
@@ -138,7 +144,10 @@ const TextField = ({
 
       {type === 'password' && (
         <Input.Password
-          className="rounded text-sm-plus text-field-input"
+          className={classNames(
+            'rounded text-sm-plus text-field-input',
+            className
+          )}
           id={id}
           type={type}
           value={currentValue}
@@ -171,7 +180,10 @@ const TextField = ({
         <TextArea
           id={id}
           rows={4}
-          className="rounded text-sm-plus text-field-input"
+          className={classNames(
+            'rounded text-sm-plus text-field-input',
+            className
+          )}
           value={currentValue}
           placeholder={placeHolder}
           onChange={(event) => setCurrentValue(event.target.value)}

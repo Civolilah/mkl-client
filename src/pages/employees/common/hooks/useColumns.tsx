@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '@interfaces/index';
 
 import {
+  ActionElement,
   Box,
   CopyToClipboard,
   Link,
@@ -192,6 +193,24 @@ const useColumns = (props: Props) => {
               : resource.email
           }`}
           resourceQueryIdentifier="users"
+          customActions={() => [
+            {
+              label: (
+                <ActionElement
+                  label={t('preview')}
+                  iconName="preview"
+                  onClick={() =>
+                    navigate(
+                      route('/employees/:id/show', {
+                        id: resource.id as string,
+                      })
+                    )
+                  }
+                />
+              ),
+              key: `preview-${resource.id}`,
+            },
+          ]}
         />
       ),
       fixed: 'right',

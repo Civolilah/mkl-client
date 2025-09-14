@@ -15,6 +15,7 @@ import { Route, Routes } from 'react-router';
 import { PrivateRoute } from '@components/index';
 
 import authenticationRoutes from './authentication/routes';
+import binRoutes from './bin/routes';
 import brandRoutes from './brand/routes';
 import categoryRoutes from './category/routes';
 import customerRoutes from './customer/routes';
@@ -64,6 +65,8 @@ export const routes = (
       {employeeRoutes}
 
       {taxRateRoutes}
+
+      {binRoutes}
 
       {statusRoutes}
 

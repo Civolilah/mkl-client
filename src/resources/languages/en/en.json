@@ -114,7 +114,7 @@
     "product_permissions_per_subsidiary": "Product permissions by subsidiary:",
     "first_name_placeholder": "John",
     "last_name_placeholder": "Doe",
-    "subsidiary_name_placeholder": "Primary subsidiary",
+    "subsidiary_name_placeholder": "e.g., Primary subsidiary",
     "first_name_required": "First name is required.",
     "first_name_max_length": "First name must be at most 200 characters long.",
     "last_name_max_length": "Last name must be at most 200 characters long.",
@@ -548,5 +548,13 @@
   "percent_symbol": "%",
   "new_import_export": "New Import/Export",
   "new_transfer": "New Transfer",
-  "transfers": "Transfers"
+  "transfers": "Transfers",
+  "unsaved_bin": "Unsaved bin",
+  "updated_bin": "Successfully updated bin",
+  "no_bin_changes": "No bin changes yet - everything's up to date!",
+  "bin_name_placeholder": "e.g., A1-015, B2-032",
+  "bin_name_required": "Bin name is required.",
+  "bin_name_max_length": "Bin name must be at most 200 characters long.",
+  "bin_name_already_exists": "Bin with this name already exists.",
+  "select_warehouse": "Select warehouse"
 }

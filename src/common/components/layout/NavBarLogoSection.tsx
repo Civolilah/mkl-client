@@ -75,7 +75,7 @@ const NavBarLogoSection = ({ mobileSideBar }: Props) => {
         <StyledBox
           className="flex w-full justify-between items-center cursor-pointer pl-1.5 pr-0.5 rounded"
           style={{
-            height: '3rem',
+            height: '2.6rem',
           }}
           theme={{
             backgroundColor: colors.$2,

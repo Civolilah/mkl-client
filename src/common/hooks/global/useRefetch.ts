@@ -26,7 +26,8 @@ export type RefetchEntity =
   | 'notifications'
   | 'custom_fields'
   | 'product_settings'
-  | 'tax_rates';
+  | 'tax_rates'
+  | 'bins';
 
 type Endpoint =
   | '/api/brands'
@@ -44,7 +45,8 @@ type Endpoint =
   | '/api/users/notifications'
   | '/api/companies/custom_fields'
   | '/api/companies/product_settings'
-  | '/api/companies/tax_rates';
+  | '/api/companies/tax_rates'
+  | '/api/bins';
 
 type RefetchObject = {
   mainEndpoint: Endpoint;
@@ -78,7 +80,7 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   },
   subsidiaries: {
     mainEndpoint: '/api/subsidiaries',
-    dependencies: ['/api/products', '/api/users'],
+    dependencies: ['/api/products'],
   },
   users: {
     mainEndpoint: '/api/users',
@@ -114,6 +116,10 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   },
   tax_rates: {
     mainEndpoint: '/api/companies/tax_rates',
+    dependencies: [],
+  },
+  bins: {
+    mainEndpoint: '/api/bins',
     dependencies: [],
   },
 };

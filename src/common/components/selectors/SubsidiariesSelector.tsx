@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { CSSProperties, ReactNode, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 
 import {
   INITIAL_SUBSIDIARY,
@@ -122,6 +122,23 @@ const SubsidiariesSelector = ({
     }
   };
 
+  useEffect(() => {
+    if (isModalOpen) {
+      setErrors({});
+      setSubsidiaryPayload(INITIAL_SUBSIDIARY);
+
+      setTimeout(() => {
+        const nameField = document.querySelector(
+          '.subsidiary-modal-name-field'
+        ) as HTMLInputElement | null;
+
+        if (nameField) {
+          nameField.focus();
+        }
+      }, 150);
+    }
+  }, [isModalOpen]);
+
   return (
     <>
       <Modal
@@ -138,6 +155,7 @@ const SubsidiariesSelector = ({
             errors={errors}
             onMainFieldsEnterPress={handleCreateSubsidiary}
             onlyFields
+            nameFieldDebounce={0}
           />
 
           <Button

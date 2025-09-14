@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { CSSProperties, ReactNode, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 
 import {
   INITIAL_WAREHOUSE,
@@ -28,7 +28,9 @@ import SelectDataField, {
 
 import { useHasPermission, useRefetch, useTranslation } from '@hooks/index';
 
-type Props = {
+interface Props {
+  mode?: 'single' | 'multiple';
+  required?: boolean;
   label?: string;
   placeholder?: string;
   value: string[];
@@ -42,9 +44,11 @@ type Props = {
   tooltipOverlayInnerStyle?: CSSProperties;
   onCreatedWarehouse?: (warehouseId: string) => void;
   withRefreshButton?: boolean;
-};
+}
 
 const WarehousesSelector = ({
+  mode = 'multiple',
+  required,
   value,
   onChange,
   onClear,
@@ -122,6 +126,23 @@ const WarehousesSelector = ({
     }
   };
 
+  useEffect(() => {
+    if (isModalOpen) {
+      setErrors({});
+      setWarehousePayload(INITIAL_WAREHOUSE);
+
+      setTimeout(() => {
+        const nameField = document.querySelector(
+          '.warehouse-modal-name-field'
+        ) as HTMLInputElement | null;
+
+        if (nameField) {
+          nameField.focus();
+        }
+      }, 150);
+    }
+  }, [isModalOpen]);
+
   return (
     <>
       <Modal
@@ -138,6 +159,7 @@ const WarehousesSelector = ({
             errors={errors}
             onMainFieldsEnterPress={handleCreateWarehouse}
             onlyFields
+            nameFieldDebounce={0}
           />
 
           <Button
@@ -153,6 +175,8 @@ const WarehousesSelector = ({
       </Modal>
 
       <SelectDataField
+        mode={mode}
+        required={required}
         queryIdentifiers={['/api/warehouses', 'selector']}
         label={label}
         placeholder={placeholder}

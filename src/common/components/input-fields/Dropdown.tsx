@@ -12,13 +12,13 @@ import { CSSProperties, ReactNode } from 'react';
 
 import { Dropdown as DropdownBase, MenuProps } from 'antd';
 
-type Props = {
+interface Props {
   children: ReactNode;
   menu: MenuProps;
   style?: CSSProperties;
   disabled?: boolean;
   className?: string;
-};
+}
 
 const Dropdown = ({
   children,
@@ -39,6 +39,9 @@ const Dropdown = ({
                 ...item.style,
                 padding: 0,
                 borderRadius: '0.25rem',
+                pointerEvents: item.key?.toString().startsWith('divider')
+                  ? 'none'
+                  : 'auto',
               },
             }
         ),

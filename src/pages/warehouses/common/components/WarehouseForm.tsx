@@ -18,14 +18,15 @@ import { useTranslation } from '@hooks/index';
 
 import useHandleChange from '../hooks/useHandleChange';
 
-type Props = {
+interface Props {
   warehouse: Warehouse | undefined;
   setWarehouse: Dispatch<SetStateAction<Warehouse | undefined>>;
   errors: ValidationErrors;
   isLoading?: boolean;
   onlyFields?: boolean;
   onMainFieldsEnterPress?: () => void;
-};
+  nameFieldDebounce?: number;
+}
 
 const WarehouseForm = ({
   warehouse,
@@ -34,6 +35,7 @@ const WarehouseForm = ({
   isLoading,
   onlyFields,
   onMainFieldsEnterPress,
+  nameFieldDebounce,
 }: Props) => {
   const t = useTranslation();
 
@@ -43,6 +45,7 @@ const WarehouseForm = ({
     return (
       <>
         <TextField
+          className="warehouse-modal-name-field"
           required
           label={t('name')}
           placeHolder={t('warehouse_name_placeholder')}
@@ -50,6 +53,7 @@ const WarehouseForm = ({
           onValueChange={(value) => handleChange('name', value)}
           onPressEnter={onMainFieldsEnterPress}
           errorMessage={errors?.name && t(errors.name)}
+          debounce={nameFieldDebounce}
         />
       </>
     );

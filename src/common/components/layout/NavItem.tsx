@@ -138,7 +138,10 @@ const NavItem = ({ item, subItem }: Props) => {
                 border: `1px solid ${accentColor}`,
               }}
             >
-              <Icon name={item.rightIcon!.name} size="0.92rem" />
+              <Icon
+                name={item.rightIcon!.name}
+                size={subItem ? '0.88rem' : '0.92rem'}
+              />
             </div>
           </Tooltip>
         )}
