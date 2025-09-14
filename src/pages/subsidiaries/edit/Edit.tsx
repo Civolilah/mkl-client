@@ -19,6 +19,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Subsidiary, ValidationErrors } from '@interfaces/index';
 
 import {
+  ActionPopoverIcon,
   AISearchAction,
   Box,
   FooterAction,
@@ -28,10 +29,13 @@ import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useCanEditEntity,
+  useDetectChanges,
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useRefetch,
+  useSaveAndDiscardActions,
   useTranslation,
 } from '@hooks/index';
 
@@ -126,20 +130,6 @@ const Edit = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      buttonAction: {
-        isLoading: isLoading,
-        isDisabled:
-          isLoading ||
-          !canEditEntity('edit_subsidiary', 'create_subsidiary', subsidiary),
-        onClick: handleSave,
-        disabledWithLoadingIcon: Boolean(isLoading && subsidiary),
-        displayPermissionTooltip: !canEditEntity(
-          'edit_subsidiary',
-          'create_subsidiary',
-          subsidiary
-        ),
-        tooltipPermissionMessage: t('no_permission_to_edit_subsidiary'),
-      },
       actions: {
         list: subsidiary ? actions(subsidiary) : [],
       },
@@ -160,25 +150,6 @@ const Edit = () => {
             }}
             iconName="subsidiary"
             disabled={isLoading}
-            iconSize="1.3rem"
-          />
-
-          <FooterAction
-            text="new_subsidiary"
-            onClick={() => {
-              navigate(route('/subsidiaries/new'));
-            }}
-            iconName="add"
-            disabled={isLoading}
-            visible={hasPermission('create_subsidiary')}
-          />
-
-          <FooterAction
-            text="reload"
-            onClick={refresh}
-            iconName="refresh"
-            disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <FooterAction
@@ -186,7 +157,13 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="actions"
+            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
+            disabled={isLoading}
+            actions={subsidiary ? actions(subsidiary) : []}
           />
 
           <AISearchAction disabled={isLoading} />
@@ -208,6 +185,41 @@ const Edit = () => {
       setSubsidiary(undefined);
     };
   }, []);
+
+  useDetectChanges({
+    initialEntityValue: initialResponse,
+    currentEntityValue: subsidiary,
+  });
+
+  useSaveAndDiscardActions(
+    {
+      disabledSaveButton: Boolean(isLoading || Object.keys(errors).length),
+      disabledDiscardButton: Boolean(isLoading || Object.keys(errors).length),
+      disabledWithLoadingIcon: Boolean(isLoading && subsidiary),
+      onSaveClick: handleSave,
+      onDiscardClick: () => setSubsidiary(initialResponse),
+      changesLabel: 'unsaved_subsidiary',
+      hideBox: !canEditEntity(
+        'edit_subsidiary',
+        'create_subsidiary',
+        subsidiary
+      ),
+    },
+    [subsidiary, isLoading, handleSave]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/subsidiaries/new')),
+        visible: hasPermission('create_subsidiary'),
+        disabled: isLoading,
+      },
+    ],
+    [isLoading, isLargeScreen]
+  );
 
   return (
     <SubsidiaryForm

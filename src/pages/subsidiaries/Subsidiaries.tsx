@@ -20,7 +20,6 @@ import {
   AISearchAction,
   Box,
   FooterAction,
-  MobileSearchAction,
   RefreshDataElement,
   Table,
 } from '@components/index';
@@ -28,6 +27,7 @@ import {
 import {
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useResolveCountry,
   useTranslation,
@@ -78,21 +78,12 @@ const Subsidiaries = () => {
         </Box>
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
-          <MobileSearchAction
-            disabled={isLoading}
-            iconSize="1.3rem"
-            searchPlaceholder="search_subsidiary_by"
-          />
-
           <FooterAction
-            text="new_subsidiary"
-            onClick={() => {
-              navigate(route('/subsidiaries/new'));
-            }}
-            iconName="add"
+            text="dashboard"
+            onClick={() => navigate(route('/dashboard'))}
+            iconName="dashboard"
             disabled={isLoading}
-            iconSize="1.3rem"
-            visible={hasPermission('create_subsidiary')}
+            visible={hasPermission('view_dashboard')}
           />
 
           <FooterAction
@@ -100,13 +91,25 @@ const Subsidiaries = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading} />
         </Box>
       ),
     },
+    [isLoading, isLargeScreen]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/subsidiaries/new')),
+        visible: hasPermission('create_subsidiary'),
+        disabled: isLoading,
+      },
+    ],
     [isLoading, isLargeScreen]
   );
 

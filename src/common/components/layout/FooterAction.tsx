@@ -49,6 +49,7 @@ const ICON_SIZE: Record<string, string> = {
   employees: '1.215rem',
   edit: '1.2rem',
   boxAlignTopRightFilled: '1.15rem',
+  subsidiary: '1.1rem',
 };
 
 const FooterAction = ({

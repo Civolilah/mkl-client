@@ -592,31 +592,31 @@ const Table = <EntityType,>({
               <Spinner size="large" />
             </Box>
           ) : (
-            <Box className="flex flex-col w-full items-start self-start gap-y-6">
-              <Box className="grid grid-cols-1 gap-4 w-full">
-                {Boolean(!isDataLoading && data.length) && (
-                  <Box className="w-full pb-2">
-                    <TextField
-                      placeHolder={filterFieldPlaceHolder}
-                      value={filter}
-                      onValueChange={setFilter}
-                      debounce={200}
-                      disabled={isDataLoading}
-                    />
-                  </Box>
-                )}
-
-                {Boolean(!isDataLoading && !currentData.data.length) && (
-                  <Empty
-                    image={Empty.PRESENTED_IMAGE_SIMPLE}
-                    description={t('no_data')}
+            <Box className="flex flex-col w-full items-start self-start h-full">
+              {Boolean(!isDataLoading && data.length) && (
+                <Box className="w-full pb-6">
+                  <TextField
+                    placeHolder={filterFieldPlaceHolder}
+                    value={filter}
+                    onValueChange={setFilter}
+                    debounce={200}
+                    disabled={isDataLoading}
                   />
-                )}
+                </Box>
+              )}
 
+              {Boolean(!isDataLoading && !currentData.data.length) && (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description={t('no_data')}
+                />
+              )}
+
+              <Box className="flex flex-col w-full items-start self-start gap-y-4 flex-1 overflow-y-auto">
                 {currentData.data.map((entity, index) => (
                   <Box
                     key={index}
-                    className="cursor-pointer"
+                    className="cursor-pointer w-full"
                     onClick={() => {
                       if (mobileModalRender) {
                         setCurrentEntity(entity);

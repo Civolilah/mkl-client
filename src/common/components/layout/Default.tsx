@@ -16,7 +16,7 @@ import { ItemType } from 'antd/es/menu/interface';
 import classNames from 'classnames';
 import { useAtomValue } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Icon, { IconName } from '@components/general/Icon';
 import { Box, Button, EntityActions, Header, Text } from '@components/index';
@@ -72,6 +72,7 @@ const Default = ({
   const preventAction = usePreventAction();
 
   const colors = useColors();
+  const location = useLocation();
   const accentColor = useAccentColor();
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
@@ -86,7 +87,17 @@ const Default = ({
       {Boolean(mobileActions.length) &&
         isSmallScreen &&
         !isMobileAiPopoverOpen && (
-          <Box className="fixed flex flex-col justify-center items-center z-50 bottom-[5rem] right-[2rem] gap-y-4">
+          <Box
+            className={classNames(
+              'fixed flex flex-col justify-center items-center z-50 gap-y-4',
+              {
+                'bottom-[4.75rem] right-[1.75rem]':
+                  location.pathname.split('/')[3],
+                'bottom-[7.5rem] right-[1.5rem]':
+                  !location.pathname.split('/')[3],
+              }
+            )}
+          >
             {mobileActions
               .filter((action) => action.visible)
               .map((action, index) => (
@@ -265,7 +276,11 @@ const Default = ({
 
                 <Box
                   className="flex items-center justify-center w-full pt-4 px-2 lg:px-6 lg:pt-6"
-                  style={{ minHeight: 'min-content' }}
+                  style={{
+                    ...(isSmallScreen
+                      ? { height: '100%' }
+                      : { minHeight: 'min-content' }),
+                  }}
                 >
                   {children}
                 </Box>

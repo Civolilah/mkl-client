@@ -556,5 +556,6 @@
   "bin_name_required": "Bin name is required.",
   "bin_name_max_length": "Bin name must be at most 200 characters long.",
   "bin_name_already_exists": "Bin with this name already exists.",
-  "select_warehouse": "Select warehouse"
+  "select_warehouse": "Select warehouse",
+  "unsaved_subsidiary": "Unsaved subsidiary"
 }
