@@ -27,7 +27,8 @@ export type RefetchEntity =
   | 'custom_fields'
   | 'product_settings'
   | 'tax_rates'
-  | 'bins';
+  | 'bins'
+  | 'company_details';
 
 type Endpoint =
   | '/api/brands'
@@ -46,7 +47,8 @@ type Endpoint =
   | '/api/companies/custom_fields'
   | '/api/companies/product_settings'
   | '/api/companies/tax_rates'
-  | '/api/bins';
+  | '/api/bins'
+  | '/api/companies/details';
 
 type RefetchObject = {
   mainEndpoint: Endpoint;
@@ -120,6 +122,10 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   },
   bins: {
     mainEndpoint: '/api/bins',
+    dependencies: [],
+  },
+  company_details: {
+    mainEndpoint: '/api/companies/details',
     dependencies: [],
   },
 };

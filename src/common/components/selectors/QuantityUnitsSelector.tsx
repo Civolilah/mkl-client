@@ -13,14 +13,14 @@ import { SelectStaticField } from '@components/index';
 import { useQuantityUnitOptions } from '@hooks/index';
 import { useTranslation } from '@hooks/index';
 
-type Props = {
+interface Props {
   value: string;
   onChange: (value: string) => void;
   errorMessage?: string;
   label?: string;
   required?: boolean;
   placeholder?: string;
-};
+}
 
 const QuantityUnitsSelector = ({
   value,

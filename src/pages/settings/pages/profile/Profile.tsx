@@ -159,7 +159,6 @@ const Profile = () => {
             }}
             iconName="dashboard"
             disabled={isLoading || isFormBusy}
-            iconSize="1.2rem"
             visible={hasPermission('view_dashboard')}
           />
 
@@ -168,7 +167,6 @@ const Profile = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading || isFormBusy}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading || isFormBusy} />
