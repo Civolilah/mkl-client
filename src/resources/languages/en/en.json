@@ -557,5 +557,9 @@
   "bin_name_max_length": "Bin name must be at most 200 characters long.",
   "bin_name_already_exists": "Bin with this name already exists.",
   "select_warehouse": "Select warehouse",
-  "unsaved_subsidiary": "Unsaved subsidiary"
+  "unsaved_subsidiary": "Unsaved subsidiary",
+  "unsaved_warehouse": "Unsaved warehouse",
+  "created_bin": "Successfully created bin",
+  "deleted_bin": "Successfully deleted bin",
+  "search_bin_by": "Search by name or warehouse"
 }

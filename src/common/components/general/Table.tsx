@@ -436,9 +436,20 @@ const Table = <EntityType,>({
               );
             }
 
-            return value
-              ? value.toLowerCase().includes(filter.toLowerCase())
-              : false;
+            if (typeof value === 'object') {
+              return value[labelProp]
+                .toLowerCase()
+                .includes(filter.toLowerCase());
+            }
+
+            if (value && typeof value !== 'object') {
+              return value
+                .toString()
+                .toLowerCase()
+                .includes(filter.toLowerCase());
+            }
+
+            return false;
           })
         ),
         total: data.length,
@@ -493,9 +504,15 @@ const Table = <EntityType,>({
           );
         }
 
-        return value
-          ? value.toLowerCase().includes(filter.toLowerCase())
-          : false;
+        if (typeof value === 'object') {
+          return value[labelProp].toLowerCase().includes(filter.toLowerCase());
+        }
+
+        if (value && typeof value !== 'object') {
+          return value.toString().toLowerCase().includes(filter.toLowerCase());
+        }
+
+        return false;
       })
     );
 
@@ -606,10 +623,12 @@ const Table = <EntityType,>({
               )}
 
               {Boolean(!isDataLoading && !currentData.data.length) && (
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description={t('no_data')}
-                />
+                <Box className="flex w-full justify-center">
+                  <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={t('no_data')}
+                  />
+                </Box>
               )}
 
               <Box className="flex flex-col w-full items-start self-start gap-y-4 flex-1 overflow-y-auto">

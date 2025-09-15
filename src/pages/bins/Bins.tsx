@@ -76,13 +76,11 @@ const Bins = () => {
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="new_bin"
-            onClick={() => {
-              navigate(route('/bins/new'));
-            }}
-            iconName="add"
+            text="dashboard"
+            onClick={() => navigate(route('/dashboard'))}
+            iconName="dashboard"
             disabled={isLoading}
-            visible={hasPermission('create_bin')}
+            visible={hasPermission('view_dashboard')}
           />
 
           <FooterAction
@@ -118,10 +116,10 @@ const Bins = () => {
       data={bins}
       isDataLoading={isLoading}
       enableFiltering
-      filteringProps={['name']}
+      filteringProps={['name', 'warehouse.name'] as (keyof Bin)[]}
       creationRoute="/bins/new"
       creationButtonLabel={t('new_bin')}
-      filterFieldPlaceHolder={t('search_by_name')}
+      filterFieldPlaceHolder={t('search_bin_by')}
       turnOnMobilePreview
       mobileCardRender={(entity) => (
         <MobileCard entity={entity} refresh={refresh} />

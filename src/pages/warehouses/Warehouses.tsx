@@ -20,7 +20,6 @@ import {
   AISearchAction,
   Box,
   FooterAction,
-  MobileSearchAction,
   RefreshDataElement,
   Table,
 } from '@components/index';
@@ -28,6 +27,7 @@ import {
 import {
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useTranslation,
 } from '@hooks/index';
@@ -75,21 +75,12 @@ const Warehouses = () => {
         </Box>
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
-          <MobileSearchAction
-            disabled={isLoading}
-            iconSize="1.3rem"
-            searchPlaceholder="search_by_name"
-          />
-
           <FooterAction
-            text="new_warehouse"
-            onClick={() => {
-              navigate(route('/warehouses/new'));
-            }}
-            iconName="add"
+            text="dashboard"
+            onClick={() => navigate(route('/dashboard'))}
+            iconName="dashboard"
             disabled={isLoading}
-            iconSize="1.3rem"
-            visible={hasPermission('create_warehouse')}
+            visible={hasPermission('view_dashboard')}
           />
 
           <FooterAction
@@ -97,7 +88,6 @@ const Warehouses = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading} />
@@ -107,13 +97,34 @@ const Warehouses = () => {
     [isLoading, isLargeScreen]
   );
 
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/warehouses/new')),
+        visible: hasPermission('create_warehouse'),
+        disabled: isLoading,
+      },
+    ],
+    [isLoading, isLargeScreen]
+  );
+
   return (
     <Table<Warehouse>
       columns={columns}
       data={warehouses}
       isDataLoading={isLoading}
       enableFiltering
-      filteringProps={['name']}
+      filteringProps={[
+        'name',
+        'address',
+        'address2',
+        'city',
+        'state',
+        'zip_code',
+        'country_id',
+      ]}
       creationRoute="/warehouses/new"
       creationButtonLabel={t('new_warehouse')}
       filterFieldPlaceHolder={t('search_by_name')}

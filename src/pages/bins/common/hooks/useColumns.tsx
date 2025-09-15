@@ -12,7 +12,7 @@ import { route } from '@helpers/index';
 import { TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import { Bin, User } from '@interfaces/index';
+import { Bin, User, Warehouse } from '@interfaces/index';
 
 import { Box, Link, TableActionsDropdown, Text } from '@components/index';
 
@@ -49,6 +49,27 @@ const useColumns = (props: Props) => {
         onClick: () =>
           navigate(route('/bins/:id/edit', { id: record.id as string })),
       }),
+    },
+    {
+      title: t('warehouse'),
+      dataIndex: 'warehouse',
+      render: (value: Warehouse | null) => {
+        if (!value) {
+          return <></>;
+        }
+
+        return (
+          <Box className="min-w-56">
+            <Link
+              to={route('/warehouses/:id/edit', {
+                id: value.id as string,
+              })}
+            >
+              {value.name}
+            </Link>
+          </Box>
+        );
+      },
     },
     {
       title: t('created_at'),

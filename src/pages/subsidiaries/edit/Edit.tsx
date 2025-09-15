@@ -61,7 +61,6 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
-  const actions = useActions();
   const refetch = useRefetch();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
@@ -85,6 +84,8 @@ const Edit = () => {
       hasPermission('view_subsidiary') ||
       hasPermission('edit_subsidiary'),
   });
+
+  const actions = useActions({ refresh });
 
   const handleSave = async () => {
     if (!isLoading && id && subsidiary) {

@@ -48,8 +48,9 @@ const ICON_SIZE: Record<string, string> = {
   tags: '1.2rem',
   employees: '1.215rem',
   edit: '1.2rem',
-  boxAlignTopRightFilled: '1.15rem',
+  boxAlignTopRightFilled: '1.175rem',
   subsidiary: '1.1rem',
+  warehouse: '1.1rem',
 };
 
 const FooterAction = ({
@@ -91,7 +92,12 @@ const FooterAction = ({
             className="flex flex-col min-w-[9rem] divide-y"
             onClick={(event) => {
               event.stopPropagation();
-              setIsOpen(false);
+
+              preventAction({
+                action: () => {
+                  setIsOpen(false);
+                },
+              });
             }}
             style={{
               borderColor: colors.$1,
@@ -114,7 +120,13 @@ const FooterAction = ({
         }
         trigger="click"
         open={isOpen}
-        onOpenChange={handleOpenChange}
+        onOpenChange={(open) => {
+          preventAction({
+            action: () => {
+              handleOpenChange(open);
+            },
+          });
+        }}
         placement="top"
         arrow={false}
         overlayInnerStyle={{

@@ -116,7 +116,13 @@ const TaxRates = () => {
       data={taxRates}
       isDataLoading={isLoading}
       enableFiltering
-      filteringProps={['name']}
+      filteringProps={['name', 'rate']}
+      propsWithAdjustedFilteringValues={[
+        {
+          key: 'rate',
+          adjustingFunction: (value) => value?.toString() || '',
+        },
+      ]}
       creationRoute="/tax_rates/new"
       creationButtonLabel={t('new_tax_rate')}
       filterFieldPlaceHolder={t('search_by_name')}

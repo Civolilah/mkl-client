@@ -24,8 +24,10 @@ import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
+  useDetectChanges,
   usePageLayoutAndActions,
   useRefetch,
+  useSaveAndDiscardActions,
   useTranslation,
 } from '@hooks/index';
 
@@ -101,12 +103,6 @@ const Create = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      buttonAction: {
-        isLoading: isFormBusy,
-        isDisabled: isFormBusy,
-        onClick: handleSave,
-        disabledWithLoadingIcon: isFormBusy,
-      },
       footer: isLargeScreen ? undefined : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
@@ -116,7 +112,6 @@ const Create = () => {
             }}
             iconName="warehouse"
             disabled={isFormBusy}
-            iconSize="1.05rem"
           />
 
           <FooterAction
@@ -124,7 +119,6 @@ const Create = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isFormBusy}
-            iconSize="1.3rem"
           />
 
           <AISearchAction disabled={isFormBusy} />
@@ -146,6 +140,23 @@ const Create = () => {
       setWarehouse(INITIAL_WAREHOUSE);
     };
   }, []);
+
+  useDetectChanges({
+    initialEntityValue: INITIAL_WAREHOUSE,
+    currentEntityValue: warehouse,
+  });
+
+  useSaveAndDiscardActions(
+    {
+      disabledSaveButton: Boolean(isFormBusy || Object.keys(errors).length),
+      disabledDiscardButton: Boolean(isFormBusy || Object.keys(errors).length),
+      onSaveClick: handleSave,
+      onDiscardClick: () => setWarehouse(INITIAL_WAREHOUSE),
+      changesLabel: 'unsaved_warehouse',
+      visibleBox: true,
+    },
+    [warehouse, isFormBusy, handleSave]
+  );
 
   return (
     <WarehouseForm

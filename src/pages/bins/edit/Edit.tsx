@@ -32,6 +32,7 @@ import {
   useDetectChanges,
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useRefetch,
   useSaveAndDiscardActions,
@@ -104,7 +105,7 @@ const Edit = () => {
 
       setIsLoading(true);
 
-      request('PATCH', endpoint('/api/label_categories/:id', { id }), bin)
+      request('PATCH', endpoint('/api/bins/:id', { id }), bin)
         .then(() => {
           toast.success('updated_bin');
 
@@ -142,11 +143,11 @@ const Edit = () => {
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="label_categories"
+            text="bins"
             onClick={() => {
               navigate(route('/bins'));
             }}
-            iconName="tags"
+            iconName="boxAlignTopRightFilled"
             disabled={isLoading}
           />
 
@@ -200,6 +201,19 @@ const Edit = () => {
       hideBox: !canEditEntity('edit_bin', 'create_bin', bin),
     },
     [bin, isLoading, handleSave]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/bins/new')),
+        visible: hasPermission('create_bin'),
+        disabled: isLoading,
+      },
+    ],
+    [isLoading, isLargeScreen]
   );
 
   return (

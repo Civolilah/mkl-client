@@ -20,6 +20,7 @@ import {
   AISearchAction,
   Box,
   Card,
+  CopyToClipboardOnlyIcon,
   FooterAction,
   LabelElement,
   Link,
@@ -164,7 +165,14 @@ const Show = () => {
         </LabelElement>
 
         <LabelElement label={t('email')} withoutOptionalText>
-          <Text className="font-medium">{employee?.email}</Text>
+          <Box className="flex items-center gap-x-2">
+            <Text className="font-medium">{employee?.email}</Text>
+
+            <CopyToClipboardOnlyIcon
+              text={employee?.email as string}
+              withoutClickOpenOnMobile
+            />
+          </Box>
         </LabelElement>
 
         <LabelElement label={t('phone')} withoutOptionalText>

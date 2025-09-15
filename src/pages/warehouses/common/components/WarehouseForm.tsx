@@ -12,7 +12,14 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { ValidationErrors, Warehouse } from '@interfaces/index';
 
-import { Box, Card, CountriesSelector, TextField } from '@components/index';
+import {
+  Box,
+  Card,
+  CountriesSelector,
+  Icon,
+  Text,
+  TextField,
+} from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
@@ -61,7 +68,15 @@ const WarehouseForm = ({
 
   return (
     <Card
-      title={t('details')}
+      titleElement={
+        <Box className="flex items-center gap-x-2">
+          <Box>
+            <Icon name="warehouse" size="1.15rem" />
+          </Box>
+
+          <Text>{t('details')}</Text>
+        </Box>
+      }
       className="w-full md:w-3/4"
       isLoading={isLoading}
     >
@@ -72,63 +87,63 @@ const WarehouseForm = ({
           placeHolder={t('warehouse_name_placeholder')}
           value={warehouse?.name || ''}
           onValueChange={(value) => handleChange('name', value)}
-          changeOnBlur
           errorMessage={errors?.name && t(errors.name)}
         />
 
-        <TextField
-          label={t('street')}
-          placeHolder={t('street_placeholder')}
-          value={warehouse?.address || ''}
-          onValueChange={(value) => handleChange('address', value)}
-          changeOnBlur
-          errorMessage={errors?.address && t(errors.address)}
-        />
+        <Box className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:gap-y-0">
+          <TextField
+            label={t('street')}
+            placeHolder={t('street_placeholder')}
+            value={warehouse?.address || ''}
+            onValueChange={(value) => handleChange('address', value)}
+            errorMessage={errors?.address && t(errors.address)}
+          />
 
-        <TextField
-          label={t('apt_suite')}
-          placeHolder={t('apt_suite_placeholder')}
-          value={warehouse?.address2 || ''}
-          onValueChange={(value) => handleChange('address2', value)}
-          changeOnBlur
-          errorMessage={errors?.address2 && t(errors.address2)}
-        />
+          <TextField
+            label={t('apt_suite')}
+            placeHolder={t('apt_suite_placeholder')}
+            value={warehouse?.address2 || ''}
+            onValueChange={(value) => handleChange('address2', value)}
+            errorMessage={errors?.address2 && t(errors.address2)}
+          />
+        </Box>
 
-        <TextField
-          label={t('city')}
-          placeHolder={t('city_placeholder')}
-          value={warehouse?.city || ''}
-          onValueChange={(value) => handleChange('city', value)}
-          changeOnBlur
-          errorMessage={errors?.city && t(errors.city)}
-        />
+        <Box className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:gap-y-0">
+          <TextField
+            label={t('city')}
+            placeHolder={t('city_placeholder')}
+            value={warehouse?.city || ''}
+            onValueChange={(value) => handleChange('city', value)}
+            errorMessage={errors?.city && t(errors.city)}
+          />
 
-        <TextField
-          label={t('state')}
-          placeHolder={t('state_placeholder')}
-          value={warehouse?.state || ''}
-          onValueChange={(value) => handleChange('state', value)}
-          changeOnBlur
-          errorMessage={errors?.state && t(errors.state)}
-        />
+          <TextField
+            label={t('state')}
+            placeHolder={t('state_placeholder')}
+            value={warehouse?.state || ''}
+            onValueChange={(value) => handleChange('state', value)}
+            errorMessage={errors?.state && t(errors.state)}
+          />
+        </Box>
 
-        <TextField
-          label={t('zip_code')}
-          placeHolder={t('zip_code_placeholder')}
-          value={warehouse?.zip_code || ''}
-          onValueChange={(value) => handleChange('zip_code', value)}
-          changeOnBlur
-          errorMessage={errors?.zip_code && t(errors.zip_code)}
-        />
+        <Box className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:gap-y-0">
+          <TextField
+            label={t('zip_code')}
+            placeHolder={t('zip_code_placeholder')}
+            value={warehouse?.zip_code || ''}
+            onValueChange={(value) => handleChange('zip_code', value)}
+            errorMessage={errors?.zip_code && t(errors.zip_code)}
+          />
 
-        <CountriesSelector
-          label={t('country')}
-          placeHolder={t('select_country')}
-          value={warehouse?.country_id || ''}
-          onValueChange={(value) => handleChange('country_id', value)}
-          onClear={() => handleChange('country_id', '')}
-          errorMessage={errors?.country_id && t(errors.country_id)}
-        />
+          <CountriesSelector
+            label={t('country')}
+            placeHolder={t('select_country')}
+            value={warehouse?.country_id || ''}
+            onValueChange={(value) => handleChange('country_id', value)}
+            onClear={() => handleChange('country_id', '')}
+            errorMessage={errors?.country_id && t(errors.country_id)}
+          />
+        </Box>
       </Box>
     </Card>
   );

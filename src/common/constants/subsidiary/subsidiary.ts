@@ -16,4 +16,6 @@ export const INITIAL_SUBSIDIARY: Subsidiary = {
   city: '',
   zip_code: '',
   country_id: '',
+  address2: '',
+  state: '',
 };

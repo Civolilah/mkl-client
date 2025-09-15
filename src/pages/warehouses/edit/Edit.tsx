@@ -19,6 +19,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ValidationErrors, Warehouse } from '@interfaces/index';
 
 import {
+  ActionPopoverIcon,
   AISearchAction,
   Box,
   FooterAction,
@@ -30,8 +31,10 @@ import {
   useCanEditEntity,
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useRefetch,
+  useSaveAndDiscardActions,
   useTranslation,
 } from '@hooks/index';
 
@@ -57,7 +60,6 @@ const Edit = () => {
   const toast = useToast();
   const { id } = useParams();
 
-  const actions = useActions();
   const refetch = useRefetch();
   const navigate = useNavigate();
   const hasPermission = useHasPermission();
@@ -81,6 +83,8 @@ const Edit = () => {
       hasPermission('view_warehouse') ||
       hasPermission('edit_warehouse'),
   });
+
+  const actions = useActions({ refresh });
 
   const handleSave = async () => {
     if (!isLoading && id && warehouse) {
@@ -126,20 +130,6 @@ const Edit = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      buttonAction: {
-        isLoading: isLoading,
-        isDisabled:
-          isLoading ||
-          !canEditEntity('edit_warehouse', 'create_warehouse', warehouse),
-        onClick: handleSave,
-        disabledWithLoadingIcon: Boolean(isLoading && warehouse),
-        displayPermissionTooltip: !canEditEntity(
-          'edit_warehouse',
-          'create_warehouse',
-          warehouse
-        ),
-        tooltipPermissionMessage: t('no_permission_to_edit_warehouse'),
-      },
       actions: {
         list: warehouse ? actions(warehouse) : [],
       },
@@ -160,26 +150,6 @@ const Edit = () => {
             }}
             iconName="warehouse"
             disabled={isLoading}
-            iconSize="1.05rem"
-          />
-
-          <FooterAction
-            text="new_warehouse"
-            onClick={() => {
-              navigate(route('/warehouses/new'));
-            }}
-            iconName="add"
-            disabled={isLoading}
-            iconSize="1.3rem"
-            visible={hasPermission('create_warehouse')}
-          />
-
-          <FooterAction
-            text="reload"
-            onClick={refresh}
-            iconName="refresh"
-            disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <FooterAction
@@ -187,7 +157,13 @@ const Edit = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading}
-            iconSize="1.3rem"
+          />
+
+          <FooterAction
+            text="actions"
+            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
+            disabled={isLoading}
+            actions={warehouse ? actions(warehouse) : []}
           />
 
           <AISearchAction disabled={isLoading} />
@@ -209,6 +185,32 @@ const Edit = () => {
       setWarehouse(undefined);
     };
   }, []);
+
+  useSaveAndDiscardActions(
+    {
+      disabledSaveButton: Boolean(isLoading || Object.keys(errors).length),
+      disabledDiscardButton: Boolean(isLoading || Object.keys(errors).length),
+      disabledWithLoadingIcon: Boolean(isLoading && warehouse),
+      onSaveClick: handleSave,
+      onDiscardClick: () => setWarehouse(initialResponse),
+      changesLabel: 'unsaved_warehouse',
+      hideBox: !canEditEntity('edit_warehouse', 'create_warehouse', warehouse),
+    },
+    [warehouse, isLoading, handleSave]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/warehouses/new')),
+        visible: hasPermission('create_warehouse'),
+        disabled: isLoading,
+      },
+    ],
+    [isLoading, isLargeScreen]
+  );
 
   return (
     <WarehouseForm

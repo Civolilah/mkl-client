@@ -10,10 +10,9 @@
 
 import React from 'react';
 
-import { route } from '@helpers/index';
 import { MenuProps } from 'antd';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { LabelCategory } from '@interfaces/index';
 
@@ -28,27 +27,14 @@ interface Props {
 const useActions = ({ refresh }: Props = {}) => {
   const { id } = useParams();
 
-  const navigate = useNavigate();
   const hasPermission = useHasPermission();
 
   const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   return (currentResource: LabelCategory) => {
     const actions: MenuProps['items'] = [
-      ...(refresh && hasPermission('create_label_category') && !isLargeScreen
+      ...(refresh && hasPermission('create_bin') && !isLargeScreen
         ? [
-            {
-              label: (
-                <FooterActionItem
-                  iconName="add"
-                  onClick={() => {
-                    navigate(route('/label_categories/new'));
-                  }}
-                  label="new_label_category"
-                />
-              ),
-              key: `new_label_category-${id}`,
-            },
             {
               label: (
                 <FooterActionItem
@@ -64,13 +50,13 @@ const useActions = ({ refresh }: Props = {}) => {
       {
         label: (
           <DeleteAction
-            resourceType="label_category"
-            deleteEndpoint="/api/label_categories/:id"
+            resourceType="bin"
+            deleteEndpoint="/api/bins/:id"
             resourceId={id as string}
             editPageAction
-            mainPageURL="/label_categories"
+            mainPageURL="/bins"
             resourceName={currentResource.name}
-            resourceQueryIdentifier="label_categories"
+            resourceQueryIdentifier="bins"
             element={
               !isLargeScreen && (
                 <FooterActionItem

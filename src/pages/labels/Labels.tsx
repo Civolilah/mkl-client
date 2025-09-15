@@ -88,7 +88,6 @@ const Labels = () => {
             }}
             iconName="add"
             disabled={isLoading}
-            iconSize="1.3rem"
             visible={hasPermission('create_label')}
           />
 
@@ -97,7 +96,6 @@ const Labels = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading} />

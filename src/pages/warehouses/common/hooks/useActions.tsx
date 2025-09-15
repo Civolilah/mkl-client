@@ -11,27 +11,57 @@
 import React from 'react';
 
 import { MenuProps } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 import { useParams } from 'react-router-dom';
 
-import { Brand } from '@interfaces/index';
+import { Warehouse } from '@interfaces/index';
 
-import { DeleteAction } from '@components/index';
+import { DeleteAction, FooterActionItem } from '@components/index';
 
-const useActions = () => {
+interface Props {
+  refresh?: () => void;
+}
+
+const useActions = ({ refresh }: Props = {}) => {
   const { id } = useParams();
 
-  return (currentResource: Brand) => {
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
+
+  return (currentResource: Warehouse) => {
     const actions: MenuProps['items'] = [
+      ...(refresh && !isLargeScreen
+        ? [
+            {
+              label: (
+                <FooterActionItem
+                  iconName="refresh"
+                  onClick={refresh}
+                  label="reload"
+                />
+              ),
+              key: `refresh-${currentResource.id}`,
+            },
+          ]
+        : []),
       {
         label: (
           <DeleteAction
-            resourceType="brand"
-            deleteEndpoint="/api/brands/:id"
+            resourceType="warehouse"
+            deleteEndpoint="/api/warehouses/:id"
             resourceId={id as string}
             editPageAction
-            mainPageURL="/brands"
+            mainPageURL="/warehouses"
             resourceName={currentResource.name}
-            resourceQueryIdentifier="brands"
+            resourceQueryIdentifier="warehouses"
+            element={
+              !isLargeScreen && (
+                <FooterActionItem
+                  iconName="delete"
+                  iconColor="#ef4444"
+                  label="delete"
+                />
+              )
+            }
           />
         ),
         key: `delete-${id}`,
