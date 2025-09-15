@@ -20,7 +20,6 @@ import {
   AISearchAction,
   Box,
   FooterAction,
-  MobileSearchAction,
   RefreshDataElement,
   Table,
 } from '@components/index';
@@ -28,6 +27,7 @@ import {
 import {
   useFetchEntity,
   useHasPermission,
+  useMobileActions,
   usePageLayoutAndActions,
   useTranslation,
 } from '@hooks/index';
@@ -75,21 +75,12 @@ const Suppliers = () => {
         </Box>
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
-          <MobileSearchAction
-            disabled={isLoading}
-            iconSize="1.3rem"
-            searchPlaceholder="search_by_name"
-          />
-
           <FooterAction
-            text="new_supplier"
-            onClick={() => {
-              navigate(route('/suppliers/new'));
-            }}
-            iconName="add"
+            text="dashboard"
+            onClick={() => navigate(route('/dashboard'))}
+            iconName="dashboard"
             disabled={isLoading}
-            iconSize="1.3rem"
-            visible={hasPermission('create_supplier')}
+            visible={hasPermission('view_dashboard')}
           />
 
           <FooterAction
@@ -97,13 +88,25 @@ const Suppliers = () => {
             onClick={refresh}
             iconName="refresh"
             disabled={isLoading}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading} />
         </Box>
       ),
     },
+    [isLoading, isLargeScreen]
+  );
+
+  useMobileActions(
+    [
+      {
+        iconName: 'add',
+        iconSize: '1.6rem',
+        onClick: () => navigate(route('/suppliers/new')),
+        visible: hasPermission('create_supplier'),
+        disabled: isLoading,
+      },
+    ],
     [isLoading, isLargeScreen]
   );
 

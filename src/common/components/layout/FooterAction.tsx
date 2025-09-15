@@ -51,6 +51,7 @@ const ICON_SIZE: Record<string, string> = {
   boxAlignTopRightFilled: '1.175rem',
   subsidiary: '1.1rem',
   warehouse: '1.1rem',
+  truck: '1.1rem',
 };
 
 const FooterAction = ({

@@ -610,5 +610,7 @@
   "classification": "Classification",
   "select_classification": "Select classification",
   "company_name_placeholder": "e.g., Atlas Trading Co., Apex Solutions LLC, Sterling Ventures",
-  "logo": "Logo"
+  "logo": "Logo",
+  "unsaved_supplier": "Unsaved supplier",
+  "add_custom_fields": "Add custom fields"
 }

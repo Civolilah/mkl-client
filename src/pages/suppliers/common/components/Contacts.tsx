@@ -64,13 +64,11 @@ const Contacts = ({
         '[id^="supplier_contact_phone_"]'
       );
 
-      if (contactElements.length > 1) {
-        const lastContactElement = contactElements[contactElements.length - 1];
-        lastContactElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        });
-      }
+      const lastContactElement = contactElements[contactElements.length - 1];
+      lastContactElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
     }, 50);
   };
 
@@ -86,11 +84,24 @@ const Contacts = ({
 
   return (
     <Card
-      title={t('contacts')}
+      titleElement={
+        <Box className="flex items-center gap-x-2">
+          <Box>
+            <Icon name="phone" size="1.1rem" />
+          </Box>
+
+          <Text>{t('contacts')}</Text>
+        </Box>
+      }
       className="w-full"
       isLoading={isLoading}
       topRight={
-        <Button type="default" size="middle" onClick={handleAddContact}>
+        <Button
+          type="default"
+          size="middle"
+          onClick={handleAddContact}
+          disablePreventAction
+        >
           <Box>
             <Icon name="add" />
           </Box>
@@ -98,6 +109,7 @@ const Contacts = ({
           <Text>{t('add_contact')}</Text>
         </Button>
       }
+      heightAuto
     >
       <Box className="flex flex-col gap-6">
         {supplier?.contacts.map((contact, index) => (
@@ -110,66 +122,70 @@ const Contacts = ({
             })}
             style={{ borderColor: colors.$1 }}
           >
-            <TextField
-              required
-              label={t('first_name')}
-              placeHolder={t('first_name_placeholder')}
-              value={contact.first_name}
-              onValueChange={(value) =>
-                handleChange(`contacts.${index}.first_name`, value)
-              }
-              changeOnBlur
-              errorMessage={
-                get(errors, `contacts.${index}.first_name`) &&
-                t(get(errors, `contacts.${index}.first_name`))
-              }
-            />
+            <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
+              <TextField
+                required
+                label={t('first_name')}
+                placeHolder={t('first_name_placeholder')}
+                value={contact.first_name}
+                onValueChange={(value) =>
+                  handleChange(`contacts.${index}.first_name`, value)
+                }
+                changeOnBlur
+                errorMessage={
+                  get(errors, `contacts.${index}.first_name`) &&
+                  t(get(errors, `contacts.${index}.first_name`))
+                }
+              />
 
-            <TextField
-              label={t('last_name')}
-              placeHolder={t('last_name_placeholder')}
-              value={contact.last_name}
-              onValueChange={(value) =>
-                handleChange(`contacts.${index}.last_name`, value)
-              }
-              changeOnBlur
-              errorMessage={
-                get(errors, `contacts.${index}.last_name`) &&
-                t(get(errors, `contacts.${index}.last_name`))
-              }
-            />
+              <TextField
+                label={t('last_name')}
+                placeHolder={t('last_name_placeholder')}
+                value={contact.last_name}
+                onValueChange={(value) =>
+                  handleChange(`contacts.${index}.last_name`, value)
+                }
+                changeOnBlur
+                errorMessage={
+                  get(errors, `contacts.${index}.last_name`) &&
+                  t(get(errors, `contacts.${index}.last_name`))
+                }
+              />
+            </Box>
 
-            <TextField
-              required
-              type="email"
-              label={t('email')}
-              placeHolder={t('email_placeholder')}
-              value={contact.email}
-              onValueChange={(value) =>
-                handleChange(`contacts.${index}.email`, value)
-              }
-              changeOnBlur
-              errorMessage={
-                get(errors, `contacts.${index}.email`) &&
-                t(get(errors, `contacts.${index}.email`))
-              }
-            />
+            <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
+              <TextField
+                required
+                type="email"
+                label={t('email')}
+                placeHolder={t('email_placeholder')}
+                value={contact.email}
+                onValueChange={(value) =>
+                  handleChange(`contacts.${index}.email`, value)
+                }
+                changeOnBlur
+                errorMessage={
+                  get(errors, `contacts.${index}.email`) &&
+                  t(get(errors, `contacts.${index}.email`))
+                }
+              />
 
-            <TextField
-              id={`supplier_contact_phone_${index}`}
-              type="tel"
-              label={t('phone')}
-              placeHolder={t('phone_placeholder')}
-              value={contact.phone}
-              onValueChange={(value) =>
-                handleChange(`contacts.${index}.phone`, value)
-              }
-              changeOnBlur
-              errorMessage={
-                get(errors, `contacts.${index}.phone`) &&
-                t(get(errors, `contacts.${index}.phone`))
-              }
-            />
+              <TextField
+                id={`supplier_contact_phone_${index}`}
+                type="tel"
+                label={t('phone')}
+                placeHolder={t('phone_placeholder')}
+                value={contact.phone}
+                onValueChange={(value) =>
+                  handleChange(`contacts.${index}.phone`, value)
+                }
+                changeOnBlur
+                errorMessage={
+                  get(errors, `contacts.${index}.phone`) &&
+                  t(get(errors, `contacts.${index}.phone`))
+                }
+              />
+            </Box>
 
             {isEnabledInvoicing && (
               <>

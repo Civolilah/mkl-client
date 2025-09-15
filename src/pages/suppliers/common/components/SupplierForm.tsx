@@ -8,20 +8,20 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-
-import { useSearchParams } from 'react-router-dom';
+import { Dispatch, SetStateAction } from 'react';
 
 import { Supplier, ValidationErrors } from '@interfaces/index';
 
-import { Box, StaticTabs, TextField } from '@components/index';
+import { Box, TextField } from '@components/index';
 
 import { useTranslation } from '@hooks/index';
 
+import Address from './Address';
+import Contacts from './Contacts';
+import Details from './Details';
 import useHandleChange from '../hooks/useHandleChange';
-import useTabs from '../hooks/useTabs';
 
-type Props = {
+interface Props {
   supplier: Supplier | undefined;
   setSupplier: Dispatch<SetStateAction<Supplier | undefined>>;
   errors: ValidationErrors;
@@ -29,7 +29,7 @@ type Props = {
   isLoading?: boolean;
   onRefresh?: () => void;
   onlyFields?: boolean;
-};
+}
 
 const SupplierForm = ({
   supplier,
@@ -37,82 +37,10 @@ const SupplierForm = ({
   errors,
   isLoading,
   onlyFields,
-  editPage,
 }: Props) => {
   const t = useTranslation();
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const isEnabledInvoicing = true;
-
   const handleChange = useHandleChange({ setSupplier });
-
-  const [activeTab, setActiveTab] = useState<string>(
-    searchParams.get('tab') ?? 'details'
-  );
-
-  const tabs = useTabs({
-    supplier,
-    isLoading,
-    errors,
-    setSupplier,
-    editPage,
-  });
-
-  useEffect(() => {
-    if (Object.keys(errors).length && isEnabledInvoicing) {
-      const isErrorFromDetailsPage = Object.keys(errors).some(
-        (key) =>
-          key === 'name' ||
-          key === 'number' ||
-          key === 'id_number' ||
-          key === 'vat_number' ||
-          key === 'routing_id' ||
-          key === 'website' ||
-          key === 'phone' ||
-          key === 'currency_id' ||
-          key === 'language'
-      );
-
-      const isErrorFromAddressPage = Object.keys(errors).some(
-        (key) =>
-          key === 'address' ||
-          key === 'address2' ||
-          key === 'city' ||
-          key === 'state' ||
-          key === 'zip_code' ||
-          key === 'country_id'
-      );
-
-      const isErrorFromContactsPage = Object.keys(errors).some(
-        (key) =>
-          key.includes('contacts') &&
-          (key.includes('first_name') ||
-            key.includes('last_name') ||
-            key.includes('email') ||
-            key.includes('phone') ||
-            key.includes('password'))
-      );
-
-      if (isErrorFromDetailsPage) {
-        setActiveTab('details');
-      } else if (isErrorFromAddressPage) {
-        setActiveTab('address');
-      } else if (isErrorFromContactsPage) {
-        setActiveTab('contacts');
-      }
-    }
-  }, [errors]);
-
-  useEffect(() => {
-    if (isEnabledInvoicing) {
-      setSearchParams((prev) => {
-        const newParams = new URLSearchParams(prev);
-        newParams.set('tab', activeTab);
-        return newParams;
-      });
-    }
-  }, [activeTab]);
 
   if (onlyFields) {
     return (
@@ -131,12 +59,31 @@ const SupplierForm = ({
   }
 
   return (
-    <Box className="flex w-full self-start md:w-full xl:w-3/4">
-      <StaticTabs
-        tabs={tabs}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
+    <Box className="flex self-start w-full pb-20">
+      <Box className="flex flex-col lg:flex-row w-full gap-y-4 lg:gap-x-4 lg:gap-y-0">
+        <Details
+          supplier={supplier}
+          isLoading={isLoading}
+          errors={errors}
+          setSupplier={setSupplier}
+        />
+
+        <Box className="flex flex-col w-full gap-y-4">
+          <Address
+            supplier={supplier}
+            isLoading={isLoading}
+            errors={errors}
+            setSupplier={setSupplier}
+          />
+
+          <Contacts
+            supplier={supplier}
+            isLoading={isLoading}
+            errors={errors}
+            setSupplier={setSupplier}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 };

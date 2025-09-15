@@ -10,24 +10,22 @@
 
 import { useEffect, useState } from 'react';
 
-import {
-  INITIAL_SUPPLIER,
-  VALIDATION_ERROR_STATUS_CODE,
-} from '@constants/index';
+import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
-import { useAtomValue } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { Supplier, ValidationErrors } from '@interfaces/index';
 
-import { userCompanyAtom } from '@components/general/PrivateRoute';
 import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
+  useDetectChanges,
+  useInitialSupplier,
   usePageLayoutAndActions,
   useRefetch,
+  useSaveAndDiscardActions,
   useTranslation,
 } from '@hooks/index';
 
@@ -54,7 +52,7 @@ const Create = () => {
   const refetch = useRefetch();
   const navigate = useNavigate();
 
-  const userCompanyDetails = useAtomValue(userCompanyAtom);
+  const { INITIAL_SUPPLIER } = useInitialSupplier();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
@@ -105,12 +103,6 @@ const Create = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      buttonAction: {
-        isLoading: isFormBusy,
-        isDisabled: isFormBusy,
-        onClick: handleSave,
-        disabledWithLoadingIcon: isFormBusy,
-      },
       footer: isLargeScreen ? undefined : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
@@ -120,7 +112,6 @@ const Create = () => {
             }}
             iconName="truck"
             disabled={isFormBusy}
-            iconSize="1.05rem"
           />
 
           <FooterAction
@@ -128,7 +119,6 @@ const Create = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isFormBusy}
-            iconSize="1.3rem"
           />
 
           <AISearchAction disabled={isFormBusy} />
@@ -145,19 +135,28 @@ const Create = () => {
   }, [supplier]);
 
   useEffect(() => {
-    if (userCompanyDetails?.company) {
-      setSupplier({
-        ...INITIAL_SUPPLIER,
-        currency_id: userCompanyDetails.company.currency_id,
-        country_id: userCompanyDetails.company.country_id,
-      });
-    }
-
     return () => {
       setErrors({});
       setSupplier(INITIAL_SUPPLIER);
     };
   }, []);
+
+  useDetectChanges({
+    initialEntityValue: INITIAL_SUPPLIER,
+    currentEntityValue: supplier,
+  });
+
+  useSaveAndDiscardActions(
+    {
+      disabledSaveButton: Boolean(isFormBusy || Object.keys(errors).length),
+      disabledDiscardButton: Boolean(isFormBusy || Object.keys(errors).length),
+      onSaveClick: handleSave,
+      onDiscardClick: () => setSupplier(INITIAL_SUPPLIER),
+      changesLabel: 'unsaved_supplier',
+      visibleBox: true,
+    },
+    [supplier, isFormBusy, handleSave]
+  );
 
   return (
     <SupplierForm

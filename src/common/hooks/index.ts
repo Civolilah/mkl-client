@@ -44,3 +44,4 @@ export { default as useMobileActions } from '@hooks/global/useMobileActions';
 export { default as useSaveAndDiscardActions } from '@hooks/global/useSaveAndDiscardActions';
 export { default as useDetectChanges } from '@hooks/global/useDetectChanges';
 export { default as usePreventAction } from '@hooks/global/usePreventAction';
+export { default as useInitialSupplier } from '@hooks/suppliers/useInitialSupplier';

@@ -34,7 +34,7 @@ import {
 
 import CustomFieldsCard from './common/components/CustomFieldsCard';
 
-interface CustomField {
+export interface CustomField {
   label: string;
   type: string;
   value: string;
@@ -150,7 +150,6 @@ const CustomFields = () => {
             }}
             iconName="dashboard"
             disabled={isLoading || isFormBusy}
-            iconSize="1.2rem"
             visible={hasPermission('view_dashboard')}
           />
 
@@ -159,7 +158,6 @@ const CustomFields = () => {
             onClick={handleSave}
             iconName="save"
             disabled={isLoading || isFormBusy}
-            iconSize="1.2rem"
           />
 
           <AISearchAction disabled={isLoading || isFormBusy} />

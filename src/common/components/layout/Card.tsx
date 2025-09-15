@@ -33,6 +33,7 @@ interface Props {
   childrenParentClassName?: string;
   childrenParentStyle?: CSSProperties;
   paddingBottom?: string;
+  heightAuto?: boolean;
 }
 
 const Card = ({
@@ -49,13 +50,20 @@ const Card = ({
   childrenParentClassName,
   childrenParentStyle,
   paddingBottom,
+  heightAuto = false,
 }: Props) => {
   const t = useTranslation();
 
   const colors = useColors();
 
   return (
-    <Box id={id} className="flex w-full h-full justify-center items-start">
+    <Box
+      id={id}
+      className={classNames('flex w-full justify-center items-start', {
+        'h-auto': heightAuto,
+        'h-full': !heightAuto,
+      })}
+    >
       <CardBase
         className={classNames('shadow-sm', className)}
         style={{
