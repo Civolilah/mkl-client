@@ -60,39 +60,35 @@ const CustomerForm = ({
   }
 
   return (
-    <Box className="flex self-start w-full pb-20">
-      <Box className="flex flex-col lg:flex-row w-full gap-y-4 lg:gap-x-4 lg:gap-y-0">
-        <Box className="flex flex-col w-full gap-y-4">
-          <Details
-            customer={customer}
-            isLoading={isLoading}
-            errors={errors}
-            setCustomer={setCustomer}
-          />
+    <Box className="flex self-start w-full lg:w-3/4 pb-20">
+      <Box className="flex flex-col w-full gap-y-4">
+        <Details
+          customer={customer}
+          isLoading={isLoading}
+          errors={errors}
+          setCustomer={setCustomer}
+        />
 
-          <Contacts
-            customer={customer}
-            isLoading={isLoading}
-            errors={errors}
-            setCustomer={setCustomer}
-          />
-        </Box>
+        <BillingAddress
+          customer={customer}
+          isLoading={isLoading}
+          errors={errors}
+          setCustomer={setCustomer}
+        />
 
-        <Box className="flex flex-col w-full gap-y-4">
-          <BillingAddress
-            customer={customer}
-            isLoading={isLoading}
-            errors={errors}
-            setCustomer={setCustomer}
-          />
+        <ShippingAddress
+          customer={customer}
+          isLoading={isLoading}
+          errors={errors}
+          setCustomer={setCustomer}
+        />
 
-          <ShippingAddress
-            customer={customer}
-            isLoading={isLoading}
-            errors={errors}
-            setCustomer={setCustomer}
-          />
-        </Box>
+        <Contacts
+          customer={customer}
+          isLoading={isLoading}
+          errors={errors}
+          setCustomer={setCustomer}
+        />
       </Box>
     </Box>
   );

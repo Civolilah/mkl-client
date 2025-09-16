@@ -29,7 +29,7 @@ import tr from 'i18n-iso-countries/langs/tr.json';
 import zh from 'i18n-iso-countries/langs/zh.json';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation as useTranslationBase } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import { CustomFieldsType } from '@pages/settings/pages/custom-fields/CustomFields';
@@ -76,6 +76,7 @@ const App = () => {
 
   const theme = useTheme();
   const toast = useToast();
+  const location = useLocation();
   const { i18n } = useTranslationBase();
 
   const navigate = useNavigate();
@@ -95,6 +96,9 @@ const App = () => {
     endpoint: '/api/users/profile',
     setEntity: setProfile,
     withoutQueryId: true,
+    enableByPermission:
+      location.pathname.includes('login') &&
+      location.pathname.includes('register'),
   });
 
   useFetchEntity<CustomFieldsType>({
@@ -102,7 +106,10 @@ const App = () => {
     endpoint: '/api/companies/custom_fields',
     setEntity: setCustomFields,
     withoutQueryId: true,
-    enableByPermission: hasPermission('admin'),
+    enableByPermission:
+      hasPermission('admin') &&
+      !location.pathname.includes('login') &&
+      !location.pathname.includes('register'),
   });
 
   const handleDisplayWelcomeModal = () => {

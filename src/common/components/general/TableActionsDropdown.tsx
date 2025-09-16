@@ -63,7 +63,8 @@ export type ResourceType =
   | 'product'
   | 'warehouse'
   | 'tax_rate'
-  | 'bin';
+  | 'bin'
+  | 'customer';
 
 type CustomActions = (resource: Resource) => MenuProps['items'];
 

@@ -31,10 +31,7 @@ import {
 } from '@components/index';
 
 import { areChangesMadeAtom } from '@hooks/global/useHandleEntityChanges';
-import {
-  isMobileDiscardBoxOpenAtom,
-  preventedActionAtom,
-} from '@hooks/global/usePreventAction';
+import { preventedActionAtom } from '@hooks/global/usePreventAction';
 import { saveAndDiscardActionsAtom } from '@hooks/global/useSaveAndDiscardActions';
 import { usePreventAction } from '@hooks/index';
 import {
@@ -78,7 +75,7 @@ const Header = ({ title }: Props) => {
   const areChangesMade = useAtomValue(areChangesMadeAtom);
   const preventedAction = useAtomValue(preventedActionAtom);
   const saveAndDiscardActions = useAtomValue(saveAndDiscardActionsAtom);
-  const isMobileDiscardBoxOpen = useAtomValue(isMobileDiscardBoxOpenAtom);
+  //const isMobileDiscardBoxOpen = useAtomValue(isMobileDiscardBoxOpenAtom);
 
   const onClose = () => {
     setIsDrawerOpened(false);
@@ -119,49 +116,67 @@ const Header = ({ title }: Props) => {
       <Box className="flex w-full justify-between items-center px-2 md:px-6 relative h-full shadow-sm">
         <Text className="text-lg font-medium whitespace-nowrap">{title}</Text>
 
-        {saveAndDiscardActions && !isLargeScreen && isMobileDiscardBoxOpen && (
-          <Box
-            id="discardSaveBox"
-            className="fixed flex justify-center w-full bottom-20 left-0 z-50"
-          >
+        {saveAndDiscardActions &&
+          !isLargeScreen &&
+          (areChangesMade || saveAndDiscardActions.visibleBox) &&
+          !saveAndDiscardActions.hideBox && (
             <Box
-              className="flex items-center gap-x-20 border rounded-md py-1.5 px-2 bg-gray-50 max-w-max shadow-lg"
-              style={{
-                borderColor: colors.$1,
-              }}
+              id="discardSaveBox"
+              className="fixed flex justify-center w-full bottom-20 left-0 z-50"
             >
-              <Box className="flex items-center gap-x-2">
-                <Box>
-                  <Icon
-                    name="warning"
-                    size="1.35rem"
-                    style={{ color: 'orange' }}
-                  />
+              <Box
+                className="flex items-center gap-x-10 border rounded-md py-1.5 px-2 bg-gray-50 max-w-max shadow-lg"
+                style={{
+                  borderColor: colors.$1,
+                }}
+              >
+                <Box className="flex items-center gap-x-2">
+                  <Box>
+                    <Icon
+                      name="warning"
+                      size="1.35rem"
+                      style={{ color: 'orange' }}
+                    />
+                  </Box>
+
+                  <Text className="text-xs-mid font-medium whitespace-nowrap">
+                    {t(saveAndDiscardActions.changesLabel || 'unsaved_changes')}
+                  </Text>
                 </Box>
 
-                <Text className="text-xs-mid font-medium whitespace-nowrap">
-                  {t(saveAndDiscardActions.changesLabel || 'unsaved_changes')}
-                </Text>
+                <Box className="flex items-center space-x-2">
+                  <Button
+                    size="middle"
+                    type="default"
+                    onClick={() => {
+                      if (preventedAction) {
+                        preventedAction?.action();
+                      }
+
+                      saveAndDiscardActions.onDiscardClick();
+                    }}
+                    disabled={saveAndDiscardActions.disabledDiscardButton}
+                    disablePreventAction
+                  >
+                    {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
+                  </Button>
+
+                  <Button
+                    size="middle"
+                    type="primary"
+                    onClick={saveAndDiscardActions.onSaveClick}
+                    disabled={saveAndDiscardActions.disabledSaveButton}
+                    disabledWithLoadingIcon={
+                      saveAndDiscardActions.disabledWithLoadingIcon
+                    }
+                    disablePreventAction
+                  >
+                    {t(saveAndDiscardActions.saveButtonLabel || 'save')}
+                  </Button>
+                </Box>
               </Box>
-
-              <Button
-                size="middle"
-                type="default"
-                onClick={() => {
-                  if (preventedAction) {
-                    preventedAction?.action();
-                  }
-
-                  saveAndDiscardActions.onDiscardClick();
-                }}
-                disabled={saveAndDiscardActions.disabledDiscardButton}
-                disablePreventAction
-              >
-                {t(saveAndDiscardActions.discardButtonLabel || 'discard')}
-              </Button>
             </Box>
-          </Box>
-        )}
+          )}
 
         {saveAndDiscardActions &&
           isLargeScreen &&

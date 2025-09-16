@@ -11,20 +11,17 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { request, route, useToast } from '@helpers/index';
+import { request, useToast } from '@helpers/index';
 import { isEqual } from 'lodash';
-import { useMediaQuery } from 'react-responsive';
-import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
-import { AISearchAction, Box, FooterAction } from '@components/index';
+import { Box } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
   useDetectChanges,
   useFetchEntity,
-  useHasPermission,
   usePageLayoutAndActions,
   useRefetch,
   useSaveAndDiscardActions,
@@ -76,11 +73,7 @@ const Profile = () => {
 
   const toast = useToast();
 
-  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
-
   const refetch = useRefetch();
-  const navigate = useNavigate();
-  const hasPermission = useHasPermission();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -150,28 +143,6 @@ const Profile = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      footer: !isLargeScreen && (
-        <Box className="flex w-full items-center justify-end h-full">
-          <FooterAction
-            text="dashboard"
-            onClick={() => {
-              navigate(route('/dashboard'));
-            }}
-            iconName="dashboard"
-            disabled={isLoading || isFormBusy}
-            visible={hasPermission('view_dashboard')}
-          />
-
-          <FooterAction
-            text="save"
-            onClick={handleSave}
-            iconName="save"
-            disabled={isLoading || isFormBusy}
-          />
-
-          <AISearchAction disabled={isLoading || isFormBusy} />
-        </Box>
-      ),
     },
     [profile, isLoading, isFormBusy, handleSave]
   );

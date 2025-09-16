@@ -8,14 +8,27 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import React from 'react';
+import React, { ReactNode, useCallback, useState } from 'react';
 
-import { Box, Card, Icon, Text, TextField } from '@components/index';
+import { FileRejection, useDropzone } from 'react-dropzone';
+import reactStringReplace from 'react-string-replace';
+import styled from 'styled-components';
 
-import { useTranslation } from '@hooks/index';
+import { Box, Card, ErrorMessageElement, Icon, Text } from '@components/index';
+
+import { useColors, useTranslation } from '@hooks/index';
 
 import { CompanyDetailsProps } from '../../CompanyDetails';
-import useHandleChange from '../hooks/useHandleChange';
+
+const StyledBox = styled.div`
+  border: 1px dashed ${({ theme }) => theme.borderColor};
+  background-color: ${({ theme }) => theme.backgroundColor};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.hoverBorderColor};
+    background-color: ${({ theme }) => theme.hoverBackgroundColor};
+  }
+`;
 
 const LogoCard = ({
   companyDetails,
@@ -26,7 +39,64 @@ const LogoCard = ({
 }: CompanyDetailsProps) => {
   const t = useTranslation();
 
-  const handleChange = useHandleChange({ setCompanyDetails });
+  const colors = useColors();
+
+  const [uploadErrors, setUploadErrors] = useState<ReactNode[]>([]);
+  const [currentLogo, setCurrentLogo] = useState<File | undefined>(undefined);
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+      setUploadErrors([]);
+
+      if (rejectedFiles.length > 0) {
+        const errors = rejectedFiles.flatMap(({ file, errors }) =>
+          errors.map((e: { code: string }) => {
+            switch (e.code) {
+              case 'file-too-large':
+                return reactStringReplace(
+                  reactStringReplace(t('file_too_large'), ':name', () => (
+                    <Text key="fileTooLargeMessage">{file.name}</Text>
+                  )),
+                  ':maxSize',
+                  () => (
+                    <Text key="maxSizeMessage">
+                      {Math.round((100 * 1024 * 1024) / (1024 * 1024))}
+                    </Text>
+                  )
+                );
+              case 'file-invalid-type':
+                return reactStringReplace(
+                  t('invalid_file_type'),
+                  ':name',
+                  () => <Text key="invalidTypeMessage">{file.name}</Text>
+                );
+              default:
+                return reactStringReplace(t('upload_error'), ':name', () => (
+                  <Text key="uploadErrorMessage">{file.name}</Text>
+                ));
+            }
+          })
+        );
+
+        setUploadErrors(errors);
+
+        return;
+      }
+
+      setCurrentLogo(acceptedFiles[0]);
+    },
+    []
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.gif', '.webp'],
+    },
+    multiple: false,
+    disabled: false,
+    maxSize: 100 * 1024 * 1024,
+  });
 
   return (
     <Card
@@ -42,66 +112,52 @@ const LogoCard = ({
       }
       isLoading={isLoading}
     >
-      <Box className="flex flex-col gap-y-4">
-        <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
-          <TextField
-            label={t('address')}
-            placeHolder={t('address_placeholder')}
-            value={companyDetails?.address || ''}
-            onValueChange={(value) => handleChange('address', value)}
-            errorMessage={errors?.address && t(errors.address)}
-            readOnly={isFormBusy}
-          />
+      <Box className="w-full">
+        {uploadErrors.length > 0 && (
+          <Box className="mb-4 p-3 bg-red-50 border border-red-200">
+            {uploadErrors.map((error, index) => (
+              <ErrorMessageElement errorMessage={error as string} key={index} />
+            ))}
+          </Box>
+        )}
 
-          <TextField
-            label={t('apt_suite')}
-            placeHolder={t('apt_suite_placeholder')}
-            value={companyDetails?.address2 || ''}
-            onValueChange={(value) => handleChange('address2', value)}
-            errorMessage={errors?.address2 && t(errors.address2)}
-            readOnly={isFormBusy}
-          />
-        </Box>
+        <StyledBox
+          {...getRootProps()}
+          className="flex flex-col items-center justify-center px-6 gap-y-3 text-center transition-colors h-[11rem] cursor-pointer"
+          theme={{
+            borderColor: isDragActive ? colors.$32 : colors.$1,
+            backgroundColor: isDragActive ? colors.$33 : colors.$26,
+            hoverBorderColor: colors.$16,
+            hoverBackgroundColor: colors.$3,
+          }}
+        >
+          <input {...getInputProps()} />
 
-        <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
-          <TextField
-            label={t('city')}
-            placeHolder={t('city_placeholder')}
-            value={companyDetails?.city || ''}
-            onValueChange={(value) => handleChange('city', value)}
-            errorMessage={errors?.city && t(errors.city)}
-            readOnly={isFormBusy}
-          />
+          <Box>
+            <Icon
+              name="image"
+              size="2.25rem"
+              style={{
+                color: colors.$34,
+              }}
+            />
+          </Box>
 
-          <TextField
-            label={t('state')}
-            placeHolder={t('state_placeholder')}
-            value={companyDetails?.state || ''}
-            onValueChange={(value) => handleChange('state', value)}
-            errorMessage={errors?.state && t(errors.state)}
-            readOnly={isFormBusy}
-          />
-        </Box>
-
-        <Box className="flex flex-col md:flex-row gap-y-4 md:gap-y-0 md:gap-x-4">
-          <TextField
-            label={t('zip_code')}
-            placeHolder={t('zip_code_placeholder')}
-            value={companyDetails?.zip_code || ''}
-            onValueChange={(value) => handleChange('zip_code', value)}
-            errorMessage={errors?.zip_code && t(errors.zip_code)}
-            readOnly={isFormBusy}
-          />
-
-          <TextField
-            label={t('country')}
-            placeHolder={t('select_country')}
-            value={companyDetails?.country_id || ''}
-            onValueChange={(value) => handleChange('country_id', value)}
-            errorMessage={errors?.country_id && t(errors.country_id)}
-            readOnly={isFormBusy}
-          />
-        </Box>
+          {isDragActive ? (
+            <Text className="text-blue-600">{t('drop_images_here')}</Text>
+          ) : (
+            <Box className="flex flex-col items-center justify-center">
+              <Text
+                className="text-sm-plus"
+                style={{
+                  color: colors.$24,
+                }}
+              >
+                {t('drag_drop_or_click_to_upload')}
+              </Text>
+            </Box>
+          )}
+        </StyledBox>
       </Box>
     </Card>
   );

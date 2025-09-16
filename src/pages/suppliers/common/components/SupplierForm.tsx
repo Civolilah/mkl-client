@@ -59,8 +59,8 @@ const SupplierForm = ({
   }
 
   return (
-    <Box className="flex self-start w-full pb-20">
-      <Box className="flex flex-col lg:flex-row w-full gap-y-4 lg:gap-x-4 lg:gap-y-0">
+    <Box className="flex self-start w-full lg:w-3/4 pb-20">
+      <Box className="flex flex-col w-full gap-y-4">
         <Details
           supplier={supplier}
           isLoading={isLoading}
@@ -68,21 +68,19 @@ const SupplierForm = ({
           setSupplier={setSupplier}
         />
 
-        <Box className="flex flex-col w-full gap-y-4">
-          <Address
-            supplier={supplier}
-            isLoading={isLoading}
-            errors={errors}
-            setSupplier={setSupplier}
-          />
+        <Address
+          supplier={supplier}
+          isLoading={isLoading}
+          errors={errors}
+          setSupplier={setSupplier}
+        />
 
-          <Contacts
-            supplier={supplier}
-            isLoading={isLoading}
-            errors={errors}
-            setSupplier={setSupplier}
-          />
-        </Box>
+        <Contacts
+          supplier={supplier}
+          isLoading={isLoading}
+          errors={errors}
+          setSupplier={setSupplier}
+        />
       </Box>
     </Box>
   );

@@ -18,13 +18,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
-import {
-  ActionPopoverIcon,
-  AISearchAction,
-  Box,
-  FooterAction,
-  RefreshDataElement,
-} from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -154,42 +147,6 @@ const Edit = () => {
       actions: {
         list: employee ? actions(employee) : [],
       },
-      footer: isLargeScreen ? (
-        <Box className="flex w-full items-center justify-end">
-          <RefreshDataElement
-            isLoading={isLoading}
-            refresh={refresh}
-            tooltipPlacement="left"
-          />
-        </Box>
-      ) : (
-        <Box className="flex w-full items-center justify-end h-full">
-          <FooterAction
-            text="employees"
-            onClick={() => {
-              navigate(route('/employees'));
-            }}
-            iconName="employees"
-            disabled={isLoading}
-          />
-
-          <FooterAction
-            text="save"
-            onClick={handleSave}
-            iconName="save"
-            disabled={isLoading}
-          />
-
-          <FooterAction
-            text="actions"
-            iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
-            disabled={isLoading}
-            actions={employee ? actions(employee) : []}
-          />
-
-          <AISearchAction disabled={isLoading} />
-        </Box>
-      ),
     },
     [employee, isLoading, handleSave]
   );

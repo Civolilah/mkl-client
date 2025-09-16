@@ -91,14 +91,14 @@ const useSettingsNavItems = () => {
       visible: true,
       iconSize: '1.325rem',
     },
-    {
-      key: 'balance_and_earnings',
-      label: 'balance_and_earnings',
-      iconName: 'cashStack',
-      href: '/settings/balance',
-      visible: hasPermission('owner'),
-      iconSize: '1.175rem',
-    },
+    // {
+    //   key: 'balance_and_earnings',
+    //   label: 'balance_and_earnings',
+    //   iconName: 'cashStack',
+    //   href: '/settings/balance',
+    //   visible: hasPermission('owner'),
+    //   iconSize: '1.175rem',
+    // },
     {
       key: 'account_and_billing',
       label: 'account_and_billing',

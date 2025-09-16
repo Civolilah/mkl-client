@@ -19,17 +19,25 @@ import { useMediaQuery } from 'react-responsive';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import Icon, { IconName } from '@components/general/Icon';
-import { Box, Button, EntityActions, Header, Text } from '@components/index';
+import {
+  Box,
+  Button,
+  EntityActions,
+  FooterAction,
+  Header,
+  Text,
+} from '@components/index';
 
 import { mobileActionsAtom } from '@hooks/global/useMobileActions';
 import {
   useAccentColor,
   useColors,
+  useHasPermission,
   usePreventAction,
   useTranslation,
 } from '@hooks/index';
 
-import { isMobileAiPopoverOpenAtom } from './AISearchAction';
+import AISearchAction, { isMobileAiPopoverOpenAtom } from './AISearchAction';
 import MainNavBar from './MainNavBar';
 
 export interface BreadcrumbItem {
@@ -69,6 +77,7 @@ const Default = ({
   const t = useTranslation();
 
   const navigate = useNavigate();
+  const hasPermission = useHasPermission();
   const preventAction = usePreventAction();
 
   const colors = useColors();
@@ -286,7 +295,7 @@ const Default = ({
                 </Box>
               </Box>
 
-              {footer && (
+              {footer && isLargeScreen && (
                 <Box
                   className="flex w-full items-center border-t shadow-sm lg:px-6 mt-3"
                   style={{
@@ -296,6 +305,35 @@ const Default = ({
                   }}
                 >
                   {footer}
+                </Box>
+              )}
+
+              {!isLargeScreen && (
+                <Box
+                  className="flex w-full items-center border-t shadow-sm lg:px-6 mt-3"
+                  style={{
+                    borderColor: colors.$1,
+                    backgroundColor: colors.$6,
+                    height: isLargeScreen ? '2.85rem' : '3.5rem',
+                  }}
+                >
+                  <Box className="flex w-full items-center justify-end h-full">
+                    <FooterAction
+                      text="dashboard"
+                      onClick={() => {
+                        navigate(route('/dashboard'));
+                      }}
+                      iconName="dashboard"
+                      visible={hasPermission('view_dashboard')}
+                    />
+
+                    <FooterAction
+                      text="notifications"
+                      iconName="notifications"
+                    />
+
+                    <AISearchAction />
+                  </Box>
                 </Box>
               )}
             </Box>

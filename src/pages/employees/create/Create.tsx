@@ -15,12 +15,10 @@ import {
   VALIDATION_ERROR_STATUS_CODE,
 } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
-import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 
 import { User, ValidationErrors } from '@interfaces/index';
 
-import { AISearchAction, Box, FooterAction } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -49,7 +47,6 @@ const Create = () => {
   ];
 
   const toast = useToast();
-  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
 
   const refetch = useRefetch();
   const navigate = useNavigate();
@@ -147,27 +144,6 @@ const Create = () => {
     {
       title: t('new_employee'),
       breadcrumbs: { breadcrumbs },
-      footer: isLargeScreen ? undefined : (
-        <Box className="flex w-full items-center justify-end h-full">
-          <FooterAction
-            text="employees"
-            onClick={() => {
-              navigate(route('/employees'));
-            }}
-            iconName="employees"
-            disabled={isFormBusy}
-          />
-
-          <FooterAction
-            text="save"
-            onClick={handleSave}
-            iconName="save"
-            disabled={isFormBusy}
-          />
-
-          <AISearchAction disabled={isFormBusy} />
-        </Box>
-      ),
     },
     [employee, isFormBusy]
   );

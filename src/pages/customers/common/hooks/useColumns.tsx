@@ -12,32 +12,30 @@ import { route } from '@helpers/index';
 import { TableColumnsType } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-import { Supplier, User } from '@interfaces/index';
+import { Customer, User } from '@interfaces/index';
 
 import { Box, Link, TableActionsDropdown, Text } from '@components/index';
 
 import { useFormatUnixTime, useTranslation } from '@hooks/index';
 
-type Props = {
+interface Props {
   refresh: () => void;
-};
+}
 
-const useColumns = (props: Props) => {
+const useColumns = ({ refresh }: Props) => {
   const t = useTranslation();
-
-  const { refresh } = props;
 
   const navigate = useNavigate();
   const formatUnixTime = useFormatUnixTime();
 
-  const columns: TableColumnsType<Supplier> = [
+  const columns: TableColumnsType<Customer> = [
     {
       title: t('name'),
       dataIndex: 'name',
       render: (value, resource) => (
         <Box className="min-w-56">
           <Link
-            to={route('/suppliers/:id/edit', {
+            to={route('/customers/:id/edit', {
               id: resource.id as string,
             })}
           >
@@ -47,7 +45,7 @@ const useColumns = (props: Props) => {
       ),
       onCell: (record) => ({
         onClick: () =>
-          navigate(route('/suppliers/:id/edit', { id: record.id as string })),
+          navigate(route('/customers/:id/edit', { id: record.id as string })),
       }),
     },
     {
@@ -104,12 +102,12 @@ const useColumns = (props: Props) => {
       render: (_, resource) => (
         <TableActionsDropdown
           resource={resource}
-          editPageLink="/suppliers/:id/edit"
-          resourceType="supplier"
-          deleteEndpoint="/api/suppliers/:id"
+          editPageLink="/customers/:id/edit"
+          resourceType="customer"
+          deleteEndpoint="/api/customers/:id"
           refresh={refresh}
           resourceName={resource.name}
-          resourceQueryIdentifier="suppliers"
+          resourceQueryIdentifier="customers"
         />
       ),
       fixed: 'right',
