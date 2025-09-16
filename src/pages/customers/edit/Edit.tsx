@@ -16,7 +16,7 @@ import { cloneDeep, isEqual } from 'lodash';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Supplier, ValidationErrors } from '@interfaces/index';
+import { Customer, ValidationErrors } from '@interfaces/index';
 
 import {
   ActionPopoverIcon,
@@ -39,8 +39,8 @@ import {
   useTranslation,
 } from '@hooks/index';
 
-import SupplierForm from '../common/components/SupplierForm';
-import { validateSupplier } from '../common/helpers/helpers';
+import CustomerForm from '../common/components/CustomerForm';
+import { validateCustomer } from '../common/helpers/helpers';
 import useActions from '../common/hooks/useActions';
 
 const Edit = () => {
@@ -50,11 +50,11 @@ const Edit = () => {
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('suppliers'),
-      href: '/suppliers',
+      title: t('customers'),
+      href: '/customers',
     },
     {
-      title: t('edit_supplier'),
+      title: t('edit_customer'),
     },
   ];
 
@@ -68,35 +68,35 @@ const Edit = () => {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [supplier, setSupplier] = useState<Supplier | undefined>();
+  const [customer, setCustomer] = useState<Customer | undefined>();
   const [initialResponse, setInitialResponse] = useState<
-    Supplier | undefined
+    Customer | undefined
   >();
 
-  const { refresh } = useFetchEntity<Supplier>({
-    queryIdentifiers: ['/api/suppliers'],
-    endpoint: '/api/suppliers',
-    setEntity: setSupplier,
+  const { refresh } = useFetchEntity<Customer>({
+    queryIdentifiers: ['/api/customers'],
+    endpoint: '/api/customers',
+    setEntity: setCustomer,
     setIsLoading,
     setInitialResponse,
     enableByPermission:
-      hasPermission('create_supplier') ||
-      hasPermission('view_supplier') ||
-      hasPermission('edit_supplier'),
+      hasPermission('create_customer') ||
+      hasPermission('view_customer') ||
+      hasPermission('edit_customer'),
   });
 
   const actions = useActions({ refresh });
 
   const handleSave = async () => {
-    if (!isLoading && id && supplier) {
-      if (isEqual(initialResponse, supplier)) {
-        toast.info('no_supplier_changes');
+    if (!isLoading && id && customer) {
+      if (isEqual(initialResponse, customer)) {
+        toast.info('no_customer_changes');
         return;
       }
 
       setErrors({});
 
-      const validationErrors = await validateSupplier(supplier);
+      const validationErrors = await validateCustomer(customer);
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -107,11 +107,11 @@ const Edit = () => {
 
       setIsLoading(true);
 
-      request('PATCH', endpoint('/api/suppliers/:id', { id }), supplier)
+      request('PATCH', endpoint('/api/customers/:id', { id }), customer)
         .then(() => {
-          toast.success('updated_supplier');
+          toast.success('updated_customer');
 
-          refetch(['suppliers']);
+          refetch(['customers']);
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -125,12 +125,12 @@ const Edit = () => {
 
   usePageLayoutAndActions(
     {
-      title: t('edit_supplier'),
+      title: t('edit_customer'),
       breadcrumbs: {
         breadcrumbs,
       },
       actions: {
-        list: supplier ? actions(supplier) : [],
+        list: customer ? actions(customer) : [],
       },
       footer: isLargeScreen ? (
         <Box className="flex w-full items-center justify-end">
@@ -143,9 +143,9 @@ const Edit = () => {
       ) : (
         <Box className="flex w-full items-center justify-end h-full">
           <FooterAction
-            text="suppliers"
+            text="customers"
             onClick={() => {
-              navigate(route('/suppliers'));
+              navigate(route('/customers'));
             }}
             iconName="truck"
             disabled={isLoading}
@@ -162,49 +162,49 @@ const Edit = () => {
             text="actions"
             iconForPopover={(isOpen) => <ActionPopoverIcon isOpen={isOpen} />}
             disabled={isLoading}
-            actions={supplier ? actions(supplier) : []}
+            actions={customer ? actions(customer) : []}
           />
 
           <AISearchAction disabled={isLoading} />
         </Box>
       ),
     },
-    [supplier, isLoading, handleSave]
+    [customer, isLoading, handleSave]
   );
 
   useEffect(() => {
     if (Object.keys(errors).length) {
       setErrors({});
     }
-  }, [supplier]);
+  }, [customer]);
 
   useEffect(() => {
-    setSupplier(cloneDeep(initialResponse));
+    setCustomer(cloneDeep(initialResponse));
   }, [initialResponse]);
 
   useEffect(() => {
     return () => {
       setErrors({});
-      setSupplier(undefined);
+      setCustomer(undefined);
     };
   }, []);
 
   useDetectChanges({
     initialEntityValue: initialResponse,
-    currentEntityValue: supplier,
+    currentEntityValue: customer,
   });
 
   useSaveAndDiscardActions(
     {
       disabledSaveButton: Boolean(isLoading || Object.keys(errors).length),
       disabledDiscardButton: Boolean(isLoading || Object.keys(errors).length),
-      disabledWithLoadingIcon: Boolean(isLoading && supplier),
+      disabledWithLoadingIcon: Boolean(isLoading && customer),
       onSaveClick: handleSave,
-      onDiscardClick: () => setSupplier(initialResponse),
-      changesLabel: 'unsaved_supplier',
-      hideBox: !canEditEntity('edit_supplier', 'create_supplier', supplier),
+      onDiscardClick: () => setCustomer(initialResponse),
+      changesLabel: 'unsaved_customer',
+      hideBox: !canEditEntity('edit_customer', 'create_customer', customer),
     },
-    [supplier, isLoading, handleSave]
+    [customer, isLoading, handleSave]
   );
 
   useMobileActions(
@@ -212,8 +212,8 @@ const Edit = () => {
       {
         iconName: 'add',
         iconSize: '1.6rem',
-        onClick: () => navigate(route('/suppliers/new')),
-        visible: hasPermission('create_supplier'),
+        onClick: () => navigate(route('/customers/new')),
+        visible: hasPermission('create_customer'),
         disabled: isLoading,
       },
     ],
@@ -221,12 +221,12 @@ const Edit = () => {
   );
 
   return (
-    <SupplierForm
-      supplier={supplier}
-      setSupplier={setSupplier}
+    <CustomerForm
+      customer={customer}
+      setCustomer={setCustomer}
       errors={errors}
       editPage
-      isLoading={isLoading && !supplier}
+      isLoading={isLoading && !customer}
       onRefresh={refresh}
     />
   );

@@ -612,5 +612,17 @@
   "company_name_placeholder": "e.g., Atlas Trading Co., Apex Solutions LLC, Sterling Ventures",
   "logo": "Logo",
   "unsaved_supplier": "Unsaved supplier",
-  "add_custom_fields": "Add custom fields"
+  "add_custom_fields": "Add custom fields",
+  "select_date": "Select date",
+  "billing_address": "Billing Address",
+  "shipping_address": "Shipping Address",
+  "customer_portal_access": "Customer Portal Access",
+  "customer_portal_access_helper": "If enabled, the contact will be able to log in to the customer portal using the email and password above.",
+  "unsaved_customer": "Unsaved customer",
+  "updated_customer": "Successfully updated customer",
+  "no_customer_changes": "No customer changes yet - everything's up to date!",
+  "customer_name_placeholder": "e.g., John Doe, Digital Plus Ltd etc.",
+  "add_to_invoice": "Add To Invoice",
+  "add_to_invoice_helper": "When enabled, this contact will appear on the invoice.",
+  "search_customer_by": "Search customer by name"
 }

@@ -29,6 +29,9 @@ const useTheme = () => {
       },
       Input: { hoverBorderColor: accentColor },
       InputNumber: { hoverBorderColor: accentColor },
+      DatePicker: {
+        hoverBorderColor: accentColor,
+      },
       Select: {
         optionSelectedBg: colors.$27,
         optionSelectedColor: colors.$28,

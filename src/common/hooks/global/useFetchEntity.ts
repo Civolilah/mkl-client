@@ -23,7 +23,7 @@ type Params<T> = {
   endpoint: string;
   setEntity?: Dispatch<SetStateAction<T | undefined>>;
   setEntities?: Dispatch<SetStateAction<T[]>>;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  setIsLoading?: Dispatch<SetStateAction<boolean>>;
   setInitialResponse?: Dispatch<SetStateAction<T | undefined>>;
   listQuery?: boolean;
   formatRecords?: (data: T[]) => T[];
@@ -75,7 +75,7 @@ const useFetchEntity = <T>({
   );
 
   const handleRefresh = async () => {
-    setIsLoading(true);
+    setIsLoading?.(true);
 
     const response = await refetch();
 
@@ -96,7 +96,7 @@ const useFetchEntity = <T>({
         : cloneDeep(response.data)
     );
 
-    setIsLoading(false);
+    setIsLoading?.(false);
   };
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const useFetchEntity = <T>({
       return;
     }
 
-    setIsLoading(isLoading);
+    setIsLoading?.(isLoading);
 
     if (entityResponse) {
       setEntity?.(

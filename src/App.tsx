@@ -27,10 +27,13 @@ import pt from 'i18n-iso-countries/langs/pt.json';
 import sr from 'i18n-iso-countries/langs/sr.json';
 import tr from 'i18n-iso-countries/langs/tr.json';
 import zh from 'i18n-iso-countries/langs/zh.json';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useTranslation as useTranslationBase } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+
+import { CustomFieldsType } from '@pages/settings/pages/custom-fields/CustomFields';
+import { ProfileType } from '@pages/settings/pages/profile/Profile';
 
 import { userCompanyAtom } from '@components/general/PrivateRoute';
 import { Box, Button, LayoutWrapper, Modal, Text } from '@components/index';
@@ -40,7 +43,13 @@ import {
 } from '@components/layout/LanguageSwitcher';
 
 import { pageLayoutAndActionsAtom } from '@hooks/global/usePageLayoutAndActions';
-import { useSwitchLanguage, useTheme, useTranslation } from '@hooks/index';
+import {
+  useFetchEntity,
+  useHasPermission,
+  useSwitchLanguage,
+  useTheme,
+  useTranslation,
+} from '@hooks/index';
 
 import { routes } from './routes';
 
@@ -59,6 +68,9 @@ countries.registerLocale(sr);
 
 dayjs.extend(utc);
 
+export const profileSettingsAtom = atom<ProfileType | undefined>(undefined);
+export const customFieldsAtom = atom<CustomFieldsType | undefined>(undefined);
+
 const App = () => {
   const t = useTranslation();
 
@@ -67,12 +79,31 @@ const App = () => {
   const { i18n } = useTranslationBase();
 
   const navigate = useNavigate();
+  const hasPermission = useHasPermission();
   const switchLanguage = useSwitchLanguage();
 
   const currentUserCompanyDetails = useAtomValue(userCompanyAtom);
   const setPageLayoutAndActions = useSetAtom(pageLayoutAndActionsAtom);
 
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState<boolean>(false);
+
+  const setProfile = useSetAtom(profileSettingsAtom);
+  const setCustomFields = useSetAtom(customFieldsAtom);
+
+  useFetchEntity<ProfileType>({
+    queryIdentifiers: ['/api/users/profile'],
+    endpoint: '/api/users/profile',
+    setEntity: setProfile,
+    withoutQueryId: true,
+  });
+
+  useFetchEntity<CustomFieldsType>({
+    queryIdentifiers: ['/api/companies/custom_fields'],
+    endpoint: '/api/companies/custom_fields',
+    setEntity: setCustomFields,
+    withoutQueryId: true,
+    enableByPermission: hasPermission('admin'),
+  });
 
   const handleDisplayWelcomeModal = () => {
     if (currentUserCompanyDetails?.created_at) {

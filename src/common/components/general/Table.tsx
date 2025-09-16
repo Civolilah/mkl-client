@@ -50,7 +50,8 @@ export type CreationRoute =
   | '/products/new'
   | '/warehouses/new'
   | '/tax_rates/new'
-  | '/bins/new';
+  | '/bins/new'
+  | '/customers/new';
 
 export type EntityColumnType<EntityType> = {
   title: string;

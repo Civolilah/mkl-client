@@ -12,11 +12,12 @@ import { useMemo } from 'react';
 
 import { CustomFieldsType } from '@pages/settings/pages/custom-fields/CustomFields';
 
+import DateField from './DateField';
 import SelectStaticField from './SelectStaticField';
 import TextField from './TextField';
 import Toggle from './Toggle';
 
-type Entity = 'supplier';
+type Entity = 'supplier' | 'customer';
 
 type Field =
   | 'custom_field1'
@@ -87,6 +88,7 @@ const CustomField = ({
         value={value ? [value.toString()] : []}
         label={customField?.label}
         onChange={(value) => onValueChange(value as string)}
+        onClear={() => onValueChange('')}
         options={customField?.value.split(',').map((option) => ({
           label: option,
           value: option,
@@ -95,7 +97,17 @@ const CustomField = ({
     );
   }
 
-  return <div>CustomField</div>;
+  if (customField?.type === 'date') {
+    return (
+      <DateField
+        value={value?.toString() || ''}
+        label={customField?.label}
+        onValueChange={onValueChange}
+      />
+    );
+  }
+
+  return null;
 };
 
 export default CustomField;

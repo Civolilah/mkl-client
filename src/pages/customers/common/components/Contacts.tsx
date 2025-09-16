@@ -8,7 +8,7 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { BLANK_SUPPLIER_CONTACT } from '@constants/index';
+import { BLANK_CUSTOMER_CONTACT } from '@constants/index';
 import classNames from 'classnames';
 import { get } from 'lodash';
 import { useMediaQuery } from 'react-responsive';
@@ -30,38 +30,38 @@ import {
   useTranslation,
 } from '@hooks/index';
 
+import { CustomerProps } from './CustomerForm';
 import useHandleChange from '../hooks/useHandleChange';
-import { SupplierProps } from '../hooks/useTabs';
 
 const Contacts = ({
-  supplier,
+  customer,
   isLoading,
   errors,
-  setSupplier,
+  setCustomer,
   editPage,
-}: SupplierProps) => {
+}: CustomerProps) => {
   const t = useTranslation();
 
   const colors = useColors();
 
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
-  const handleChange = useHandleChange({ setSupplier });
+  const handleChange = useHandleChange({ setCustomer });
 
   const isEnabledInvoicing = useEnableInvoicingFeature();
 
   const handleAddContact = () => {
-    setSupplier(
+    setCustomer(
       (prev) =>
         prev && {
           ...prev,
-          contacts: [...(supplier?.contacts || []), BLANK_SUPPLIER_CONTACT],
+          contacts: [...(customer?.contacts || []), BLANK_CUSTOMER_CONTACT],
         }
     );
 
     setTimeout(() => {
       const contactElements = document.querySelectorAll(
-        '[id^="supplier_contact_phone_"]'
+        '[id^="customer_contact_phone_"]'
       );
 
       const lastContactElement = contactElements[contactElements.length - 1];
@@ -73,7 +73,7 @@ const Contacts = ({
   };
 
   const handleRemoveContact = (index: number) => {
-    setSupplier(
+    setCustomer(
       (prev) =>
         prev && {
           ...prev,
@@ -112,13 +112,13 @@ const Contacts = ({
       heightAuto
     >
       <Box className="flex flex-col gap-6">
-        {supplier?.contacts.map((contact, index) => (
+        {customer?.contacts.map((contact, index) => (
           <Box
             key={index}
             className={classNames('flex flex-col gap-y-4 pb-4', {
               'border-b border-dashed':
-                supplier?.contacts.length > 1 &&
-                index !== supplier?.contacts.length - 1,
+                customer?.contacts.length > 1 &&
+                index !== customer?.contacts.length - 1,
             })}
             style={{ borderColor: colors.$1 }}
           >
@@ -171,7 +171,7 @@ const Contacts = ({
               />
 
               <TextField
-                id={`supplier_contact_phone_${index}`}
+                id={`customer_contact_phone_${index}`}
                 type="tel"
                 label={t('phone')}
                 placeHolder={t('phone_placeholder')}
@@ -191,7 +191,7 @@ const Contacts = ({
               <>
                 <TextField
                   required={
-                    contact.supplier_portal_access && !contact.has_password
+                    contact.customer_portal_access && !contact.has_password
                   }
                   type="password"
                   label={
@@ -204,9 +204,9 @@ const Contacts = ({
                   onValueChange={(value) => {
                     handleChange(`contacts.${index}.password`, value);
 
-                    if (value && !contact.supplier_portal_access) {
+                    if (value && !contact.customer_portal_access) {
                       handleChange(
-                        `contacts.${index}.supplier_portal_access`,
+                        `contacts.${index}.customer_portal_access`,
                         true
                       );
                     }
@@ -219,26 +219,39 @@ const Contacts = ({
                 />
 
                 <Toggle
-                  label={t('send_email')}
-                  checked={Boolean(contact.send_email)}
+                  label={t('add_to_invoice')}
+                  checked={Boolean(contact.add_to_invoice)}
                   onChange={(value) =>
-                    handleChange(`contacts.${index}.send_email`, value)
+                    handleChange(`contacts.${index}.add_to_invoice`, value)
+                  }
+                  afterLabel={
+                    <Box className="pl-1.5">
+                      <InformationLabel
+                        text={t('add_to_invoice_helper')}
+                        onlyTooltip
+                        tooltipOverlayInnerStyle={{
+                          width: isSmallScreen ? undefined : '22rem',
+                          textAlign: 'center',
+                        }}
+                        iconSize="1.35rem"
+                      />
+                    </Box>
                   }
                 />
 
                 <Toggle
-                  label={t('supplier_portal_access')}
-                  checked={Boolean(contact.supplier_portal_access)}
+                  label={t('customer_portal_access')}
+                  checked={Boolean(contact.customer_portal_access)}
                   onChange={(value) =>
                     handleChange(
-                      `contacts.${index}.supplier_portal_access`,
+                      `contacts.${index}.customer_portal_access`,
                       value
                     )
                   }
                   afterLabel={
                     <Box className="pl-1.5">
                       <InformationLabel
-                        text={t('supplier_portal_access_helper')}
+                        text={t('customer_portal_access_helper')}
                         onlyTooltip
                         tooltipOverlayInnerStyle={{
                           width: isSmallScreen ? undefined : '24rem',
@@ -268,7 +281,7 @@ const Contacts = ({
           </Box>
         ))}
 
-        {supplier?.contacts.length === 0 && (
+        {customer?.contacts.length === 0 && (
           <Text className="self-center pt-4 font-medium">
             {t('no_contacts_added')}
           </Text>

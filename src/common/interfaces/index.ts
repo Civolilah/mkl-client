@@ -37,4 +37,6 @@ export type { Warehouse } from '@interfaces/warehouse/warehouse';
 
 export type { TaxRate } from '@interfaces/tax-rate/tax-rate';
 
+export type { Customer, CustomerContact } from '@interfaces/customer/customer';
+
 export type { Bin } from '@interfaces/bin/bin';

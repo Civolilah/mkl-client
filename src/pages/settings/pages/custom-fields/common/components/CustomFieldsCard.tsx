@@ -31,6 +31,7 @@ import { CustomFieldsType } from '../../CustomFields';
 import { useHandleChange } from '../hooks/useHandleChange';
 
 export interface CustomFieldsCardsProps {
+  id?: string;
   customFields: CustomFieldsType | undefined;
   errors: ValidationErrors;
   isLoading: boolean;
@@ -43,6 +44,7 @@ export interface CustomFieldsCardsProps {
 }
 
 const CustomFieldsCard = ({
+  id,
   customFields,
   errors,
   isLoading,
@@ -61,6 +63,7 @@ const CustomFieldsCard = ({
 
   return (
     <Card
+      id={id}
       className="w-full"
       childrenParentClassName="pb-6"
       titleElement={

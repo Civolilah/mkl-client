@@ -90,3 +90,7 @@ td::before {
     text-align: center;
   }
 }
+
+.ant-picker-input > input {
+  font-size: 0.9125rem !important;
+}

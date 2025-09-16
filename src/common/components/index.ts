@@ -98,3 +98,4 @@ export { default as CompanySizesSelector } from '@components/selectors/CompanySi
 export { default as CompanyIndustrySelector } from '@components/selectors/CompanyIndustrySelector';
 export { default as CompanyClassificationsSelector } from '@components/selectors/CompanyClassificationsSelector';
 export { default as CustomField } from '@components/input-fields/CustomField';
+export { default as DateField } from '@components/input-fields/DateField';

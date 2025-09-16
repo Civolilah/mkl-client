@@ -25,27 +25,27 @@ import {
 
 import { useTranslation } from '@hooks/index';
 
+import { CustomerProps } from './CustomerForm';
 import useHandleChange from '../hooks/useHandleChange';
-import { SupplierProps } from '../hooks/useTabs';
 
 const Details = ({
-  supplier,
+  customer,
   isLoading,
   errors,
-  setSupplier,
-}: SupplierProps) => {
+  setCustomer,
+}: CustomerProps) => {
   const t = useTranslation();
 
-  const customFields = useAtomValue(customFieldsAtom);
+  const handleChange = useHandleChange({ setCustomer });
 
-  const handleChange = useHandleChange({ setSupplier });
+  const customFields = useAtomValue(customFieldsAtom);
 
   return (
     <Card
       titleElement={
         <Box className="flex items-center gap-x-2">
           <Box>
-            <Icon name="truck" size="1.15rem" />
+            <Icon name="people" size="1.35rem" />
           </Box>
 
           <Text>{t('details')}</Text>
@@ -60,8 +60,8 @@ const Details = ({
         <TextField
           required
           label={t('name')}
-          placeHolder={t('supplier_name_placeholder')}
-          value={supplier?.name || ''}
+          placeHolder={t('customer_name_placeholder')}
+          value={customer?.name || ''}
           onValueChange={(value) => handleChange('name', value)}
           errorMessage={errors?.name && t(errors.name)}
         />
@@ -69,7 +69,7 @@ const Details = ({
           <TextField
             label={t('number')}
             placeHolder={t('number_placeholder')}
-            value={supplier?.number || ''}
+            value={customer?.number || ''}
             onValueChange={(value) => handleChange('number', value)}
             errorMessage={errors?.number && t(errors.number)}
           />
@@ -77,7 +77,7 @@ const Details = ({
           <TextField
             label={t('id_number')}
             placeHolder={t('id_number_placeholder')}
-            value={supplier?.id_number || ''}
+            value={customer?.id_number || ''}
             onValueChange={(value) => handleChange('id_number', value)}
             errorMessage={errors?.id_number && t(errors.id_number)}
           />
@@ -87,7 +87,7 @@ const Details = ({
           <TextField
             label={t('vat_number')}
             placeHolder={t('vat_number_placeholder')}
-            value={supplier?.vat_number || ''}
+            value={customer?.vat_number || ''}
             onValueChange={(value) => handleChange('vat_number', value)}
             errorMessage={errors?.vat_number && t(errors.vat_number)}
           />
@@ -95,7 +95,7 @@ const Details = ({
           <TextField
             label={t('routing_id')}
             placeHolder={t('routing_id_placeholder')}
-            value={supplier?.routing_id || ''}
+            value={customer?.routing_id || ''}
             onValueChange={(value) => handleChange('routing_id', value)}
             errorMessage={errors?.routing_id && t(errors.routing_id)}
           />
@@ -105,7 +105,7 @@ const Details = ({
           <TextField
             label={t('website')}
             placeHolder={t('website_placeholder')}
-            value={supplier?.website || ''}
+            value={customer?.website || ''}
             onValueChange={(value) => handleChange('website', value)}
             errorMessage={errors?.website && t(errors.website)}
           />
@@ -113,7 +113,7 @@ const Details = ({
           <TextField
             label={t('phone')}
             placeHolder={t('phone_placeholder')}
-            value={supplier?.phone || ''}
+            value={customer?.phone || ''}
             onValueChange={(value) => handleChange('phone', value)}
             errorMessage={errors?.phone && t(errors.phone)}
           />
@@ -123,7 +123,7 @@ const Details = ({
           <CurrenciesSelector
             label={t('currency')}
             placeholder={t('select_currency')}
-            value={supplier?.currency_id || ''}
+            value={customer?.currency_id || ''}
             onChange={(value) => handleChange('currency_id', value)}
             onClear={() => handleChange('currency_id', '')}
             errorMessage={errors?.currency_id && t(errors.currency_id)}
@@ -132,7 +132,7 @@ const Details = ({
           <LanguagesSelector
             label={t('language')}
             placeholder={t('select_language')}
-            value={supplier?.language || ''}
+            value={customer?.language || ''}
             onChange={(value) => handleChange('language', value)}
             onClear={() => handleChange('language', '')}
             errorMessage={errors?.language && t(errors.language)}
@@ -140,36 +140,36 @@ const Details = ({
         </Box>
 
         <>
-          {customFields?.supplier_custom_fields.some(({ label }) => label) ? (
+          {customFields?.customer_custom_fields.some(({ label }) => label) ? (
             <Box className="flex flex-col gap-y-4">
               <CustomField
-                entity="supplier"
+                entity="customer"
                 field="custom_field1"
-                value={supplier?.custom_field1 || ''}
+                value={customer?.custom_field1 || ''}
                 onValueChange={(value) => handleChange('custom_field1', value)}
                 customFields={customFields}
               />
 
               <CustomField
-                entity="supplier"
+                entity="customer"
                 field="custom_field2"
-                value={supplier?.custom_field2 || ''}
+                value={customer?.custom_field2 || ''}
                 onValueChange={(value) => handleChange('custom_field2', value)}
                 customFields={customFields}
               />
 
               <CustomField
-                entity="supplier"
+                entity="customer"
                 field="custom_field3"
-                value={supplier?.custom_field3 || ''}
+                value={customer?.custom_field3 || ''}
                 onValueChange={(value) => handleChange('custom_field3', value)}
                 customFields={customFields}
               />
 
               <CustomField
-                entity="supplier"
+                entity="customer"
                 field="custom_field4"
-                value={supplier?.custom_field4 || ''}
+                value={customer?.custom_field4 || ''}
                 onValueChange={(value) => handleChange('custom_field4', value)}
                 customFields={customFields}
               />
@@ -178,7 +178,7 @@ const Details = ({
             <Box className="flex space-x-6">
               <Text>{t('custom_fields')}</Text>
 
-              <Link to="/settings/custom_fields?entity=supplier">
+              <Link to="/settings/custom_fields?entity=customer">
                 {t('add_custom_fields')}
               </Link>
             </Box>

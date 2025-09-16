@@ -8,13 +8,13 @@
  * @license https://www.elastic.co/licensing/elastic-license
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
 import { request, route, useToast } from '@helpers/index';
 import { isEqual } from 'lodash';
 import { useMediaQuery } from 'react-responsive';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
@@ -57,6 +57,8 @@ interface CustomFieldsCard {
 
 const CustomFields = () => {
   const t = useTranslation();
+
+  const [searchParams] = useSearchParams();
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -214,11 +216,31 @@ const CustomFields = () => {
     []
   );
 
+  useEffect(() => {
+    const entity = searchParams.get('entity');
+
+    if (entity && entity !== 'order') {
+      const customFieldCard = document.getElementById(
+        `custom-fields-card-${entity}`
+      );
+
+      if (customFieldCard) {
+        setTimeout(() => {
+          customFieldCard.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }, 200);
+      }
+    }
+  }, []);
+
   return (
     <Box className="flex flex-col gap-y-4 w-full pb-20">
       {customFieldsCards.map((card) => (
         <CustomFieldsCard
           key={card.entity}
+          id={`custom-fields-card-${card.entity}`}
           customFields={customFields}
           errors={errors}
           isLoading={isLoading}

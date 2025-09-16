@@ -46,3 +46,5 @@ export { INITIAL_WAREHOUSE } from './warehouse/warehouse';
 export { INITIAL_TAX_RATE } from './tax-rate/tax-rate';
 
 export { INITIAL_BIN } from './bin/bin';
+
+export { INITIAL_CUSTOMER, BLANK_CUSTOMER_CONTACT } from './customer/customer';
