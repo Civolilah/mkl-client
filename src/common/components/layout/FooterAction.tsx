@@ -53,6 +53,7 @@ const ICON_SIZE: Record<string, string> = {
   warehouse: '1.1rem',
   truck: '1.1rem',
   notifications: '1.35rem',
+  clipboardList: '1.05rem',
 };
 
 const FooterAction = ({

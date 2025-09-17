@@ -14,7 +14,6 @@ import { Popover } from 'antd';
 import classNames from 'classnames';
 import { atom, useAtom } from 'jotai';
 import { useMediaQuery } from 'react-responsive';
-import { useLocation } from 'react-router-dom';
 
 import { IconName } from '@components/general/Icon';
 import { Box, Icon } from '@components/index';
@@ -67,9 +66,8 @@ const SearchItem = ({
 
 export const isMobileAiPopoverOpenAtom = atom<boolean>(false);
 
-const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
+const ScanAction = ({ disabled, withoutFooterAction }: Props) => {
   const colors = useColors();
-  const location = useLocation();
   const accentColor = useAccentColor();
 
   const preventAction = usePreventAction();
@@ -84,15 +82,15 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
     setIsOpen(open);
   };
 
-  const handleVoiceSearch = () => {
-    // Voice research logic
-    console.log('Voice research');
+  const handleQRScan = () => {
+    // QR code scan logic
+    console.log('QR Code scan');
     setIsOpen(false);
   };
 
-  const handleImageSearch = () => {
-    // Image research logic
-    console.log('Image research');
+  const handleBarcodeScan = () => {
+    // Barcode scan logic
+    console.log('Barcode scan');
     setIsOpen(false);
   };
 
@@ -105,9 +103,9 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
       ref={popoverRef}
       content={
         <Box className="flex flex-col gap-y-3 p-2">
-          <SearchItem icon="microphoneLine" onClick={handleVoiceSearch} />
+          <SearchItem icon="qrCode" onClick={handleQRScan} />
 
-          <SearchItem icon="imageLine" onClick={handleImageSearch} />
+          <SearchItem icon="barcode" onClick={handleBarcodeScan} />
         </Box>
       }
       trigger="click"
@@ -128,55 +126,27 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
       }}
       getTooltipContainer={() => document.body}
     >
-      {isLargeScreen ? (
-        <div
-          className={classNames(
-            'flex fixed rounded-full p-5 py-[1.2rem] cursor-pointer',
-            {
-              'bottom-[2rem] right-[2rem]':
-                location.pathname.includes('/new') ||
-                location.pathname.includes('/settings'),
-              'bottom-[4.25rem] right-[2rem]':
-                !location.pathname.includes('/new') &&
-                !location.pathname.includes('/settings'),
-            }
-          )}
+      <div className="flex flex-1 h-full items-center">
+        <FooterAction
+          text="scan"
+          icon={
+            <Box>
+              <Icon
+                name="barcode"
+                size="1.15rem"
+                style={{ color: accentColor }}
+              />
+            </Box>
+          }
           style={{
-            backgroundColor: isOpen ? 'white' : accentColor,
-            border: `1px solid ${colors.$1}`,
+            backgroundColor: isOpen ? colors.$17 : 'transparent',
           }}
-        >
-          <Box>
-            <Icon
-              name="robotLine"
-              size="1.7rem"
-              style={{ color: isOpen ? accentColor : 'white' }}
-            />
-          </Box>
-        </div>
-      ) : (
-        <div className="flex flex-1 h-full items-center">
-          <FooterAction
-            text="ai_search"
-            icon={
-              <Box>
-                <Icon
-                  name="robotLine"
-                  size="1.2rem"
-                  style={{ color: accentColor }}
-                />
-              </Box>
-            }
-            style={{
-              backgroundColor: isOpen ? colors.$17 : 'transparent',
-            }}
-            disabled={disabled}
-            withoutActiveEffect
-          />
-        </div>
-      )}
+          disabled={disabled}
+          withoutActiveEffect
+        />
+      </div>
     </Popover>
   );
 };
 
-export default AISearchAction;
+export default ScanAction;

@@ -499,7 +499,7 @@ const InventoryCard = ({
                                           handleCombinationChange(
                                             index,
                                             'quantity',
-                                            value
+                                            parseFloat(String(value || '0'))
                                           )
                                         }
                                         min={0}
@@ -520,7 +520,7 @@ const InventoryCard = ({
                                         handleCombinationChange(
                                           index,
                                           'price',
-                                          value
+                                          parseFloat(String(value || '0'))
                                         )
                                       }
                                       addonAfter={currencySymbol}

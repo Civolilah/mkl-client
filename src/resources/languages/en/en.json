@@ -119,7 +119,7 @@
     "first_name_max_length": "First name must be at most 200 characters long.",
     "last_name_max_length": "Last name must be at most 200 characters long.",
     "phone_max_length": "Phone must be at most 50 characters long.",
-    "search_employee_by": "Search by name, email, subsidiary or warehouse",
+    "search_employee_by": "Search by name or email",
     "employee_email_already_exists": "This email address is already registered in our system.",
     "created_employee": "Successfully created employee.",
     "updated_employee": "Successfully updated employee.",
@@ -624,5 +624,15 @@
   "customer_name_placeholder": "e.g., John Doe, Digital Plus Ltd etc.",
   "add_to_invoice": "Add To Invoice",
   "add_to_invoice_helper": "When enabled, this contact will appear on the invoice.",
-  "search_customer_by": "Search customer by name"
+  "search_customer_by": "Search customer by name",
+  "scan": "Scan",
+  "uniform_tax_rates": "Uniform Tax Rates",
+  "uniform_tax_rates_helper": "When enabled, all invoices created from orders will use the same tax rates for every customer",
+  "tax_rate_1": "Tax Rate 1",
+  "tax_rate_2": "Tax Rate 2",
+  "tax_rate_3": "Tax Rate 3",
+  "select_customers": "Select Customers",
+  "no_customers_selected": "No customers selected.",
+  "select_tax_rate": "Select Tax Rate",
+  "updated_tax_rates_settings": "Successfully updated tax rates settings."
 }

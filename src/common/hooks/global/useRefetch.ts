@@ -29,7 +29,8 @@ export type RefetchEntity =
   | 'tax_rates'
   | 'bins'
   | 'company_details'
-  | 'customers';
+  | 'customers'
+  | 'tax_rates_settings';
 
 type Endpoint =
   | '/api/brands'
@@ -47,7 +48,8 @@ type Endpoint =
   | '/api/users/notifications'
   | '/api/companies/custom_fields'
   | '/api/companies/product_settings'
-  | '/api/companies/tax_rates'
+  | '/api/tax_rates'
+  | '/api/companies/tax_rates_settings'
   | '/api/bins'
   | '/api/companies/details'
   | '/api/customers';
@@ -119,7 +121,7 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
     dependencies: [],
   },
   tax_rates: {
-    mainEndpoint: '/api/companies/tax_rates',
+    mainEndpoint: '/api/tax_rates',
     dependencies: [],
   },
   bins: {
@@ -132,6 +134,10 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   },
   customers: {
     mainEndpoint: '/api/customers',
+    dependencies: [],
+  },
+  tax_rates_settings: {
+    mainEndpoint: '/api/companies/tax_rates_settings',
     dependencies: [],
   },
 };

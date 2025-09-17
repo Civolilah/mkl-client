@@ -36,11 +36,29 @@ import ProductDefaultTaxesCard from './common/components/ProductDefaultTaxesCard
 import PurchaseOrderDefaultTaxesCard from './common/components/PurchaseOrderDefaultTaxesCard';
 import TaxRatesCard from './common/components/TaxRatesCard';
 
+export interface TaxesByCustomer {
+  customer_id: string;
+  tax1_id: string;
+  tax2_id: string;
+  tax3_id: string;
+}
+
 export interface TaxRatesType {
-  number_of_order_taxes: number;
-  number_of_product_taxes: number;
-  number_of_purchase_order_taxes: number;
+  number_of_order_taxes: string;
+  number_of_product_taxes: string;
+  number_of_purchase_order_taxes: string;
   inclusive_tax: boolean;
+  uniform_customer_taxes: boolean;
+  default_invoice_tax1_id: string;
+  default_invoice_tax2_id: string;
+  default_invoice_tax3_id: string;
+  default_product_tax1_id: string;
+  default_product_tax2_id: string;
+  default_product_tax3_id: string;
+  default_purchase_order_tax1_id: string;
+  default_purchase_order_tax2_id: string;
+  default_purchase_order_tax3_id: string;
+  taxes_by_customer: TaxesByCustomer[];
 }
 
 const TaxRates = () => {
@@ -74,13 +92,13 @@ const TaxRates = () => {
   >(undefined);
 
   useFetchEntity<TaxRatesType>({
-    queryIdentifiers: ['/api/companies/tax_rates'],
+    queryIdentifiers: ['/api/companies/tax_rates_settings'],
     endpoint: '/api/companies/tax_rates',
     setEntity: setTaxRates,
     setIsLoading,
     setInitialResponse: setInitialTaxRates,
     withoutQueryId: true,
-    enableByPermission: false,
+    enableByPermission: hasPermission('admin'),
   });
 
   useDetectChanges({
@@ -107,9 +125,9 @@ const TaxRates = () => {
 
       request('PATCH', '/api/companies/tax_rates', taxRates)
         .then(() => {
-          toast.success('updated_tax_rates');
+          toast.success('updated_tax_rates_settings');
 
-          refetch(['tax_rates']);
+          refetch(['tax_rates', 'tax_rates_settings']);
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {

@@ -41,12 +41,6 @@ const LayoutWrapper = ({ children }: Props) => {
       saveButtonLabel={pageLayoutAndActions.buttonAction?.label}
       saveButtonIcon={pageLayoutAndActions.buttonAction?.iconName}
       saveButtonIconColor={pageLayoutAndActions.buttonAction?.iconColor}
-      displayPermissionTooltip={
-        pageLayoutAndActions.buttonAction?.displayPermissionTooltip
-      }
-      tooltipPermissionMessage={
-        pageLayoutAndActions.buttonAction?.tooltipPermissionMessage
-      }
     >
       {children}
 

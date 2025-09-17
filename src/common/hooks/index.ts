@@ -46,3 +46,4 @@ export { default as useDetectChanges } from '@hooks/global/useDetectChanges';
 export { default as usePreventAction } from '@hooks/global/usePreventAction';
 export { default as useInitialSupplier } from '@hooks/suppliers/useInitialSupplier';
 export { default as useInitialCustomer } from '@hooks/customers/useInitialCustomer';
+export { default as useFindCustomer } from '@hooks/customers/useFindCustomer';

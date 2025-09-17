@@ -30,6 +30,8 @@ export interface CustomerProps {
   isLoading?: boolean;
   onRefresh?: () => void;
   onlyFields?: boolean;
+  onMainFieldsEnterPress?: () => void;
+  nameFieldDebounce?: number;
 }
 
 const CustomerForm = ({
@@ -38,6 +40,8 @@ const CustomerForm = ({
   errors,
   isLoading,
   onlyFields,
+  onMainFieldsEnterPress,
+  nameFieldDebounce,
 }: CustomerProps) => {
   const t = useTranslation();
 
@@ -52,8 +56,9 @@ const CustomerForm = ({
           placeHolder={t('customer_name_placeholder')}
           value={customer?.name || ''}
           onValueChange={(value) => handleChange('name', value)}
-          changeOnBlur
           errorMessage={errors?.name && t(errors.name)}
+          onPressEnter={onMainFieldsEnterPress}
+          debounce={nameFieldDebounce}
         />
       </>
     );

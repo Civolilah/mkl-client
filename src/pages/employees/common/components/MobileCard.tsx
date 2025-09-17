@@ -32,7 +32,7 @@ const MobileCard = ({ entity, refresh }: Props) => {
 
   return (
     <Box
-      className="flex flex-col gap-y-3 p-3 border shadow-sm w-full"
+      className="flex flex-col gap-y-3 p-3 border shadow-sm w-full rounded-md"
       style={{ borderColor: colors.$1, backgroundColor: colors.$2 }}
     >
       <Box className="flex justify-between items-center gap-x-4">

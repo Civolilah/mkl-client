@@ -152,7 +152,7 @@ const Show = () => {
   );
 
   return (
-    <Box className="flex w-full self-start md:w-full xl:w-3/4">
+    <Box className="flex w-full self-start md:w-full xl:w-3/4 pb-20">
       <Card title={t('view_employee')} className="w-full">
         <LabelElement label={t('first_name')} withoutOptionalText>
           <Text className="font-medium">{employee?.first_name}</Text>

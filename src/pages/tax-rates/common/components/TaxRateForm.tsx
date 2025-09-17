@@ -33,6 +33,7 @@ interface Props {
   onRefresh?: () => void;
   onlyFields?: boolean;
   onMainFieldsEnterPress?: () => void;
+  nameFieldDebounce?: number;
 }
 
 const TaxRateForm = ({
@@ -42,6 +43,7 @@ const TaxRateForm = ({
   isLoading,
   onlyFields,
   onMainFieldsEnterPress,
+  nameFieldDebounce,
 }: Props) => {
   const t = useTranslation();
 
@@ -58,6 +60,7 @@ const TaxRateForm = ({
           onValueChange={(value) => handleChange('name', value)}
           onPressEnter={onMainFieldsEnterPress}
           errorMessage={errors?.name && t(errors.name)}
+          debounce={nameFieldDebounce}
         />
 
         <NumberField

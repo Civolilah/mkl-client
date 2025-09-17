@@ -25,6 +25,7 @@ import {
   EntityActions,
   FooterAction,
   Header,
+  ScanAction,
   Text,
 } from '@components/index';
 
@@ -160,17 +161,19 @@ const Default = ({
                 id="scrollable-content-box"
                 className="flex flex-col w-full overflow-y-auto flex-1"
               >
-                {Boolean(breadcrumbs.length || actions.length || onSaveClick) &&
-                  isLargeScreen && (
-                    <Box
-                      className={classNames(
-                        'flex items-center justify-end sm:justify-between w-full px-6 space-x-2',
-                        {
-                          'pt-5': !actions.length,
-                          'pt-3': actions.length,
-                        }
-                      )}
-                    >
+                {Boolean(
+                  breadcrumbs.length || actions.length || onSaveClick
+                ) && (
+                  <Box
+                    className={classNames(
+                      'flex items-center justify-end sm:justify-between w-full px-2 lg:px-6 space-x-2',
+                      {
+                        'pt-4 lg:pt-5': !actions.length,
+                        'pt-4 lg:pt-3': actions.length,
+                      }
+                    )}
+                  >
+                    {isLargeScreen && (
                       <Box className="flex-1 hidden sm:flex">
                         {Boolean(breadcrumbs.length) && (
                           <Box className="flex justify-start w-full">
@@ -251,37 +254,39 @@ const Default = ({
                           </Box>
                         )}
                       </Box>
+                    )}
 
-                      {onSaveClick && (
-                        <Box className="flex items-center">
-                          <Button
-                            type="primary"
-                            icon={
-                              <Box>
-                                <Icon
-                                  name={saveButtonIcon || 'save'}
-                                  size="1.2rem"
-                                  style={{ color: saveButtonIconColor }}
-                                />
-                              </Box>
-                            }
-                            onClick={onSaveClick}
-                          >
-                            {t(saveButtonLabel || 'save')}
-                          </Button>
-                        </Box>
-                      )}
+                    {onSaveClick && (
+                      <Box className="flex items-center">
+                        <Button
+                          type="primary"
+                          size={isLargeScreen ? 'large' : 'middle'}
+                          icon={
+                            <Box>
+                              <Icon
+                                name={saveButtonIcon || 'save'}
+                                size="1.2rem"
+                                style={{ color: saveButtonIconColor }}
+                              />
+                            </Box>
+                          }
+                          onClick={onSaveClick}
+                        >
+                          {t(saveButtonLabel || 'save')}
+                        </Button>
+                      </Box>
+                    )}
 
-                      {Boolean(actions.length) && (
-                        <Box className="flex items-center">
-                          <EntityActions
-                            actions={actions}
-                            disabled={disabledSaveButton}
-                          />
-                        </Box>
-                      )}
-                    </Box>
-                  )}
+                    {Boolean(actions.length) && (
+                      <Box className="flex items-center">
+                        <EntityActions
+                          actions={actions}
+                          disabled={disabledSaveButton}
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                )}
 
                 <Box
                   className="flex items-center justify-center w-full pt-4 px-2 lg:px-6 lg:pt-6"
@@ -328,9 +333,24 @@ const Default = ({
                     />
 
                     <FooterAction
+                      text="orders"
+                      onClick={() => {
+                        navigate(route('/orders'));
+                      }}
+                      iconName="clipboardList"
+                      visible={
+                        hasPermission('create_order') ||
+                        hasPermission('view_order') ||
+                        hasPermission('edit_order')
+                      }
+                    />
+
+                    <FooterAction
                       text="notifications"
                       iconName="notifications"
                     />
+
+                    <ScanAction />
 
                     <AISearchAction />
                   </Box>
