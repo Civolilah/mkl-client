@@ -148,7 +148,7 @@ const AISearchAction = ({ disabled, withoutFooterAction }: Props) => {
         >
           <Box>
             <Icon
-              name="robotLine"
+              name="stars"
               size="1.7rem"
               style={{ color: isOpen ? accentColor : 'white' }}
             />

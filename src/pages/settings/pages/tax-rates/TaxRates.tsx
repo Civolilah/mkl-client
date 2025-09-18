@@ -47,7 +47,7 @@ export interface TaxRatesType {
   number_of_order_taxes: string;
   number_of_product_taxes: string;
   number_of_purchase_order_taxes: string;
-  inclusive_tax: boolean;
+  inclusive_taxes: boolean;
   uniform_customer_taxes: boolean;
   default_invoice_tax1_id: string;
   default_invoice_tax2_id: string;
@@ -84,18 +84,16 @@ const TaxRates = () => {
   const hasPermission = useHasPermission();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [taxRates, setTaxRates] = useState<TaxRatesType | undefined>(undefined);
   const [initialTaxRates, setInitialTaxRates] = useState<
     TaxRatesType | undefined
   >(undefined);
 
-  useFetchEntity<TaxRatesType>({
+  const { isLoading, isFetching } = useFetchEntity<TaxRatesType>({
     queryIdentifiers: ['/api/companies/tax_rates_settings'],
     endpoint: '/api/companies/tax_rates',
     setEntity: setTaxRates,
-    setIsLoading,
     setInitialResponse: setInitialTaxRates,
     withoutQueryId: true,
     enableByPermission: hasPermission('admin'),
@@ -127,7 +125,7 @@ const TaxRates = () => {
         .then(() => {
           toast.success('updated_tax_rates_settings');
 
-          refetch(['tax_rates', 'tax_rates_settings']);
+          refetch(['tax_rates_settings']);
         })
         .catch((error) => {
           if (error.response?.status === VALIDATION_ERROR_STATUS_CODE) {
@@ -190,6 +188,8 @@ const TaxRates = () => {
         isLoading={isLoading}
         isFormBusy={isFormBusy}
         setTaxRates={setTaxRates}
+        isFetching={isFetching}
+        initialResponse={initialTaxRates}
       />
 
       <InvoiceDefaultTaxesCard
@@ -198,6 +198,8 @@ const TaxRates = () => {
         isLoading={isLoading}
         isFormBusy={isFormBusy}
         setTaxRates={setTaxRates}
+        isFetching={isFetching}
+        initialResponse={initialTaxRates}
       />
 
       <ProductDefaultTaxesCard
@@ -206,6 +208,8 @@ const TaxRates = () => {
         errors={errors}
         isFormBusy={isFormBusy}
         setTaxRates={setTaxRates}
+        isFetching={isFetching}
+        initialResponse={initialTaxRates}
       />
 
       <PurchaseOrderDefaultTaxesCard
@@ -214,6 +218,8 @@ const TaxRates = () => {
         errors={errors}
         isFormBusy={isFormBusy}
         setTaxRates={setTaxRates}
+        isFetching={isFetching}
+        initialResponse={initialTaxRates}
       />
     </Box>
   );

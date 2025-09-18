@@ -18,7 +18,7 @@ import { useParams } from 'react-router-dom';
 
 import { useCompanyPlan } from '@hooks/index';
 
-type Params<T> = {
+interface Params<T> {
   queryIdentifiers: string[];
   endpoint: string;
   setEntity?: Dispatch<SetStateAction<T | undefined>>;
@@ -29,7 +29,8 @@ type Params<T> = {
   formatRecords?: (data: T[]) => T[];
   enableByPermission?: boolean;
   withoutQueryId?: boolean;
-};
+  setIsFetching?: Dispatch<SetStateAction<boolean>>;
+}
 
 const useFetchEntity = <T>({
   queryIdentifiers,
@@ -133,7 +134,7 @@ const useFetchEntity = <T>({
     }
   }, []);
 
-  return { refresh: handleRefresh };
+  return { refresh: handleRefresh, isFetching, isLoading };
 };
 
 export default useFetchEntity;

@@ -19,6 +19,9 @@ const NotificationsCard = ({
   notifications,
   setNotifications,
   isLoading,
+  isFetching,
+  initialNotifications,
+  isFormBusy,
 }: NotificationsProps) => {
   const t = useTranslation();
 
@@ -36,7 +39,7 @@ const NotificationsCard = ({
         </Box>
       }
       className="w-full"
-      isLoading={isLoading}
+      isLoading={isLoading && !initialNotifications}
     >
       <LabelElement
         label={t('enable_notifications')}
@@ -47,6 +50,7 @@ const NotificationsCard = ({
         <Toggle
           checked={notifications?.enabled_web_notifications || false}
           onChange={(value) => handleChange('enabled_web_notifications', value)}
+          disabled={isFormBusy || isLoading || isFetching}
         />
       </LabelElement>
     </Card>

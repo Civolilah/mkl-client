@@ -316,8 +316,6 @@
   "phone_placeholder": "e.g., +1 (555) 123-4567",
   "warehouses_assigning_on_employee": "Without selecting warehouses, employee can manage all products across warehouses according to their product permissions.",
   "warehouse": "Warehouse",
-  "feedback_bugs_features": "Feedback, bugs and features",
-  "feedback_privacy_note": "Your feedback helps us improve. We respect your privacy.",
   "welcome_back": "Welcome back!",
   "new_to_ecomkl": "New to ecoMKL?",
   "copyright_text": "By proceeding, you agree to our :terms and :privacyPolicy.",
@@ -634,5 +632,17 @@
   "select_customers": "Select Customers",
   "no_customers_selected": "No customers selected.",
   "select_tax_rate": "Select Tax Rate",
-  "updated_tax_rates_settings": "Successfully updated tax rates settings."
+  "updated_tax_rates_settings": "Successfully updated tax rates settings.",
+  "no_invoice_taxes_enabled": "No invoice/order taxes enabled.",
+  "no_invoice_taxes_enabled_helper": "To enable invoice/order taxes, please add at least one tax rate.",
+  "no_product_taxes_enabled": "No product taxes enabled.",
+  "no_product_taxes_enabled_helper": "To enable product taxes, please add at least one tax rate.",
+  "no_purchase_order_taxes_enabled": "No purchase order taxes enabled.",
+  "no_purchase_order_taxes_enabled_helper": "To enable purchase order taxes, please add at least one tax rate.",
+  "rate_us": "Rate Us",
+  "request_feature": "Request Feature",
+  "report_issue": "Report Issue",
+  "terms_and_conditions": "Terms & Conditions",
+  "privacy_and_policy": "Privacy Policy",
+  "drop_logo_here": "Drop logo here"
 }

@@ -11,14 +11,12 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { request, route, useToast } from '@helpers/index';
+import { request, useToast } from '@helpers/index';
 import { isEqual } from 'lodash';
-import { useMediaQuery } from 'react-responsive';
-import { useNavigate } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
-import { AISearchAction, Box, FooterAction } from '@components/index';
+import { Box } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -43,6 +41,8 @@ export interface NotificationsProps {
   errors: ValidationErrors;
   isLoading: boolean;
   isFormBusy: boolean;
+  isFetching: boolean;
+  initialNotifications: NotificationsType | undefined;
 }
 
 const Notifications = () => {
@@ -61,13 +61,9 @@ const Notifications = () => {
 
   const toast = useToast();
 
-  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
-
   const refetch = useRefetch();
-  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<
     NotificationsType | undefined
@@ -76,11 +72,10 @@ const Notifications = () => {
     NotificationsType | undefined
   >(undefined);
 
-  useFetchEntity<NotificationsType>({
+  const { isLoading, isFetching } = useFetchEntity<NotificationsType>({
     queryIdentifiers: ['/api/users/notifications'],
     endpoint: '/api/users/notifications',
     setEntity: setNotifications,
-    setIsLoading,
     setInitialResponse: setInitialNotifications,
     withoutQueryId: true,
   });
@@ -95,7 +90,7 @@ const Notifications = () => {
       return;
     }
 
-    if (!isFormBusy && !isLoading) {
+    if (!isFormBusy && !isLoading && !isFetching) {
       if (isEqual(initialNotifications, notifications)) {
         toast.info('no_notifications_changes');
         return;
@@ -129,29 +124,6 @@ const Notifications = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      footer: !isLargeScreen && (
-        <Box className="flex w-full items-center justify-end h-full">
-          <FooterAction
-            text="dashboard"
-            onClick={() => {
-              navigate(route('/dashboard'));
-            }}
-            iconName="dashboard"
-            disabled={isLoading || isFormBusy}
-            iconSize="1.2rem"
-          />
-
-          <FooterAction
-            text="save"
-            onClick={handleSave}
-            iconName="save"
-            disabled={isLoading || isFormBusy}
-            iconSize="1.2rem"
-          />
-
-          <AISearchAction disabled={isLoading || isFormBusy} />
-        </Box>
-      ),
     },
     [notifications, isLoading, isFormBusy, handleSave]
   );
@@ -175,6 +147,8 @@ const Notifications = () => {
         errors={errors}
         isLoading={isLoading}
         isFormBusy={isFormBusy}
+        isFetching={isFetching}
+        initialNotifications={initialNotifications}
       />
     </Box>
   );

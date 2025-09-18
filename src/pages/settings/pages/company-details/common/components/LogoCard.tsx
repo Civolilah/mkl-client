@@ -123,7 +123,7 @@ const LogoCard = ({
 
         <StyledBox
           {...getRootProps()}
-          className="flex flex-col items-center justify-center px-6 gap-y-3 text-center transition-colors h-[11rem] cursor-pointer"
+          className="flex flex-col items-center justify-center px-6 gap-y-3 text-center transition-colors h-[11rem] cursor-pointer rounded-md"
           theme={{
             borderColor: isDragActive ? colors.$32 : colors.$1,
             backgroundColor: isDragActive ? colors.$33 : colors.$26,
@@ -144,7 +144,7 @@ const LogoCard = ({
           </Box>
 
           {isDragActive ? (
-            <Text className="text-blue-600">{t('drop_images_here')}</Text>
+            <Text className="text-blue-600">{t('drop_logo_here')}</Text>
           ) : (
             <Box className="flex flex-col items-center justify-center">
               <Text

@@ -14,9 +14,9 @@ import { Text } from '@components/index';
 
 import { useColors } from '@hooks/index';
 
-type Props = {
+interface Props {
   text: string | ReactNode;
-};
+}
 
 const HelpLabel = (props: Props) => {
   const { text } = props;

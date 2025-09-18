@@ -11,15 +11,14 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { VALIDATION_ERROR_STATUS_CODE } from '@constants/index';
-import { request, route, useToast } from '@helpers/index';
+import { request, useToast } from '@helpers/index';
 import { isEqual } from 'lodash';
-import { useMediaQuery } from 'react-responsive';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { ValidationErrors } from '@interfaces/index';
 
 import { IconName } from '@components/general/Icon';
-import { AISearchAction, Box, FooterAction } from '@components/index';
+import { Box } from '@components/index';
 import { BreadcrumbItem } from '@components/layout/Default';
 
 import {
@@ -48,7 +47,7 @@ export interface CustomFieldsType {
   supplier_custom_fields: CustomField[];
 }
 
-interface CustomFieldsCard {
+interface CustomFieldsCardType {
   iconName: IconName;
   title: string;
   iconSize: string;
@@ -73,14 +72,10 @@ const CustomFields = () => {
 
   const toast = useToast();
 
-  const isLargeScreen = useMediaQuery({ query: '(min-width: 1024px)' });
-
   const refetch = useRefetch();
-  const navigate = useNavigate();
   const hasPermission = useHasPermission();
 
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFormBusy, setIsFormBusy] = useState<boolean>(false);
   const [customFields, setCustomFields] = useState<
     CustomFieldsType | undefined
@@ -89,11 +84,10 @@ const CustomFields = () => {
     CustomFieldsType | undefined
   >(undefined);
 
-  useFetchEntity<CustomFieldsType>({
+  const { isLoading, isFetching } = useFetchEntity<CustomFieldsType>({
     queryIdentifiers: ['/api/companies/custom_fields'],
     endpoint: '/api/companies/custom_fields',
     setEntity: setCustomFields,
-    setIsLoading,
     setInitialResponse: setInitialCustomFields,
     withoutQueryId: true,
     enableByPermission: hasPermission('admin'),
@@ -143,28 +137,6 @@ const CustomFields = () => {
       breadcrumbs: {
         breadcrumbs,
       },
-      footer: !isLargeScreen && (
-        <Box className="flex w-full items-center justify-end h-full">
-          <FooterAction
-            text="dashboard"
-            onClick={() => {
-              navigate(route('/dashboard'));
-            }}
-            iconName="dashboard"
-            disabled={isLoading || isFormBusy}
-            visible={hasPermission('view_dashboard')}
-          />
-
-          <FooterAction
-            text="save"
-            onClick={handleSave}
-            iconName="save"
-            disabled={isLoading || isFormBusy}
-          />
-
-          <AISearchAction disabled={isLoading || isFormBusy} />
-        </Box>
-      ),
     },
     [customFields, isLoading, isFormBusy, handleSave]
   );
@@ -180,24 +152,24 @@ const CustomFields = () => {
     [customFields, isFormBusy, handleSave]
   );
 
-  const customFieldsCards = useMemo<CustomFieldsCard[]>(
+  const customFieldsCards = useMemo<CustomFieldsCardType[]>(
     () => [
       {
         iconName: 'clipboardList',
         title: 'order_custom_fields',
-        iconSize: '1.25rem',
+        iconSize: '1.2rem',
         entity: 'order',
       },
       {
         iconName: 'product',
         title: 'product_custom_fields',
-        iconSize: '1.4rem',
+        iconSize: '1.45rem',
         entity: 'product',
       },
       {
         iconName: 'fileInvoiceDollar',
         title: 'purchase_order_custom_fields',
-        iconSize: '1.2rem',
+        iconSize: '1.15rem',
         entity: 'purchase_order',
       },
       {
@@ -209,7 +181,7 @@ const CustomFields = () => {
       {
         iconName: 'truck',
         title: 'supplier_custom_fields',
-        iconSize: '1.2rem',
+        iconSize: '1.15rem',
         entity: 'supplier',
       },
     ],
@@ -237,9 +209,9 @@ const CustomFields = () => {
 
   return (
     <Box className="flex flex-col gap-y-4 w-full pb-20">
-      {customFieldsCards.map((card) => (
+      {customFieldsCards.map((card, index) => (
         <CustomFieldsCard
-          key={card.entity}
+          key={index}
           id={`custom-fields-card-${card.entity}`}
           customFields={customFields}
           errors={errors}
@@ -250,6 +222,8 @@ const CustomFields = () => {
           title={card.title}
           iconSize={card.iconSize}
           entity={card.entity}
+          isFetching={isFetching}
+          initialCustomFields={initialCustomFields}
         />
       ))}
     </Box>

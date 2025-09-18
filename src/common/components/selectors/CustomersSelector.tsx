@@ -45,6 +45,7 @@ interface Props {
   tooltipOverlayInnerStyle?: CSSProperties;
   onCreatedCustomer?: (customerId: string) => void;
   withRefreshButton?: boolean;
+  disabled?: boolean;
 }
 
 const CustomersSelector = ({
@@ -62,6 +63,7 @@ const CustomersSelector = ({
   tooltipOverlayInnerStyle,
   onCreatedCustomer,
   withRefreshButton,
+  disabled,
 }: Props) => {
   const t = useTranslation();
 
@@ -209,6 +211,7 @@ const CustomersSelector = ({
         withoutOptionalText={withoutOptionalText}
         afterLabel={afterSelectorLabel}
         tooltipOverlayInnerStyle={tooltipOverlayInnerStyle}
+        disabled={disabled}
       />
     </>
   );

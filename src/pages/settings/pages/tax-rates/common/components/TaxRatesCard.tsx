@@ -30,16 +30,20 @@ import useHandleChange from '../hooks/useHandleChange';
 export interface TaxRatesProps {
   taxRates: TaxRatesType | undefined;
   isLoading: boolean;
+  isFetching: boolean;
   errors: ValidationErrors;
   isFormBusy: boolean;
+  initialResponse: TaxRatesType | undefined;
   setTaxRates: Dispatch<SetStateAction<TaxRatesType | undefined>>;
 }
 
 const TaxRatesCard = ({
   taxRates,
   isLoading,
+  isFetching,
   isFormBusy,
   errors,
+  initialResponse,
   setTaxRates,
 }: TaxRatesProps) => {
   const t = useTranslation();
@@ -51,14 +55,14 @@ const TaxRatesCard = ({
       titleElement={
         <Box className="flex items-center gap-x-2">
           <Box>
-            <Icon name="percentage" size="1.4rem" />
+            <Icon name="percentage" size="1.25rem" />
           </Box>
 
           <Text>{t('tax_rates')}</Text>
         </Box>
       }
       className="w-full"
-      isLoading={isLoading}
+      isLoading={isLoading && !initialResponse}
     >
       <Box className="flex flex-col gap-y-4">
         <LabelElement
@@ -70,10 +74,10 @@ const TaxRatesCard = ({
           <NumberTaxRatesSelector
             value={taxRates?.number_of_order_taxes?.toString() || '0'}
             onValueChange={(value) =>
-              handleChange('number_of_order_taxes', Number(value))
+              handleChange('number_of_order_taxes', value)
             }
             withoutOptionalText
-            disabled={isFormBusy || isLoading}
+            disabled={isFormBusy || isLoading || isFetching}
             errorMessage={
               errors.number_of_order_taxes && t(errors.number_of_order_taxes)
             }
@@ -89,10 +93,10 @@ const TaxRatesCard = ({
           <NumberTaxRatesSelector
             value={taxRates?.number_of_product_taxes?.toString() || '0'}
             onValueChange={(value) =>
-              handleChange('number_of_product_taxes', Number(value))
+              handleChange('number_of_product_taxes', value)
             }
             withoutOptionalText
-            disabled={isFormBusy || isLoading}
+            disabled={isFormBusy || isLoading || isFetching}
             errorMessage={
               errors.number_of_product_taxes &&
               t(errors.number_of_product_taxes)
@@ -109,10 +113,10 @@ const TaxRatesCard = ({
           <NumberTaxRatesSelector
             value={taxRates?.number_of_purchase_order_taxes?.toString() || '0'}
             onValueChange={(value) =>
-              handleChange('number_of_purchase_order_taxes', Number(value))
+              handleChange('number_of_purchase_order_taxes', value)
             }
             withoutOptionalText
-            disabled={isFormBusy || isLoading}
+            disabled={isFormBusy || isLoading || isFetching}
             errorMessage={
               errors.number_of_purchase_order_taxes &&
               t(errors.number_of_purchase_order_taxes)
@@ -123,7 +127,7 @@ const TaxRatesCard = ({
         <LabelElement
           label={t('inclusive_tax')}
           helpLabel={
-            taxRates?.inclusive_tax
+            taxRates?.inclusive_taxes
               ? t('exclusive_tax_help')
               : t('inclusive_tax_help')
           }
@@ -131,9 +135,9 @@ const TaxRatesCard = ({
           twoGridColumns
         >
           <Toggle
-            checked={Boolean(taxRates?.inclusive_tax)}
-            onChange={(value) => handleChange('inclusive_tax', value)}
-            disabled={isFormBusy || isLoading}
+            checked={Boolean(taxRates?.inclusive_taxes)}
+            onChange={(value) => handleChange('inclusive_taxes', value)}
+            disabled={isFormBusy || isLoading || isFetching}
           />
         </LabelElement>
       </Box>

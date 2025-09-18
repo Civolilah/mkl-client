@@ -23,6 +23,7 @@ import { userCompanyAtom } from '@components/general/PrivateRoute';
 import {
   Box,
   Button,
+  Divider,
   Icon,
   MobileNavBar,
   NavBarLogoSection,
@@ -427,13 +428,16 @@ const Header = ({ title }: Props) => {
           ) : (
             <Popover
               content={
-                <Box className="flex flex-col w-full bg-white rounded-lg">
-                  <Box className="flex flex-col items-center py-4 px-5 border-b border-gray-100">
+                <Box
+                  className="flex flex-col w-full bg-white rounded-lg min-w-[17.5rem] border"
+                  style={{ borderColor: colors.$1 }}
+                >
+                  <Box className="flex flex-col items-center pt-5 pb-4 px-5 gap-y-2">
                     <Box
-                      className="w-10 h-10 rounded-full flex items-center justify-center mb-2"
+                      className="w-9 h-9 rounded-full flex items-center justify-center"
                       style={{ backgroundColor: accentColor }}
                     >
-                      <Text className="text-white text-xl uppercase">
+                      <Text className="text-white text-lg uppercase">
                         {userCompanyDetails?.email?.[0]}
                       </Text>
                     </Box>
@@ -443,7 +447,11 @@ const Header = ({ title }: Props) => {
                     </Text>
                   </Box>
 
-                  <Box className="flex flex-col w-full py-2">
+                  <Box className="py-1">
+                    <Divider dividerSize="0.5px" nonDashed />
+                  </Box>
+
+                  <Box className="flex flex-col w-full pb-2">
                     <StyledBox
                       className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
                       onClick={() =>
@@ -457,18 +465,34 @@ const Header = ({ title }: Props) => {
                         hoverBackgroundColor: colors.$19,
                       }}
                     >
-                      <Box className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Icon
-                          name="person"
-                          size="1rem"
-                          style={{ color: 'blue' }}
-                        />
+                      <Box className="w-6">
+                        <Icon name="person" size="1.35rem" />
                       </Box>
 
                       <Box className="flex-1">
-                        <Text className="font-medium text-sm">
-                          {t('profile')}
-                        </Text>
+                        <Text className="text-sm">{t('profile')}</Text>
+                      </Box>
+                    </StyledBox>
+
+                    <StyledBox
+                      className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
+                      onClick={() => {
+                        preventAction({
+                          action: () => {
+                            // Handle feedback
+                          },
+                        });
+                      }}
+                      theme={{
+                        hoverBackgroundColor: colors.$19,
+                      }}
+                    >
+                      <Box className="w-6">
+                        <Icon name="star" size="1.45rem" />
+                      </Box>
+
+                      <Box className="flex-1">
+                        <Text className="text-sm">{t('rate_us')}</Text>
                       </Box>
                     </StyledBox>
 
@@ -485,17 +509,87 @@ const Header = ({ title }: Props) => {
                         hoverBackgroundColor: colors.$19,
                       }}
                     >
-                      <Box className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Icon
-                          name="email"
-                          size="1rem"
-                          style={{ color: '#3b82f6' }}
-                        />
+                      <Box className="w-6">
+                        <Icon name="email" size="1.35rem" />
                       </Box>
 
                       <Box className="flex-1">
-                        <Text className="font-medium text-sm">
-                          {t('contact_us')}
+                        <Text className="text-sm">{t('contact_us')}</Text>
+                      </Box>
+                    </StyledBox>
+
+                    <Box className="py-1">
+                      <Divider dividerSize="0.5px" nonDashed />
+                    </Box>
+
+                    <StyledBox
+                      className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
+                      onClick={() => {
+                        preventAction({
+                          action: () => {
+                            // Handle feedback
+                          },
+                        });
+                      }}
+                      theme={{
+                        hoverBackgroundColor: colors.$19,
+                      }}
+                    >
+                      <Box className="w-6">
+                        <Icon name="bug" size="1.35rem" />
+                      </Box>
+
+                      <Box className="flex-1">
+                        <Text className="text-sm">{t('report_issue')}</Text>
+                      </Box>
+                    </StyledBox>
+
+                    <StyledBox
+                      className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
+                      onClick={() => {
+                        preventAction({
+                          action: () => {
+                            // Handle feedback
+                          },
+                        });
+                      }}
+                      theme={{
+                        hoverBackgroundColor: colors.$19,
+                      }}
+                    >
+                      <Box className="w-6">
+                        <Icon name="outlineBulb" size="1.35rem" />
+                      </Box>
+
+                      <Box className="flex-1">
+                        <Text className="text-sm">{t('request_feature')}</Text>
+                      </Box>
+                    </StyledBox>
+
+                    <Box className="py-1">
+                      <Divider dividerSize="0.5px" nonDashed />
+                    </Box>
+
+                    <StyledBox
+                      className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
+                      onClick={() => {
+                        preventAction({
+                          action: () => {
+                            // Handle feedback
+                          },
+                        });
+                      }}
+                      theme={{
+                        hoverBackgroundColor: colors.$19,
+                      }}
+                    >
+                      <Box className="w-6">
+                        <Icon name="shield" size="1.3rem" />
+                      </Box>
+
+                      <Box className="flex-1">
+                        <Text className="text-sm">
+                          {t('privacy_and_policy')}
                         </Text>
                       </Box>
                     </StyledBox>
@@ -513,20 +607,20 @@ const Header = ({ title }: Props) => {
                         hoverBackgroundColor: colors.$19,
                       }}
                     >
-                      <Box className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <Icon
-                          name="feedback"
-                          size="1rem"
-                          style={{ color: '#10b981' }}
-                        />
+                      <Box className="w-6">
+                        <Icon name="documentTextOutline" size="1.3rem" />
                       </Box>
 
                       <Box className="flex-1">
-                        <Text className="font-medium text-sm">
-                          {t('feedback_bugs_features')}
+                        <Text className="text-sm">
+                          {t('terms_and_conditions')}
                         </Text>
                       </Box>
                     </StyledBox>
+
+                    <Box className="py-1">
+                      <Divider dividerSize="0.5px" nonDashed />
+                    </Box>
 
                     <StyledBox
                       className="flex w-full items-center space-x-3 cursor-pointer px-5 py-2.5 transition-colors duration-200"
@@ -541,18 +635,16 @@ const Header = ({ title }: Props) => {
                         hoverBackgroundColor: colors.$19,
                       }}
                     >
-                      <Box className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                      <Box className="w-6">
                         <Icon
                           name="logout"
-                          style={{ rotate: '180deg', color: '#ef4444' }}
-                          size="1rem"
+                          size="1.35rem"
+                          style={{ rotate: '180deg' }}
                         />
                       </Box>
 
                       <Box className="flex-1">
-                        <Text className="font-medium text-sm text-red-600">
-                          {t('logout')}
-                        </Text>
+                        <Text className="text-sm">{t('logout')}</Text>
                       </Box>
                     </StyledBox>
                   </Box>
@@ -560,13 +652,10 @@ const Header = ({ title }: Props) => {
               }
             >
               <Box
-                className="flex items-center justify-center cursor-pointer rounded-full px-3 py-2"
+                className="flex items-center justify-center cursor-pointer rounded-full w-9 h-9"
                 style={{ backgroundColor: accentColor }}
               >
-                <Text
-                  className="text-sm uppercase text-white"
-                  style={{ fontSize: '1.2rem' }}
-                >
+                <Text className="text-xl uppercase text-white">
                   {userCompanyDetails?.email?.[0]}
                 </Text>
               </Box>

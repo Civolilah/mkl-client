@@ -43,6 +43,7 @@ interface Props {
   tooltipOverlayInnerStyle?: CSSProperties;
   onCreatedTaxRate?: (taxRateId: string) => void;
   withRefreshButton?: boolean;
+  disabled?: boolean;
 }
 
 const TaxRatesSelector = ({
@@ -60,6 +61,7 @@ const TaxRatesSelector = ({
   tooltipOverlayInnerStyle,
   onCreatedTaxRate,
   withRefreshButton,
+  disabled,
 }: Props) => {
   const t = useTranslation();
 
@@ -206,6 +208,7 @@ const TaxRatesSelector = ({
         withoutOptionalText={withoutOptionalText}
         afterLabel={afterSelectorLabel}
         tooltipOverlayInnerStyle={tooltipOverlayInnerStyle}
+        disabled={disabled}
       />
     </>
   );

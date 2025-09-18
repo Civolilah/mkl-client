@@ -41,6 +41,8 @@ export interface CustomFieldsCardsProps {
   title: string;
   iconSize: string;
   entity: 'customer' | 'product' | 'purchase_order' | 'supplier' | 'order';
+  isFetching: boolean;
+  initialCustomFields: CustomFieldsType | undefined;
 }
 
 const CustomFieldsCard = ({
@@ -54,6 +56,8 @@ const CustomFieldsCard = ({
   title,
   iconSize,
   entity,
+  isFetching,
+  initialCustomFields,
 }: CustomFieldsCardsProps) => {
   const t = useTranslation();
 
@@ -75,7 +79,7 @@ const CustomFieldsCard = ({
           <Text>{t(title)}</Text>
         </Box>
       }
-      isLoading={isLoading}
+      isLoading={isLoading && !initialCustomFields}
     >
       <Box className="flex flex-col gap-y-4">
         {customFields?.[`${entity}_custom_fields`].map((customField, index) => (
@@ -101,7 +105,7 @@ const CustomFieldsCard = ({
                   get(errors, `${entity}_custom_fields_${index}_label`) &&
                   t(get(errors, `${entity}_custom_fields_${index}_label`))
                 }
-                readOnly={isFormBusy}
+                readOnly={isFormBusy || isLoading || isFetching}
               />
 
               <CustomFieldTypesSelector
@@ -111,7 +115,7 @@ const CustomFieldsCard = ({
                   handleChange(`${entity}_custom_fields.${index}.type`, value)
                 }
                 withoutOptionalText
-                disabled={isFormBusy}
+                disabled={isFormBusy || isLoading || isFetching}
               />
             </Box>
 
@@ -128,7 +132,7 @@ const CustomFieldsCard = ({
                   get(errors, `${entity}_custom_fields_${index}_value`) &&
                   t(get(errors, `${entity}_custom_fields_${index}_value`))
                 }
-                readOnly={isFormBusy}
+                readOnly={isFormBusy || isLoading || isFetching}
               />
             )}
           </Box>

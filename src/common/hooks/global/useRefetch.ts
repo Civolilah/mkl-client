@@ -138,7 +138,7 @@ const REFETCH_DEPENDENCIES: Record<RefetchEntity, RefetchObject> = {
   },
   tax_rates_settings: {
     mainEndpoint: '/api/companies/tax_rates_settings',
-    dependencies: [],
+    dependencies: ['/api/customers'],
   },
 };
 

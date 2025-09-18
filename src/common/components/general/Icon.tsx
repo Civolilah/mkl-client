@@ -16,7 +16,11 @@ import {
 } from 'react';
 
 import { IconType } from 'react-icons';
-import { AiOutlineCodeSandbox, AiOutlineShoppingCart } from 'react-icons/ai';
+import {
+  AiOutlineBulb,
+  AiOutlineCodeSandbox,
+  AiOutlineShoppingCart,
+} from 'react-icons/ai';
 import {
   BiDotsHorizontalRounded,
   BiImport,
@@ -27,6 +31,7 @@ import {
   BsBookmarkStarFill,
   BsCashStack,
   BsCreditCard2FrontFill,
+  BsStars,
 } from 'react-icons/bs';
 import { CiLogout } from 'react-icons/ci';
 import {
@@ -59,7 +64,13 @@ import {
   HiShieldCheck,
 } from 'react-icons/hi2';
 import { IoIosNotifications, IoMdCloseCircleOutline } from 'react-icons/io';
-import { IoInformationCircleOutline, IoKeySharp } from 'react-icons/io5';
+import {
+  IoBug,
+  IoDocumentTextOutline,
+  IoInformationCircleOutline,
+  IoKeySharp,
+  IoShield,
+} from 'react-icons/io5';
 import {
   MdAdd,
   MdBusiness,
@@ -226,16 +237,21 @@ export type IconName =
   | 'handshake'
   | 'cashStack'
   | 'shieldCheck'
-  | 'arrowsRightLeft';
+  | 'arrowsRightLeft'
+  | 'stars'
+  | 'outlineBulb'
+  | 'bug'
+  | 'shield'
+  | 'documentTextOutline';
 
-type Props = {
+interface Props {
   className?: string;
   onClick?: () => void;
   style?: CSSProperties;
   name: IconName;
   size?: number | string;
   unsetColor?: boolean;
-};
+}
 
 const DEFAULT_ICON_COLORS: Record<string, string> = {
   edit: '#007bff',
@@ -463,6 +479,16 @@ const Icon = ({ name, size, onClick, style, unsetColor }: Props) => {
       return generateIconElement(HiShieldCheck);
     case 'arrowsRightLeft':
       return generateIconElement(HiArrowsRightLeft);
+    case 'stars':
+      return generateIconElement(BsStars);
+    case 'outlineBulb':
+      return generateIconElement(AiOutlineBulb);
+    case 'bug':
+      return generateIconElement(IoBug);
+    case 'shield':
+      return generateIconElement(IoShield);
+    case 'documentTextOutline':
+      return generateIconElement(IoDocumentTextOutline);
     default:
       return <></>;
   }
